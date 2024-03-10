@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { api, handleError } from "helpers/api";
 import User from "models/User";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
@@ -52,9 +52,7 @@ const Login = () => {
       // Login successfully worked --> navigate to the route /game in the GameRouter
       navigate("/game");
     } catch (error) {
-      alert(
-        `Something went wrong during the login: \n${handleError(error)}`
-      );
+      alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
   };
 
@@ -67,11 +65,7 @@ const Login = () => {
             value={username}
             onChange={(un: string) => setUsername(un)}
           />
-          <FormField
-            label="Name"
-            value={name}
-            onChange={(n) => setName(n)}
-          />
+          <FormField label="Name" value={name} onChange={(n) => setName(n)} />
           <div className="login button-container">
             <Button
               disabled={!username || !name}
