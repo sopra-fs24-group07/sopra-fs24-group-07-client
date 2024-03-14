@@ -2,7 +2,7 @@ name: Sonarcloud
 
 on:
   push:
-  pull_requests:
+  pull_request:
     types: [opened, synchronize, reopened]
 
   # run the workflow manually from the Actions tab
