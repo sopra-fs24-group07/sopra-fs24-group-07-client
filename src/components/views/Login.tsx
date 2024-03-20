@@ -3,7 +3,6 @@ import { api, handleError } from "helpers/api";
 import User from "models/User";
 import { useNavigate } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import { Logo } from "components/ui/logoImg";
 import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
@@ -34,7 +33,7 @@ FormField.propTypes = {
   onChange: PropTypes.func,
 };
 
-const Landing = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [name, setName] = useState<string>(null);
   const [username, setUsername] = useState<string>(null);
@@ -60,9 +59,6 @@ const Landing = () => {
   return (
     <BaseContainer>
       <div className="login container">
-        <Logo
-          margin="1em"
-        />
         <div className="login form">
           <FormField
             label="Username"
@@ -88,4 +84,4 @@ const Landing = () => {
 /**
  * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
  */
-export default Landing;
+export default Login;
