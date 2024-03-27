@@ -16,7 +16,7 @@ export const GameGuard = () => {
     return <Outlet />;
   }
 
-  return <Navigate to="/login" replace />;
+  return <Navigate to="/landing" replace />;
 };
 
 GameGuard.propTypes = {
