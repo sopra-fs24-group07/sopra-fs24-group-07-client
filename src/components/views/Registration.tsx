@@ -56,6 +56,10 @@ const Registration = () => {
     }
   };
 
+  const goLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <BaseContainer>
       <div className="register container">
@@ -67,9 +71,12 @@ const Registration = () => {
           />
           <FormField label="Name" value={name} onChange={(n) => setName(n)} />
           <div className="register button-container">
+            <Button width="50%" onClick={() => goLogin()}>
+              Login
+            </Button>
             <Button
               disabled={!username || !name}
-              width="100%"
+              width="50%"
               onClick={() => doRegister()}
             >
               Register
