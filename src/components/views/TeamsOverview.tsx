@@ -48,7 +48,7 @@ const TeamsOverview = () => {
         <div className="teams-overview grid">
           <Button onClick={handleCreateTeam}>Create new team</Button>
           {userTeams.map((team) => (
-            <Button key={team.id} onClick={() => navigate(`/team/${team.id}`)}>
+            <Button key={team.id} onClick={() => navigate(`/teams/${team.id}`)}>
               {team.name}
             </Button>
           ))}
