@@ -7,49 +7,30 @@
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
+    width: 100%;
   }
-  &.form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 60%;
-    max-width: 30em;
-    height: 20em;
-    font-size: 16px;
-    font-weight: 300;
-    padding-left: 37px;
-    padding-right: 37px;
-    border-radius: 0.75em;
-    background-color: $accentDark;
-    transition:
-      opacity 0.5s ease,
-      transform 0.5s ease;
-    box-shadow: $dropShadow;
-  }
-  &.field {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  &.input {
-    height: 35px;
-    padding-left: 15px;
-    margin-left: -4px;
-    border: none;
-    border-radius: 0.75em;
-    margin-bottom: 20px;
-    background: transparentize(white, 0.85);
-    color: $background;
-  }
+
   &.label {
     color: $background;
     margin-bottom: 10px;
     text-transform: lowercase;
     font-weight: 300;
   }
+
   &.button-container {
     display: flex;
     justify-content: center;
     margin-top: 2em;
+  }
+
+  &.grid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(150px, 1fr)
+    ); // Adjust the minimum width as needed
+    grid-gap: 2em;
+    justify-items: stretch; // Stretch items to fill the width
+    width: 100%;
   }
 }
