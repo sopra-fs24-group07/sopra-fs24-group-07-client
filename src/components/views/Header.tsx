@@ -19,13 +19,19 @@ const Header = (props) => {
     navigate("/profile");
   };
 
+  const goTeamsOverview = () => {
+    navigate("/teams");
+  };
+
   return (
     <div className="header container" style={{ height: props.height }}>
       <div className="header button-container">
         {location.pathname === "/teams" ? (
           <span>Your Teams</span>
         ) : (
-          <Button>{"< Back to Teams | " + props.currentTeam}</Button>
+          <Button onClick={() => goTeamsOverview()}>
+            {"< Back to Teams | " + props.currentTeam}
+          </Button>
         )}
       </div>
       <h1 className="header title">
