@@ -56,6 +56,10 @@ const Login = () => {
     }
   };
 
+  const goRegister = () => {
+    navigate("/register");
+  };
+
   return (
     <BaseContainer>
       <div className="login container">
@@ -69,10 +73,13 @@ const Login = () => {
           <div className="login button-container">
             <Button
               disabled={!username || !name}
-              width="100%"
+              width="50%"
               onClick={() => doLogin()}
             >
               Login
+            </Button>
+            <Button width="50%" onClick={() => goRegister()}>
+              Register
             </Button>
           </div>
         </div>
