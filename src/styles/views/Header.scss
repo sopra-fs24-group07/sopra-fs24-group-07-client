@@ -2,12 +2,14 @@
 
 .header {
   &.container {
-    @include center;
+    display: flex;
+    justify-content: space-between; /* Align buttons to the left and right */
+    align-items: center; /* Center the title vertically */
   }
 
   &.title {
     font-weight: bold;
     color: $background;
-    text-align: center;
+    text-align: center; /* Center the title horizontally */
   }
 }
