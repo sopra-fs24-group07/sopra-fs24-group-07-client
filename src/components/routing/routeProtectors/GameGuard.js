@@ -16,7 +16,9 @@ export const GameGuard = () => {
     return <Outlet />;
   }
 
-  return <Navigate to="/start" replace />;
+  //return <Navigate to="/start" replace />;
+  // Avoid redirecting to /start while backend isnt ready: uncommit previous line and delete next line to undo
+  return <Outlet />;
 };
 
 GameGuard.propTypes = {
