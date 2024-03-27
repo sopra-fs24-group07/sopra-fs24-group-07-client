@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Game from "../../views/Game";
+import TeamsOverview from "../../views/TeamsOverview";
 import PropTypes from "prop-types";
 import Header from "../../views/Header";
 
@@ -9,11 +10,11 @@ const GameRouter = () => {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <Header height="100" />
       <Routes>
-        <Route path="" element={<Game />} />
+        <Route path="" element={<TeamsOverview />} />
 
-        <Route path="dashboard" element={<Game />} />
+        <Route path="teams" element={<TeamsOverview />} />
 
-        <Route path="*" element={<Navigate to="dashboard" replace />} />
+        <Route path="*" element={<Navigate to="teams" replace />} />
       </Routes>
     </div>
   );
