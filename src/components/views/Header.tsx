@@ -15,6 +15,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const goProfile = () => {
     navigate("/profile");
   };
@@ -29,9 +30,7 @@ const Header = (props) => {
         {location.pathname === "/teams" ? (
           <span>Your Teams</span>
         ) : (
-          <Button onClick={() => goTeamsOverview()}>
-            {"< Back to Teams | " + props.currentTeam}
-          </Button>
+          <Button onClick={() => goTeamsOverview()}>{"< Back to Teams"}</Button>
         )}
       </div>
       <h1 className="header title">
