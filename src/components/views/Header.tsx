@@ -1,31 +1,43 @@
+// Header.js
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "../../styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProfileMenu from "../popups/ProfileMenu";
+import Profile from "../popups/Profile"; // Import the ProfilePopup component
 
-/**
- * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
- * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
- * They are reusable pieces, and think about each piece in isolation.
- * Functional components have to return always something. However, they don't need a "render()" method.
- * https://react.dev/learn/your-first-component and https://react.dev/learn/passing-props-to-a-component
- * @FunctionalComponent
- */
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isSettings, setSettings] = useState<boolean>(false);
+  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [isProfileOpen, setProfileOpen] = useState(false);
 
   const goProfile = () => {
-    //temporarily routed to profile using /teams/profile... will probably change later
+    // Temporarily routed to profile using /teams/profile... will probably change later
     navigate("/teams/profile");
-    //navigate("/profile");
+    // navigate("/profile");
   };
 
   const goTeamsOverview = () => {
     navigate("/teams");
+  };
+
+  const openProfileMenu = () => {
+    setProfileMenuOpen(true);
+  };
+
+  const closeProfileMenu = () => {
+    setProfileMenuOpen(false);
+  };
+
+  const openProfile = () => {
+    setProfileOpen(true);
+    closeProfileMenu();
+  };
+
+  const closeProfile = () => {
+    setProfileOpen(false);
   };
 
   return (
@@ -41,8 +53,13 @@ const Header = (props) => {
         PRODUCTIVI<span className="header titlelarge">T</span>EAM
       </h1>
       <div className="header button-container">
-        <Button onClick={() => setSettings(true)}>Profile</Button>
-        <ProfileMenu isOpen={isSettings} onClose={() => setSettings(false)} />
+        <Button onClick={openProfileMenu}>Profile</Button>
+        <ProfileMenu
+          isOpen={isProfileMenuOpen}
+          onClose={closeProfileMenu}
+          onProfileClick={openProfile}
+        />
+        <Profile isOpen={isProfileOpen} onClose={closeProfile} />
       </div>
     </div>
   );
@@ -53,7 +70,4 @@ Header.propTypes = {
   currentTeam: PropTypes.string,
 };
 
-/**
- * Don't forget to export your component!
- */
 export default Header;
