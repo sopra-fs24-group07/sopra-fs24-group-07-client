@@ -15,14 +15,24 @@ specific components that belong to the main one in the same file.
  */
 const FormField = (props) => {
   return (
-    <div className="login field">
-      <label className="login label">{props.label}</label>
-      <input
-        className="login input"
-        placeholder="enter here.."
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
+    <div className="register field">
+      <label className="register label">{props.label}</label>
+      {props.type === "password" ? (
+        <input
+          className="register input"
+          placeholder="enter here.."
+          type="password"
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+        />
+      ) : (
+        <input
+          className="register input"
+          placeholder="enter here.."
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+        />
+      )}
     </div>
   );
 };
@@ -31,6 +41,7 @@ FormField.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  type: PropTypes.string,
 };
 
 const Login = () => {
@@ -72,6 +83,7 @@ const Login = () => {
           <FormField
             label="Password"
             value={password}
+            type="password"
             onChange={(n) => setPassword(n)}
           />
           <div className="login button-container">

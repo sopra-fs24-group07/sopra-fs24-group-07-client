@@ -17,12 +17,22 @@ const FormField = (props) => {
   return (
     <div className="register field">
       <label className="register label">{props.label}</label>
-      <input
-        className="register input"
-        placeholder="enter here.."
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
+      {props.type === "password" ? (
+        <input
+          className="register input"
+          placeholder="enter here.."
+          type="password"
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+        />
+      ) : (
+        <input
+          className="register input"
+          placeholder="enter here.."
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+        />
+      )}
     </div>
   );
 };
@@ -31,6 +41,7 @@ FormField.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  type: PropTypes.string,
 };
 
 const Registration = () => {
@@ -42,16 +53,16 @@ const Registration = () => {
   const doRegister = async () => {
     try {
       const requestBody = JSON.stringify({ username, name, password });
-      const response = await api.post("/users", requestBody);
+      const response = await api.post("/register", requestBody);
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
 
       // Store the token into the local storage.
-      localStorage.setItem("token", user.token);
+      sessionStorage.setItem("token", user.token);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      navigate("/game");
+      navigate("/teams");
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
@@ -74,6 +85,7 @@ const Registration = () => {
           <FormField
             label="Password"
             value={password}
+            type="password"
             onChange={(n) => setPassword(n)}
           />
           <div className="register button-container">
