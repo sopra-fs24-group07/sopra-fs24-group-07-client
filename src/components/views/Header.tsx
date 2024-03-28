@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "../../styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import { useLocation, useNavigate } from "react-router-dom";
+import ProfileMenu from "../popups/ProfileMenu";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -15,6 +16,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isSettings, setSettings] = useState<boolean>(false);
 
   const goProfile = () => {
     //temporarily routed to profile using /teams/profile... will probably change later
@@ -39,7 +41,8 @@ const Header = (props) => {
         PRODUCTIVI<span className="header titlelarge">T</span>EAM
       </h1>
       <div className="header button-container">
-        <Button onClick={() => goProfile()}>PROFILE</Button>
+        <Button onClick={() => setSettings(true)}>Profile</Button>
+        <ProfileMenu isOpen={isSettings} onClose={() => setSettings(false)} />
       </div>
     </div>
   );
