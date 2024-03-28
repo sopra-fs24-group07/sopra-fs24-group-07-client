@@ -1,24 +1,28 @@
+// ProfileMenu.js
 import React from "react";
-import "../../styles/popups/Settings.scss";
+import "../../styles/popups/ProfileMenu.scss";
 import PropTypes from "prop-types";
 
-const Modal = ({ isOpen, onClose }) => {
+const ProfileMenu = ({ isOpen, onClose, onProfileClick }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Settings</h2>
+    <div className="profileMenu-overlay" onClick={onClose}>
+      <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
         <button onClick={onClose}>Close</button>
+        <h2>Settings</h2>
         {/* Add your interactive elements here */}
+        <button onClick={onProfileClick}>Profile</button>{" "}
+        {/* Button to open ProfilePopup */}
       </div>
     </div>
   );
 };
 
-Modal.propTypes = {
+ProfileMenu.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  onProfileClick: PropTypes.func.isRequired, // Function to handle opening ProfilePopup
 };
 
-export default Modal;
+export default ProfileMenu;
