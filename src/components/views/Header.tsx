@@ -17,7 +17,9 @@ const Header = (props) => {
   const location = useLocation();
 
   const goProfile = () => {
-    navigate("/profile");
+    //temporarily routed to profile using /teams/profile... will probably change later
+    navigate("/teams/profile");
+    //navigate("/profile");
   };
 
   const goTeamsOverview = () => {
