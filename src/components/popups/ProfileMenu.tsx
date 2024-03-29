@@ -20,15 +20,19 @@ const ProfileMenu = ({
   return (
     <div className="profileMenu-overlay" onClick={onClose}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
-        <Button className="red-button" onClick={onClose}>
-          Close
-        </Button>
-        <h2>Menu</h2>
-        <Button onClick={onProfileClick}>Profile</Button>{" "}
-        <Button onClick={onProfileSettingsClick}>Settings</Button>{" "}
-        <Button className="red-button" onClick={doLogout}>
-          Logout
-        </Button>
+        <div className="profileMenu-header">
+          <h2>Menu</h2>
+          <Button className="red-button" onClick={onClose}>
+            Close
+          </Button>
+        </div>
+        <div className="profileMenu-actions">
+          <Button onClick={onProfileClick}>Profile</Button>
+          <Button onClick={onProfileSettingsClick}>Settings</Button>
+          <Button className="red-button" onClick={doLogout}>
+            Logout
+          </Button>
+        </div>
       </div>
     </div>
   );
