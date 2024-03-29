@@ -1,23 +1,18 @@
-// Header.js
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "../../styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProfileMenu from "../popups/ProfileMenu";
-import Profile from "../popups/Profile"; // Import the ProfilePopup component
+import Profile from "../popups/Profile";
+import ProfileSettings from "../popups/ProfileSettings";
 
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
   const [isProfileOpen, setProfileOpen] = useState(false);
-
-  const goProfile = () => {
-    // Temporarily routed to profile using /teams/profile... will probably change later
-    navigate("/teams/profile");
-    // navigate("/profile");
-  };
+  const [isProfileSettingsOpen, setProfileSettingsOpen] = useState(false);
 
   const goTeamsOverview = () => {
     navigate("/teams");
@@ -40,6 +35,15 @@ const Header = (props) => {
     setProfileOpen(false);
   };
 
+  const openProfileSettings = () => {
+    setProfileSettingsOpen(true);
+    closeProfileMenu(); // Optionally close the profile menu when opening settings
+  };
+
+  const closeProfileSettings = () => {
+    setProfileSettingsOpen(false);
+  };
+
   return (
     <div className="header container" style={{ height: props.height }}>
       <div className="header button-container">
@@ -58,8 +62,13 @@ const Header = (props) => {
           isOpen={isProfileMenuOpen}
           onClose={closeProfileMenu}
           onProfileClick={openProfile}
+          onProfileSettingsClick={openProfileSettings}
         />
         <Profile isOpen={isProfileOpen} onClose={closeProfile} />
+        <ProfileSettings
+          isOpen={isProfileSettingsOpen}
+          onClose={closeProfileSettings}
+        />
       </div>
     </div>
   );
