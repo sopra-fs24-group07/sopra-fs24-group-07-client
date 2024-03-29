@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import "styles/views/TeamsOverview.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/TeamDashboard.scss";
+import TeamDashboardBox from "components/ui/TeamDashboardBox";
+import { Button } from "components/ui/Button";
 
 const TeamDashboard = () => {
   const { teamId } = useParams();
@@ -12,36 +14,46 @@ const TeamDashboard = () => {
       <div className="team-dashboard container">
         <h2>This is the dashboard for team {teamId}</h2>
         <div className="team-dashboard grid">
-          <div
-            className="team-dashboard box"
-            style={{ gridArea: "1 / 1 / 2 / 2" }}
+          <TeamDashboardBox
+            startRow={1}
+            startColumn={1}
+            endRow={2}
+            endColumn={2}
           >
             Session Field
-          </div>
-          <div
-            className="team-dashboard box"
-            style={{ gridArea: "2 / 1 / 20 / 2" }}
+          </TeamDashboardBox>
+          <TeamDashboardBox
+            startRow={2}
+            startColumn={1}
+            endRow={20}
+            endColumn={2}
           >
             Team Members
-          </div>
-          <div
-            className="team-dashboard box"
-            style={{ gridArea: "1 / 2 / 2 / 3" }}
+          </TeamDashboardBox>
+          <TeamDashboardBox
+            startRow={1}
+            startColumn={2}
+            endRow={2}
+            endColumn={3}
           >
             Progress Field
-          </div>
-          <div
-            className="team-dashboard box"
-            style={{ gridArea: "1 / 3 / 2 / 5" }}
+          </TeamDashboardBox>
+          <TeamDashboardBox
+            startRow={1}
+            startColumn={3}
+            endRow={2}
+            endColumn={5}
           >
             Settings Button
-          </div>
-          <div
-            className="team-dashboard box"
-            style={{ gridArea: "2 / 2 / 20 / 5" }}
+          </TeamDashboardBox>
+          <TeamDashboardBox
+            startRow={2}
+            startColumn={2}
+            endRow={20}
+            endColumn={5}
           >
             Task Field
-          </div>
+          </TeamDashboardBox>
         </div>
       </div>
     </BaseContainer>
