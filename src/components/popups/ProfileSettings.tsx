@@ -1,6 +1,7 @@
 import React from "react";
 import "../../styles/popups/ProfileMenu.scss";
 import PropTypes from "prop-types";
+import { Button } from "components/ui/Button";
 
 const ProfileSettings = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -8,7 +9,9 @@ const ProfileSettings = ({ isOpen, onClose }) => {
   return (
     <div className="profileMenu-overlay" onClick={onClose}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose}>Close</button>
+        <Button className="red-button" onClick={onClose}>
+          Close
+        </Button>
         <h2>Settings</h2>
       </div>
     </div>
