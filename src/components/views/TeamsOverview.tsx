@@ -7,8 +7,6 @@ import "styles/views/TeamsOverview.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import CreateTeam from "../popups/CreateTeam";
-import Header from "./Header";
-import ProfileMenu from "../popups/ProfileMenu";
 
 const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
