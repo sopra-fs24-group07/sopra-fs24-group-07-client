@@ -1,12 +1,9 @@
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import Game from "../../views/Game";
+import { Route, Routes } from "react-router-dom";
 import TeamsOverview from "../../views/TeamsOverview";
 import PropTypes from "prop-types";
 import Header from "../../views/Header";
 import TeamDashboard from "../../views/TeamDashboard";
-import { LoginGuard } from "../routeProtectors/LoginGuard";
-import Profile from "../../views/Profile";
 
 const GameRouter = ({ base }) => {
   return (
@@ -15,8 +12,6 @@ const GameRouter = ({ base }) => {
       <Routes>
         <Route path="" element={<TeamsOverview />} />
         <Route path=":teamId" element={<TeamDashboard />} />
-        {/*Temporary routing to /userprofile*/}
-        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );

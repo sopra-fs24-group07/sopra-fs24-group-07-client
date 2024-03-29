@@ -1,29 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "../../styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import { useLocation, useNavigate } from "react-router-dom";
+import ProfileMenu from "../popups/ProfileMenu";
+import Profile from "../popups/Profile";
+import ProfileSettings from "../popups/ProfileSettings";
 
-/**
- * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
- * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
- * They are reusable pieces, and think about each piece in isolation.
- * Functional components have to return always something. However, they don't need a "render()" method.
- * https://react.dev/learn/your-first-component and https://react.dev/learn/passing-props-to-a-component
- * @FunctionalComponent
- */
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const goProfile = () => {
-    //temporarily routed to profile using /teams/profile... will probably change later
-    navigate("/teams/profile");
-    //navigate("/profile");
-  };
+  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [isProfileOpen, setProfileOpen] = useState(false);
+  const [isProfileSettingsOpen, setProfileSettingsOpen] = useState(false);
 
   const goTeamsOverview = () => {
     navigate("/teams");
+  };
+
+  const openProfileMenu = () => {
+    setProfileMenuOpen(true);
+  };
+
+  const closeProfileMenu = () => {
+    setProfileMenuOpen(false);
+  };
+
+  const openProfile = () => {
+    setProfileOpen(true);
+    closeProfileMenu();
+  };
+
+  const closeProfile = () => {
+    setProfileOpen(false);
+  };
+
+  const openProfileSettings = () => {
+    setProfileSettingsOpen(true);
+    closeProfileMenu(); // Optionally close the profile menu when opening settings
+  };
+
+  const closeProfileSettings = () => {
+    setProfileSettingsOpen(false);
   };
 
   return (
@@ -39,7 +57,18 @@ const Header = (props) => {
         PRODUCTIVI<span className="header titlelarge">T</span>EAM
       </h1>
       <div className="header button-container">
-        <Button onClick={() => goProfile()}>PROFILE</Button>
+        <Button onClick={openProfileMenu}>Profile</Button>
+        <ProfileMenu
+          isOpen={isProfileMenuOpen}
+          onClose={closeProfileMenu}
+          onProfileClick={openProfile}
+          onProfileSettingsClick={openProfileSettings}
+        />
+        <Profile isOpen={isProfileOpen} onClose={closeProfile} />
+        <ProfileSettings
+          isOpen={isProfileSettingsOpen}
+          onClose={closeProfileSettings}
+        />
       </div>
     </div>
   );
@@ -50,7 +79,4 @@ Header.propTypes = {
   currentTeam: PropTypes.string,
 };
 
-/**
- * Don't forget to export your component!
- */
 export default Header;

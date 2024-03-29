@@ -25,12 +25,13 @@
 
   &.grid {
     display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(150px, 1fr)
-    ); // Adjust the minimum width as needed
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     grid-gap: 2em;
-    justify-items: stretch; // Stretch items to fill the width
+    justify-items: stretch;
     width: 100%;
+    button {
+      height: 50px;
+      padding: 10px 0;
+    }
   }
 }
