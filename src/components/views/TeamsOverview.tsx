@@ -46,12 +46,14 @@ const TeamsOverview = () => {
     <BaseContainer>
       <div className="teams-overview container">
         <div className="teams-overview grid">
-          <Button onClick={handleCreateTeam}>Create new team</Button>
           {userTeams.map((team) => (
             <Button key={team.id} onClick={() => navigate(`/teams/${team.id}`)}>
               {team.name}
             </Button>
           ))}
+          <Button className="green-button" onClick={handleCreateTeam}>
+            Create new team
+          </Button>
         </div>
       </div>
     </BaseContainer>
