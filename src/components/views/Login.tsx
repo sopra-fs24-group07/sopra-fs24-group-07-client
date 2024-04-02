@@ -61,7 +61,7 @@ const Login = () => {
       localStorage.setItem("token", user.token);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      navigate("/game");
+      navigate("/teams");
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
