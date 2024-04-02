@@ -55,8 +55,11 @@ const Registration = () => {
       const requestBody = JSON.stringify({ username, name, password });
       const response = await api.post("/api/v1/users", requestBody);
 
+      const requestBodyAuth = JSON.stringify({ username, password });
+      const responseAuth = await api.post("/api/v1/login", requestBodyAuth);
+
       // Get the returned user and update a new object.
-      const user = new User(response.data);
+      const user = new User(responseAuth.data);
 
       // Store the token into the local storage.
       sessionStorage.setItem("token", user.token);
