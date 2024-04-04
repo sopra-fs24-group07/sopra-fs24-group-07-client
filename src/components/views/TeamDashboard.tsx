@@ -7,6 +7,7 @@ import "styles/views/TeamDashboard.scss";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
 import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
+import KanbanBoard from "components/ui/KanbanBoard";
 
 const FormField = (props) => {
   return (
@@ -169,6 +170,15 @@ const TeamDashboard = () => {
                 </tr>
               </table>
             </div>
+          </TeamDashboardBox>
+          <TeamDashboardBox
+            startRow={20}
+            startColumn={2}
+            endRow={39}
+            endColumn={5}
+          >
+            Kanban Board
+            <KanbanBoard></KanbanBoard>
           </TeamDashboardBox>
         </div>
       </div>
