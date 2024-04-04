@@ -27,7 +27,8 @@ FormField.propTypes = {
 const TeamDashboard = () => {
   const { teamId } = useParams();
   const [time, setTime] = useState<string>(null);
-  let [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const [teamTasks, setTeamTasks] = useState([]);
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
@@ -44,16 +45,41 @@ const TeamDashboard = () => {
 
     //TODO: remove fake TeamMember, when API call ready
     const fakeTeamMembers = [
-      { id: 1, username: "Monti" },
-      { id: 2, username: "Basil" },
-      { id: 3, username: "Homie1" },
-      { id: 4, username: "Steve" },
-      { id: 5, username: "Lara" },
-      { id: 6, username: "Mario" },
-      { id: 7, username: "xXDogXx" },
+      { id: 1, username: "Monti", name: "Timon" },
+      { id: 2, username: "Basil", name: "Basil" },
+      { id: 3, username: "Homie1", name: "Frank" },
+      { id: 4, username: "Steve", name: "Alex" },
+      { id: 5, username: "Lara", name: "Loft" },
+      { id: 6, username: "Mario", name: "Luigi" },
+      { id: 7, username: "xXDogXx", name: "Cat" },
     ];
     setUserData(fakeTeamMembers);
-    //remove until
+    //remove until here
+
+    const fetchTeamTasks = async () => {
+      try {
+        let ID = teamId;
+        const response = await api.get(`/api/v1/teams/${ID}/tasks`);
+        setTeamTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching teams tasks:", error);
+      }
+    };
+
+    fetchTeamTasks();
+
+    //TODO: remove fake TeamMember, when API call ready
+    const fakeTeamTasks = [
+      { id: 1, title: "intro", status: "TODO" },
+      { id: 2, title: "deckblatt", status: "TODO" },
+      { id: 3, title: "lesen", status: "TODO" },
+      { id: 4, title: "malen", status: "DONE" },
+      { id: 5, title: "schreiben", status: "DONE" },
+      { id: 6, title: "tanzen", status: "IN_SESSION" },
+      { id: 7, title: "singen", status: "IN_SESSION" },
+    ];
+    setTeamTasks(fakeTeamTasks);
+    //remove until here
   }, []);
 
   //TODO: add startGroupSession with time goal and tasks
@@ -117,7 +143,32 @@ const TeamDashboard = () => {
             endRow={20}
             endColumn={5}
           >
-            Task Field
+            <div>
+              Task Field
+              <table>
+                <tr>
+                  <th>TODO</th>
+                  {teamTasks.map((task) => {
+                    if (task.status === "TODO")
+                      return <td key={task.id}>{task.title}</td>;
+                  })}
+                </tr>
+                <tr>
+                  <th>IN_SESSION</th>
+                  {teamTasks.map((task) => {
+                    if (task.status === "IN_SESSION")
+                      return <td key={task.id}>{task.title}</td>;
+                  })}
+                </tr>
+                <tr>
+                  <th>DONE</th>
+                  {teamTasks.map((task) => {
+                    if (task.status === "DONE")
+                      return <td key={task.id}>{task.title}</td>;
+                  })}
+                </tr>
+              </table>
+            </div>
           </TeamDashboardBox>
         </div>
       </div>
