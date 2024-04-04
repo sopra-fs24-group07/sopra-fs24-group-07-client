@@ -1,0 +1,14 @@
+.col {
+  background-color: aqua;
+  width: 250px;
+  height: 400px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tasksArea {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}

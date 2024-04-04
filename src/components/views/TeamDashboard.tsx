@@ -178,7 +178,7 @@ const TeamDashboard = () => {
             endColumn={5}
           >
             Kanban Board
-            <KanbanBoard></KanbanBoard>
+            <KanbanBoard teamTasks={teamTasks}></KanbanBoard>
           </TeamDashboardBox>
         </div>
       </div>
