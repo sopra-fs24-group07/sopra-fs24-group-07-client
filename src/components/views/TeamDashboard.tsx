@@ -36,10 +36,14 @@ const TeamDashboard = () => {
     const fetchTeamMembers = async () => {
       try {
         let ID = teamId;
-        const response = await api.get(`/api/v1/teams/${ID}/users`);
+        const response = await api.get(`/api/v1/teams/${ID}/users`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
         setUserData(response.data);
       } catch (error) {
-        console.error("Error fetching teams users:", error);
+        console.error(`Error fetching teams users: ${handleError(error)}`);
       }
     };
 
@@ -55,7 +59,7 @@ const TeamDashboard = () => {
       { id: 6, username: "Mario", name: "Luigi" },
       { id: 7, username: "xXDogXx", name: "Cat" },
     ];
-    setUserData(fakeTeamMembers);
+    //setUserData(fakeTeamMembers);
     //remove until here
 
     //TODO: should I move this to KanbanBoard for refreshing?
@@ -69,7 +73,7 @@ const TeamDashboard = () => {
         });
         setTeamTasks(response.data);
       } catch (error) {
-        console.log("Error fetching teams tasks:", handleError(error));
+        console.error(`Error fetching teams tasks: ${handleError(error)}`);
       }
     };
 
