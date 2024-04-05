@@ -35,7 +35,6 @@ const CreateTask = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const CreateTask = async () => {
-    //TODO: Authentification checking, requestbody
     try {
       let ID = teamId;
       const requestBody = JSON.stringify({ title, description });
@@ -51,6 +50,8 @@ const CreateTask = ({ isOpen, onClose }) => {
     } catch (error) {
       console.log("Error creating new Task:", handleError(error));
     }
+    setDescription(null);
+    setTitle(null);
   };
 
   return (
@@ -74,6 +75,7 @@ const CreateTask = ({ isOpen, onClose }) => {
 
         <Button
           className="green-button"
+          disabled={!description || !title}
           onClick={() => {
             CreateTask();
             onClose();
