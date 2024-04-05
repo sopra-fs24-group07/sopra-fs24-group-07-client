@@ -57,6 +57,7 @@ const TeamDashboard = () => {
     setUserData(fakeTeamMembers);
     //remove until here
 
+    //TODO: should I move this to KanbanBoard for refreshing?
     const fetchTeamTasks = async () => {
       try {
         let ID = teamId;
@@ -145,40 +146,9 @@ const TeamDashboard = () => {
             endColumn={5}
           >
             <div>
-              Task Field
-              <table>
-                <tr>
-                  <th>TODO</th>
-                  {teamTasks.map((task) => {
-                    if (task.status === "TODO")
-                      return <td key={task.id}>{task.title}</td>;
-                  })}
-                </tr>
-                <tr>
-                  <th>IN_SESSION</th>
-                  {teamTasks.map((task) => {
-                    if (task.status === "IN_SESSION")
-                      return <td key={task.id}>{task.title}</td>;
-                  })}
-                </tr>
-                <tr>
-                  <th>DONE</th>
-                  {teamTasks.map((task) => {
-                    if (task.status === "DONE")
-                      return <td key={task.id}>{task.title}</td>;
-                  })}
-                </tr>
-              </table>
+              Kanban Board
+              <KanbanBoard teamTasks={teamTasks}></KanbanBoard>
             </div>
-          </TeamDashboardBox>
-          <TeamDashboardBox
-            startRow={20}
-            startColumn={2}
-            endRow={39}
-            endColumn={5}
-          >
-            Kanban Board
-            <KanbanBoard teamTasks={teamTasks}></KanbanBoard>
           </TeamDashboardBox>
         </div>
       </div>
