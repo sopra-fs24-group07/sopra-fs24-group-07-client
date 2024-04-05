@@ -25,7 +25,7 @@ function TaskCard(props) {
         requestBody
       );
     } catch (error) {
-      console.log("Failed to Update Task");
+      console.log("Failed to Update Task", error);
     }
   }
 
@@ -52,26 +52,34 @@ function TaskCard(props) {
         <Button
           className="goLeft"
           onClick={() => updateTaskStatusLeft(task, col)}
-        ></Button>
+        >
+          &lt;
+        </Button>
       )}
       {col === "IN_SESSION" && (
         <Button
           className="goLeft"
           onClick={() => updateTaskStatusLeft(task, col)}
-        ></Button>
+        >
+          &lt;
+        </Button>
       )}
       <div className="taskTitle">{task.title}</div>
       {col === "TODO" && (
         <Button
           className="goRight"
           onClick={() => updateTaskStatusRight(task, col)}
-        ></Button>
+        >
+          &gt;
+        </Button>
       )}
       {col === "IN_SESSION" && (
         <Button
           className="goRight"
           onClick={() => updateTaskStatusRight(task, col)}
-        ></Button>
+        >
+          &gt;
+        </Button>
       )}
     </div>
   );

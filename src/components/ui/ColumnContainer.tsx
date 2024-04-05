@@ -6,14 +6,20 @@ import TaskCard from "./TaskCard";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { DndContext } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import CreateTask from "../popups/CreateTask";
 
 function ColumnContainer(props) {
   const { column, teamTasks } = props;
   const [newTask, setNewTask] = useState(null);
+  const [isCreateTaskOpen, setCreateTaskOpen] = useState(false);
 
-  async function createTask(newTaskTitle) {
-    throw new Error("Function not implemented.");
-  }
+  const openCreateTask = () => {
+    setCreateTaskOpen(true);
+  };
+
+  const closeCreateTask = () => {
+    setCreateTaskOpen(false);
+  };
 
   return (
     <div className="col">
@@ -26,19 +32,14 @@ function ColumnContainer(props) {
       </div>
       {column === "TODO" && (
         <div className="createTask container">
-          <input
-            className="createTask input"
-            placeholder={"Task Title..."}
-            value={newTask}
-            onChange={(nt) => setNewTask(nt.target.value)}
-          />
           <Button
+            width="100%"
             className="createTask button"
-            disabled={!newTask}
-            onClick={() => createTask(newTask)}
+            onClick={openCreateTask}
           >
             Add Task
           </Button>
+          <CreateTask isOpen={isCreateTaskOpen} onClose={closeCreateTask} />
         </div>
       )}
     </div>
