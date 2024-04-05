@@ -63,7 +63,7 @@ const Login = () => {
       // Login successfully worked --> navigate to the route /game in the GameRouter
       navigate("/teams");
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      console.log(`Something went wrong during the login:`, error);
     }
   };
 

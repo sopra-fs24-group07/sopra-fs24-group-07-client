@@ -64,10 +64,10 @@ const Registration = () => {
       // Store the token into the local storage.
       sessionStorage.setItem("token", user.token);
 
-      // Login successfully worked --> navigate to the route /game in the GameRouter
+      // Register successfully worked --> navigate to the route /game in the GameRouter
       navigate("/teams");
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      console.log(`Something went wrong during the registration:`, error);
     }
   };
 
