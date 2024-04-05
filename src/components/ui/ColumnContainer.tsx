@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import "../../styles/ui/ColumnContainer.scss";
 import { Button } from "./Button";
@@ -9,6 +9,11 @@ import { CSS } from "@dnd-kit/utilities";
 
 function ColumnContainer(props) {
   const { column, teamTasks } = props;
+  const [newTask, setNewTask] = useState(null);
+
+  async function createTask(newTaskTitle) {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div className="col">
@@ -19,7 +24,23 @@ function ColumnContainer(props) {
             return <TaskCard key={task.id} task={task} col={column}></TaskCard>;
         })}
       </div>
-      {column === "TODO" && <Button>Add Task</Button>}
+      {column === "TODO" && (
+        <div className="createTask container">
+          <input
+            className="createTask input"
+            placeholder={"Task Title..."}
+            value={newTask}
+            onChange={(nt) => setNewTask(nt.target.value)}
+          />
+          <Button
+            className="createTask button"
+            disabled={!newTask}
+            onClick={() => createTask(newTask)}
+          >
+            Add Task
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -14,3 +14,24 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.createTask {
+  &.container {
+    display: flex;
+  }
+
+  &.input {
+    display: inline-block;
+    border-radius: 15px;
+    width: 175px;
+    height: 35px;
+    background-color: rgb(179, 234, 234);
+  }
+
+  &.button {
+    float: right;
+    height: 35px;
+    width: auto;
+    border-radius: 15px;
+  }
+}
