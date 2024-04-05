@@ -14,6 +14,7 @@ const ProfileMenu = ({
 
   const navigate = useNavigate();
   const doLogout = () => {
+    sessionStorage.removeItem("token");
     navigate("/start");
   };
 

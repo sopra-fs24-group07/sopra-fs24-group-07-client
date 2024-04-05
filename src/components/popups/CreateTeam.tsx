@@ -30,7 +30,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const [teamName, setTeamName] = useState<string>(null);
 
   const createTeam = () => {
-    //team ID is received here from backend API API API
+    //todo: implement API call; team ID is received here from backend API API API
     const teamid = "16";
     onCreateTeamClick(teamid);
   };
