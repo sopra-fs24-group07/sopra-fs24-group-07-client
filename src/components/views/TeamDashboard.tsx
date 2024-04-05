@@ -30,6 +30,7 @@ const TeamDashboard = () => {
   const [time, setTime] = useState<string>(null);
   const [userData, setUserData] = useState([]);
   const [teamTasks, setTeamTasks] = useState([]);
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
@@ -61,16 +62,20 @@ const TeamDashboard = () => {
     const fetchTeamTasks = async () => {
       try {
         let ID = teamId;
-        const response = await api.get(`/api/v1/teams/${ID}/tasks`);
+        const response = await api.get(`/api/v1/teams/${ID}/tasks`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
         setTeamTasks(response.data);
       } catch (error) {
-        console.error("Error fetching teams tasks:", error);
+        console.log("Error fetching teams tasks:", handleError(error));
       }
     };
 
     fetchTeamTasks();
 
-    //TODO: remove fake TeamMember, when API call ready
+    //TODO: remove fake TeamTask, when API call ready
     const fakeTeamTasks = [
       { id: 1, title: "intro", status: "TODO" },
       { id: 2, title: "deckblatt", status: "TODO" },
@@ -80,7 +85,7 @@ const TeamDashboard = () => {
       { id: 6, title: "tanzen", status: "IN_SESSION" },
       { id: 7, title: "singen", status: "IN_SESSION" },
     ];
-    setTeamTasks(fakeTeamTasks);
+    //setTeamTasks(fakeTeamTasks);
     //remove until here
   }, []);
 
