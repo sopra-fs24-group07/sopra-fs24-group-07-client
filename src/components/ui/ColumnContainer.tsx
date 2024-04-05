@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import "../../styles/ui/ColumnContainer.scss";
 import { Button } from "./Button";
+import TaskCard from "./TaskCard";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { DndContext } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 
 function ColumnContainer(props) {
   const { column, teamTasks } = props;
+
   return (
     <div className="col">
-      {column}
+      <div>{column}</div>
       <div className="tasksArea">
         {teamTasks.map((task) => {
           if (task.status === column)
-            return <td key={task.id}>{task.title}</td>;
+            return <TaskCard key={task.id} task={task}></TaskCard>;
         })}
       </div>
       {column === "TODO" && <Button>Add Task</Button>}

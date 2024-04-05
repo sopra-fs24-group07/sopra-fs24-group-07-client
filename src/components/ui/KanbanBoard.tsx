@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "../../styles/ui/KanbanBoard.scss";
 import ColumnContainer from "./ColumnContainer";
 import PropTypes from "prop-types";
+import { DndContext } from "@dnd-kit/core";
 
 function KanbanBoard(props) {
   const columns = ["TODO", "IN_SESSION", "DONE"];
@@ -18,7 +19,6 @@ function KanbanBoard(props) {
           ></ColumnContainer>
         ))}
       </div>
-      <div></div>
     </div>
   );
 }
