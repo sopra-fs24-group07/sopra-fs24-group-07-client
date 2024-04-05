@@ -16,7 +16,7 @@ function ColumnContainer(props) {
       <div className="tasksArea">
         {teamTasks.map((task) => {
           if (task.status === column)
-            return <TaskCard key={task.id} task={task}></TaskCard>;
+            return <TaskCard key={task.id} task={task} col={column}></TaskCard>;
         })}
       </div>
       {column === "TODO" && <Button>Add Task</Button>}

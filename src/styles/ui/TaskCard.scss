@@ -5,9 +5,21 @@
   border-radius: 7px;
   margin: 5px;
   background-color: $accentDark;
-  cursor: grab;
+  //cursor: grab;
 
   &:hover {
-    transform: translateY(-2px);
+    //transform: translateY(-2px);
   }
+}
+
+.taskTitle {
+  display: inline-block;
+}
+
+.goRight {
+  float: right;
+}
+
+.goLeft {
+  float: left;
 }
