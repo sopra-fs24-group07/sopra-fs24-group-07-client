@@ -37,9 +37,19 @@ const CreateTask = ({ isOpen, onClose }) => {
   const CreateTask = async () => {
     //TODO: Authentification checking, requestbody
     try {
-      const response = await api.get(`/api/v1/teams/${teamId}/tasks`);
+      let ID = teamId;
+      const requestBody = JSON.stringify({ title, description });
+      const response = await api.post(
+        `/api/v1/teams/${ID}/tasks`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
     } catch (error) {
-      console.error("Error creating new Task:", error);
+      console.log("Error creating new Task:", handleError(error));
     }
   };
 
@@ -62,7 +72,13 @@ const CreateTask = ({ isOpen, onClose }) => {
           onChange={(dc: string) => setDescription(dc)}
         />
 
-        <Button className="green-button" onClick={CreateTask}>
+        <Button
+          className="green-button"
+          onClick={() => {
+            CreateTask();
+            onClose();
+          }}
+        >
           Create
         </Button>
       </div>
