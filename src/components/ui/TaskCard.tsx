@@ -42,7 +42,7 @@ function TaskCard(props) {
         requestBody
       );
     } catch (error) {
-      console.log("Failed to Update Task");
+      console.log("Failed to Update Task", error);
     }
   }
 
