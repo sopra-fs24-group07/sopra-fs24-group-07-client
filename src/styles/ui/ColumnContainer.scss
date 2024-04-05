@@ -1,0 +1,38 @@
+.col {
+  background-color: aqua;
+  width: 230px;
+  height: 400px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tasksArea {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.createTask {
+  &.container {
+    display: flex;
+  }
+
+  &.input {
+    display: inline-block;
+    border-radius: 15px;
+    width: 175px;
+    height: 35px;
+    background-color: rgb(179, 234, 234);
+  }
+
+  &.button {
+    float: right;
+    height: 35px;
+    width: auto;
+    border-radius: 15px;
+  }
+}

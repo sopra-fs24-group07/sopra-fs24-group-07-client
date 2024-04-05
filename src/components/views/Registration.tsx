@@ -3,7 +3,7 @@ import { api, handleError } from "helpers/api";
 import User from "models/User";
 import { useNavigate } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import "styles/views/Login.scss";
+import "styles/views/Register.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
@@ -44,57 +44,62 @@ FormField.propTypes = {
   type: PropTypes.string,
 };
 
-const Login = () => {
+const Registration = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState<string>(null);
+  const [name, setName] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
+  const [username, setUsername] = useState<string>(null);
 
-  const doLogin = async () => {
+  const doRegister = async () => {
     try {
-      const requestBody = JSON.stringify({ username, password });
-      const response = await api.post("/api/v1/login", requestBody);
+      const requestBody = JSON.stringify({ username, name, password });
+      const response = await api.post("/api/v1/users", requestBody);
+
+      const requestBodyAuth = JSON.stringify({ username, password });
+      const responseAuth = await api.post("/api/v1/login", requestBodyAuth);
 
       // Get the returned user and update a new object.
-      const user = new User(response.data);
+      const user = new User(responseAuth.data);
 
       // Store the token into the local storage.
       sessionStorage.setItem("token", user.token);
 
-      // Login successfully worked --> navigate to the route /game in the GameRouter
+      // Register successfully worked --> navigate to the route /game in the GameRouter
       navigate("/teams");
     } catch (error) {
-      console.log(`Something went wrong during the login:`, error);
+      console.log(`Something went wrong during the registration:`, error);
     }
   };
 
-  const goRegister = () => {
-    navigate("/register");
+  const goLogin = () => {
+    navigate("/login");
   };
 
   return (
     <BaseContainer>
-      <div className="login container">
-        <div className="login form">
+      <div className="register container">
+        <div className="register form">
           <FormField
             label="Username"
             value={username}
             onChange={(un: string) => setUsername(un)}
           />
+          <FormField label="Name" value={name} onChange={(n) => setName(n)} />
           <FormField
             label="Password"
             value={password}
             type="password"
             onChange={(n) => setPassword(n)}
           />
-          <div className="login button-container">
-            <Button
-              disabled={!username || !password}
-              width="50%"
-              onClick={() => doLogin()}
-            >
+          <div className="register button-container">
+            <Button width="50%" onClick={() => goLogin()}>
               Login
             </Button>
-            <Button width="50%" onClick={() => goRegister()}>
+            <Button
+              disabled={!username || !name}
+              width="50%"
+              onClick={() => doRegister()}
+            >
               Register
             </Button>
           </div>
@@ -107,4 +112,4 @@ const Login = () => {
 /**
  * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
  */
-export default Login;
+export default Registration;

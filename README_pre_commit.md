@@ -50,3 +50,13 @@ them again and then the commit should work. This is a safeguard that only valid
 formatted code can be committed.
 
 Otherwise, the pipeline will fail.
+
+Don't use git commit -m "Message"!
+
+## Usage
+
+```bash
+$ git add
+$ git commit
+(Either write commit message or add changed files again; use ":q" to abort)
+```

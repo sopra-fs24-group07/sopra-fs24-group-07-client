@@ -1,0 +1,33 @@
+@import "../theme";
+
+.profileMenu-overlay {
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileMenu-content {
+  background-color: $accentDark;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: $dropShadow;
+}
+
+.profileMenu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; /* Adds space between the header and the buttons below */
+}
+
+.profileMenu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adjust the space between buttons as needed */
+}

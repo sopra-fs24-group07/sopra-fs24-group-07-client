@@ -1,0 +1,11 @@
+.board {
+  margin: auto;
+  display: flex;
+  width: auto;
+  align-items: center;
+}
+
+.cols {
+  display: flex;
+  gap: 15px;
+}
