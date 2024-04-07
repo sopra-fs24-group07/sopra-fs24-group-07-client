@@ -29,11 +29,14 @@ FormField.propTypes = {
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
   const token = sessionStorage.getItem("token");
+  //title of a task
   const [title, setTitle] = useState<string>(null);
+  //description of a task
   const [description, setDescription] = useState<string>(null);
 
   if (!isOpen) return null;
 
+  //try to create a task via api pst call
   const CreateTask = async () => {
     try {
       let ID = teamId;
@@ -50,6 +53,7 @@ const CreateTask = ({ isOpen, onClose }) => {
     } catch (error) {
       console.log("Error creating new Task:", handleError(error));
     }
+    //reset input fields after submitting
     setDescription(null);
     setTitle(null);
   };
