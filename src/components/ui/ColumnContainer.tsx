@@ -31,10 +31,8 @@ function ColumnContainer(props) {
       <div>{column}</div> {/*name of the column*/}
       <div className="tasksArea">
         {teamTasks.map((task) => {
-          if (task.status === column) {
-            /*map the task in the column if it has the status of the column*/
-          }
-          return <TaskCard key={task.id} task={task} col={column}></TaskCard>;
+          if (task.status === column)
+            return <TaskCard key={task.id} task={task} col={column}></TaskCard>;
         })}
       </div>
       {/*display the createTask button for the To-do coloumn*/}
