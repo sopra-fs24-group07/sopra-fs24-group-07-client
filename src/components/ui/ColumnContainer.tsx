@@ -35,9 +35,6 @@ function ColumnContainer(props) {
             /*map the task in the column if it has the status of the column*/
           }
           return <TaskCard key={task.id} task={task} col={column}></TaskCard>;
-          {
-            /*create the TaskCard*/
-          }
         })}
       </div>
       {/*display the createTask button for the To-do coloumn*/}
