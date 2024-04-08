@@ -77,10 +77,8 @@ const Registration = () => {
       navigate("/teams");
     } catch (error) {
       // Assuming the error response has a structure like { message: "Username not available" }
-      // Adjust based on your actual API error response
       const errorMessage = error.response.data.message;
       // Update the errors state based on the error message
-      // This is a generic approach; adjust according to the error structure and fields
       setErrors((prevErrors) => ({ ...prevErrors, general: errorMessage }));
       console.log(`Something went wrong during the registration:`, error);
     }
