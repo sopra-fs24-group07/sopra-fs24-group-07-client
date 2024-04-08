@@ -76,7 +76,7 @@ const Registration = () => {
       sessionStorage.setItem("id", response.data.userId);
       navigate("/teams");
     } catch (error) {
-      // Assuming the error response has a structure like { message: "Username not available" }
+      // Grabbing the message content from the backend response for the frontend error handling
       const errorMessage = error.response.data.message;
       // Update the errors state based on the error message
       setErrors((prevErrors) => ({ ...prevErrors, general: errorMessage }));
