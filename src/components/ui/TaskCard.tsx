@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { api, handleError } from "helpers/api";
 import "../../styles/ui/TaskCard.scss";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "./Button";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import InspectTask from "components/popups/InspectTask";
 
 function TaskCard(props) {
   const { task, col } = props;
   const { teamId } = useParams();
   const taskId = task.id;
+  const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);
+
+  //open the Inspect Task Popup
+  const openInspectTask = () => {
+    setInspectTaskOpen(true);
+  };
+
+  //close the Inspect Task Popup
+  const closeInspectTask = () => {
+    setInspectTaskOpen(false);
+  };
 
   //handle if a Task is moved to column to the right
   async function updateTaskStatusRight(task, col) {
@@ -67,7 +79,9 @@ function TaskCard(props) {
           &lt;
         </Button>
       )}
-      <div className="taskTitle">{task.title}</div>
+      <Link onClick={openInspectTask} className="taskTitle">
+        {task.title}
+      </Link>
       {/*create the go Right button for Tasks in To-do and In Session */}
       {(col === "TODO" || col === "IN_SESSION") && (
         <Button
@@ -77,6 +91,11 @@ function TaskCard(props) {
           &gt;
         </Button>
       )}
+      <InspectTask
+        isOpen={isInspectTaskOpen}
+        onClose={closeInspectTask}
+        task={task}
+      />
     </div>
   );
 }
