@@ -7,6 +7,7 @@ import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
 
+//NEW FORMFIELD: WITHOUT CODE REPETITION
 const FormField = ({ label, value, onChange, type = "text" }) => (
   <div className="register field">
     <label className="register label" htmlFor={label}>
@@ -23,6 +24,7 @@ const FormField = ({ label, value, onChange, type = "text" }) => (
   </div>
 );
 
+// SEE NEW TYPE "type"
 FormField.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
@@ -34,7 +36,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // NEW SET ERROR METHOD
 
   const doLogin = async () => {
     try {
@@ -44,7 +46,9 @@ const Login = () => {
       sessionStorage.setItem("token", user.token);
       navigate("/teams");
     } catch (error) {
+      // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
       setError("Failed to login. Please check your username and password.");
+      // ALSO CONSOLE ERROR FOR THE ERROR: WOULD SHOW IN CONSOLE IF ERROR IS NOT JUST INVALID CREDENTIALS
       console.error(`Something went wrong during the login:`, error);
     }
   };
@@ -53,8 +57,9 @@ const Login = () => {
     <BaseContainer>
       <div className="login container">
         <div className="login form">
-          <FormField label="Username" value={username} onChange={setUsername} />
-          <FormField
+          <FormField label="Username" value={username} onChange={setUsername} />{" "}
+          {/* FORMFIELD FOR USERNAME, NO VALIDATION FROM FRONTEND */}
+          <FormField // FORMFIELD FOR PASSWORD, NO VALIDATION FROM FRONTEND
             label="Password"
             value={password}
             type="password"
