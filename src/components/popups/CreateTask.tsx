@@ -29,18 +29,33 @@ FormField.propTypes = {
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
   const token = sessionStorage.getItem("token");
+  //title of a task
   const [title, setTitle] = useState<string>(null);
+  //description of a task
   const [description, setDescription] = useState<string>(null);
 
   if (!isOpen) return null;
 
+  //try to create a task via api pst call
   const CreateTask = async () => {
-    //TODO: Authentification checking, requestbody
     try {
-      const response = await api.get(`/api/v1/teams/${teamId}/tasks`);
+      let ID = teamId;
+      const requestBody = JSON.stringify({ title, description });
+      const response = await api.post(
+        `/api/v1/teams/${ID}/tasks`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
     } catch (error) {
-      console.error("Error creating new Task:", error);
+      console.log("Error creating new Task:", handleError(error));
     }
+    //reset input fields after submitting
+    setDescription(null);
+    setTitle(null);
   };
 
   return (
@@ -62,7 +77,14 @@ const CreateTask = ({ isOpen, onClose }) => {
           onChange={(dc: string) => setDescription(dc)}
         />
 
-        <Button className="green-button" onClick={CreateTask}>
+        <Button
+          className="green-button"
+          disabled={!description || !title}
+          onClick={() => {
+            CreateTask();
+            onClose();
+          }}
+        >
           Create
         </Button>
       </div>

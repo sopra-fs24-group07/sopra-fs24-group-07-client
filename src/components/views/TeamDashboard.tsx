@@ -9,6 +9,7 @@ import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
 import KanbanBoard from "components/ui/KanbanBoard";
 
+//formfiel for Time Goal
 const FormField = (props) => {
   return (
     <input
@@ -20,6 +21,7 @@ const FormField = (props) => {
   );
 };
 
+//check for numer as input
 FormField.propTypes = {
   value: PropTypes.number,
   onChange: PropTypes.func,
@@ -28,59 +30,72 @@ FormField.propTypes = {
 const TeamDashboard = () => {
   const { teamId } = useParams();
   const [time, setTime] = useState<string>(null);
+  //user Data, i.e. the users that are in a team
   const [userData, setUserData] = useState([]);
+  //the Tasks of a team
   const [teamTasks, setTeamTasks] = useState([]);
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
+    //get the team members from the backend
     const fetchTeamMembers = async () => {
       try {
         let ID = teamId;
-        const response = await api.get(`/api/v1/teams/${ID}/users`);
+        const response = await api.get(`/api/v1/teams/${ID}/users`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
         setUserData(response.data);
       } catch (error) {
-        console.error("Error fetching teams users:", error);
+        console.error(`Error fetching teams users: ${handleError(error)}`);
       }
     };
 
     fetchTeamMembers();
 
     //TODO: remove fake TeamMember, when API call ready
-    const fakeTeamMembers = [
-      { id: 1, username: "Monti", name: "Timon" },
-      { id: 2, username: "Basil", name: "Basil" },
-      { id: 3, username: "Homie1", name: "Frank" },
-      { id: 4, username: "Steve", name: "Alex" },
-      { id: 5, username: "Lara", name: "Loft" },
-      { id: 6, username: "Mario", name: "Luigi" },
-      { id: 7, username: "xXDogXx", name: "Cat" },
-    ];
-    setUserData(fakeTeamMembers);
+    //const fakeTeamMembers = [
+    //  { id: 1, username: "Monti", name: "Timon" },
+    //  { id: 2, username: "Basil", name: "Basil" },
+    //  { id: 3, username: "Homie1", name: "Frank" },
+    //  { id: 4, username: "Steve", name: "Alex" },
+    //  { id: 5, username: "Lara", name: "Loft" },
+    //  { id: 6, username: "Mario", name: "Luigi" },
+    //  { id: 7, username: "xXDogXx", name: "Cat" },
+    //];
+    //setUserData(fakeTeamMembers);
     //remove until here
 
     //TODO: should I move this to KanbanBoard for refreshing?
+    //get the tasks of a team from the Backend
     const fetchTeamTasks = async () => {
       try {
         let ID = teamId;
-        const response = await api.get(`/api/v1/teams/${ID}/tasks`);
+        const response = await api.get(`/api/v1/teams/${ID}/tasks`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
         setTeamTasks(response.data);
       } catch (error) {
-        console.error("Error fetching teams tasks:", error);
+        console.error(`Error fetching teams tasks: ${handleError(error)}`);
       }
     };
 
     fetchTeamTasks();
 
-    //TODO: remove fake TeamMember, when API call ready
-    const fakeTeamTasks = [
-      { id: 1, title: "intro", status: "TODO" },
-      { id: 2, title: "deckblatt", status: "TODO" },
-      { id: 3, title: "lesen", status: "TODO" },
-      { id: 4, title: "malen", status: "DONE" },
-      { id: 5, title: "schreiben", status: "DONE" },
-      { id: 6, title: "tanzen", status: "IN_SESSION" },
-      { id: 7, title: "singen", status: "IN_SESSION" },
-    ];
-    setTeamTasks(fakeTeamTasks);
+    //TODO: remove fake TeamTask, when API call ready
+    //const fakeTeamTasks = [
+    //  { id: 1, title: "intro", status: "TODO" },
+    //  { id: 2, title: "deckblatt", status: "TODO" },
+    //  { id: 3, title: "lesen", status: "TODO" },
+    //  { id: 4, title: "malen", status: "DONE" },
+    //  { id: 5, title: "schreiben", status: "DONE" },
+    //  { id: 6, title: "tanzen", status: "IN_SESSION" },
+    //  { id: 7, title: "singen", status: "IN_SESSION" },
+    //];
+    //setTeamTasks(fakeTeamTasks);
     //remove until here
   }, []);
 
@@ -115,6 +130,7 @@ const TeamDashboard = () => {
             endColumn={2}
           >
             <div>
+              {/* Mapping of the Team Members */}
               Team Members
               <div>
                 {userData.map((member) => (
@@ -129,6 +145,7 @@ const TeamDashboard = () => {
             endRow={2}
             endColumn={3}
           >
+            {/* TODO Implement Time Progress */}
             Progress Field
           </TeamDashboardBox>
           <TeamDashboardBox
@@ -137,6 +154,7 @@ const TeamDashboard = () => {
             endRow={2}
             endColumn={5}
           >
+            {/* TODO Implement Team Settings */}
             Settings Button
           </TeamDashboardBox>
           <TeamDashboardBox
@@ -146,6 +164,7 @@ const TeamDashboard = () => {
             endColumn={5}
           >
             <div>
+              {/* The KanbanBoard which takes the Team Tasks */}
               Kanban Board
               <KanbanBoard teamTasks={teamTasks}></KanbanBoard>
             </div>
