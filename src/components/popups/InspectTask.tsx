@@ -21,6 +21,8 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   };
 
   const doClose = () => {
+    setTaskTitle(task.title);
+    setTaskDescription(task.description);
     DeactivateEditMode();
     onClose();
   };
