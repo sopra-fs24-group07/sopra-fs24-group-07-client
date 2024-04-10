@@ -7,6 +7,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const InspectTask = ({ isOpen, onClose, task }) => {
   const [editMode, setEditMode] = useState(false);
+  const [taskTitle, setTaskTitle] = useState(task.title);
+  const [taskDescription, setTaskDescription] = useState(task.description);
   const { teamId } = useParams();
   const token = sessionStorage.getItem("token");
   if (!isOpen) return null;
@@ -70,9 +72,19 @@ const InspectTask = ({ isOpen, onClose, task }) => {
         </Button>
         <h2>Create Task</h2>
         <h3>Task Title</h3>
-        <input value={task.title} disabled={!editMode} />
+        <input
+          value={taskTitle}
+          onChange={(tati) => setTaskTitle(tati.target.value)}
+          placeholder="Task Title..."
+          disabled={!editMode}
+        />
         <h3>Task Description</h3>
-        <input value={task.description} disabled={!editMode} />
+        <input
+          value={taskDescription}
+          onChange={(tade) => setTaskDescription(tade.target.value)}
+          placeholder="Task Description..."
+          disabled={!editMode}
+        />
         <div>
           {!editMode && (
             <Button className="green-button" onClick={ActivateEditMode}>
@@ -85,7 +97,11 @@ const InspectTask = ({ isOpen, onClose, task }) => {
             </Button>
           )}
           {editMode && (
-            <Button className="green-button" onClick={EditTask}>
+            <Button
+              disabled={!task.title || !task.description}
+              className="green-button"
+              onClick={EditTask}
+            >
               Save
             </Button>
           )}
