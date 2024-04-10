@@ -5,12 +5,56 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 
-const CreateTask = ({ isOpen, onClose, task }) => {
+const InspectTask = ({ isOpen, onClose, task }) => {
   const [editMode, setEditMode] = useState(false);
+  const { teamId } = useParams();
+  const token = sessionStorage.getItem("token");
   if (!isOpen) return null;
 
   const ActivateEditMode = () => {
     setEditMode(true);
+  };
+  const DectivateEditMode = () => {
+    setEditMode(false);
+  };
+
+  const EditTask = async () => {
+    try {
+      const requestBody = JSON.stringify(task);
+      const response = await api.put(
+        `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error editing Task:", handleError(error));
+    }
+
+    //maybe remove when external api is ready
+    location.reload();
+  };
+
+  const DeleteTask = async () => {
+    try {
+      const response = await api.delete(
+        `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+          params: {},
+        }
+      );
+    } catch (error) {
+      console.error("Error deleting Task:", handleError(error));
+    }
+
+    //maybe remove when external api is ready
+    location.reload();
   };
 
   return (
@@ -30,18 +74,26 @@ const CreateTask = ({ isOpen, onClose, task }) => {
               Edit
             </Button>
           )}
-          {editMode && <Button className="red-button">Delete</Button>}
-          {editMode && <Button className="green-button">Save</Button>}
+          {editMode && (
+            <Button className="red-button" onClick={DeleteTask}>
+              Delete
+            </Button>
+          )}
+          {editMode && (
+            <Button className="green-button" onClick={EditTask}>
+              Save
+            </Button>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-CreateTask.propTypes = {
+InspectTask.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
 };
 
-export default CreateTask;
+export default InspectTask;
