@@ -9,6 +9,7 @@ import { Link, useParams } from "react-router-dom";
 import InspectTask from "components/popups/InspectTask";
 
 function TaskCard(props) {
+  const token = sessionStorage.getItem("token");
   const { task, col } = props;
   const { teamId } = useParams();
   const taskId = task.id;
@@ -38,12 +39,20 @@ function TaskCard(props) {
     try {
       const requestBody = JSON.stringify(task);
       const response = await api.put(
-        `/api/v1/teams/${teamId}/tasks/${taskId}`,
-        requestBody
+        `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
       );
     } catch (error) {
-      console.error(`Failed to Update Task error ${handleError(error)}`);
+      console.error("Error moving Task:", handleError(error));
     }
+
+    //maybe remove when external api is ready
+    location.reload();
   }
 
   //handle if a Task is moved to column to the left
