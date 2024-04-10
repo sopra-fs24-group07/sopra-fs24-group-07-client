@@ -14,8 +14,13 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   const ActivateEditMode = () => {
     setEditMode(true);
   };
-  const DectivateEditMode = () => {
+  const DeactivateEditMode = () => {
     setEditMode(false);
+  };
+
+  const doClose = () => {
+    DeactivateEditMode();
+    onClose();
   };
 
   const EditTask = async () => {
@@ -58,9 +63,9 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   };
 
   return (
-    <div className="createTeam overlay" onClick={onClose}>
+    <div className="createTeam overlay" onClick={doClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <Button className="red-button" onClick={onClose}>
+        <Button className="red-button" onClick={doClose}>
           Close
         </Button>
         <h2>Create Task</h2>
