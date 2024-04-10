@@ -100,7 +100,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           )}
           {editMode && (
             <Button
-              disabled={!task.title || !task.description}
+              disabled={!taskTitle || !taskDescription}
               className="green-button"
               onClick={EditTask}
             >
