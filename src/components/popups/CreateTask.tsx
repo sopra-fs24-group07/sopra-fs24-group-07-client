@@ -39,10 +39,9 @@ const CreateTask = ({ isOpen, onClose }) => {
   //try to create a task via api pst call
   const CreateTask = async () => {
     try {
-      let ID = teamId;
       const requestBody = JSON.stringify({ title, description });
       const response = await api.post(
-        `/api/v1/teams/${ID}/tasks`,
+        `/api/v1/teams/${teamId}/tasks`,
         requestBody,
         {
           headers: {
@@ -56,6 +55,8 @@ const CreateTask = ({ isOpen, onClose }) => {
     //reset input fields after submitting
     setDescription(null);
     setTitle(null);
+    //maybe remove when external api is ready
+    location.reload();
   };
 
   return (
