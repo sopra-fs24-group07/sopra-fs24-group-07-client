@@ -6,7 +6,12 @@ import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CreateTask = ({ isOpen, onClose, task }) => {
+  const [editMode, setEditMode] = useState(false);
   if (!isOpen) return null;
+
+  const ActivateEditMode = () => {
+    setEditMode(true);
+  };
 
   return (
     <div className="createTeam overlay" onClick={onClose}>
@@ -16,10 +21,18 @@ const CreateTask = ({ isOpen, onClose, task }) => {
         </Button>
         <h2>Create Task</h2>
         <h3>Task Title</h3>
-        {task.title}
+        <input value={task.title} disabled={!editMode} />
         <h3>Task Description</h3>
-        <p>{task.description}</p>
-        <Button className="green-button">Edit</Button>
+        <input value={task.description} disabled={!editMode} />
+        <div>
+          {!editMode && (
+            <Button className="green-button" onClick={ActivateEditMode}>
+              Edit
+            </Button>
+          )}
+          {editMode && <Button className="red-button">Delete</Button>}
+          {editMode && <Button className="green-button">Save</Button>}
+        </div>
       </div>
     </div>
   );
