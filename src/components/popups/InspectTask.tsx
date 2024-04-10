@@ -27,6 +27,8 @@ const InspectTask = ({ isOpen, onClose, task }) => {
 
   const EditTask = async () => {
     try {
+      task.title = taskTitle;
+      task.description = taskDescription;
       const requestBody = JSON.stringify(task);
       const response = await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
