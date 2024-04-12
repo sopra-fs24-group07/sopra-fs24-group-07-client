@@ -15,6 +15,7 @@ const ProfileMenu = ({
   const navigate = useNavigate();
   const doLogout = () => {
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("id"); // todo depending on our implementation of the get userId from user token call we need to change this
     navigate("/start");
   };
 
