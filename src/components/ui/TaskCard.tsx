@@ -80,20 +80,27 @@ function TaskCard(props) {
   return (
     <div className="taskContainer">
       {/*create the go Left button for Tasks in Done and In Session */}
+      {/*ToDo: enable when api is ready */}
       {(col === "DONE" || col === "IN_SESSION") && (
         <Button
+          disabled
           className="goLeft"
           onClick={() => updateTaskStatusLeft(task, col)}
         >
           &lt;
         </Button>
       )}
+
+      {/*task title that opens the task details */}
       <Link onClick={openInspectTask} className="taskTitle">
         {task.title}
       </Link>
+
       {/*create the go Right button for Tasks in To-do and In Session */}
+      {/*ToDo: enable when api is ready */}
       {(col === "TODO" || col === "IN_SESSION") && (
         <Button
+          disabled
           className="goRight"
           onClick={() => updateTaskStatusRight(task, col)}
         >
