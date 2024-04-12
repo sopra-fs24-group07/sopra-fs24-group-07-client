@@ -15,7 +15,7 @@
 .profileMenu-content {
   background-color: $accentDark;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: $borderRadius;
   box-shadow: $dropShadow;
 }
 
@@ -23,11 +23,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px; /* Adds space between the header and the buttons below */
+  margin-bottom: 20px;
 }
 
 .profileMenu-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Adjust the space between buttons as needed */
+  gap: 10px;
+}
+
+.profile {
+  &.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: $accent;
+    padding: 15px;
+    border-radius: $borderRadius;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  &.attribute {
+    font-size: 1rem;
+    color: $background;
+  }
 }
