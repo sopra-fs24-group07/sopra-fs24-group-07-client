@@ -11,12 +11,18 @@ import CreateTeam from "../popups/CreateTeam";
 const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
   const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
+  const userId = sessionStorage.getItem("id"); //todo change this depending on the api endpoint where we get the userId from the user token
+  // dont forget to remove id from storage on logout
+  // const [userId, setUserId] = useState(null); // new user Id set function, requires api call
 
   useEffect(() => {
     const fetchUserTeams = async () => {
       try {
-        const response = await api.get("/teams");
+        const response = await api.get(`/api/v1/users/${userId}/teams`, {
+          headers: { Authorization: `${token}` },
+        });
         setUserTeams(response.data);
       } catch (error) {
         console.error("Error fetching user teams:", error);
@@ -24,19 +30,6 @@ const TeamsOverview = () => {
     };
 
     fetchUserTeams();
-
-    const fakeUserTeams = [
-      { id: 1, name: "The best team" },
-      { id: 2, name: "SoPra" },
-      { id: 3, name: "Homies" },
-      { id: 4, name: "Work: 1" },
-      { id: 5, name: "Work: 7" },
-      { id: 6, name: "Adoption Center" },
-      { id: 7, name: "xXDogWalkersXx" },
-      { id: 8, name: "datenight_planers" },
-      { id: 9, name: "Dumbledore's Armee" },
-    ];
-    setUserTeams(fakeUserTeams);
   }, []);
 
   const openCreateTeam = () => {
