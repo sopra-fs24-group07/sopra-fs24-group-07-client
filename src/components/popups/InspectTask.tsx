@@ -112,17 +112,15 @@ const InspectTask = ({ isOpen, onClose, task }) => {
               Edit
             </Button>
           )}
+          {/*ToDO: enable when API is ready */}
           {editMode && (
-            <Button className="red-button" onClick={DeleteTask}>
+            <Button className="red-button" onClick={DeleteTask} disabled>
               Delete
             </Button>
           )}
+          {/*ToDO: disabled={!taskTitle || !taskDescription} when API is ready */}
           {editMode && (
-            <Button
-              disabled={!taskTitle || !taskDescription}
-              className="green-button"
-              onClick={EditTask}
-            >
+            <Button disabled className="green-button" onClick={EditTask}>
               Save
             </Button>
           )}
