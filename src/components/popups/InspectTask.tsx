@@ -11,6 +11,8 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   const [taskDescription, setTaskDescription] = useState(task.description);
   const { teamId } = useParams();
   const token = sessionStorage.getItem("token");
+  const [error, setError] = useState("");
+
   if (!isOpen) return null;
 
   const ActivateEditMode = () => {
@@ -23,6 +25,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   const doClose = () => {
     setTaskTitle(task.title);
     setTaskDescription(task.description);
+    setError("");
     DeactivateEditMode();
     onClose();
   };
@@ -41,12 +44,18 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           },
         }
       );
+      //maybe remove when external api is ready
+      location.reload();
     } catch (error) {
+      //new error handling
+      setError("Failed to edit the Task");
+      if (error.response.status === 401) {
+        setError("You are not authorized to edit this Task");
+      } else if (error.response.status === 404) {
+        setError("The task you tried to edit does not exist");
+      }
       console.error("Error editing Task:", handleError(error));
     }
-
-    //maybe remove when external api is ready
-    location.reload();
   };
 
   const DeleteTask = async () => {
@@ -60,12 +69,17 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           params: {},
         }
       );
+      //maybe remove when external api is ready
+      location.reload();
     } catch (error) {
+      setError("Failed to delete the Task");
+      if (error.response.status === 401) {
+        setError("You are not authorized to delete this Task");
+      } else if (error.response.status === 404) {
+        setError("The task you tried to delete does not exist");
+      }
       console.error("Error deleting Task:", handleError(error));
     }
-
-    //maybe remove when external api is ready
-    location.reload();
   };
 
   return (
@@ -89,6 +103,9 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           placeholder="Task Description..."
           disabled={!editMode}
         />
+
+        {error && <p>{error}</p>}
+
         <div>
           {!editMode && (
             <Button className="green-button" onClick={ActivateEditMode}>
