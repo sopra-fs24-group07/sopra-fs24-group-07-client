@@ -17,14 +17,13 @@ const FormField = ({ label, value, onChange, type = "text", error }) => (
       value={value}
       onChange={onChange}
     />
-    {error && <div className="error-message">{error}</div>}
   </div>
 );
 
 FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
   error: PropTypes.string,
 };
@@ -39,6 +38,7 @@ const Registration = () => {
     name: "",
     password: "",
   });
+  const [generalError, setGeneralError] = useState("");
 
   const validateForm = () => {
     let isValid = true;
@@ -48,10 +48,12 @@ const Registration = () => {
       errors.username = "Username is required";
       isValid = false;
     }
+
     if (!name) {
       errors.name = "Name is required";
       isValid = false;
     }
+
     if (!password || password.length < 8) {
       errors.password = "Password must be at least 8 characters long";
       isValid = false;
@@ -66,22 +68,28 @@ const Registration = () => {
 
     try {
       const requestBody = JSON.stringify({ username, name, password });
-      const response = await api.post("/api/v1/users", requestBody);
+      const regResponse = await api.post("/api/v1/users", requestBody);
 
       const requestBodyAuth = JSON.stringify({ username, password });
       const responseAuth = await api.post("/api/v1/login", requestBodyAuth);
 
       const user = new User(responseAuth.data);
       sessionStorage.setItem("token", user.token);
-      sessionStorage.setItem("id", response.data.userId);
+      sessionStorage.setItem("id", regResponse.data.userId); //TESTING
       navigate("/teams");
     } catch (error) {
-      // Grabbing the message content from the backend response for the frontend error handling
-      const errorMessage = error.response.data.message;
-      // Update the errors state based on the error message
-      setErrors((prevErrors) => ({ ...prevErrors, general: errorMessage }));
-      console.log(`Something went wrong during the registration:`, error);
+      const errorMessage = error.response
+        ? error.response.data.message
+        : `An unknown error occurred! Contact an administrator: ${error}`;
+      setGeneralError(errorMessage);
+      console.error(`Something went wrong during the registration:`, error);
     }
+  };
+
+  const getAllErrorMessages = () => {
+    const fieldErrors = Object.values(errors).filter((error) => error);
+    if (generalError) fieldErrors.push(generalError);
+    return fieldErrors;
   };
 
   return (
@@ -92,20 +100,17 @@ const Registration = () => {
             label="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            error={errors.username}
           />
           <FormField
             label="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            error={errors.name}
           />
           <FormField
             label="Password"
             value={password}
             type="password"
             onChange={(e) => setPassword(e.target.value)}
-            error={errors.password}
           />
           <div className="register button-container">
             <Button width="50%" onClick={() => navigate("/login")}>
@@ -120,7 +125,11 @@ const Registration = () => {
             </Button>
           </div>
         </div>
-        {errors.general && <p className="error-message">{errors.general}</p>}
+        {getAllErrorMessages().map((error, index) => (
+          <div key={index} className="error-message">
+            {error}
+          </div>
+        ))}
       </div>
     </BaseContainer>
   );
