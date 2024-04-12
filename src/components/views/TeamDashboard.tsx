@@ -126,7 +126,8 @@ const TeamDashboard = () => {
             <div className="timeGoalBox">
               Time Goal:
               <FormField onChange={(t) => setTime(t)} />
-              <Button width="100%" onClick={() => startGroupSession()}>
+              {/*TODO: enable button when Session is implemented */}
+              <Button disabled width="100%" onClick={() => startGroupSession()}>
                 Start Group Session
               </Button>
             </div>
