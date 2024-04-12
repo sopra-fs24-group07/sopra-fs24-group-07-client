@@ -80,13 +80,9 @@ function TaskCard(props) {
   return (
     <div className="taskContainer">
       {/*create the go Left button for Tasks in Done and In Session */}
-      {/*ToDo: enable when api is ready */}
+      {/*ToDo: onClick={() => updateTaskStatusLeft(task, col)} and remove styling*/}
       {(col === "DONE" || col === "IN_SESSION") && (
-        <Button
-          disabled
-          className="goLeft"
-          onClick={() => updateTaskStatusLeft(task, col)}
-        >
+        <Button style={{ cursor: "not-allowed" }} className="goLeft">
           &lt;
         </Button>
       )}
@@ -97,13 +93,9 @@ function TaskCard(props) {
       </Link>
 
       {/*create the go Right button for Tasks in To-do and In Session */}
-      {/*ToDo: enable when api is ready */}
+      {/*ToDo: onClick={() => updateTaskStatusRight(task, col)} and remove styling */}
       {(col === "TODO" || col === "IN_SESSION") && (
-        <Button
-          disabled
-          className="goRight"
-          onClick={() => updateTaskStatusRight(task, col)}
-        >
+        <Button style={{ cursor: "not-allowed" }} className="goRight">
           &gt;
         </Button>
       )}
