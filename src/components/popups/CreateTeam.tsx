@@ -52,6 +52,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     }
 
     setErrors(newErrors);
+
     return isValid;
   };
 
@@ -65,7 +66,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
         description: teamDescription,
       });
 
-      const response = await api.post(`/api/v1/teams`, requestBody, {
+      const response = await api.post("/api/v1/teams", requestBody, {
         headers: {
           Authorization: `${token}`,
         },

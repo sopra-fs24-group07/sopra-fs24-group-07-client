@@ -60,6 +60,7 @@ const Registration = () => {
     }
 
     setErrors(errors);
+
     return isValid;
   };
 
@@ -82,13 +83,14 @@ const Registration = () => {
         ? error.response.data.message
         : `An unknown error occurred! Contact an administrator: ${error}`;
       setGeneralError(errorMessage);
-      console.error(`Something went wrong during the registration:`, error);
+      console.error("Something went wrong during the registration:", error);
     }
   };
 
   const getAllErrorMessages = () => {
     const fieldErrors = Object.values(errors).filter((error) => error);
     if (generalError) fieldErrors.push(generalError);
+
     return fieldErrors;
   };
 
