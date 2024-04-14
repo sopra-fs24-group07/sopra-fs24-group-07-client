@@ -1,5 +1,12 @@
 export type User = {
   username: string;
   name: string;
-  id: number;
+  password: string;
+  userId: number;
+};
+
+export type Team = {
+  name: string;
+  teamId: number;
+  inSession: boolean;
 };

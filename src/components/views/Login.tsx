@@ -1,110 +1,87 @@
 import React, { useState } from "react";
-import { api, handleError } from "helpers/api";
-import User from "models/User";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import { api } from "helpers/api";
+import User from "models/User";
 import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 
-/*
-It is possible to add multiple components inside a single file,
-however be sure not to clutter your files with an endless amount!
-As a rule of thumb, use one file per component and only add small,
-specific components that belong to the main one in the same file.
- */
-const FormField = (props) => {
-  return (
-    <div className="register field">
-      <label className="register label">{props.label}</label>
-      {props.type === "password" ? (
-        <input
-          className="register input"
-          placeholder="enter here.."
-          type="password"
-          value={props.value}
-          onChange={(e) => props.onChange(e.target.value)}
-        />
-      ) : (
-        <input
-          className="register input"
-          placeholder="enter here.."
-          value={props.value}
-          onChange={(e) => props.onChange(e.target.value)}
-        />
-      )}
-    </div>
-  );
-};
+//NEW FORMFIELD: WITHOUT CODE REPETITION
+const FormField = ({ label, value, onChange, type = "text" }) => (
+  <div className="register field">
+    <label className="register label" htmlFor={label}>
+      {label}
+    </label>
+    <input
+      className="register input"
+      placeholder="enter here.."
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      id={label}
+    />
+  </div>
+);
 
+// SEE NEW TYPE "type"
 FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
 };
 
 const Login = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState<string>(null);
-  const [password, setPassword] = useState<string>(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // NEW SET ERROR METHOD
 
   const doLogin = async () => {
     try {
       const requestBody = JSON.stringify({ username, password });
       const response = await api.post("/api/v1/login", requestBody);
-
-      // Get the returned user and update a new object.
       const user = new User(response.data);
-
-      // Store the token into the local storage.
       sessionStorage.setItem("token", user.token);
-
-      // Login successfully worked --> navigate to the route /game in the GameRouter
       navigate("/teams");
     } catch (error) {
-      console.log(`Something went wrong during the login:`, error);
+      // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
+      setError("Failed to login. Please check your username and password.");
+      // ALSO CONSOLE ERROR FOR THE ERROR: WOULD SHOW IN CONSOLE IF ERROR IS NOT JUST INVALID CREDENTIALS
+      console.error(`Something went wrong during the login:`, error);
     }
-  };
-
-  const goRegister = () => {
-    navigate("/register");
   };
 
   return (
     <BaseContainer>
       <div className="login container">
         <div className="login form">
-          <FormField
-            label="Username"
-            value={username}
-            onChange={(un: string) => setUsername(un)}
-          />
-          <FormField
+          <FormField label="Username" value={username} onChange={setUsername} />{" "}
+          {/* FORMFIELD FOR USERNAME, NO VALIDATION FROM FRONTEND */}
+          <FormField // FORMFIELD FOR PASSWORD, NO VALIDATION FROM FRONTEND
             label="Password"
             value={password}
             type="password"
-            onChange={(n) => setPassword(n)}
+            onChange={setPassword}
           />
           <div className="login button-container">
             <Button
               disabled={!username || !password}
               width="50%"
-              onClick={() => doLogin()}
+              onClick={doLogin}
             >
               Login
             </Button>
-            <Button width="50%" onClick={() => goRegister()}>
+            <Button width="50%" onClick={() => navigate("/register")}>
               Register
             </Button>
           </div>
         </div>
+        {error && <p className="login error">{error}</p>}
       </div>
     </BaseContainer>
   );
 };
 
-/**
- * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
- */
 export default Login;

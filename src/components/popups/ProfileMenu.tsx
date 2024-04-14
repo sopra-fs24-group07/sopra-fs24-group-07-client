@@ -15,6 +15,7 @@ const ProfileMenu = ({
   const navigate = useNavigate();
   const doLogout = () => {
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("id"); // todo depending on our implementation of the get userId from user token call we need to change this
     navigate("/start");
   };
 
@@ -28,7 +29,9 @@ const ProfileMenu = ({
           </Button>
         </div>
         <div className="profileMenu-actions">
-          <Button onClick={onProfileClick}>Profile</Button>
+          <Button disabled onClick={onProfileClick}>
+            Profile
+          </Button>
           <Button onClick={onProfileSettingsClick}>Settings</Button>
           <Button className="red-button" onClick={doLogout}>
             Logout
