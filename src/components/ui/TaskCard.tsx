@@ -27,6 +27,7 @@ function TaskCard(props) {
 
   //handle if a Task is moved to column to the right
   async function updateTaskStatusRight(task, col) {
+    console.log(task);
     //from to-do to session
     if (col === "TODO") {
       task.status = "IN_SESSION";
@@ -35,9 +36,10 @@ function TaskCard(props) {
       task.status = "DONE";
     }
     //make api call to update status
-    //TODO maybe fix api call when endpoint is ready
     try {
+      console.log(task);
       const requestBody = JSON.stringify(task);
+      console.log(requestBody);
       const response = await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
         requestBody,
@@ -65,16 +67,25 @@ function TaskCard(props) {
       task.status = "IN_SESSION";
     }
     //make api call to update status
-    //TODO maybe fix api call when endpoint is ready
     try {
+      console.log(task);
       const requestBody = JSON.stringify(task);
+      console.log(requestBody);
       const response = await api.put(
-        `/api/v1/teams/${teamId}/tasks/${taskId}`,
-        requestBody
+        `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
       );
     } catch (error) {
-      console.error(`Failed to Update Task error ${handleError(error)}`);
+      console.error("Error moving Task:", handleError(error));
     }
+
+    //maybe remove when external api is ready
+    location.reload();
   }
 
   return (
@@ -82,7 +93,10 @@ function TaskCard(props) {
       {/*create the go Left button for Tasks in Done and In Session */}
       {/*ToDo: onClick={() => updateTaskStatusLeft(task, col)} and remove styling*/}
       {(col === "DONE" || col === "IN_SESSION") && (
-        <Button style={{ cursor: "not-allowed" }} className="goLeft">
+        <Button
+          className="goLeft"
+          onClick={() => updateTaskStatusLeft(task, col)}
+        >
           &lt;
         </Button>
       )}
@@ -95,7 +109,10 @@ function TaskCard(props) {
       {/*create the go Right button for Tasks in To-do and In Session */}
       {/*ToDo: onClick={() => updateTaskStatusRight(task, col)} and remove styling */}
       {(col === "TODO" || col === "IN_SESSION") && (
-        <Button style={{ cursor: "not-allowed" }} className="goRight">
+        <Button
+          className="goRight"
+          onClick={() => updateTaskStatusRight(task, col)}
+        >
           &gt;
         </Button>
       )}
