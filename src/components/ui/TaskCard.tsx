@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { api, handleError } from "helpers/api";
 import "../../styles/ui/TaskCard.scss";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "./Button";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import InspectTask from "components/popups/InspectTask";
 
 function TaskCard(props) {
+  const token = sessionStorage.getItem("token");
   const { task, col } = props;
   const { teamId } = useParams();
   const taskId = task.id;
+  const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);
+
+  //open the Inspect Task Popup
+  const openInspectTask = () => {
+    setInspectTaskOpen(true);
+  };
+
+  //close the Inspect Task Popup
+  const closeInspectTask = () => {
+    setInspectTaskOpen(false);
+  };
 
   //handle if a Task is moved to column to the right
   async function updateTaskStatusRight(task, col) {
@@ -26,12 +39,20 @@ function TaskCard(props) {
     try {
       const requestBody = JSON.stringify(task);
       const response = await api.put(
-        `/api/v1/teams/${teamId}/tasks/${taskId}`,
-        requestBody
+        `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
       );
     } catch (error) {
-      console.error(`Failed to Update Task error ${handleError(error)}`);
+      console.error("Error moving Task:", handleError(error));
     }
+
+    //maybe remove when external api is ready
+    location.reload();
   }
 
   //handle if a Task is moved to column to the left
@@ -59,24 +80,30 @@ function TaskCard(props) {
   return (
     <div className="taskContainer">
       {/*create the go Left button for Tasks in Done and In Session */}
+      {/*ToDo: onClick={() => updateTaskStatusLeft(task, col)} and remove styling*/}
       {(col === "DONE" || col === "IN_SESSION") && (
-        <Button
-          className="goLeft"
-          onClick={() => updateTaskStatusLeft(task, col)}
-        >
+        <Button style={{ cursor: "not-allowed" }} className="goLeft">
           &lt;
         </Button>
       )}
-      <div className="taskTitle">{task.title}</div>
+
+      {/*task title that opens the task details */}
+      <Link onClick={openInspectTask} className="taskTitle">
+        {task.title}
+      </Link>
+
       {/*create the go Right button for Tasks in To-do and In Session */}
+      {/*ToDo: onClick={() => updateTaskStatusRight(task, col)} and remove styling */}
       {(col === "TODO" || col === "IN_SESSION") && (
-        <Button
-          className="goRight"
-          onClick={() => updateTaskStatusRight(task, col)}
-        >
+        <Button style={{ cursor: "not-allowed" }} className="goRight">
           &gt;
         </Button>
       )}
+      <InspectTask
+        isOpen={isInspectTaskOpen}
+        onClose={closeInspectTask}
+        task={task}
+      />
     </div>
   );
 }

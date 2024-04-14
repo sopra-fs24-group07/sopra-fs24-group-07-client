@@ -40,8 +40,7 @@ const TeamDashboard = () => {
     //get the team members from the backend
     const fetchTeamMembers = async () => {
       try {
-        let ID = teamId;
-        const response = await api.get(`/api/v1/teams/${ID}/users`, {
+        const response = await api.get(`/api/v1/teams/${teamId}/users`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -71,8 +70,7 @@ const TeamDashboard = () => {
     //get the tasks of a team from the Backend
     const fetchTeamTasks = async () => {
       try {
-        let ID = teamId;
-        const response = await api.get(`/api/v1/teams/${ID}/tasks`, {
+        const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -86,15 +84,25 @@ const TeamDashboard = () => {
     fetchTeamTasks();
 
     //TODO: remove fake TeamTask, when API call ready
-    //const fakeTeamTasks = [
-    //  { id: 1, title: "intro", status: "TODO" },
-    //  { id: 2, title: "deckblatt", status: "TODO" },
-    //  { id: 3, title: "lesen", status: "TODO" },
-    //  { id: 4, title: "malen", status: "DONE" },
-    //  { id: 5, title: "schreiben", status: "DONE" },
-    //  { id: 6, title: "tanzen", status: "IN_SESSION" },
-    //  { id: 7, title: "singen", status: "IN_SESSION" },
-    //];
+    const fakeTeamTasks = [
+      { id: 1, title: "intro", description: "Lorem ipsum", status: "TODO" },
+      { id: 2, title: "deckblatt", description: "Lorem ipsum", status: "TODO" },
+      { id: 3, title: "lesen", description: "Lorem ipsum", status: "TODO" },
+      { id: 4, title: "malen", description: "Lorem ipsum", status: "DONE" },
+      { id: 5, title: "schreiben", description: "Lorem ipsum", status: "DONE" },
+      {
+        id: 6,
+        title: "tanzen",
+        description: "Lorem ipsum",
+        status: "IN_SESSION",
+      },
+      {
+        id: 7,
+        title: "singen",
+        description: "Lorem ipsum",
+        status: "IN_SESSION",
+      },
+    ];
     //setTeamTasks(fakeTeamTasks);
     //remove until here
   }, []);
@@ -118,7 +126,8 @@ const TeamDashboard = () => {
             <div className="timeGoalBox">
               Time Goal:
               <FormField onChange={(t) => setTime(t)} />
-              <Button width="100%" onClick={() => startGroupSession()}>
+              {/*TODO: enable button when Session is implemented */}
+              <Button disabled width="100%" onClick={() => startGroupSession()}>
                 Start Group Session
               </Button>
             </div>

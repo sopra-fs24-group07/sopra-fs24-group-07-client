@@ -33,16 +33,25 @@ const CreateTask = ({ isOpen, onClose }) => {
   const [title, setTitle] = useState<string>(null);
   //description of a task
   const [description, setDescription] = useState<string>(null);
+  //set error
+  const [error, setError] = useState("");
 
   if (!isOpen) return null;
+
+  //reset all fiels on closing pop-up
+  const doClose = () => {
+    setError("");
+    setTitle(null);
+    setDescription(null);
+    onClose();
+  };
 
   //try to create a task via api pst call
   const CreateTask = async () => {
     try {
-      let ID = teamId;
       const requestBody = JSON.stringify({ title, description });
       const response = await api.post(
-        `/api/v1/teams/${ID}/tasks`,
+        `/api/v1/teams/${teamId}/tasks`,
         requestBody,
         {
           headers: {
@@ -50,18 +59,28 @@ const CreateTask = ({ isOpen, onClose }) => {
           },
         }
       );
+      //reset input fields after submitting
+      setDescription(null);
+      setTitle(null);
+      //maybe remove when external api is ready
+      onClose();
+      location.reload();
     } catch (error) {
-      console.log("Error creating new Task:", handleError(error));
+      //new error handling with status codes
+      setError("Failed to create the Task");
+      if (error.response.status === 401) {
+        setError("You are not authorized to create a Task");
+      } else if (error.response.status === 400) {
+        setError("Please enter a Title and Description");
+      }
+      console.error("Error creating new Task:", handleError(error));
     }
-    //reset input fields after submitting
-    setDescription(null);
-    setTitle(null);
   };
 
   return (
-    <div className="createTeam overlay" onClick={onClose}>
+    <div className="createTeam overlay" onClick={doClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <Button className="red-button" onClick={onClose}>
+        <Button className="red-button" onClick={doClose}>
           Close
         </Button>
         <h2>Create Task</h2>
@@ -77,12 +96,13 @@ const CreateTask = ({ isOpen, onClose }) => {
           onChange={(dc: string) => setDescription(dc)}
         />
 
+        {error && <p>{error}</p>}
+
         <Button
           className="green-button"
           disabled={!description || !title}
           onClick={() => {
             CreateTask();
-            onClose();
           }}
         >
           Create
