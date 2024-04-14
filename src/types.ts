@@ -7,6 +7,6 @@ export type User = {
 
 export type Team = {
   name: string;
-  id: string;
+  teamId: number;
   inSession: boolean;
 };

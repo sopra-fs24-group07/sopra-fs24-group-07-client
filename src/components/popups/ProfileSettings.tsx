@@ -106,10 +106,10 @@ const ProfileSettings = ({ isOpen, onClose }) => {
           value={user.name}
           onChange={handleChange("name")}
         />
-        <Button className="green-button" onClick={saveChanges}>
+        <Button className="green-button" disabled onClick={saveChanges}>
           Save
         </Button>
-        <Button className="red-button" onClick={saveChanges}>
+        <Button className="red-button" disabled onClick={saveChanges}>
           Cancel
         </Button>
         {error && <div className="error-message">{error}</div>}

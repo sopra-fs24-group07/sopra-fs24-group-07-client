@@ -71,8 +71,8 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
         },
       });
 
-      onCreateTeamClick(response.data.id);
-      navigate(`/teams/${response.data.id}`);
+      onCreateTeamClick(response.data.teamId);
+      navigate(`/teams/${response.data.teamId}`);
     } catch (error) {
       console.error("Error creating team:", handleError(error));
       setErrors((prev) => ({

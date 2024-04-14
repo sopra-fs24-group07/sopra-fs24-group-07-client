@@ -29,7 +29,7 @@ const Profile = ({ isOpen, onClose }) => {
       let userId = sessionStorage.getItem("id"); // todo might need to change this depending on out implementation of our token to userId methods
 
       try {
-        const response = await api.post(`/api/v1/users/${userId}`, {
+        const response = await api.get(`/api/v1/users/${userId}`, {
           headers: {
             Authorization: `${token}`,
           },

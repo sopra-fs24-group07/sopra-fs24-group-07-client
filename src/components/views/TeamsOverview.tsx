@@ -40,8 +40,8 @@ const TeamsOverview = () => {
     setCreateTeamOpen(false);
   };
 
-  const goTeam = (teamid) => {
-    navigate(`/teams/${teamid}`); //change routing to point at created team
+  const goTeam = (teamId) => {
+    navigate(`/teams/${teamId}`); //change routing to point at created team
   };
 
   return (
@@ -49,8 +49,11 @@ const TeamsOverview = () => {
       <div className="teams-overview container">
         <div className="teams-overview grid">
           {userTeams.map((team) => (
-            <Button key={team.id} onClick={() => navigate(`/teams/${team.id}`)}>
-              {team.name} - id: {team.id}
+            <Button
+              key={team.teamId}
+              onClick={() => navigate(`/teams/${team.teamId}`)}
+            >
+              {team.name} - id: {team.teamId}
             </Button>
           ))}
           <Button className="green-button" onClick={openCreateTeam}>
