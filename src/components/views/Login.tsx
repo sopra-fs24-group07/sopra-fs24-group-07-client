@@ -49,7 +49,7 @@ const Login = () => {
       // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
       setError("Failed to login. Please check your username and password.");
       // ALSO CONSOLE ERROR FOR THE ERROR: WOULD SHOW IN CONSOLE IF ERROR IS NOT JUST INVALID CREDENTIALS
-      console.error(`Something went wrong during the login:`, error);
+      console.error("Something went wrong during the login:", error);
     }
   };
 
