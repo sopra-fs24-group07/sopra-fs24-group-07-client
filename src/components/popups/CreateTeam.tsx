@@ -60,7 +60,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     if (!validateForm()) return;
 
     try {
-      let token = sessionStorage.getItem("token");
+      let token = localStorage.getItem("token");
       const requestBody = JSON.stringify({
         name: teamName,
         description: teamDescription,

@@ -10,7 +10,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDescription, setTaskDescription] = useState(task.description);
   const { teamId } = useParams();
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const [error, setError] = useState("");
 
   if (!isOpen) return null;
