@@ -6,6 +6,7 @@ import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../views/Login";
 import Registration from "../../views/Registration";
 import Landing from "../../views/Landing";
+import InviteLanding from "../../views/InviteLanding";
 
 /**
  * Main router of your application.
@@ -34,6 +35,10 @@ const AppRouter = () => {
 
         <Route path="/start" element={<LoginGuard />}>
           <Route path="/start" element={<Landing />} />
+        </Route>
+
+        <Route path="/invitation">
+          <Route path=":teamUUID" element={<InviteLanding />} />
         </Route>
 
         <Route path="/" element={<Navigate to="/teams" replace />} />
