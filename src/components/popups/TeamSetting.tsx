@@ -86,26 +86,26 @@ const TeamSettings = ({ isOpen, onClose }) => {
         <Button className="red-button" onClick={doClose}>
           Close
         </Button>
-        <h2>Team Settings of</h2>
+        <h2 className="TeamSetting headline">Team Settings of</h2>
         <input
           className="TeamSetting input"
           value={teamName}
           placeholder="Task Title..."
           disabled={!editMode}
         />
-        <h3>Team Description</h3>
+        <h3 className="TeamSetting headline">Team Description</h3>
         <input
           className="TeamSetting input"
           value={teamDescription}
           placeholder="Task Description..."
           disabled={!editMode}
         />
-        <h3>Team Members</h3>
-        <div>
+        <h3 className="TeamSetting headline">Team Members</h3>
+        <ul className="TeamSetting list">
           {teamMembers.map((member) => (
-            <div key={member.id}>{member.username}</div>
+            <li key={member.id}>{member.username}</li>
           ))}
-        </div>
+        </ul>
         <div>
           <Button onClick={CopyInvitationLink}>Invite User</Button>
           {copied && (

@@ -44,6 +44,14 @@
     color: $background;
   }
 
+  &.headline {
+    margin-bottom: 0;
+  }
+
+  &.list {
+    margin-top: 0;
+  }
+
   &.overlay {
     position: fixed;
     top: 0;
