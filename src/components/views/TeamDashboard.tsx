@@ -9,7 +9,7 @@ import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
 import KanbanBoard from "components/ui/KanbanBoard";
 
-//formfiel for Time Goal
+//formfield for Time Goal
 const FormField = (props) => {
   return (
     <input
