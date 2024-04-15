@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../../styles/popups/CreateTeam.scss";
+import "../../styles/popups/TeamSetting.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
@@ -81,19 +81,21 @@ const TeamSettings = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="createTeam overlay" onClick={doClose}>
-      <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
+    <div className="TeamSetting overlay" onClick={doClose}>
+      <div className="TeamSetting content" onClick={(e) => e.stopPropagation()}>
         <Button className="red-button" onClick={doClose}>
           Close
         </Button>
         <h2>Team Settings of</h2>
         <input
+          className="TeamSetting input"
           value={teamName}
           placeholder="Task Title..."
           disabled={!editMode}
         />
         <h3>Team Description</h3>
         <input
+          className="TeamSetting input"
           value={teamDescription}
           placeholder="Task Description..."
           disabled={!editMode}
