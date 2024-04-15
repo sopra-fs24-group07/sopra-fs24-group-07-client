@@ -29,7 +29,8 @@ const TeamSettings = ({ isOpen, onClose }) => {
         setTeamName(foundTeam.name);
         setTeamDescription(foundTeam.description);
         setTeamUUID(foundTeam.teamUUID);
-        setInviteURL(`productiviteam.co/invitation/${foundTeam.teamUUID}`);
+        //setInviteURL(`productiviteam.co/invitation/${foundTeam.teamUUID}`); <- TODO: use this when we actually deploy it
+        setInviteURL(`http://localhost:3000/invitation/${foundTeam.teamUUID}`);
       } catch (error) {
         console.error("Error fetching user teams:", error);
       }
