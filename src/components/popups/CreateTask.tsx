@@ -100,7 +100,7 @@ const CreateTask = ({ isOpen, onClose }) => {
 
         <Button
           className="green-button"
-          disabled={!description || !title}
+          disabled={!title}
           onClick={() => {
             CreateTask();
           }}
