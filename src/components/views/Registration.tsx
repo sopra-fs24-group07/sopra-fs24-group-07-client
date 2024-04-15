@@ -77,6 +77,9 @@ const Registration = () => {
       const user = new User(responseAuth.data);
       sessionStorage.setItem("token", user.token);
       sessionStorage.setItem("id", regResponse.data.userId); //TESTING
+      if (sessionStorage.getItem("teamUUID")) {
+        navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
+      }
       navigate("/teams");
     } catch (error) {
       const errorMessage = error.response

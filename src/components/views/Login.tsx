@@ -44,6 +44,9 @@ const Login = () => {
       const response = await api.post("/api/v1/login", requestBody);
       const user = new User(response.data);
       sessionStorage.setItem("token", user.token);
+      if (sessionStorage.getItem("teamUUID")) {
+        navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
+      }
       navigate("/teams");
     } catch (error) {
       // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
