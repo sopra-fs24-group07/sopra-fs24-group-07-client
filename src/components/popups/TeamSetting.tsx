@@ -10,6 +10,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
   const [teamName, setTeamName] = useState();
   const [teamDescription, setTeamDescription] = useState();
   const [teamUUID, setTeamUUID] = useState();
+  const [inviteURL, setInviteURL] = useState();
   const [copied, setCopied] = useState("");
   const { teamId } = useParams();
   const token = sessionStorage.getItem("token");
@@ -28,6 +29,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
         setTeamName(foundTeam.name);
         setTeamDescription(foundTeam.description);
         setTeamUUID(foundTeam.teamUUID);
+        setInviteURL(`productiviteam.co/invitation/${foundTeam.teamUUID}`);
       } catch (error) {
         console.error("Error fetching user teams:", error);
       }
@@ -46,8 +48,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
 
   const CopyInvitationLink = async () => {
     try {
-      const URL = `productiviteam.co/invitation/${teamUUID}`;
-      await navigator.clipboard.writeText(URL);
+      await navigator.clipboard.writeText(inviteURL);
       setCopied("Copied to clipboard!");
     } catch (error) {
       setCopied("Failed to copy the UUID");
@@ -81,7 +82,13 @@ const TeamSettings = ({ isOpen, onClose }) => {
         />
         <div>
           <Button onClick={CopyInvitationLink}>Invite User</Button>
-          {copied && <p>{copied}</p>}
+          {copied && (
+            <div>
+              <input value={inviteURL} />
+              <br />
+              {copied}
+            </div>
+          )}
         </div>
 
         {error && <p>{error}</p>}
