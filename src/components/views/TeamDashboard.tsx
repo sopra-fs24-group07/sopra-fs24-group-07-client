@@ -8,6 +8,7 @@ import TeamDashboardBox from "components/ui/TeamDashboardBox";
 import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
 import KanbanBoard from "components/ui/KanbanBoard";
+import StatusComponent from "components/views/StatusComponent";
 
 //formfield for Time Goal
 const FormField = (props) => {
@@ -130,6 +131,7 @@ const TeamDashboard = () => {
               <Button disabled width="100%" onClick={() => startGroupSession()}>
                 Start Group Session
               </Button>
+              <StatusComponent> </StatusComponent>
             </div>
           </TeamDashboardBox>
           <TeamDashboardBox
