@@ -92,7 +92,7 @@ const ProfileSettings = ({ isOpen, onClose }) => {
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
         <div className="profileMenu-header">
           <h2>Settings</h2>
-          <Button className="red-button" onClick={saveChanges}>
+          <Button className="red-button" onClick={onClose}>
             Close
           </Button>
         </div>
@@ -109,7 +109,7 @@ const ProfileSettings = ({ isOpen, onClose }) => {
         <Button className="green-button" disabled onClick={saveChanges}>
           Save
         </Button>
-        <Button className="red-button" disabled onClick={saveChanges}>
+        <Button className="red-button" disabled onClick={onClose}>
           Cancel
         </Button>
         {error && <div className="error-message">{error}</div>}
