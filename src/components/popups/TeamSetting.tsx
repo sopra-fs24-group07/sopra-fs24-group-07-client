@@ -16,6 +16,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
   const [error, setError] = useState("");
+  const baseURL = window.location.origin;
 
   useEffect(() => {
     const fetchUserTeam = async () => {
@@ -29,8 +30,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
         setTeamName(foundTeam.name);
         setTeamDescription(foundTeam.description);
         setTeamUUID(foundTeam.teamUUID);
-        //setInviteURL(`productiviteam.co/invitation/${foundTeam.teamUUID}`); <- TODO: use this when we actually deploy it
-        setInviteURL(`http://localhost:3000/invitation/${foundTeam.teamUUID}`);
+        setInviteURL(`${baseURL}/invitation/${foundTeam.teamUUID}`);
       } catch (error) {
         console.error("Error fetching user teams:", error);
       }
