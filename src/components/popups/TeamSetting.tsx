@@ -10,6 +10,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
   const [teamName, setTeamName] = useState();
   const [teamDescription, setTeamDescription] = useState();
   const [teamUUID, setTeamUUID] = useState();
+  const [teamMembers, setTeamMembers] = useState([]);
   const [inviteURL, setInviteURL] = useState();
   const [copied, setCopied] = useState("");
   const { teamId } = useParams();
@@ -35,7 +36,23 @@ const TeamSettings = ({ isOpen, onClose }) => {
         console.error("Error fetching user teams:", error);
       }
     };
+
     fetchUserTeam();
+
+    const fetchTeamMembers = async () => {
+      try {
+        const response = await api.get(`/api/v1/teams/${teamId}/users`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+        setTeamMembers(response.data);
+      } catch (error) {
+        console.error(`Error fetching teams users: ${handleError(error)}`);
+      }
+    };
+
+    fetchTeamMembers();
   }, []);
 
   if (!isOpen) return null;
@@ -81,6 +98,12 @@ const TeamSettings = ({ isOpen, onClose }) => {
           placeholder="Task Description..."
           disabled={!editMode}
         />
+        <h3>Team Members</h3>
+        <div>
+          {teamMembers.map((member) => (
+            <div key={member.id}>{member.username}</div>
+          ))}
+        </div>
         <div>
           <Button onClick={CopyInvitationLink}>Invite User</Button>
           {copied && (
