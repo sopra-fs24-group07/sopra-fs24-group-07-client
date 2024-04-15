@@ -18,12 +18,12 @@ function InviteLanding() {
   };
 
   useEffect(() => {
-    if (!sessionStorage.getItem("token") && !sessionStorage.getItem("id")) {
+    if (!localStorage.getItem("token") && !localStorage.getItem("id")) {
       console.log("OOPS I DID IT AGAIN");
       navigate("/login");
     } else {
-      const token = sessionStorage.getItem("token");
-      const userId = sessionStorage.getItem("id");
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("id");
 
       const JoinTeam = async () => {
         try {

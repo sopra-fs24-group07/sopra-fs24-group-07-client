@@ -13,8 +13,8 @@ const TeamSettings = ({ isOpen, onClose }) => {
   const [inviteURL, setInviteURL] = useState();
   const [copied, setCopied] = useState("");
   const { teamId } = useParams();
-  const token = sessionStorage.getItem("token");
-  const userId = sessionStorage.getItem("id");
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id");
   const [error, setError] = useState("");
 
   useEffect(() => {
