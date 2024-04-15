@@ -5,6 +5,7 @@ import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
+
 const FormField = (props) => {
   return (
     <input
@@ -77,16 +78,16 @@ const StatusComponent = () => {
   return (
     <div>
       <h3>Session: {sessionStatus}</h3>
-      <div className="timeGoalBox">
-        Time Goal:
+      <div className="sessionbox">
+        Set Goal:
         <FormField value={time} onChange={(t) => setTime(t)} />
         {sessionStatus === 'off' && (
-          <Button width="100%" onClick={() => updateStatus('on')}>
+          <Button className="green-button" width="100%" onClick={() => updateStatus('on')}>
             Start Group Session
           </Button>
         )}
         {sessionStatus === 'on' && (
-          <Button width="100%" onClick={() => updateStatus('off')}>
+          <Button className="red-button" width="100%" onClick={() => updateStatus('off')}>
             Stop Group Session
           </Button>
         )}

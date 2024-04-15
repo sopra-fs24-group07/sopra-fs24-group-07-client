@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { api, handleError } from "helpers/api";
-import { Form, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "styles/views/TeamsOverview.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/TeamDashboard.scss";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
-import { Button } from "components/ui/Button";
+import TeamDashboardSessionBox from "components/ui/TeamDashboardSessionBox";
 import KanbanBoard from "components/ui/KanbanBoard";
 import StatusComponent from "components/views/StatusComponent";
+import { Button } from "components/ui/Button";
 
 
 const TeamDashboard = () => {
@@ -90,24 +91,19 @@ const TeamDashboard = () => {
     //remove until here
   }, []);
 
-  //TODO: add startGroupSession with time goal and tasks
-  function startGroupSession() {
-    throw new Error("Function not implemented.");
-  }
-
   return (
     <BaseContainer>
       <div className="team-dashboard container">
         <h2>This is the dashboard for team {teamId}</h2>
         <div className="team-dashboard grid">
-          <TeamDashboardBox
+          <TeamDashboardSessionBox
             startRow={1}
             startColumn={1}
             endRow={2}
             endColumn={2}
           >
             <StatusComponent> </StatusComponent>
-          </TeamDashboardBox>
+          </TeamDashboardSessionBox>
           <TeamDashboardBox
             startRow={2}
             startColumn={1}
@@ -140,7 +136,12 @@ const TeamDashboard = () => {
             endColumn={5}
           >
             {/* TODO Implement Team Settings */}
-            Settings Button
+            <Button disabled className="green-button">
+              Settings
+            </Button>
+            <Button disabled className="green-button">
+              Apps
+            </Button>
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={2}
