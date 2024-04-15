@@ -79,8 +79,9 @@ const Registration = () => {
       sessionStorage.setItem("id", regResponse.data.userId); //TESTING
       if (sessionStorage.getItem("teamUUID")) {
         navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
+      } else {
+        navigate("/teams");
       }
-      navigate("/teams");
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message

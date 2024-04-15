@@ -46,8 +46,9 @@ const Login = () => {
       sessionStorage.setItem("token", user.token);
       if (sessionStorage.getItem("teamUUID")) {
         navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
+      } else {
+        navigate("/teams");
       }
-      navigate("/teams");
     } catch (error) {
       // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
       setError("Failed to login. Please check your username and password.");
