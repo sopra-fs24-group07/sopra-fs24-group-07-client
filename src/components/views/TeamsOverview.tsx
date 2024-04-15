@@ -11,9 +11,9 @@ import CreateTeam from "../popups/CreateTeam";
 const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
-  const userId = sessionStorage.getItem("id"); //todo change this depending on the api endpoint where we get the userId from the user token
+  const userId = localStorage.getItem("id"); //todo change this depending on the api endpoint where we get the userId from the user token
   // dont forget to remove id from storage on logout
   // const [userId, setUserId] = useState(null); // new user Id set function, requires api call
 
