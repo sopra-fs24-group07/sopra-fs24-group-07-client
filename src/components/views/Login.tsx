@@ -43,7 +43,7 @@ const Login = () => {
       const requestBody = JSON.stringify({ username, password });
       const response = await api.post("/api/v1/login", requestBody);
       const user = new User(response.data);
-      sessionStorage.setItem("token", user.token);
+      localStorage.setItem("token", user.token);
       if (sessionStorage.getItem("teamUUID")) {
         navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
       } else {

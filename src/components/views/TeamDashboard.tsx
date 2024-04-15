@@ -35,7 +35,7 @@ const TeamDashboard = () => {
   const [userData, setUserData] = useState([]);
   //the Tasks of a team
   const [teamTasks, setTeamTasks] = useState([]);
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
 
   //open the Inspect Task Popup

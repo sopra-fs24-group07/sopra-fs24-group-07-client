@@ -75,8 +75,8 @@ const Registration = () => {
       const responseAuth = await api.post("/api/v1/login", requestBodyAuth);
 
       const user = new User(responseAuth.data);
-      sessionStorage.setItem("token", user.token);
-      sessionStorage.setItem("id", regResponse.data.userId); //TESTING
+      localStorage.setItem("token", user.token);
+      localStorage.setItem("id", regResponse.data.userId); //TESTING
       if (sessionStorage.getItem("teamUUID")) {
         navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
       } else {
