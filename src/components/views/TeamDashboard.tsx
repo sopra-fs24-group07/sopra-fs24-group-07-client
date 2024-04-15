@@ -6,27 +6,9 @@ import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/TeamDashboard.scss";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
 import { Button } from "components/ui/Button";
-import PropTypes from "prop-types";
 import KanbanBoard from "components/ui/KanbanBoard";
 import StatusComponent from "components/views/StatusComponent";
 
-//formfield for Time Goal
-const FormField = (props) => {
-  return (
-    <input
-      className="timeInput"
-      placeholder="Enter time Goal"
-      value={props.value}
-      onChange={(e) => props.onChange(e.target.value)}
-    />
-  );
-};
-
-//check for numer as input
-FormField.propTypes = {
-  value: PropTypes.number,
-  onChange: PropTypes.func,
-};
 
 const TeamDashboard = () => {
   const { teamId } = useParams();
@@ -124,15 +106,7 @@ const TeamDashboard = () => {
             endRow={2}
             endColumn={2}
           >
-            <div className="timeGoalBox">
-              Time Goal:
-              <FormField onChange={(t) => setTime(t)} />
-              {/*TODO: enable button when Session is implemented */}
-              <Button disabled width="100%" onClick={() => startGroupSession()}>
-                Start Group Session
-              </Button>
-              <StatusComponent> </StatusComponent>
-            </div>
+            <StatusComponent> </StatusComponent>
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={2}
