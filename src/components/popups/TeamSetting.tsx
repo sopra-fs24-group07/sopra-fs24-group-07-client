@@ -17,6 +17,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
   const [error, setError] = useState("");
+  const [leaveError, setLeaveError] = useState("");
   const baseURL = window.location.origin;
 
   useEffect(() => {
@@ -64,6 +65,26 @@ const TeamSettings = ({ isOpen, onClose }) => {
     setEditMode(false);
   };
 
+  const LeaveTeam = async () => {
+    try {
+      const response = await api.delete(
+        `/api/v1/teams/${teamId}/users/${userId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      setLeaveError("Failed to leave team");
+      if (error.response.status === 401) {
+        setLeaveError("You are not authorized to join the team, sorry!");
+      } else if (error.response.status === 404) {
+        setLeaveError("You are not a member of this team anymore");
+      }
+    }
+  };
+
   const CopyInvitationLink = async () => {
     try {
       await navigator.clipboard.writeText(inviteURL);
@@ -75,6 +96,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
 
   const doClose = () => {
     setError("");
+    setLeaveError("");
     setCopied("");
     DeactivateEditMode();
     onClose();
@@ -86,7 +108,8 @@ const TeamSettings = ({ isOpen, onClose }) => {
         <Button className="red-button" onClick={doClose}>
           Close
         </Button>
-        <h2 className="TeamSetting headline">Team Settings of</h2>
+        <h2 className="TeamSetting headline">Team Settings</h2>
+        <h3 className="TeamSetting headline">Team Name</h3>
         <input
           className="TeamSetting input"
           value={teamName}
@@ -106,8 +129,15 @@ const TeamSettings = ({ isOpen, onClose }) => {
             <li key={member.id}>{member.username}</li>
           ))}
         </ul>
+        {/*TODO: add onClick={LeaveTeam} when API is ready  */}
+        <Button onClick={LeaveTeam} width="80%" className="leave-team">
+          Leave Team
+        </Button>
+        {leaveError && <div className="TeamSetting error">{leaveError}</div>}
         <div>
-          <Button onClick={CopyInvitationLink}>Invite User</Button>
+          <Button className="invite-user" onClick={CopyInvitationLink}>
+            Invite User
+          </Button>
           {copied && (
             <div>
               <input value={inviteURL} />

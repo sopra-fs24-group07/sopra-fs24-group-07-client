@@ -1,6 +1,11 @@
 @import "../theme";
 
 .TeamSetting {
+  &.error {
+    width: 100%;
+    margin-top: 0px;
+    font-size: 15px;
+  }
   &.container {
     position: fixed;
     top: 0;
@@ -45,11 +50,13 @@
   }
 
   &.headline {
+    margin-top: 10px;
     margin-bottom: 0;
   }
 
   &.list {
     margin-top: 0;
+    margin-bottom: 0;
   }
 
   &.overlay {
@@ -63,4 +70,36 @@
     justify-content: center;
     align-items: center;
   }
+}
+
+.leave-team {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: medium;
+  text-align: center;
+  height: 35px;
+  border: none;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  color: $background;
+  background-color: $paletteRed;
+  transition: all 0.3s ease;
+  box-shadow: $dropShadow;
+  padding: 6px;
+  margin-bottom: 0px;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+.invite-user {
+  margin-top: 20px;
 }
