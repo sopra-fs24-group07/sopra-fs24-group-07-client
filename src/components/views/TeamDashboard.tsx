@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { api, handleError } from "helpers/api";
 import { useParams } from "react-router-dom";
-import "styles/views/TeamsOverview.scss";
+import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
-import "styles/views/TeamDashboard.scss";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
 import TeamDashboardSessionBox from "components/ui/TeamDashboardSessionBox";
 import KanbanBoard from "components/ui/KanbanBoard";
 import StatusComponent from "components/views/StatusComponent";
-import { Button } from "components/ui/Button";
+import ProgressField from 'components/views/ProgressField';
+import "styles/views/TeamsOverview.scss";
+import "styles/views/TeamDashboard.scss";
 
-
-const TeamDashboard = () => {
-  const { teamId } = useParams();
-  const [time, setTime] = useState<string>(null);
-  //user Data, i.e. the users that are in a team
-  const [userData, setUserData] = useState([]);
-  //the Tasks of a team
-  const [teamTasks, setTeamTasks] = useState([]);
-  const token = localStorage.getItem("token");
+const TeamDashboard: React.FC = () => {
+  const { teamId } = useParams<{ teamId: string }>();
+  const [sessionStatus, setSessionStatus] = useState<string>('off');
+  const [time, setTime] = useState<string>('00:30');
+  const [userData, setUserData] = useState<any[]>([]);
+  const [teamTasks, setTeamTasks] = useState<any[]>([]);
+  const token = localStorage.getItem("token") || "";
 
   useEffect(() => {
-    //get the team members from the backend
     const fetchTeamMembers = async () => {
       try {
         const response = await api.get(`/api/v1/teams/${teamId}/users`, {
@@ -31,27 +28,10 @@ const TeamDashboard = () => {
         });
         setUserData(response.data);
       } catch (error) {
-        console.error(`Error fetching teams users: ${handleError(error)}`);
+        console.error(`Error fetching team's users: ${handleError(error)}`);
       }
     };
 
-    fetchTeamMembers();
-
-    //TODO: remove fake TeamMember, when API call ready
-    //const fakeTeamMembers = [
-    //  { id: 1, username: "Monti", name: "Timon" },
-    //  { id: 2, username: "Basil", name: "Basil" },
-    //  { id: 3, username: "Homie1", name: "Frank" },
-    //  { id: 4, username: "Steve", name: "Alex" },
-    //  { id: 5, username: "Lara", name: "Loft" },
-    //  { id: 6, username: "Mario", name: "Luigi" },
-    //  { id: 7, username: "xXDogXx", name: "Cat" },
-    //];
-    //setUserData(fakeTeamMembers);
-    //remove until here
-
-    //TODO: should I move this to KanbanBoard for refreshing?
-    //get the tasks of a team from the Backend
     const fetchTeamTasks = async () => {
       try {
         const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
@@ -61,57 +41,24 @@ const TeamDashboard = () => {
         });
         setTeamTasks(response.data);
       } catch (error) {
-        console.error(`Error fetching teams tasks: ${handleError(error)}`);
+        console.error(`Error fetching team's tasks: ${handleError(error)}`);
       }
     };
 
+    fetchTeamMembers();
     fetchTeamTasks();
-
-    //TODO: remove fake TeamTask, when API call ready
-    const fakeTeamTasks = [
-      { id: 1, title: "intro", description: "Lorem ipsum", status: "TODO" },
-      { id: 2, title: "deckblatt", description: "Lorem ipsum", status: "TODO" },
-      { id: 3, title: "lesen", description: "Lorem ipsum", status: "TODO" },
-      { id: 4, title: "malen", description: "Lorem ipsum", status: "DONE" },
-      { id: 5, title: "schreiben", description: "Lorem ipsum", status: "DONE" },
-      {
-        id: 6,
-        title: "tanzen",
-        description: "Lorem ipsum",
-        status: "IN_SESSION",
-      },
-      {
-        id: 7,
-        title: "singen",
-        description: "Lorem ipsum",
-        status: "IN_SESSION",
-      },
-    ];
-    //setTeamTasks(fakeTeamTasks);
-    //remove until here
-  }, []);
+  }, [teamId, token]);
 
   return (
     <BaseContainer>
       <div className="team-dashboard container">
         <h2>This is the dashboard for team {teamId}</h2>
         <div className="team-dashboard grid">
-          <TeamDashboardSessionBox
-            startRow={1}
-            startColumn={1}
-            endRow={2}
-            endColumn={2}
-          >
-            <StatusComponent> </StatusComponent>
+          <TeamDashboardSessionBox startRow={1} startColumn={1} endRow={2} endColumn={2}>
+            <StatusComponent sessionStatus={sessionStatus} setSessionStatus={setSessionStatus} time={time} setTime={setTime} />
           </TeamDashboardSessionBox>
-          <TeamDashboardBox
-            startRow={2}
-            startColumn={1}
-            endRow={20}
-            endColumn={2}
-          >
+          <TeamDashboardBox startRow={2} startColumn={1} endRow={20} endColumn={2}>
             <div>
-              {/* Mapping of the Team Members */}
               Team Members
               <div>
                 {userData.map((member) => (
@@ -120,40 +67,15 @@ const TeamDashboard = () => {
               </div>
             </div>
           </TeamDashboardBox>
-          <TeamDashboardBox
-            startRow={1}
-            startColumn={2}
-            endRow={2}
-            endColumn={3}
-          >
-            {/* TODO Implement Time Progress */}
-            Progress Field
+          <TeamDashboardBox startRow={1} startColumn={2} endRow={2} endColumn={3}>
+            <ProgressField sessionStatus={sessionStatus} time={time} />
           </TeamDashboardBox>
-          <TeamDashboardBox
-            startRow={1}
-            startColumn={3}
-            endRow={2}
-            endColumn={5}
-          >
-            {/* TODO Implement Team Settings */}
-            <Button disabled className="green-button">
-              Settings
-            </Button>
-            <Button disabled className="green-button">
-              Apps
-            </Button>
+          <TeamDashboardBox startRow={1} startColumn={3} endRow={2} endColumn={5}>
+            <button disabled className="green-button">Settings</button>
+            <button disabled className="green-button">Apps</button>
           </TeamDashboardBox>
-          <TeamDashboardBox
-            startRow={2}
-            startColumn={2}
-            endRow={20}
-            endColumn={5}
-          >
-            <div>
-              {/* The KanbanBoard which takes the Team Tasks */}
-              Kanban Board
-              <KanbanBoard teamTasks={teamTasks}></KanbanBoard>
-            </div>
+          <TeamDashboardBox startRow={2} startColumn={2} endRow={20} endColumn={5}>
+            <KanbanBoard teamTasks={teamTasks} />
           </TeamDashboardBox>
         </div>
       </div>

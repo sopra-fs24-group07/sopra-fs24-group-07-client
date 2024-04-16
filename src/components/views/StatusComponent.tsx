@@ -1,44 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Pusher from 'pusher-js';
 import { api } from "helpers/api";
-import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Button } from "components/ui/Button";
 
+interface StatusComponentProps {
+  sessionStatus: string;
+  setSessionStatus: (status: string) => void;
+  time: string;
+  setTime: (time: string) => void;
+}
 
-const FormField = (props) => {
-  return (
-    <input
-      className="timeInput"
-      placeholder="Enter time Goal"
-      value={props.value}
-      type="time"
-      onChange={(e) => props.onChange(e.target.value)}
-    />
-  );
-};
+const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSessionStatus, time, setTime }) => {
+  const [error, setError] = useState<string>('');
+  const { teamId } = useParams<{ teamId: string }>();
 
-//check for numer as input
-FormField.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-};
-
-const StatusComponent = () => {
-  const [sessionStatus, setSessionStatus] = useState('off');
-  const [error, setError] = useState('');
-  const { teamId } = useParams();
-  const [time, setTime] = useState('00:30');
 
   useEffect(() => {
+    /* Is required later when backend is implemented (needs changing)
+    const fetchInitialStatus = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await api.get(`/api/v1/session?teamId=${ teamId }`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+        setSessionStatus(response.data.status);
+      } catch (error) {
+        setError(`Error fetching initial session status: ${error.response ? error.response.data.message : error.message}`);
+      }
+    };
+
+    fetchInitialStatus();
+   */
+
     const pusher = new Pusher("98eb073ecf324dc1bf65", {
       cluster: 'eu',
       forceTLS: true
     });
 
     const channel = pusher.subscribe(`team-${teamId}`);
-    console.log("Channel", channel);
-    channel.bind('session-update', data => {
+    channel.bind('session-update', (data: { status: string }) => {
       setSessionStatus(data.status);
     });
 
@@ -46,22 +49,11 @@ const StatusComponent = () => {
       channel.unbind_all();
       channel.unsubscribe();
     };
-  }, [teamId]);
+  }, [teamId, setSessionStatus]);
 
-  const updateStatus = async (status) => {
+  const updateStatus = async (status: string) => {
     try {
-      let token = localStorage.getItem("token");
-
-      /* Could implement something like this
-      const currentDate = new Date();
-      const startTime = currentDate.getTime();
-
-      const requestBody = JSON.stringify({
-        teamId: teamId,
-        startTime: startTime
-      });
-       */
-
+      let token = localStorage.getItem("token") || "";
       const response = await api.post(`/api/v1/${status === 'on' ? 'session-start' : 'session-stop'}`, teamId, {
         headers: {
           Authorization: `${token}`,
@@ -71,7 +63,6 @@ const StatusComponent = () => {
       setError('');
     } catch (error) {
       setError(`Error updating status: ${error.response ? error.response.data.message : error.message}`);
-      console.error('Error updating status:', error);
     }
   };
 
@@ -80,16 +71,18 @@ const StatusComponent = () => {
       <h3>Session: {sessionStatus}</h3>
       <div className="sessionbox">
         Set Goal:
-        <FormField value={time} onChange={(t) => setTime(t)} />
-        {sessionStatus === 'off' && (
-          <Button className="green-button" width="100%" onClick={() => updateStatus('on')}>
-            Start Group Session
-          </Button>
-        )}
-        {sessionStatus === 'on' && (
-          <Button className="red-button" width="100%" onClick={() => updateStatus('off')}>
-            Stop Group Session
-          </Button>
+        <input
+          className="timeInput"
+          placeholder="Enter time Goal"
+          value={time}
+          type="time"
+          onChange={(e) => setTime(e.target.value)}
+          disabled={sessionStatus === 'on'}
+        />
+        {sessionStatus === 'off' ? (
+          <Button className="green-button" onClick={() => updateStatus('on')}>Start Group Session</Button>
+        ) : (
+          <Button className="red-button" onClick={() => updateStatus('off')}>Stop Group Session</Button>
         )}
       </div>
       {error && <p className="error-message">{error}</p>}
