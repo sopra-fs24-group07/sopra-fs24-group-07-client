@@ -16,7 +16,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
-  //const [error, setError] = useState(""); EDIT Mode: for extensibility in M4
+  const [error, setError] = useState("");
   const [leaveError, setLeaveError] = useState("");
   const baseURL = window.location.origin;
 
@@ -34,7 +34,10 @@ const TeamSettings = ({ isOpen, onClose }) => {
         setTeamUUID(foundTeam.teamUUID);
         setInviteURL(`${baseURL}/invitation/${foundTeam.teamUUID}`);
       } catch (error) {
-        console.error("Error fetching user teams:", error);
+        setError("Something went wrong. Please try again");
+        if (error.response.status === 401) {
+          setLeaveError("You are not authorized to do this");
+        }
       }
     };
 
@@ -49,7 +52,10 @@ const TeamSettings = ({ isOpen, onClose }) => {
         });
         setTeamMembers(response.data);
       } catch (error) {
-        console.error(`Error fetching teams users: ${handleError(error)}`);
+        setError("Something went wrong. Please try again");
+        if (error.response.status === 401) {
+          setLeaveError("You are not authorized to do this");
+        }
       }
     };
 
@@ -80,7 +86,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
     } catch (error) {
       setLeaveError("Failed to leave team");
       if (error.response.status === 401) {
-        setLeaveError("You are not authorized to join the team, sorry!");
+        setLeaveError("You are not authorized to leave the team, sorry!");
       } else if (error.response.status === 404) {
         setLeaveError("You are not a member of this team anymore");
       }
@@ -97,7 +103,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
   };
 
   const doClose = () => {
-    //setError(""); EDIT Mode: for extensibility in M4
+    setError("");
     setLeaveError("");
     setCopied("");
     //DeactivateEditMode(); EDIT Mode: for extensibility in M4
