@@ -118,54 +118,59 @@ const TeamSettings = ({ isOpen, onClose }) => {
         <Button className="red-button" onClick={doClose}>
           Close
         </Button>
-        <h2 className="TeamSetting headline">Team Settings</h2>
-        <h3 className="TeamSetting headline">Team Name</h3>
-        <input
-          className="TeamSetting input"
-          value={teamName}
-          placeholder="Task Title..."
-          disabled
-        />
-        <h3 className="TeamSetting headline">Team Description</h3>
-        <input
-          className="TeamSetting input"
-          value={teamDescription}
-          placeholder="Task Description..."
-          disabled
-        />
-        <h3 className="TeamSetting headline">Team Members</h3>
-        <ul className="TeamSetting list">
-          {teamMembers.map((member) => (
-            <li key={member.id}>
-              {member.username}, {member.name}
-            </li>
-          ))}
-        </ul>
-        {/*TODO: add onClick={LeaveTeam} when API is ready  */}
-        <Button width="80%" className="leave-team">
-          Leave Team
-        </Button>
-        {leaveError && <div className="TeamSetting error">{leaveError}</div>}
-        <div>
-          <Button
-            width="80%"
-            className="invite-user"
-            onClick={CopyInvitationLink}
-          >
-            Invite User
-          </Button>
-          {copied && (
+        {error && <p>{error}</p>}
+        {!error && (
+          <div>
+            <h2 className="TeamSetting headline">Team Settings</h2>
+            <h3 className="TeamSetting headline">Team Name</h3>
+            <input
+              className="TeamSetting input"
+              value={teamName}
+              placeholder="Task Title..."
+              disabled
+            />
+            <h3 className="TeamSetting headline">Team Description</h3>
+            <input
+              className="TeamSetting input"
+              value={teamDescription}
+              placeholder="Task Description..."
+              disabled
+            />
+            <h3 className="TeamSetting headline">Team Members</h3>
+            <ul className="TeamSetting list">
+              {teamMembers.map((member) => (
+                <li key={member.id}>
+                  {member.username}, {member.name}
+                </li>
+              ))}
+            </ul>
+            {/*TODO: add onClick={LeaveTeam} when API is ready  */}
+            <Button width="80%" className="leave-team">
+              Leave Team
+            </Button>
+            {leaveError && (
+              <div className="TeamSetting error">{leaveError}</div>
+            )}
             <div>
-              <input className="TeamSetting input" value={inviteURL} />
-              <br />
-              <div className="TeamSetting error">{copied}</div>
+              <Button
+                width="80%"
+                className="invite-user"
+                onClick={CopyInvitationLink}
+              >
+                Invite User
+              </Button>
+              {copied && (
+                <div>
+                  <input className="TeamSetting input" value={inviteURL} />
+                  <br />
+                  <div className="TeamSetting error">{copied}</div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* EDIT Mode: for extensibility in M4: error && <p>{error}</p> */}
+            {/* EDIT Mode: for extensibility in M4: error && <p>{error}</p> */}
 
-        {/* EDIT Mode: for extensibility in M4:
+            {/* EDIT Mode: for extensibility in M4:
         <div>
           {!editMode && (
             <Button className="green-button" onClick={ActivateEditMode}>
@@ -174,6 +179,8 @@ const TeamSettings = ({ isOpen, onClose }) => {
           )}
         </div>
         */}
+          </div>
+        )}
       </div>
     </div>
   );
