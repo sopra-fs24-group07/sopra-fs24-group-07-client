@@ -6,7 +6,7 @@ import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TeamSettings = ({ isOpen, onClose }) => {
-  const [editMode, setEditMode] = useState(false);
+  //const [editMode, setEditMode] = useState(false); EDIT Mode: for extensibility in M4
   const [teamName, setTeamName] = useState();
   const [teamDescription, setTeamDescription] = useState();
   const [teamUUID, setTeamUUID] = useState();
@@ -16,7 +16,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
-  const [error, setError] = useState("");
+  //const [error, setError] = useState(""); EDIT Mode: for extensibility in M4
   const [leaveError, setLeaveError] = useState("");
   const baseURL = window.location.origin;
 
@@ -58,12 +58,14 @@ const TeamSettings = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  /* EDIT Mode: for extensibility in M4
   const ActivateEditMode = () => {
     setEditMode(true);
   };
   const DeactivateEditMode = () => {
     setEditMode(false);
   };
+  */
 
   const LeaveTeam = async () => {
     try {
@@ -95,10 +97,10 @@ const TeamSettings = ({ isOpen, onClose }) => {
   };
 
   const doClose = () => {
-    setError("");
+    //setError(""); EDIT Mode: for extensibility in M4
     setLeaveError("");
     setCopied("");
-    DeactivateEditMode();
+    //DeactivateEditMode(); EDIT Mode: for extensibility in M4
     onClose();
   };
 
@@ -114,41 +116,48 @@ const TeamSettings = ({ isOpen, onClose }) => {
           className="TeamSetting input"
           value={teamName}
           placeholder="Task Title..."
-          disabled={!editMode}
+          disabled
         />
         <h3 className="TeamSetting headline">Team Description</h3>
         <input
           className="TeamSetting input"
           value={teamDescription}
           placeholder="Task Description..."
-          disabled={!editMode}
+          disabled
         />
         <h3 className="TeamSetting headline">Team Members</h3>
         <ul className="TeamSetting list">
           {teamMembers.map((member) => (
-            <li key={member.id}>{member.username}</li>
+            <li key={member.id}>
+              {member.username}, {member.name}
+            </li>
           ))}
         </ul>
         {/*TODO: add onClick={LeaveTeam} when API is ready  */}
-        <Button onClick={LeaveTeam} width="80%" className="leave-team">
+        <Button width="80%" className="leave-team">
           Leave Team
         </Button>
         {leaveError && <div className="TeamSetting error">{leaveError}</div>}
         <div>
-          <Button className="invite-user" onClick={CopyInvitationLink}>
+          <Button
+            width="80%"
+            className="invite-user"
+            onClick={CopyInvitationLink}
+          >
             Invite User
           </Button>
           {copied && (
             <div>
-              <input value={inviteURL} />
+              <input className="TeamSetting input" value={inviteURL} />
               <br />
-              {copied}
+              <div className="TeamSetting error">{copied}</div>
             </div>
           )}
         </div>
 
-        {error && <p>{error}</p>}
+        {/* EDIT Mode: for extensibility in M4: error && <p>{error}</p> */}
 
+        {/* EDIT Mode: for extensibility in M4:
         <div>
           {!editMode && (
             <Button className="green-button" onClick={ActivateEditMode}>
@@ -156,6 +165,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
             </Button>
           )}
         </div>
+        */}
       </div>
     </div>
   );
