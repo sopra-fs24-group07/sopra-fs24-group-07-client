@@ -19,6 +19,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
   const [error, setError] = useState("");
   const [leaveError, setLeaveError] = useState("");
   const baseURL = window.location.origin;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserTeam = async () => {
@@ -83,6 +84,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
           },
         }
       );
+      navigate("/teams");
     } catch (error) {
       setLeaveError("Failed to leave team");
       if (error.response.status === 401) {
