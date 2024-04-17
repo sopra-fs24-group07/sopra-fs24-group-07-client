@@ -1,13 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TeamDashboardSessionBox = ({
-                            startRow,
-                            startColumn,
-                            endRow,
-                            endColumn,
-                            children,
-                          }) => (
+const TeamDashboardSessionBox = ({ startRow, startColumn, endRow, endColumn, children }) => (
   <div
     className="team-dashboard box-session"
     style={{

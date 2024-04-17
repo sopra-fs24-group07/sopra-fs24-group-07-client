@@ -32,13 +32,39 @@ FormField.propTypes = {
   type: PropTypes.string,
 };
 
+const Spinner = () => (
+  <div style={{
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black background
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  }}>
+    <div style={{
+      width: "40px",
+      height: "40px",
+      border: "4px solid #f3f3f3",
+      borderTop: "4px solid #3498db",
+      borderRadius: "50%",
+      animation: "spin 1s linear infinite",
+    }} />
+  </div>
+);
+
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // NEW SET ERROR METHOD
+  const [isLoading, setIsLoading] = useState(false);
 
   const doLogin = async () => {
+    setIsLoading(true);
     try {
       const requestBody = JSON.stringify({ username, password });
       const response = await api.post("/api/v1/login", requestBody);
@@ -51,6 +77,9 @@ const Login = () => {
       // ALSO CONSOLE ERROR FOR THE ERROR: WOULD SHOW IN CONSOLE IF ERROR IS NOT JUST INVALID CREDENTIALS
       console.error("Something went wrong during the login:", error);
     }
+    setTimeout(() => {
+      setIsLoading(false);  // Set loading to false after the delay and navigation
+    }, 500);
   };
 
   return (
@@ -80,6 +109,7 @@ const Login = () => {
         </div>
         {error && <p className="login error">{error}</p>}
       </div>
+      {isLoading ? <Spinner /> : ""}
     </BaseContainer>
   );
 };
