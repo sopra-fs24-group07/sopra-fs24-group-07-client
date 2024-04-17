@@ -23,7 +23,7 @@ const VoiceChat = () => {
   const rtmUID = `${rtcUID}`;
 
   //all the tasks, from which we will get our channels
-  const [tasks, setTasks] = useState(["main", "task1", "task2"]);
+  const [tasks, setTasks] = useState(["Main", "Task 1", "Task 2"]);
 
   //the name of the room (a single task in our case)
   let roomName;
@@ -92,8 +92,8 @@ const VoiceChat = () => {
 
       //TODO: className in scss
       let newMember = `
-      <div className="speaker user-rtc-${userRtcUid}" id="${members[i]}">
-          <p>${uName}</p>
+      <div class="speaker user-rtc-${userRtcUid}" id="${members[i]}">
+          <div>${uName}</div>
       </div>`;
       document
         .getElementById("members")
@@ -133,8 +133,8 @@ const VoiceChat = () => {
     );
     //TODO: add scss
     let newMember = `
-      <div className="speaker user-rtc-${userRtcUid}" id="${MemberId}">
-          <p>${uName}</p>
+      <div class="speaker user-rtc-${userRtcUid}" id="${MemberId}">
+          <div>${uName}</div>
       </div>`;
 
     document
@@ -150,7 +150,7 @@ const VoiceChat = () => {
   useEffect(() => {
     const initChannels = async () => {
       tasks.map((breakoutRoom) => {
-        let newChannel = `<input className="rooms" name="roomname" type="submit" value="${breakoutRoom}" />`;
+        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom}" />`;
         document
           .getElementById("channels")
           .insertAdjacentHTML("beforeend", newChannel);
@@ -163,7 +163,7 @@ const VoiceChat = () => {
       e.preventDefault();
       //setRoomName(e.submitter.value.toLowerCase());
       roomName = e.submitter.value;
-      roomName = roomName.toLowerCase();
+      //roomName = roomName.toLowerCase();
 
       //TODO: change this with API call
       const userName = `Monti${userId}`;
@@ -220,20 +220,18 @@ const VoiceChat = () => {
 
   return (
     <BaseContainer className="base-container">
-      <div id="room-header">
+      <div id="room-header" className="room-header">
         <div id="room-header-controls" className="room-header-controls">
-          <h1 id="room-name"></h1>
+          <h1 className="room-name" id="room-name"></h1>
           <Button id="leave-button" className="leave-button">
             Leave
           </Button>
         </div>
       </div>
       <form id="form">
-        <label>Room Name:</label>
-        <div className="chanels" id="channels"></div>
+        <div className="rooms" id="channels"></div>
       </form>
-
-      <div id="members"></div>
+      <div className="members" id="members"></div>
     </BaseContainer>
   );
 };

@@ -1,0 +1,84 @@
+@import "../theme";
+
+.base-container {
+  margin-left: auto;
+  padding-left: 15px;
+  margin-right: auto;
+  padding-right: 15px;
+  max-width: $DESKTOP_WIDTH;
+  width: 100%;
+  color: $background;
+}
+
+.room-header {
+  align-items: center;
+  display: none;
+  width: 100%;
+}
+
+.room-name {
+  margin: 0;
+  font-size: 35px;
+  font-weight: bold;
+  width: 100%;
+}
+
+.room-header-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.rooms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+.members {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+.channel {
+  border-radius: $borderRadius;
+  border: none;
+  margin: 4px;
+  width: 100%;
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: $dropShadow;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.speaker {
+  border-radius: $borderRadius;
+  padding: 8px;
+  text-align: center;
+  width: 80%;
+  margin: 4px;
+  font-size: 25px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: $dropShadow;
+}
+
+.leave-button {
+  width: 100%;
+  background-color: $paletteRed;
+  font-size: 22px;
+  text-align: center;
+  height: 45px;
+}
