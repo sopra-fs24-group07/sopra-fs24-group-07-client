@@ -16,6 +16,8 @@ const VoiceChat = () => {
   //localStorage for userId
   const userId = localStorage.getItem("id");
 
+  const [userName, setUserName] = useState("");
+
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
   const TOKEN = null;
 
@@ -89,7 +91,6 @@ const VoiceChat = () => {
         ["uName", "userRtcUid"]
       );
 
-      //TODO: className in scss
       let newMember = `
       <div class="speaker user-rtc-${userRtcUid}" id="${members[i]}">
           <div>${uName}</div>
@@ -130,7 +131,7 @@ const VoiceChat = () => {
       MemberId,
       ["uName", "userRtcUid"]
     );
-    //TODO: add scss
+
     let newMember = `
       <div class="speaker user-rtc-${userRtcUid}" id="${MemberId}">
           <div>${uName}</div>
@@ -165,7 +166,23 @@ const VoiceChat = () => {
     };
 
     fetchTeamTasks();
+
+    const fetchUserInfo = async () => {
+      try {
+        const response = await api.get(`/api/v1/users/${userId}`, {
+          headers: {
+            Authorization: `${userToken}`,
+          },
+        });
+        setUserName(response.data.username);
+      } catch (error) {
+        console.error(`Error fetching user info: ${handleError(error)}`);
+      }
+    };
+
+    fetchUserInfo();
   }, []);
+
   useEffect(() => {
     const initChannels = async () => {
       tasks.map((breakoutRoom) => {
@@ -183,9 +200,6 @@ const VoiceChat = () => {
       //setRoomName(e.submitter.value.toLowerCase());
       roomName = e.submitter.value;
       //roomName = roomName.toLowerCase();
-
-      //TODO: change this with API call
-      const userName = `Monti${userId}`;
 
       //initalize rtc and rtm with the userName
       await initRTC();
