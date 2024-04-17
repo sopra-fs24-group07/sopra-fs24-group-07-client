@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/ui/VoiceChat.scss";
 import { useParams } from "react-router-dom";
+import { api, handleError } from "helpers/api";
 
 import AgoraRTC from "agora-rtc-sdk-ng"; //RTC for voice transmitting
 import AgoraRTM from "agora-rtm-sdk"; //RTM for Channels, Users, etc.
@@ -23,7 +24,7 @@ const VoiceChat = () => {
   const rtmUID = `${rtcUID}`;
 
   //all the tasks, from which we will get our channels
-  const [tasks, setTasks] = useState(["Main", "Task 1", "Task 2"]);
+  const [tasks, setTasks] = useState([]);
 
   //the name of the room (a single task in our case)
   let roomName;
@@ -38,8 +39,6 @@ const VoiceChat = () => {
   //the Clients, which will be initialized later
   let rtcClient;
   let rtmClient;
-
-  //API Call to get all Tasks, then filter for those IN_SESSION
 
   //API Call to get my own Username
 
@@ -148,6 +147,26 @@ const VoiceChat = () => {
   };
 
   useEffect(() => {
+    const fetchTeamTasks = async () => {
+      try {
+        const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
+          headers: {
+            Authorization: `${userToken}`,
+          },
+        });
+        let inSessionTasks = response.data.filter(
+          (task) => task.status === "TODO"
+        );
+        let inSessionTasksTitles = inSessionTasks.map((task) => task.title);
+        setTasks(inSessionTasksTitles);
+      } catch (error) {
+        console.error(`Error fetching teams tasks: ${handleError(error)}`);
+      }
+    };
+
+    fetchTeamTasks();
+  }, []);
+  useEffect(() => {
     const initChannels = async () => {
       tasks.map((breakoutRoom) => {
         let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom}" />`;
@@ -216,7 +235,7 @@ const VoiceChat = () => {
     //add EventListener
     ChannelList.addEventListener("submit", enterRoom);
     leaveButton.addEventListener("click", leaveRoom);
-  }, []);
+  }, [tasks]);
 
   return (
     <BaseContainer className="base-container">
