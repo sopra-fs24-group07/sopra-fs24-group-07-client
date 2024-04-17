@@ -48,7 +48,7 @@ const VoiceChat = () => {
 
     //add user to local attribute
     rtmClient.addOrUpdateLocalUserAttribute({
-      name: uName,
+      uName: uName,
       userRtcUid: rtcUID.toString(),
     });
 
@@ -73,7 +73,7 @@ const VoiceChat = () => {
     rtcClient.on("user-left", handleUserLeft);
 
     //TODO: does this work with channel instead of roomName
-    await rtcClient.join(APP_ID, channel, TOKEN, rtcUID);
+    await rtcClient.join(APP_ID, teamId.toString() + roomName, TOKEN, rtcUID);
 
     //track and publish local audio track
     setLocalAudioTrack(await AgoraRTC.createMicrophoneAudioTrack());
@@ -81,7 +81,25 @@ const VoiceChat = () => {
   };
 
   //TODO: is const ok or do i need let?
-  const getChannelMembers = async () => {};
+  const getChannelMembers = async () => {
+    let members = await channel.getMembers();
+
+    for (let i = 0; members.length > i; i++) {
+      let { uName, userRtcUid } = await rtmClient.getUserAttributesByKeys(
+        members[i],
+        ["name", "userRtcUid"]
+      );
+
+      //TODO: className in scss
+      let newMember = `
+      <div className="speaker user-rtc-${userRtcUid}" id="${members[i]}">
+          <p>${uName}</p>
+      </div>`;
+      document
+        .getElementById("members")
+        .insertAdjacentHTML("beforeend", newMember);
+    }
+  };
 
   return <div>VoiceChat</div>;
 };
