@@ -101,6 +101,27 @@ const VoiceChat = () => {
     }
   };
 
+  const handleUserPublished = async (user, mediaType) => {
+    //subscribe client-user
+    await rtcClient.subscribe(user, mediaType);
+    //check if correct mediaType
+    if (mediaType === "audio") {
+      setRemoteAudioTracks((prevState) => ({
+        ...prevState,
+        [user.uid]: [user.audioTrack],
+      }));
+      user.audioTrack.play();
+    }
+  };
+
+  const handleUserLeft = async (user) => {
+    setRemoteAudioTracks((prevState) => {
+      const newState = { ...prevState };
+      delete newState[user.uid];
+      return newState;
+    });
+  };
+
   return <div>VoiceChat</div>;
 };
 
