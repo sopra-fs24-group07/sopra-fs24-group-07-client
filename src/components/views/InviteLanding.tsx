@@ -10,16 +10,13 @@ function InviteLanding() {
   const { teamUUID } = useParams();
   const [error, setError] = useState("");
 
-  sessionStorage.setItem("teamUUID", teamUUID);
-  console.log(teamUUID);
-
   const goBack = () => {
     navigate("/");
   };
 
   useEffect(() => {
+    sessionStorage.setItem("teamUUID", teamUUID);
     if (!localStorage.getItem("token") && !localStorage.getItem("id")) {
-      console.log("OOPS I DID IT AGAIN");
       navigate("/login");
     } else {
       const token = localStorage.getItem("token");
@@ -51,7 +48,7 @@ function InviteLanding() {
 
       JoinTeam();
     }
-  }, []);
+  }, [sessionStorage.getItem("teamUUID")]);
 
   return (
     <div>
