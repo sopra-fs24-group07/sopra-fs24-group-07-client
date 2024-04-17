@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 
 import AgoraRTC from "agora-rtc-sdk-ng"; //RTC for voice transmitting
 import AgoraRTM from "agora-rtm-sdk"; //RTM for Channels, Users, etc.
+import BaseContainer from "./BaseContainer";
+import { Button } from "./Button";
 
 const VoiceChat = () => {
   //use Params for teamId
@@ -21,7 +23,7 @@ const VoiceChat = () => {
   const [rtmUID, setRtmUID] = useState(); // .toString()
 
   //all the tasks, from which we will get our channels
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(["main", "task1", "task2"]);
 
   //the name of the room (a single task in our case)
   const [roomName, setRoomName] = useState("");
@@ -87,7 +89,7 @@ const VoiceChat = () => {
     for (let i = 0; members.length > i; i++) {
       let { uName, userRtcUid } = await rtmClient.getUserAttributesByKeys(
         members[i],
-        ["name", "userRtcUid"]
+        ["uName", "userRtcUid"]
       );
 
       //TODO: className in scss
@@ -129,7 +131,7 @@ const VoiceChat = () => {
   const handleMemberJoined = async (MemberId) => {
     let { uName, userRtcUid } = await rtmClient.getUserAttributesByKeys(
       MemberId,
-      ["name", "userRtcUid"]
+      ["uName", "userRtcUid"]
     );
     //TODO: add scss
     let newMember = `
@@ -207,9 +209,31 @@ const VoiceChat = () => {
 
     //just shortcuts
     const ChannelList = document.getElementById("form");
+    const leaveButton = document.getElementById("leave-button");
+
+    //add EventListener
+    ChannelList.addEventListener("submit", enterRoom);
+    leaveButton.addEventListener("click", leaveRoom);
   }, []);
 
-  return <div>VoiceChat</div>;
+  return (
+    <BaseContainer className="base-container">
+      <div id="room-header">
+        <div id="room-header-controls">
+          <h1 id="room-name"></h1>
+          <Button style={{ width: "100%" }} id="leave-button">
+            Leave
+          </Button>
+        </div>
+      </div>
+      <form id="form">
+        <label>Room Name:</label>
+        <div className="chanels" id="channels"></div>
+      </form>
+
+      <div id="members"></div>
+    </BaseContainer>
+  );
 };
 
 export default VoiceChat;
