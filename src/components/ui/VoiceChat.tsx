@@ -156,6 +156,30 @@ const VoiceChat = () => {
           .insertAdjacentHTML("beforeend", newChannel);
       });
     };
+
+    const enterRoom = async (e) => {
+      e.preventDefault();
+      setRoomName(e.submitter.value.toLowerCase());
+
+      //TODO: change this with API call
+      const userName = "Monti";
+
+      //initalize rtc and rtm with the userName
+      await initRTC();
+      await initRTM(userName);
+
+      //hide the channels
+      ChannelList.style.display = "none";
+      //show the voice room controls
+      document.getElementById("room-header").style.display = "flex";
+      //display the room-name
+      document.getElementById("room-name").innerHTML = roomName;
+      //leave the channel if windows is closed
+      window.addEventListener("beforeunload", leaveRoom);
+    };
+
+    //just shortcuts
+    const ChannelList = document.getElementById("form");
   }, []);
 
   return <div>VoiceChat</div>;
