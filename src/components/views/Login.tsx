@@ -60,6 +60,9 @@ const Login = () => {
   return (
     <BaseContainer>
       <div className="login container">
+        {sessionStorage.getItem("teamUUID") && (
+          <p>Please Login to join the team</p>
+        )}
         <div className="login form">
           <FormField label="Username" value={username} onChange={setUsername} />{" "}
           {/* FORMFIELD FOR USERNAME, NO VALIDATION FROM FRONTEND */}

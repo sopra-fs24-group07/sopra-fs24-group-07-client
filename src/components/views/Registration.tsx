@@ -101,6 +101,9 @@ const Registration = () => {
   return (
     <BaseContainer>
       <div className="register container">
+        {sessionStorage.getItem("teamUUID") && (
+          <p>Please Register to join the team</p>
+        )}
         <div className="register form">
           <FormField
             label="Username"
