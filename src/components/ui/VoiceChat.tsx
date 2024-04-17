@@ -178,6 +178,33 @@ const VoiceChat = () => {
       window.addEventListener("beforeunload", leaveRoom);
     };
 
+    const leaveRoom = async () => {
+      localAudioTrack.stop();
+      localAudioTrack.close();
+
+      //leave client
+      rtcClient.unpublish();
+      rtcClient.leave();
+
+      //also leave via rtm
+      leaveRtmChannel();
+
+      //display channels
+      document.getElementById("form").style.display = "block";
+      //remove channel control buttons
+      document.getElementById("room-header").style.display = "none";
+      //remove the room name
+      document.getElementById("room-name").innerHTML = "";
+      //empty members
+      document.getElementById("members").innerHTML = "";
+    };
+
+    //leave rtm Client
+    let leaveRtmChannel = async () => {
+      await channel.leave();
+      await rtmClient.logout();
+    };
+
     //just shortcuts
     const ChannelList = document.getElementById("form");
   }, []);
