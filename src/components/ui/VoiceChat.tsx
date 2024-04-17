@@ -19,25 +19,25 @@ const VoiceChat = () => {
   const TOKEN = null;
 
   //IDs for identification, which we will use the userId for
-  const [rtcUID, setRtcUID] = useState();
-  const [rtmUID, setRtmUID] = useState(); // .toString()
+  const rtcUID = userId;
+  const rtmUID = `${rtcUID}`;
 
   //all the tasks, from which we will get our channels
   const [tasks, setTasks] = useState(["main", "task1", "task2"]);
 
   //the name of the room (a single task in our case)
-  const [roomName, setRoomName] = useState("");
+  let roomName;
 
   //the published channel, we use teamId + roomName to make individual channels
-  const [channel, setChannel] = useState("");
+  let channel;
 
   //local AudioTrack for myself and remoteAudioTracks of the others
-  const [localAudioTrack, setLocalAudioTrack] = useState(null);
+  let localAudioTrack;
   const [remoteAudioTracks, setRemoteAudioTracks] = useState({});
 
   //the Clients, which will be initialized later
-  const [rtcClient, setRtcClient] = useState(null);
-  const [rtmClient, setRtmClient] = useState(null);
+  let rtcClient;
+  let rtmClient;
 
   //API Call to get all Tasks, then filter for those IN_SESSION
 
@@ -45,18 +45,17 @@ const VoiceChat = () => {
 
   const initRTM = async (uName) => {
     //init rtm client with app ID
-    setRtmClient(AgoraRTM.createInstance(APP_ID));
+    rtmClient = AgoraRTM.createInstance(APP_ID);
     await rtmClient.login({ uid: rtmUID, token: TOKEN });
 
     //add user to local attribute
-    rtmClient.addOrUpdateLocalUserAttribute({
+    rtmClient.addOrUpdateLocalUserAttributes({
       uName: uName,
       userRtcUid: rtcUID.toString(),
     });
 
     //create the channel with roomName, teamId and them join
-    //TODO: can i concatinate it like that?
-    setChannel(teamId.toString() + roomName);
+    channel = rtmClient.createChannel(teamId.toString() + roomName);
     await channel.join();
 
     // get the members that are in a channel
@@ -68,21 +67,20 @@ const VoiceChat = () => {
   };
 
   const initRTC = async () => {
-    setRtcClient(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
+    rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     //handle user join/leave
     rtcClient.on("user-published", handleUserPublished);
     rtcClient.on("user-left", handleUserLeft);
 
-    //TODO: does this work with channel instead of roomName
     await rtcClient.join(APP_ID, teamId.toString() + roomName, TOKEN, rtcUID);
 
     //track and publish local audio track
-    setLocalAudioTrack(await AgoraRTC.createMicrophoneAudioTrack());
+    localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     rtcClient.publish(localAudioTrack);
   };
 
-  //TODO: is const ok or do i need let?
+  //get the users that are in the channel
   const getChannelMembers = async () => {
     let members = await channel.getMembers();
 
@@ -159,12 +157,16 @@ const VoiceChat = () => {
       });
     };
 
+    initChannels();
+
     const enterRoom = async (e) => {
       e.preventDefault();
-      setRoomName(e.submitter.value.toLowerCase());
+      //setRoomName(e.submitter.value.toLowerCase());
+      roomName = e.submitter.value;
+      roomName = roomName.toLowerCase();
 
       //TODO: change this with API call
-      const userName = "Monti";
+      const userName = `Monti${userId}`;
 
       //initalize rtc and rtm with the userName
       await initRTC();
@@ -219,9 +221,9 @@ const VoiceChat = () => {
   return (
     <BaseContainer className="base-container">
       <div id="room-header">
-        <div id="room-header-controls">
+        <div id="room-header-controls" className="room-header-controls">
           <h1 id="room-name"></h1>
-          <Button style={{ width: "100%" }} id="leave-button">
+          <Button id="leave-button" className="leave-button">
             Leave
           </Button>
         </div>
