@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/ui/VoiceChat.scss";
 import { useParams } from "react-router-dom";
 
@@ -146,6 +146,17 @@ const VoiceChat = () => {
   const handleMemberLeft = async (MemberId) => {
     document.getElementById(MemberId).remove();
   };
+
+  useEffect(() => {
+    const initChannels = async () => {
+      tasks.map((breakoutRoom) => {
+        let newChannel = `<input className="rooms" name="roomname" type="submit" value="${breakoutRoom}" />`;
+        document
+          .getElementById("channels")
+          .insertAdjacentHTML("beforeend", newChannel);
+      });
+    };
+  }, []);
 
   return <div>VoiceChat</div>;
 };
