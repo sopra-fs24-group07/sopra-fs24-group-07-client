@@ -101,6 +101,7 @@ const VoiceChat = () => {
     }
   };
 
+  //audio handling for joining user (rtc)
   const handleUserPublished = async (user, mediaType) => {
     //subscribe client-user
     await rtcClient.subscribe(user, mediaType);
@@ -114,12 +115,36 @@ const VoiceChat = () => {
     }
   };
 
+  //delete user's audioTrack if they leaves (rtc)
   const handleUserLeft = async (user) => {
+    //remove audiotrack of the user
     setRemoteAudioTracks((prevState) => {
       const newState = { ...prevState };
       delete newState[user.uid];
       return newState;
     });
+  };
+
+  //handle a user joining (rtm)
+  const handleMemberJoined = async (MemberId) => {
+    let { uName, userRtcUid } = await rtmClient.getUserAttributesByKeys(
+      MemberId,
+      ["name", "userRtcUid"]
+    );
+    //TODO: add scss
+    let newMember = `
+      <div className="speaker user-rtc-${userRtcUid}" id="${MemberId}">
+          <p>${uName}</p>
+      </div>`;
+
+    document
+      .getElementById("members")
+      .insertAdjacentHTML("beforeend", newMember);
+  };
+
+  //handle a user leaving (rtm)
+  const handleMemberLeft = async (MemberId) => {
+    document.getElementById(MemberId).remove();
   };
 
   return <div>VoiceChat</div>;
