@@ -44,6 +44,7 @@ const Login = () => {
       const response = await api.post("/api/v1/login", requestBody);
       const user = new User(response.data);
       localStorage.setItem("token", user.token);
+      localStorage.setItem("id", user.userId);
       navigate("/teams");
     } catch (error) {
       // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
