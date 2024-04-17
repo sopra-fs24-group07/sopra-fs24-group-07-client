@@ -80,6 +80,9 @@ const VoiceChat = () => {
     rtcClient.publish(localAudioTrack);
   };
 
+  //TODO: is const ok or do i need let?
+  const getChannelMembers = async () => {};
+
   return <div>VoiceChat</div>;
 };
 
