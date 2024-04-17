@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Pusher from 'pusher-js';
-import { api } from "helpers/api";
+import React, { useState, useEffect } from "react";
+import Pusher from "pusher-js";
 import { useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
+import { api } from "helpers/api";
+import PropTypes from "prop-types";
 
 interface StatusComponentProps {
   sessionStatus: string;
@@ -12,36 +13,45 @@ interface StatusComponentProps {
 }
 
 const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSessionStatus, time, setTime }) => {
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   const { teamId } = useParams<{ teamId: string }>();
 
-
   useEffect(() => {
-    /* Is required later when backend is implemented (needs changing)
-    const fetchInitialStatus = async () => {
+    const fetchStatus = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await api.get(`/api/v1/session?teamId=${ teamId }`, {
-          headers: {
-            Authorization: `${token}`,
-          },
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const response = await api.get(`/api/v1/teams/${teamId}/sessions`, {
+          headers: { Authorization: `${token}` },
         });
-        setSessionStatus(response.data.status);
+
+        const sessions = response.data;
+        if (!sessions || sessions.length === 0) {
+          setSessionStatus("off");
+          return;
+        }
+
+        const mostRecentSession = sessions[0];
+        const status = mostRecentSession.startDateTime && !mostRecentSession.endDateTime ? "on" : "off";
+        setSessionStatus(status);
       } catch (error) {
-        setError(`Error fetching initial session status: ${error.response ? error.response.data.message : error.message}`);
+        setError(`Error fetching initial session status: ${error.response?.data?.message || error.message}`);
       }
     };
 
-    fetchInitialStatus();
-   */
+    fetchStatus();
 
-    const pusher = new Pusher("98eb073ecf324dc1bf65", {
-      cluster: 'eu',
-      forceTLS: true
+    const pusherKey = "98eb073ecf324dc1bf65"; // Consider using environment variables here
+    const pusher = new Pusher(pusherKey, {
+      cluster: "eu",
+      forceTLS: true,
     });
 
     const channel = pusher.subscribe(`team-${teamId}`);
-    channel.bind('session-update', (data: { status: string }) => {
+    channel.bind("session-update", (data: { status: string }) => {
       setSessionStatus(data.status);
     });
 
@@ -53,16 +63,27 @@ const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSes
 
   const updateStatus = async (status: string) => {
     try {
-      let token = localStorage.getItem("token") || "";
-      const response = await api.post(`/api/v1/${status === 'on' ? 'session-start' : 'session-stop'}`, teamId, {
-        headers: {
-          Authorization: `${token}`,
-        },
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Authentication token is missing");
+        return;
+      }
+
+      const [hours, minutes] = time.split(":").map(Number);
+      const totalMinutes = hours * 60 + minutes;
+      const requestBody = { goalMinutes: totalMinutes };
+      const endpoint = `/api/v1/teams/${teamId}/sessions`;
+      const method = status === "on" ? "post" : "patch";
+
+      await api[method](endpoint, requestBody, {
+        headers: { Authorization: `${token}` },
       });
-      console.log('Status updated successfully to:', status);
-      setError('');
+
+      console.log(`Status updated successfully to: ${status}`);
+      setSessionStatus(status);
+      setError("");
     } catch (error) {
-      setError(`Error updating status: ${error.response ? error.response.data.message : error.message}`);
+      setError(`Error updating status: ${error.response?.data?.message || error.message}`);
     }
   };
 
@@ -73,21 +94,28 @@ const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSes
         Set Goal:
         <input
           className="timeInput"
-          placeholder="Enter time Goal"
+          placeholder="Enter time goal"
           value={time}
           type="time"
           onChange={(e) => setTime(e.target.value)}
-          disabled={sessionStatus === 'on'}
+          disabled={sessionStatus === "on"}
         />
-        {sessionStatus === 'off' ? (
-          <Button className="green-button" onClick={() => updateStatus('on')}>Start Group Session</Button>
+        {sessionStatus === "off" ? (
+          <Button className="green-button" onClick={() => updateStatus("on")}>Start Group Session</Button>
         ) : (
-          <Button className="red-button" onClick={() => updateStatus('off')}>Stop Group Session</Button>
+          <Button className="red-button" onClick={() => updateStatus("off")}>Stop Group Session</Button>
         )}
       </div>
       {error && <p className="error-message">{error}</p>}
     </div>
   );
+};
+
+StatusComponent.propTypes = {
+  sessionStatus: PropTypes.string.isRequired,
+  setSessionStatus: PropTypes.func.isRequired,
+  time: PropTypes.string,
+  setTime: PropTypes.func,
 };
 
 export default StatusComponent;
