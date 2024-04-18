@@ -105,8 +105,8 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
         });
 
         const channel = pusher.subscribe(`team-${teamId}`);
-        console.log("Channel", channel);
         channel.bind("session-update", (data: { status: string }) => {
+          window.location.reload();
           setSessionStatus(data.status);
         });
 
@@ -156,10 +156,12 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
 
       console.log(`Status updated successfully to: ${status}`);
       setSessionStatus(status);
-      setStartDateTime(response.data.startDateTime);
+      const startTime = response.data.startDateTime;
+      setStartDateTime(startTime);
       const formattedTime = minutesToTime(response.data.goalMinutes || 30);
-      setGoalMinutes(formattedTime);
-
+      if (status === "on") {
+        setGoalMinutes(formattedTime);
+      }
       setError("");
     } catch (error) {
       setError(
@@ -188,10 +190,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
             Start Group Session
           </Button>
         ) : (
-          <Button
-            className="red-button"
-            onClick={() => updateStatus("off", window.location.reload())}
-          >
+          <Button className="red-button" onClick={() => updateStatus("off")}>
             Stop Group Session
           </Button>
         )}
