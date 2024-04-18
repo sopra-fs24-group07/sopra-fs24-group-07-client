@@ -40,14 +40,6 @@ let remoteAudioTracks = {};
 let rtcClient;
 let rtmClient;
 
-//do this with API call!!!
-let userName;
-const fetchUserInfo = async () => {
-  userName = `monti${userId}`;
-};
-
-//API Call to get my own Username
-
 const initRTM = async (name) => {
   //init rtm client with app ID
   rtmClient = AgoraRTM.createInstance(APP_ID);
@@ -149,8 +141,6 @@ function VoiceChat() {
   setIds(localStorage.getItem("id"));
   const [tasks, setTasks] = useState([]);
 
-  fetchUserInfo();
-
   useEffect(() => {
     const fetchUserTasks = async () => {
       console.log(teamId);
@@ -177,6 +167,20 @@ function VoiceChat() {
       //setRoomName(e.submitter.value.toLowerCase());
       roomName = e.submitter.value;
       roomName = roomName.toLowerCase();
+
+      let userName = "";
+      //get the userName
+      try {
+        const response = await api.get(`/api/v1/users/${userId}`, {
+          headers: {
+            Authorization: `${userToken}`,
+          },
+        });
+        userName = response.data.username;
+      } catch (error) {
+        userName = `test - ${userId}`;
+        console.error(`Error fetching user info: ${handleError(error)}`);
+      }
 
       //initalize rtc and rtm with the userName
       await initRTC();
