@@ -28,21 +28,52 @@ FormField.propTypes = {
   error: PropTypes.string,
 };
 
+const Spinner = () => (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black background
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 1000,
+    }}
+  >
+    <div
+      style={{
+        width: "40px",
+        height: "40px",
+        border: "4px solid #f3f3f3",
+        borderTop: "4px solid #3498db",
+        borderRadius: "50%",
+        animation: "spin 1s linear infinite",
+      }}
+    />
+  </div>
+);
+
 const Registration = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [repPassword, setRepPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({
     username: "",
     name: "",
     password: "",
+    repPassword: "",
   });
   const [generalError, setGeneralError] = useState("");
 
   const validateForm = () => {
     let isValid = true;
-    let errors = { username: "", name: "", password: "" };
+    let errors = { username: "", name: "", password: "", repPassword: "" };
 
     if (!username) {
       errors.username = "Username is required";
@@ -54,17 +85,26 @@ const Registration = () => {
       isValid = false;
     }
 
+    if (repPassword !== password) {
+      errors.password = "The passwords do not match";
+      isValid = false;
+    }
+
     if (!password || password.length < 8) {
       errors.password = "Password must be at least 8 characters long";
       isValid = false;
     }
 
     setErrors(errors);
+    setTimeout(() => {
+      setIsLoading(false); // Set loading to false after the delay and navigation
+    }, 500);
 
     return isValid;
   };
 
   const doRegister = async () => {
+    setIsLoading(true);
     if (!validateForm()) return;
 
     try {
@@ -77,7 +117,11 @@ const Registration = () => {
       const user = new User(responseAuth.data);
       localStorage.setItem("token", user.token);
       localStorage.setItem("id", regResponse.data.userId); //TESTING
-      navigate("/teams");
+      if (sessionStorage.getItem("teamUUID")) {
+        navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
+      } else {
+        navigate("/teams");
+      }
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
@@ -97,6 +141,9 @@ const Registration = () => {
   return (
     <BaseContainer>
       <div className="register container">
+        {sessionStorage.getItem("teamUUID") && (
+          <p>Please Register to join the team</p>
+        )}
         <div className="register form">
           <FormField
             label="Username"
@@ -114,12 +161,18 @@ const Registration = () => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
+          <FormField
+            label="Repeat Password"
+            value={repPassword}
+            type="password"
+            onChange={(e) => setRepPassword(e.target.value)}
+          />
           <div className="register button-container">
             <Button width="50%" onClick={() => navigate("/login")}>
               Login
             </Button>
             <Button
-              disabled={!username || !name || !password}
+              disabled={!username || !name || !password || !repPassword}
               width="50%"
               onClick={doRegister}
             >
@@ -133,6 +186,7 @@ const Registration = () => {
           </div>
         ))}
       </div>
+      {isLoading ? <Spinner /> : ""}
     </BaseContainer>
   );
 };
