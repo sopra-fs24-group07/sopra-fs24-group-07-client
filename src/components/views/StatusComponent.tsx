@@ -98,6 +98,22 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
               new Date().toISOString().substring(11, 16)
           );
         }
+
+        const pusher = new Pusher("98eb073ecf324dc1bf65", {
+          cluster: "eu",
+          forceTLS: true,
+        });
+
+        const channel = pusher.subscribe(`team-${teamId}`);
+        channel.bind("session-update", (data: { status: string }) => {
+          window.location.reload();
+          setSessionStatus(data.status);
+        });
+
+        return () => {
+          channel.unbind_all();
+          channel.unsubscribe();
+        };
       } catch (error) {
         setError(
           `Error fetching initial session status: ${
@@ -140,10 +156,12 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
 
       console.log(`Status updated successfully to: ${status}`);
       setSessionStatus(status);
-      setStartDateTime(response.data.startDateTime);
+      const startTime = response.data.startDateTime;
+      setStartDateTime(startTime);
       const formattedTime = minutesToTime(response.data.goalMinutes || 30);
-      setGoalMinutes(formattedTime);
-
+      if (status === "on") {
+        setGoalMinutes(formattedTime);
+      }
       setError("");
     } catch (error) {
       setError(
@@ -172,10 +190,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
             Start Group Session
           </Button>
         ) : (
-          <Button
-            className="red-button"
-            onClick={() => updateStatus("off", window.location.reload())}
-          >
+          <Button className="red-button" onClick={() => updateStatus("off")}>
             Stop Group Session
           </Button>
         )}

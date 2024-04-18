@@ -87,6 +87,10 @@ const TeamDashboard: React.FC = () => {
     fetchTeamName();
   }, [teamId, token]);
 
+  console.log("XXX", startDateTime);
+  console.log("XXX", goalMinutes);
+  console.log("XXX", sessionStatus);
+
   return (
     <BaseContainer>
       <div className="team-dashboard container">
@@ -167,9 +171,9 @@ const TeamDashboard: React.FC = () => {
               isOpen={isTeamSettingsOpen}
               onClose={closeTeamSettings}
             />
-            <button disabled className="green-button">
+            <Button className="green-button" disabled>
               Apps
-            </button>
+            </Button>
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={2}
