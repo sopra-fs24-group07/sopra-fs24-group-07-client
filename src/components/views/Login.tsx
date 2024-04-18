@@ -43,7 +43,7 @@ const Spinner = () => (
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 1000,
+    zIndex: 1000 // Ensures it is on top of other elements
   }}>
     <div style={{
       width: "40px",
@@ -51,7 +51,7 @@ const Spinner = () => (
       border: "4px solid #f3f3f3",
       borderTop: "4px solid #3498db",
       borderRadius: "50%",
-      animation: "spin 1s linear infinite",
+      animation: "spin 1s linear infinite"
     }} />
   </div>
 );
@@ -90,9 +90,6 @@ const Login = () => {
   return (
     <BaseContainer>
       <div className="login container">
-        {sessionStorage.getItem("teamUUID") && (
-          <p>Please Login to join the team</p>
-        )}
         <div className="login form">
           <FormField label="Username" value={username} onChange={setUsername} />{" "}
           {/* FORMFIELD FOR USERNAME, NO VALIDATION FROM FRONTEND */}
