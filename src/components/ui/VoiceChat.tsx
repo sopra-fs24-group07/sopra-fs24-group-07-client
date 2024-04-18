@@ -140,6 +140,8 @@ function VoiceChat() {
   const userToken = localStorage.getItem("token");
   setIds(localStorage.getItem("id"));
   const [tasks, setTasks] = useState([]);
+  let micMuted = false;
+  let [buttonText, setButtonText] = useState("Mute");
 
   useEffect(() => {
     const fetchUserTasks = async () => {
@@ -223,13 +225,21 @@ function VoiceChat() {
       await rtmClient.logout();
     };
 
+    const toggleMic = async () => {
+      micMuted = !micMuted;
+      setButtonText(micMuted ? "Unmute" : "Mute");
+      localAudioTrack.setMuted(micMuted);
+    };
+
     //just shortcuts
     const ChannelList = document.getElementById("form");
     const leaveButton = document.getElementById("leave-button");
+    const muteButton = document.getElementById("mute-button");
 
     //add EventListener
     ChannelList.addEventListener("submit", enterRoom);
     leaveButton.addEventListener("click", leaveRoom);
+    muteButton.addEventListener("click", toggleMic);
   }, [teamId]);
 
   useEffect(() => {
@@ -252,6 +262,9 @@ function VoiceChat() {
           <h1 className="room-name" id="room-name"></h1>
           <Button id="leave-button" className="leave-button">
             Leave
+          </Button>
+          <Button className="mute-button" id="mute-button">
+            {buttonText}
           </Button>
         </div>
       </div>
