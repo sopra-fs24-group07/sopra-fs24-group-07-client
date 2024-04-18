@@ -77,7 +77,11 @@ const Registration = () => {
       const user = new User(responseAuth.data);
       localStorage.setItem("token", user.token);
       localStorage.setItem("id", regResponse.data.userId); //TESTING
-      navigate("/teams");
+      if (sessionStorage.getItem("teamUUID")) {
+        navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
+      } else {
+        navigate("/teams");
+      }
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
@@ -97,6 +101,9 @@ const Registration = () => {
   return (
     <BaseContainer>
       <div className="register container">
+        {sessionStorage.getItem("teamUUID") && (
+          <p>Please Register to join the team</p>
+        )}
         <div className="register form">
           <FormField
             label="Username"

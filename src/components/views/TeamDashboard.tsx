@@ -8,6 +8,7 @@ import TeamDashboardBox from "components/ui/TeamDashboardBox";
 import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
 import KanbanBoard from "components/ui/KanbanBoard";
+import TeamSettings from "components/popups/TeamSetting";
 
 //formfiel for Time Goal
 const FormField = (props) => {
@@ -35,6 +36,17 @@ const TeamDashboard = () => {
   //the Tasks of a team
   const [teamTasks, setTeamTasks] = useState([]);
   const token = localStorage.getItem("token");
+  const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
+
+  //open the Inspect Task Popup
+  const openTeamSettings = () => {
+    setTeamSettingsOpen(true);
+  };
+
+  //close the Inspect Task Popup
+  const closeTeamSettings = () => {
+    setTeamSettingsOpen(false);
+  };
 
   useEffect(() => {
     //get the team members from the backend
@@ -53,19 +65,6 @@ const TeamDashboard = () => {
 
     fetchTeamMembers();
 
-    //TODO: remove fake TeamMember, when API call ready
-    //const fakeTeamMembers = [
-    //  { id: 1, username: "Monti", name: "Timon" },
-    //  { id: 2, username: "Basil", name: "Basil" },
-    //  { id: 3, username: "Homie1", name: "Frank" },
-    //  { id: 4, username: "Steve", name: "Alex" },
-    //  { id: 5, username: "Lara", name: "Loft" },
-    //  { id: 6, username: "Mario", name: "Luigi" },
-    //  { id: 7, username: "xXDogXx", name: "Cat" },
-    //];
-    //setUserData(fakeTeamMembers);
-    //remove until here
-
     //TODO: should I move this to KanbanBoard for refreshing?
     //get the tasks of a team from the Backend
     const fetchTeamTasks = async () => {
@@ -82,29 +81,6 @@ const TeamDashboard = () => {
     };
 
     fetchTeamTasks();
-
-    //TODO: remove fake TeamTask, when API call ready
-    const fakeTeamTasks = [
-      { id: 1, title: "intro", description: "Lorem ipsum", status: "TODO" },
-      { id: 2, title: "deckblatt", description: "Lorem ipsum", status: "TODO" },
-      { id: 3, title: "lesen", description: "Lorem ipsum", status: "TODO" },
-      { id: 4, title: "malen", description: "Lorem ipsum", status: "DONE" },
-      { id: 5, title: "schreiben", description: "Lorem ipsum", status: "DONE" },
-      {
-        id: 6,
-        title: "tanzen",
-        description: "Lorem ipsum",
-        status: "IN_SESSION",
-      },
-      {
-        id: 7,
-        title: "singen",
-        description: "Lorem ipsum",
-        status: "IN_SESSION",
-      },
-    ];
-    //setTeamTasks(fakeTeamTasks);
-    //remove until here
   }, []);
 
   //TODO: add startGroupSession with time goal and tasks
@@ -164,7 +140,14 @@ const TeamDashboard = () => {
             endColumn={5}
           >
             {/* TODO Implement Team Settings */}
-            Settings Button
+            <div>
+              <Button onClick={openTeamSettings}>Team Settings</Button>
+            </div>
+
+            <TeamSettings
+              isOpen={isTeamSettingsOpen}
+              onClose={closeTeamSettings}
+            />
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={2}
