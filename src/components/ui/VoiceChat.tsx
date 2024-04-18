@@ -8,144 +8,143 @@ import AgoraRTM from "agora-rtm-sdk"; //RTM for Channels, Users, etc.
 import BaseContainer from "./BaseContainer";
 import { Button } from "./Button";
 
-//localStorage for userId
-let userId;
+function VoiceChat() {
+  const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
+  const TOKEN = null;
 
-const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
-const TOKEN = null;
+  //IDs for identification, which we will use the userId for
+  let rtcUID;
+  let rtmUID;
+  let userId;
 
-//IDs for identification, which we will use the userId for
-let rtcUID;
-let rtmUID;
+  const setIds = async () => {
+    rtcUID = localStorage.getItem("id");
+    rtmUID = localStorage.getItem("id");
+    userId = localStorage.getItem("id");
+  };
 
-const setIds = async (uid) => {
-  rtcUID = uid;
-  rtmUID = uid;
-  userId = uid;
-};
+  //all the tasks, from which we will get our channels
 
-//all the tasks, from which we will get our channels
+  //the name of the room (a single task in our case)
+  let roomName;
 
-//the name of the room (a single task in our case)
-let roomName;
+  //the published channel, we use teamId + roomName to make individual channels
+  let channel;
 
-//the published channel, we use teamId + roomName to make individual channels
-let channel;
+  //local AudioTrack for myself and remoteAudioTracks of the others
+  let localAudioTrack;
+  let remoteAudioTracks = {};
 
-//local AudioTrack for myself and remoteAudioTracks of the others
-let localAudioTrack;
-let remoteAudioTracks = {};
+  //the Clients, which will be initialized later
+  let rtcClient;
+  let rtmClient;
 
-//the Clients, which will be initialized later
-let rtcClient;
-let rtmClient;
+  const initRTM = async (teamId, name) => {
+    //init rtm client with app ID
+    rtmClient = AgoraRTM.createInstance(APP_ID);
+    await rtmClient.login({ uid: rtmUID, token: TOKEN });
 
-const initRTM = async (teamId, name) => {
-  //init rtm client with app ID
-  rtmClient = AgoraRTM.createInstance(APP_ID);
-  await rtmClient.login({ uid: rtmUID, token: TOKEN });
+    //add user to local attribute
+    rtmClient.addOrUpdateLocalUserAttributes({
+      name: name,
+      userRtcUid: rtcUID.toString(),
+    });
 
-  //add user to local attribute
-  rtmClient.addOrUpdateLocalUserAttributes({
-    name: name,
-    userRtcUid: rtcUID.toString(),
-  });
+    //create the channel with roomName, teamId and them join
+    channel = rtmClient.createChannel(roomName + teamId.toString());
+    await channel.join();
 
-  //create the channel with roomName, teamId and them join
-  channel = rtmClient.createChannel(roomName + teamId.toString());
-  await channel.join();
+    // get the members that are in a channel
+    getChannelMembers();
 
-  // get the members that are in a channel
-  getChannelMembers();
+    //what happens if a user joins/leaves
+    channel.on("MemberJoined", handleMemberJoined);
+    channel.on("MemberLeft", handleMemberLeft);
+  };
 
-  //what happens if a user joins/leaves
-  channel.on("MemberJoined", handleMemberJoined);
-  channel.on("MemberLeft", handleMemberLeft);
-};
+  const initRTC = async (teamId) => {
+    rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
-const initRTC = async (teamId) => {
-  rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+    //handle user join/leave
+    rtcClient.on("user-published", handleUserPublished);
+    rtcClient.on("user-left", handleUserLeft);
 
-  //handle user join/leave
-  rtcClient.on("user-published", handleUserPublished);
-  rtcClient.on("user-left", handleUserLeft);
+    await rtcClient.join(APP_ID, roomName + teamId.toString(), TOKEN, rtcUID);
 
-  await rtcClient.join(APP_ID, roomName + teamId.toString(), TOKEN, rtcUID);
+    //track and publish local audio track
+    localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+    rtcClient.publish(localAudioTrack);
+  };
 
-  //track and publish local audio track
-  localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-  rtcClient.publish(localAudioTrack);
-};
+  //get the users that are in the channel
+  const getChannelMembers = async () => {
+    let members = await channel.getMembers();
 
-//get the users that are in the channel
-let getChannelMembers = async () => {
-  let members = await channel.getMembers();
+    for (let i = 0; members.length > i; i++) {
+      let { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(
+        members[i],
+        ["name", "userRtcUid"]
+      );
 
-  for (let i = 0; members.length > i; i++) {
+      let newMember = `
+      <div class="speaker user-rtc-${userRtcUid}" id="${members[i]}">
+          <div>${name}</div>
+      </div>`;
+      document
+        .getElementById("members")
+        .insertAdjacentHTML("beforeend", newMember);
+    }
+  };
+
+  //audio handling for joining user (rtc)
+  const handleUserPublished = async (user, mediaType) => {
+    //subscribe client-user
+    await rtcClient.subscribe(user, mediaType);
+    //check if correct mediaType
+    if (mediaType === "audio") {
+      remoteAudioTracks[user.uid] = [user.audioTrack]; //add audioTrack
+      user.audioTrack.play();
+    }
+  };
+
+  //delete user's audioTrack if they leaves (rtc)
+  const handleUserLeft = async (user) => {
+    //remove audiotrack of the user
+    delete remoteAudioTracks[user.uid];
+  };
+
+  //handle a user joining (rtm)
+  const handleMemberJoined = async (MemberId) => {
     let { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(
-      members[i],
+      MemberId,
       ["name", "userRtcUid"]
     );
 
     let newMember = `
-      <div class="speaker user-rtc-${userRtcUid}" id="${members[i]}">
-          <div>${name}</div>
-      </div>`;
-    document
-      .getElementById("members")
-      .insertAdjacentHTML("beforeend", newMember);
-  }
-};
-
-//audio handling for joining user (rtc)
-let handleUserPublished = async (user, mediaType) => {
-  //subscribe client-user
-  await rtcClient.subscribe(user, mediaType);
-  //check if correct mediaType
-  if (mediaType === "audio") {
-    remoteAudioTracks[user.uid] = [user.audioTrack]; //add audioTrack
-    user.audioTrack.play();
-  }
-};
-
-//delete user's audioTrack if they leaves (rtc)
-let handleUserLeft = async (user) => {
-  //remove audiotrack of the user
-  delete remoteAudioTracks[user.uid];
-};
-
-//handle a user joining (rtm)
-let handleMemberJoined = async (MemberId) => {
-  let { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(MemberId, [
-    "name",
-    "userRtcUid",
-  ]);
-
-  let newMember = `
       <div class="speaker user-rtc-${userRtcUid}" id="${MemberId}">
           <div>${name}</div>
       </div>`;
 
-  document.getElementById("members").insertAdjacentHTML("beforeend", newMember);
-};
+    document
+      .getElementById("members")
+      .insertAdjacentHTML("beforeend", newMember);
+  };
 
-//handle a user leaving (rtm)
-let handleMemberLeft = async (MemberId) => {
-  document.getElementById(MemberId).remove();
-};
+  //handle a user leaving (rtm)
+  const handleMemberLeft = async (MemberId) => {
+    document.getElementById(MemberId).remove();
+  };
 
-function VoiceChat() {
   //use Params for teamId
   const { teamId } = useParams();
   const userToken = localStorage.getItem("token");
-  setIds(localStorage.getItem("id"));
+  setIds();
   const [tasks, setTasks] = useState([]);
   let micMuted = false;
   let [buttonText, setButtonText] = useState("Mute");
 
   useEffect(() => {
     const fetchUserTasks = async () => {
-      console.log(teamId);
       try {
         const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
           headers: {
