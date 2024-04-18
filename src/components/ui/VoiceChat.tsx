@@ -224,6 +224,8 @@ function VoiceChat() {
       document.getElementById("room-name").innerHTML = "";
       //empty members
       document.getElementById("members").innerHTML = "";
+      //remove eventListener to avoid error on closing component
+      window.removeEventListener("beforeunload", leaveRoom);
     };
 
     //leave rtm Client
