@@ -39,6 +39,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
         if (error.response.status === 401) {
           setLeaveError("You are not authorized to do this");
         }
+        console.error(handleError(error));
       }
     };
 
