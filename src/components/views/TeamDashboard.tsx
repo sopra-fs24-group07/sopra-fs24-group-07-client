@@ -14,6 +14,7 @@ const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const [sessionStatus, setSessionStatus] = useState<string>('off');
   const [goalMinutes, setGoalMinutes] = useState("00:30");
+  const [totalTime, setTotalTime] = useState(null);
   const [startDateTime, setStartDateTime] = useState<string>(null);
   const [userData, setUserData] = useState<any[]>([]);
   const [teamTasks, setTeamTasks] = useState<any[]>([]);
@@ -76,7 +77,7 @@ const TeamDashboard: React.FC = () => {
         <h2>This is the dashboard for {teamName}</h2>
         <div className="team-dashboard grid">
           <TeamDashboardSessionBox startRow={1} startColumn={1} endRow={2} endColumn={2}>
-            <StatusComponent sessionStatus={sessionStatus} setSessionStatus={setSessionStatus} goalMinutes={goalMinutes} setGoalMinutes={setGoalMinutes} startDateTime={startDateTime} setStartDateTime={setStartDateTime} />
+            <StatusComponent sessionStatus={sessionStatus} setSessionStatus={setSessionStatus} goalMinutes={goalMinutes} setGoalMinutes={setGoalMinutes} startDateTime={startDateTime} setStartDateTime={setStartDateTime} totalTime={totalTime} setTotalTime={setTotalTime} />
           </TeamDashboardSessionBox>
           <TeamDashboardBox startRow={2} startColumn={1} endRow={20} endColumn={2}>
             <div>
@@ -89,7 +90,7 @@ const TeamDashboard: React.FC = () => {
             </div>
           </TeamDashboardBox>
           <TeamDashboardBox startRow={1} startColumn={2} endRow={2} endColumn={3}>
-            <ProgressField sessionStatus={sessionStatus} goalMinutes={goalMinutes} startDateTime={startDateTime} />
+            <ProgressField sessionStatus={sessionStatus} goalMinutes={goalMinutes} startDateTime={startDateTime} totalTime={totalTime} />
           </TeamDashboardBox>
           <TeamDashboardBox startRow={1} startColumn={3} endRow={2} endColumn={5}>
             <button disabled className="green-button">Settings</button>

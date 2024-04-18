@@ -4,9 +4,10 @@ interface ProgressFieldProps {
   sessionStatus: string;
   goalMinutes: string;
   startDateTime?: string;
+  totalTime: string;
 }
 
-const ProgressField: React.FC<ProgressFieldProps> = ({ sessionStatus, goalMinutes, startDateTime }) => {
+const ProgressField: React.FC<ProgressFieldProps> = ({ sessionStatus, goalMinutes, startDateTime, totalTime }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({ sessionStatus, goalMinute
     return (
       <div>
         <h2>Team Progress</h2>
-        <p>TBU</p>
+        <p>The team has spent {totalTime} in sessions so far!</p>
       </div>
     );
   }
