@@ -9,6 +9,7 @@ import StatusComponent from "components/views/StatusComponent";
 import ProgressField from 'components/views/ProgressField';
 import "styles/views/TeamsOverview.scss";
 import "styles/views/TeamDashboard.scss";
+import TeamSettings from "components/popups/TeamSetting";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -20,6 +21,17 @@ const TeamDashboard: React.FC = () => {
   const [teamTasks, setTeamTasks] = useState<any[]>([]);
   const [teamName, setTeamName] = useState<any[]>([]);
   const token = localStorage.getItem("token") || "";
+  const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
+
+  //open the Inspect Task Popup
+  const openTeamSettings = () => {
+    setTeamSettingsOpen(true);
+  };
+
+  //close the Inspect Task Popup
+  const closeTeamSettings = () => {
+    setTeamSettingsOpen(false);
+  };
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
@@ -93,7 +105,14 @@ const TeamDashboard: React.FC = () => {
             <ProgressField sessionStatus={sessionStatus} goalMinutes={goalMinutes} startDateTime={startDateTime} totalTime={totalTime} />
           </TeamDashboardBox>
           <TeamDashboardBox startRow={1} startColumn={3} endRow={2} endColumn={5}>
-            <button disabled className="green-button">Settings</button>
+            <div>
+              <Button onClick={openTeamSettings}>Settings</Button>
+            </div>
+
+            <TeamSettings
+              isOpen={isTeamSettingsOpen}
+              onClose={closeTeamSettings}
+            />
             <button disabled className="green-button">Apps</button>
           </TeamDashboardBox>
           <TeamDashboardBox startRow={2} startColumn={2} endRow={20} endColumn={5}>

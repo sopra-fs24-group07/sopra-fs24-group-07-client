@@ -70,7 +70,11 @@ const Login = () => {
       const response = await api.post("/api/v1/login", requestBody);
       const user = new User(response.data);
       localStorage.setItem("token", user.token);
-      navigate("/teams");
+      if (sessionStorage.getItem("teamUUID")) {
+        navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
+      } else {
+        navigate("/teams");
+      }
     } catch (error) {
       // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
       setError("Failed to login. Please check your username and password.");
@@ -85,6 +89,9 @@ const Login = () => {
   return (
     <BaseContainer>
       <div className="login container">
+        {sessionStorage.getItem("teamUUID") && (
+          <p>Please Login to join the team</p>
+        )}
         <div className="login form">
           <FormField label="Username" value={username} onChange={setUsername} />{" "}
           {/* FORMFIELD FOR USERNAME, NO VALIDATION FROM FRONTEND */}
