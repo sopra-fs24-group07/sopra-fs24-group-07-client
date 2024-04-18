@@ -8,9 +8,8 @@ import AgoraRTM from "agora-rtm-sdk"; //RTM for Channels, Users, etc.
 import BaseContainer from "./BaseContainer";
 import { Button } from "./Button";
 
-const userToken = localStorage.getItem("token");
 //localStorage for userId
-const userId = localStorage.getItem("id");
+let userId;
 
 const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
 const TOKEN = null;
@@ -19,9 +18,10 @@ const TOKEN = null;
 let rtcUID;
 let rtmUID;
 
-const setIds = async () => {
-  rtcUID = localStorage.getItem("id");
-  rtmUID = localStorage.getItem("id");
+const setIds = async (uid) => {
+  rtcUID = uid;
+  rtmUID = uid;
+  userId = uid;
 };
 
 //all the tasks, from which we will get our channels
@@ -40,13 +40,7 @@ let remoteAudioTracks = {};
 let rtcClient;
 let rtmClient;
 
-let tasks;
-
 //do this with API call!!!
-const fetchUserTasks = async () => {
-  tasks = ["main", "abc"];
-};
-
 let userName;
 const fetchUserInfo = async () => {
   userName = `monti${userId}`;
@@ -151,21 +145,32 @@ let handleMemberLeft = async (MemberId) => {
 function VoiceChat() {
   //use Params for teamId
   const { teamId } = useParams();
-  setIds();
-  fetchUserTasks();
+  const userToken = localStorage.getItem("token");
+  setIds(localStorage.getItem("id"));
+  const [tasks, setTasks] = useState([]);
+
   fetchUserInfo();
 
   useEffect(() => {
-    const initChannels = async () => {
-      tasks.map((breakoutRoom) => {
-        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom}" />`;
-        document
-          .getElementById("channels")
-          .insertAdjacentHTML("beforeend", newChannel);
-      });
+    const fetchUserTasks = async () => {
+      console.log(teamId);
+      try {
+        const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
+          headers: {
+            Authorization: `${userToken}`,
+          },
+        });
+        let inSessionTasks = response.data.filter(
+          (task) => task.status === "TODO"
+        );
+        console.log(inSessionTasks);
+        setTasks(["main", ...inSessionTasks.map((task) => task.title)]);
+      } catch (error) {
+        console.error(`Error fetching teams tasks: ${handleError(error)}`);
+      }
     };
 
-    initChannels();
+    fetchUserTasks();
 
     const enterRoom = async (e) => {
       e.preventDefault();
@@ -221,7 +226,20 @@ function VoiceChat() {
     //add EventListener
     ChannelList.addEventListener("submit", enterRoom);
     leaveButton.addEventListener("click", leaveRoom);
-  }, []);
+  }, [teamId]);
+
+  useEffect(() => {
+    const initChannels = async () => {
+      tasks.map((breakoutRoom) => {
+        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom}" />`;
+        document
+          .getElementById("channels")
+          .insertAdjacentHTML("beforeend", newChannel);
+      });
+    };
+
+    initChannels();
+  }, [tasks]);
 
   return (
     <BaseContainer className="base-container">
