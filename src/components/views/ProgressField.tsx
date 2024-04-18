@@ -14,6 +14,9 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
   totalTime,
 }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [remainingTime, setRemainingTime] = useState("00:00:00");
+  const [progress, setProgress] = useState(0);
+  const [inSes, setInSes] = useState(false);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -23,80 +26,78 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
     return () => clearInterval(timerId);
   }, []);
 
-  const calculateRemainingTime = () => {
-    if (!startDateTime) {
-      return { remainingTime: "00:00:00", progress: 0 };
+  useEffect(() => {
+    if (!startDateTime || sessionStatus !== "on") {
+      setRemainingTime("00:00:00");
+      setProgress(0);
+      setInSes(false);
+
+      return;
     }
 
-    const startTime = new Date(startDateTime);
-    const elapsedTimeMs = currentTime.getTime() - startTime.getTime();
-    const goalTimeMinutes = goalMinutes.split(":").map(Number);
-    const goalTimeMs =
-      (goalTimeMinutes[0] * 60 + goalTimeMinutes[1]) * 60 * 1000;
-    const remainingTimeMs = goalTimeMs - elapsedTimeMs;
-    const progress = Math.max(
-      0,
-      Math.min(100, (elapsedTimeMs / goalTimeMs) * 100)
-    );
+    const calculateRemainingTime = () => {
+      const startTime = new Date(startDateTime);
+      const elapsedTimeMs = currentTime.getTime() - startTime.getTime();
+      const goalTimeMinutes = goalMinutes.split(":").map(Number);
+      const goalTimeMs =
+        (goalTimeMinutes[0] * 60 + goalTimeMinutes[1]) * 60 * 1000;
+      const remainingTimeMs = goalTimeMs - elapsedTimeMs;
 
-    const hours = Math.floor(remainingTimeMs / (1000 * 60 * 60));
-    const minutes = Math.floor(
-      (remainingTimeMs % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    const seconds = Math.floor((remainingTimeMs % (1000 * 60)) / 1000);
+      const progress = Math.max(
+        0,
+        Math.min(100, (elapsedTimeMs / goalTimeMs) * 100)
+      );
+      setProgress(progress);
 
-    if (remainingTimeMs > 0) {
-      return {
-        remainingTime: `${hours.toString().padStart(2, "0")}:${minutes
-          .toString()
-          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`,
-        progress,
-      };
-    } else {
-      return {
-        remainingTime: "00:00:00",
-        progress: 100,
-      };
-    }
-  };
+      const hours = Math.floor(remainingTimeMs / (1000 * 60 * 60));
+      const minutes = Math.floor(
+        (remainingTimeMs % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      const seconds = Math.floor((remainingTimeMs % (1000 * 60)) / 1000);
 
-  if (sessionStatus === "on" && startDateTime) {
-    const { remainingTime, progress } = calculateRemainingTime();
+      const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      setRemainingTime(formattedTime);
+      setInSes(remainingTimeMs > 0);
+    };
 
-    return (
-      <div>
-        <h2>Session Progress</h2>
-        <div style={{ width: "100%", margin: "10px 0", fontSize: "16px" }}>
-          Time Remaining: {remainingTime}
-          <div
-            style={{
-              width: "100%",
-              backgroundColor: "#f4cdec",
-              borderRadius: "10px",
-            }}
-          >
+    calculateRemainingTime();
+  }, [sessionStatus, startDateTime, goalMinutes, currentTime]);
+
+  return (
+    <div>
+      {inSes ? (
+        <div>
+          <h2>Session Progress</h2>
+          <div style={{ width: "100%", margin: "10px 0", fontSize: "16px" }}>
+            Time Remaining: {remainingTime}
             <div
               style={{
-                width: `${progress}%`,
-                height: "20px",
-                backgroundColor: "#cdf9da",
+                width: "100%",
+                backgroundColor: "#f4cdec",
                 borderRadius: "10px",
               }}
-            ></div>
+            >
+              <div
+                style={{
+                  width: `${progress}%`,
+                  height: "20px",
+                  backgroundColor: "#cdf9da",
+                  borderRadius: "10px",
+                }}
+              ></div>
+            </div>
           </div>
         </div>
-      </div>
-    );
-  } else {
-    const { remainingTime, progress } = calculateRemainingTime();
-
-    return (
-      <div>
-        <h2>Team Progress</h2>
-        <p>The team has spent {totalTime} in sessions so far!</p>
-      </div>
-    );
-  }
+      ) : (
+        <div>
+          <h2>Team Progress</h2>
+          <p>The team has spent {totalTime} in sessions so far!</p>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ProgressField;
