@@ -40,7 +40,7 @@ let remoteAudioTracks = {};
 let rtcClient;
 let rtmClient;
 
-const initRTM = async (name) => {
+const initRTM = async (teamId, name) => {
   //init rtm client with app ID
   rtmClient = AgoraRTM.createInstance(APP_ID);
   await rtmClient.login({ uid: rtmUID, token: TOKEN });
@@ -52,7 +52,7 @@ const initRTM = async (name) => {
   });
 
   //create the channel with roomName, teamId and them join
-  channel = rtmClient.createChannel(roomName);
+  channel = rtmClient.createChannel(roomName + teamId.toString());
   await channel.join();
 
   // get the members that are in a channel
@@ -63,14 +63,14 @@ const initRTM = async (name) => {
   channel.on("MemberLeft", handleMemberLeft);
 };
 
-const initRTC = async () => {
+const initRTC = async (teamId) => {
   rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
   //handle user join/leave
   rtcClient.on("user-published", handleUserPublished);
   rtcClient.on("user-left", handleUserLeft);
 
-  await rtcClient.join(APP_ID, roomName, TOKEN, rtcUID);
+  await rtcClient.join(APP_ID, roomName + teamId.toString(), TOKEN, rtcUID);
 
   //track and publish local audio track
   localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
@@ -183,8 +183,8 @@ function VoiceChat() {
       }
 
       //initalize rtc and rtm with the userName
-      await initRTC();
-      await initRTM(userName);
+      await initRTC(teamId);
+      await initRTM(teamId, userName);
 
       //hide the channels
       ChannelList.style.display = "none";
