@@ -11,6 +11,7 @@ import "styles/views/TeamsOverview.scss";
 import "styles/views/TeamDashboard.scss";
 import TeamSettings from "components/popups/TeamSetting";
 import { Button } from "components/ui/Button";
+import VoiceChat from "components/ui/VoiceChat";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -119,14 +120,17 @@ const TeamDashboard: React.FC = () => {
             endRow={20}
             endColumn={2}
           >
-            <div>
-              Team Members
+            {sessionStatus === "off" && (
               <div>
-                {userData.map((member) => (
-                  <div key={member.id}>{member.username}</div>
-                ))}
+                Team Members
+                <div>
+                  {userData.map((member) => (
+                    <div key={member.id}>{member.username}</div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+            {sessionStatus === "on" && <VoiceChat />}
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={1}
