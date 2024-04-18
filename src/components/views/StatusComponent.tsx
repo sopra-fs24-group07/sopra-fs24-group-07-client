@@ -4,15 +4,33 @@ import { useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api } from "helpers/api";
 import PropTypes from "prop-types";
+import "styles/views/TeamDashboard.scss";
 
 interface StatusComponentProps {
   sessionStatus: string;
   setSessionStatus: (status: string) => void;
-  time: string;
-  setTime: (time: string) => void;
+  goalMinutes: string;
+  setGoalMinutes: (goalMinutes: string) => void;
+  startDateTime: string;
+  setStartDateTime: (startDateTime: string) => void;
 }
 
-const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSessionStatus, time, setTime }) => {
+// Converts "HH:MM" to total minutes
+function timeToMinutes(time) {
+  const [hours, minutes] = time.split(':').map(Number);
+  return (hours * 60) + minutes;
+}
+
+// Converts total minutes to "HH:MM"
+function minutesToTime(minutes) {
+  let hours = Math.floor(minutes / 60);
+  let mins = minutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+}
+
+const StatusComponent: React.FC<StatusComponentProps> = ({
+                                                           sessionStatus, setSessionStatus, goalMinutes, setGoalMinutes, startDateTime, setStartDateTime
+                                                         }) => {
   const [error, setError] = useState<string>("");
   const { teamId } = useParams<{ teamId: string }>();
 
@@ -31,35 +49,26 @@ const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSes
         const sessions = response.data;
         if (!sessions || sessions.length === 0) {
           setSessionStatus("off");
+          setGoalMinutes("00:30");
+          setStartDateTime(null);
           return;
         }
 
         const mostRecentSession = sessions[0];
-        const status = mostRecentSession.startDateTime && !mostRecentSession.endDateTime ? "on" : "off";
-        setSessionStatus(status);
+        if (mostRecentSession) {
+          const status = mostRecentSession.startDateTime && !mostRecentSession.endDateTime ? "on" : "off";
+          setSessionStatus(status);
+          const formattedTime = minutesToTime(mostRecentSession.goalMinutes || 30);
+          setGoalMinutes(formattedTime);
+          setStartDateTime(mostRecentSession.startDateTime || new Date().toISOString().substring(11, 16));
+        }
       } catch (error) {
         setError(`Error fetching initial session status: ${error.response?.data?.message || error.message}`);
       }
     };
 
     fetchStatus();
-
-    const pusherKey = "98eb073ecf324dc1bf65"; // Consider using environment variables here
-    const pusher = new Pusher(pusherKey, {
-      cluster: "eu",
-      forceTLS: true,
-    });
-
-    const channel = pusher.subscribe(`team-${teamId}`);
-    channel.bind("session-update", (data: { status: string }) => {
-      setSessionStatus(data.status);
-    });
-
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [teamId, setSessionStatus]);
+  }, [teamId, setSessionStatus, setGoalMinutes, setStartDateTime]);
 
   const updateStatus = async (status: string) => {
     try {
@@ -69,18 +78,21 @@ const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSes
         return;
       }
 
-      const [hours, minutes] = time.split(":").map(Number);
-      const totalMinutes = hours * 60 + minutes;
+      const totalMinutes = timeToMinutes(goalMinutes);
+
       const requestBody = { goalMinutes: totalMinutes };
-      const endpoint = `/api/v1/teams/${teamId}/sessions`;
       const method = status === "on" ? "post" : "patch";
 
-      await api[method](endpoint, requestBody, {
+      const response = await api[method](`/api/v1/teams/${teamId}/sessions`, requestBody, {
         headers: { Authorization: `${token}` },
       });
 
       console.log(`Status updated successfully to: ${status}`);
       setSessionStatus(status);
+      setStartDateTime(response.data.startDateTime);
+      const formattedTime = minutesToTime(response.data.goalMinutes || 30);
+      setGoalMinutes(formattedTime);
+
       setError("");
     } catch (error) {
       setError(`Error updating status: ${error.response?.data?.message || error.message}`);
@@ -95,9 +107,9 @@ const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSes
         <input
           className="timeInput"
           placeholder="Enter time goal"
-          value={time}
+          value={goalMinutes}
           type="time"
-          onChange={(e) => setTime(e.target.value)}
+          onChange={(e) => setGoalMinutes(e.target.value || "00:00")}
           disabled={sessionStatus === "on"}
         />
         {sessionStatus === "off" ? (
@@ -114,8 +126,10 @@ const StatusComponent: React.FC<StatusComponentProps> = ({ sessionStatus, setSes
 StatusComponent.propTypes = {
   sessionStatus: PropTypes.string.isRequired,
   setSessionStatus: PropTypes.func.isRequired,
-  time: PropTypes.string,
-  setTime: PropTypes.func,
+  goalMinutes: PropTypes.string,
+  setGoalMinutes: PropTypes.func.isRequired,
+  startDateTime: PropTypes.string,
+  setStartDateTime: PropTypes.func.isRequired,
 };
 
 export default StatusComponent;

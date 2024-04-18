@@ -1,105 +1,73 @@
-import React, { useEffect, useState } from "react";
-import { api } from "helpers/api";
+import React, { useState, useEffect } from 'react';
 
 interface ProgressFieldProps {
   sessionStatus: string;
-  teamId: string;  // Assuming teamId is passed as a prop now
+  goalMinutes: string;
+  startDateTime?: string;
 }
 
-const ProgressField: React.FC<ProgressFieldProps> = ({ sessionStatus, teamId }) => {
-  const [secondsLeft, setSecondsLeft] = useState<number>(0);
-  const [totalSeconds, setTotalSeconds] = useState<number>(0);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+const ProgressField: React.FC<ProgressFieldProps> = ({ sessionStatus, goalMinutes, startDateTime }) => {
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    const fetchSessionDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("Authentication token is missing");
-        }
-        const response = await api.get(`/api/v1/teams/${teamId}/sessions/`, {
-          headers: { Authorization: "${token}" },
-        });
-        const { startTime, goalTime } = response.data;
-        const start = new Date(startTime);
-        const now = new Date();
-        const elapsed = (now.getTime() - start.getTime()) / 1000;
-        const total = goalTime * 60;  // Assuming goalTime is in minutes from API
+      const timerId = setInterval(() => {
+        setCurrentTime(new Date());
+      }, 1000);
 
-        setTotalSeconds(total);
-        setSecondsLeft(total - elapsed > 0 ? total - elapsed : 0);
+      return () => clearInterval(timerId);
+  }, []);
 
-        if (sessionStatus === "on" && total - elapsed > 0) {
-          const id = setInterval(() => {
-            setSecondsLeft((prevSeconds) => {
-              if (prevSeconds <= 1) {
-                clearInterval(id);
-
-                return 0;
-              }
-
-              return prevSeconds - 1;
-            });
-          }, 1000);
-          setIntervalId(id);
-        }
-      } catch (error) {
-        console.error("Failed to fetch session details:", error);
-      }
-    };
-
-    if (sessionStatus === "on") {
-      fetchSessionDetails();
-    } else {
-      if (intervalId) {
-        clearInterval(intervalId);
-        setIntervalId(null);
-      }
-      setSecondsLeft(0);
+  const calculateRemainingTime = () => {
+    if (!startDateTime) {
+      return { remainingTime: "00:00:00", progress: 0 };
     }
 
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [sessionStatus, teamId]);
+    const startTime = new Date(startDateTime);
+    const elapsedTimeMs = currentTime.getTime() - startTime.getTime();
+    const goalTimeMinutes = goalMinutes.split(':').map(Number);
+    const goalTimeMs = (goalTimeMinutes[0] * 60 + goalTimeMinutes[1]) * 60 * 1000;
+    const remainingTimeMs = goalTimeMs - elapsedTimeMs;
+    const progress = Math.max(0, Math.min(100, (elapsedTimeMs / goalTimeMs) * 100));
 
-  const renderProgressBar = () => {
-    const percentage = totalSeconds > 0 ? (secondsLeft / totalSeconds) * 100 : 0;
+    const hours = Math.floor(remainingTimeMs / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTimeMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingTimeMs % (1000 * 60)) / 1000);
 
+    if (remainingTimeMs > 0) {
+      return {
+        remainingTime: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
+        progress
+      };
+    } else {
+      return {
+        remainingTime: "00:00:00",
+        progress: 100
+      };
+    }
+  };
+
+  if (sessionStatus === 'on' && startDateTime) {
+    const { remainingTime, progress } = calculateRemainingTime();
     return (
-      <div style={{ width: "100%", backgroundColor: "#ddd" }}>
-        <div style={{ height: "20px", width: `${percentage}%`, backgroundColor: "green" }}>
+      <div>
+        <h2>Session Progress</h2>
+        <div style={{ width: '100%', margin: '10px 0', fontSize: '16px' }}>
+          Time Remaining: {remainingTime}
+          <div style={{ width: '100%', backgroundColor: '#f4cdec', borderRadius: "10px" }}>
+            <div style={{ width: `${progress}%`, height: '20px', backgroundColor: '#cdf9da', borderRadius: "10px" }}></div>
+          </div>
         </div>
       </div>
     );
-  };
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secondsRem = seconds % 60;
-
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secondsRem.toString().padStart(2, "0")}`;
-  };
-
-  return (
-    <div>
-      <h3>Progress Status</h3>
-      {sessionStatus === "on" && secondsLeft > 0 ? (
-        <>
-          <p>Time remaining: {formatTime(secondsLeft)}</p>
-          {renderProgressBar()}
-        </>
-      ) : sessionStatus === "on" && secondsLeft === 0 ? (
-        <p>Session Goal has been reached</p>
-      ) : (
-        <p>Session is off. Set a time to start.</p>
-      )}
-    </div>
-  );
+  } else {
+    const { remainingTime, progress } = calculateRemainingTime();
+    return (
+      <div>
+        <h2>Team Progress</h2>
+        <p>TBU</p>
+      </div>
+    );
+  }
 };
 
 export default ProgressField;

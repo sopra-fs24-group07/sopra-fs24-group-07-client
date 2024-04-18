@@ -13,9 +13,11 @@ import "styles/views/TeamDashboard.scss";
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const [sessionStatus, setSessionStatus] = useState<string>('off');
-  const [time, setTime] = useState<string>('00:30');
+  const [goalMinutes, setGoalMinutes] = useState("00:30");
+  const [startDateTime, setStartDateTime] = useState<string>(null);
   const [userData, setUserData] = useState<any[]>([]);
   const [teamTasks, setTeamTasks] = useState<any[]>([]);
+  const [teamName, setTeamName] = useState<any[]>([]);
   const token = localStorage.getItem("token") || "";
 
   useEffect(() => {
@@ -45,17 +47,36 @@ const TeamDashboard: React.FC = () => {
       }
     };
 
+    const fetchTeamName = async () => {
+      let userId = localStorage.getItem("id");
+      try {
+        const response = await api.get(`/api/v1/users/${userId}/teams`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+        const numericTeamId = Number(teamId);
+        const team = response.data.find(team => team.teamId === numericTeamId);
+
+        const teamName = team ? team.name : "Team Name not found!";
+        setTeamName(teamName);
+      } catch (error) {
+        console.error(`Error fetching team's name: ${handleError(error)}`);
+      }
+    }
+
     fetchTeamMembers();
     fetchTeamTasks();
+    fetchTeamName();
   }, [teamId, token]);
 
   return (
     <BaseContainer>
       <div className="team-dashboard container">
-        <h2>This is the dashboard for team {teamId}</h2>
+        <h2>This is the dashboard for {teamName}</h2>
         <div className="team-dashboard grid">
           <TeamDashboardSessionBox startRow={1} startColumn={1} endRow={2} endColumn={2}>
-            <StatusComponent sessionStatus={sessionStatus} setSessionStatus={setSessionStatus} time={time} setTime={setTime} />
+            <StatusComponent sessionStatus={sessionStatus} setSessionStatus={setSessionStatus} goalMinutes={goalMinutes} setGoalMinutes={setGoalMinutes} startDateTime={startDateTime} setStartDateTime={setStartDateTime} />
           </TeamDashboardSessionBox>
           <TeamDashboardBox startRow={2} startColumn={1} endRow={20} endColumn={2}>
             <div>
@@ -68,7 +89,7 @@ const TeamDashboard: React.FC = () => {
             </div>
           </TeamDashboardBox>
           <TeamDashboardBox startRow={1} startColumn={2} endRow={2} endColumn={3}>
-            <ProgressField sessionStatus={sessionStatus} time={time} />
+            <ProgressField sessionStatus={sessionStatus} goalMinutes={goalMinutes} startDateTime={startDateTime} />
           </TeamDashboardBox>
           <TeamDashboardBox startRow={1} startColumn={3} endRow={2} endColumn={5}>
             <button disabled className="green-button">Settings</button>
