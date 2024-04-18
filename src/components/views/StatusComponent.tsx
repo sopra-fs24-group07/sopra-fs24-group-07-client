@@ -98,6 +98,22 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
               new Date().toISOString().substring(11, 16)
           );
         }
+
+        const pusher = new Pusher("98eb073ecf324dc1bf65", {
+          cluster: "eu",
+          forceTLS: true,
+        });
+
+        const channel = pusher.subscribe(`team-${teamId}`);
+        console.log("Channel", channel);
+        channel.bind("session-update", (data: { status: string }) => {
+          setSessionStatus(data.status);
+        });
+
+        return () => {
+          channel.unbind_all();
+          channel.unsubscribe();
+        };
       } catch (error) {
         setError(
           `Error fetching initial session status: ${
