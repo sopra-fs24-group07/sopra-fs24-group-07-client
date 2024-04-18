@@ -12,23 +12,25 @@ function VoiceChat() {
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
   const TOKEN = null;
 
+  const [errorUserName, setErrorUserName] = useState("");
+  const [errorGetTasks, setErrorGetTasks] = useState("");
+
   //IDs for identification, which we will use the userId for
   let rtcUID;
   let rtmUID;
   let userId;
 
+  //set as different IDs for each use-ase
   const setIds = async () => {
     rtcUID = localStorage.getItem("id");
     rtmUID = localStorage.getItem("id");
     userId = localStorage.getItem("id");
   };
 
-  //all the tasks, from which we will get our channels
-
   //the name of the room (a single task in our case)
   let roomName;
 
-  //the published channel, we use teamId + roomName to make individual channels
+  //the published channel, we use teamId + roomName to make individual channels for teams
   let channel;
 
   //local AudioTrack for myself and remoteAudioTracks of the others
@@ -39,7 +41,7 @@ function VoiceChat() {
   let rtcClient;
   let rtmClient;
 
-  const initRTM = async (teamId, name) => {
+  const initRTM = async (name) => {
     //init rtm client with app ID
     rtmClient = AgoraRTM.createInstance(APP_ID);
     await rtmClient.login({ uid: rtmUID, token: TOKEN });
@@ -62,7 +64,7 @@ function VoiceChat() {
     channel.on("MemberLeft", handleMemberLeft);
   };
 
-  const initRTC = async (teamId) => {
+  const initRTC = async () => {
     rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     //handle user join/leave
@@ -152,11 +154,14 @@ function VoiceChat() {
           },
         });
         let inSessionTasks = response.data.filter(
-          (task) => task.status === "TODO"
+          (task) => task.status === "IN_SESSION"
         );
         console.log(inSessionTasks);
         setTasks(["main", ...inSessionTasks.map((task) => task.title)]);
       } catch (error) {
+        setErrorGetTasks(
+          "Error while creating channels. Please try again later"
+        );
         console.error(`Error fetching teams tasks: ${handleError(error)}`);
       }
     };
@@ -179,22 +184,25 @@ function VoiceChat() {
         });
         userName = response.data.username;
       } catch (error) {
-        userName = `test - ${userId}`;
+        setErrorUserName(
+          "An unexpected error occured. Please try to logout and login again"
+        );
         console.error(`Error fetching user info: ${handleError(error)}`);
       }
+      if (userName) {
+        //initalize rtc and rtm with the userName
+        await initRTC();
+        await initRTM(userName);
 
-      //initalize rtc and rtm with the userName
-      await initRTC(teamId);
-      await initRTM(teamId, userName);
-
-      //hide the channels
-      ChannelList.style.display = "none";
-      //show the voice room controls
-      document.getElementById("room-header").style.display = "flex";
-      //display the room-name
-      document.getElementById("room-name").innerHTML = roomName;
-      //leave the channel if windows is closed
-      window.addEventListener("beforeunload", leaveRoom);
+        //hide the channels
+        ChannelList.style.display = "none";
+        //show the voice room controls
+        document.getElementById("room-header").style.display = "flex";
+        //display the room-name
+        document.getElementById("room-name").innerHTML = roomName;
+        //leave the channel if windows is closed;
+        window.addEventListener("beforeunload", leaveRoom);
+      }
     };
 
     const leaveRoom = async () => {
@@ -269,6 +277,8 @@ function VoiceChat() {
       </div>
       <form id="form">
         <div className="rooms" id="channels"></div>
+        {errorUserName && <div>{errorUserName}</div>}
+        {errorGetTasks && <div>{errorGetTasks}</div>}
       </form>
       <div className="members" id="members"></div>
     </BaseContainer>
