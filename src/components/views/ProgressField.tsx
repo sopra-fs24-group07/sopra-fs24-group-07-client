@@ -22,6 +22,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
     const timerId = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
+
     return () => clearInterval(timerId);
   }, []);
 
@@ -30,6 +31,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
       setRemainingTime("00:00:00");
       setProgress(0);
       setInSes(false);
+
       return;
     }
 

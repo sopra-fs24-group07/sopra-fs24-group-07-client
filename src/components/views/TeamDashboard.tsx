@@ -90,6 +90,7 @@ const TeamDashboard: React.FC = () => {
   console.log("XXX", startDateTime);
   console.log("XXX", goalMinutes);
   console.log("XXX", sessionStatus);
+
   return (
     <BaseContainer>
       <div className="team-dashboard container">
