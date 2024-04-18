@@ -34,7 +34,7 @@ const TeamDashboard = () => {
   const [userData, setUserData] = useState([]);
   //the Tasks of a team
   const [teamTasks, setTeamTasks] = useState([]);
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     //get the team members from the backend

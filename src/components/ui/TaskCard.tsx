@@ -9,7 +9,7 @@ import { Link, useParams } from "react-router-dom";
 import InspectTask from "components/popups/InspectTask";
 
 function TaskCard(props) {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const { task, col } = props;
   const { teamId } = useParams();
   const taskId = task.id;

@@ -38,8 +38,8 @@ const ProfileSettings = ({ isOpen, onClose }) => {
     async function fetchUser() {
       if (!isOpen) return;
 
-      let token = sessionStorage.getItem("token");
-      let userId = sessionStorage.getItem("id"); // todo might need to change this depending on out implementation of our token to userId methods
+      let token = localStorage.getItem("token");
+      let userId = localStorage.getItem("id"); // todo might need to change this depending on out implementation of our token to userId methods
 
       /*
       try {

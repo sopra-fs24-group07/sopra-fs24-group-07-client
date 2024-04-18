@@ -28,7 +28,7 @@ FormField.propTypes = {
 
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   //title of a task
   const [title, setTitle] = useState<string>(null);
   //description of a task
