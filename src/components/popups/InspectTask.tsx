@@ -4,6 +4,7 @@ import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
+import Comments from "components/ui/Comments";
 
 const InspectTask = ({ isOpen, onClose, task }) => {
   const [editMode, setEditMode] = useState(false);
@@ -126,7 +127,6 @@ const InspectTask = ({ isOpen, onClose, task }) => {
         <Button className="red-button" onClick={doClose}>
           Close
         </Button>
-        <h2>Create Task</h2>
         <h3>Task Title</h3>
         <input
           value={taskTitle}
@@ -141,7 +141,8 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           placeholder="Task Description..."
           disabled={!editMode}
         />
-
+        <h3>Comments</h3>
+        <Comments taskId={task.taskId} />
         {error && <p>{error}</p>}
 
         <div>
