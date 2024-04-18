@@ -3,7 +3,7 @@ import "../../styles/popups/CreateTeam.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const FormField = (props) => {
   return (
@@ -60,10 +60,8 @@ const CreateTask = ({ isOpen, onClose }) => {
         }
       );
       //reset input fields after submitting
-      setDescription(null);
-      setTitle(null);
+      doClose();
       //maybe remove when external api is ready
-      onClose();
       location.reload();
     } catch (error) {
       //new error handling with status codes
@@ -100,7 +98,7 @@ const CreateTask = ({ isOpen, onClose }) => {
 
         <Button
           className="green-button"
-          disabled={!description || !title}
+          disabled={!title}
           onClick={() => {
             CreateTask();
           }}
