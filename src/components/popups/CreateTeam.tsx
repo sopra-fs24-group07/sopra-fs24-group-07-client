@@ -46,6 +46,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       isValid = false;
     }
 
+    if (!teamDescription) {
+      newErrors.description = "The description is required"; //Since edit is not available
+      isValid = false;
+    }
+
     if (teamDescription.length > 500) {
       newErrors.description = "The description exceeds 500 characters";
       isValid = false;

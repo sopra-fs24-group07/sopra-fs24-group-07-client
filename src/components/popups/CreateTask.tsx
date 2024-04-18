@@ -35,6 +35,12 @@ const CreateTask = ({ isOpen, onClose }) => {
   const [description, setDescription] = useState<string>(null);
   //set error
   const [error, setError] = useState("");
+  //set field errors
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+  });
+  const [generalError, setGeneralError] = useState("");
 
   if (!isOpen) return null;
 
@@ -46,8 +52,34 @@ const CreateTask = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    let errors = { title: "", description: "" };
+
+    if (!title) {
+      errors.title = "Title is required";
+      isValid = false;
+    }
+
+    if (title && title.length > 100) {
+      errors.title = "Title exceeds the 100 character limit";
+      isValid = false;
+    }
+
+    if (description && description.length > 500) {
+      errors.description = "Description exceeds the 500 character limit";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    setTimeout(() => {}, 500);
+
+    return isValid;
+  };
+
   //try to create a task via api pst call
   const CreateTask = async () => {
+    if (!validateForm()) return;
     try {
       const requestBody = JSON.stringify({ title, description });
       const response = await api.post(
@@ -73,6 +105,13 @@ const CreateTask = ({ isOpen, onClose }) => {
       }
       console.error("Error creating new Task:", handleError(error));
     }
+  };
+
+  const getAllErrorMessages = () => {
+    const fieldErrors = Object.values(errors).filter((error) => error);
+    if (generalError) fieldErrors.push(generalError);
+
+    return fieldErrors;
   };
 
   return (
@@ -105,6 +144,11 @@ const CreateTask = ({ isOpen, onClose }) => {
         >
           Create
         </Button>
+        {getAllErrorMessages().map((error, index) => (
+          <div key={index} className="error-message">
+            {error}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -128,14 +128,14 @@ const TeamSettings = ({ isOpen, onClose }) => {
             <input
               className="TeamSetting input"
               value={teamName}
-              placeholder="Task Title..."
+              placeholder="Team Name..."
               disabled
             />
             <h3 className="TeamSetting headline">Team Description</h3>
             <input
               className="TeamSetting input"
               value={teamDescription}
-              placeholder="Task Description..."
+              placeholder="Team Description..."
               disabled
             />
             <h3 className="TeamSetting headline">Team Members</h3>

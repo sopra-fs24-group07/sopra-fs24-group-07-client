@@ -12,8 +12,38 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   const { teamId } = useParams();
   const token = localStorage.getItem("token");
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+  });
+  const [generalError, setGeneralError] = useState("");
 
   if (!isOpen) return null;
+
+  const validateForm = () => {
+    let isValid = true;
+    let errors = { title: "", description: "" };
+
+    if (!taskTitle) {
+      errors.title = "Title is required";
+      isValid = false;
+    }
+
+    if (taskTitle && taskTitle.length > 100) {
+      errors.title = "Title exceeds the 100 character limit";
+      isValid = false;
+    }
+
+    if (taskDescription && taskDescription.length > 500) {
+      errors.description = "Description exceeds the 500 character limit";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    setTimeout(() => {}, 500);
+
+    return isValid;
+  };
 
   const ActivateEditMode = () => {
     setEditMode(true);
@@ -31,6 +61,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   };
 
   const EditTask = async () => {
+    if (!validateForm()) return;
     try {
       task.title = taskTitle;
       task.description = taskDescription;
@@ -82,6 +113,13 @@ const InspectTask = ({ isOpen, onClose, task }) => {
     }
   };
 
+  const getAllErrorMessages = () => {
+    const fieldErrors = Object.values(errors).filter((error) => error);
+    if (generalError) fieldErrors.push(generalError);
+
+    return fieldErrors;
+  };
+
   return (
     <div className="createTeam overlay" onClick={doClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
@@ -120,7 +158,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           )}
           {editMode && (
             <Button
-              disabled={!taskTitle || !taskDescription}
+              disabled={!taskTitle}
               className="green-button"
               onClick={EditTask}
             >
@@ -128,6 +166,11 @@ const InspectTask = ({ isOpen, onClose, task }) => {
             </Button>
           )}
         </div>
+        {getAllErrorMessages().map((error, index) => (
+          <div key={index} className="error-message">
+            {error}
+          </div>
+        ))}
       </div>
     </div>
   );
