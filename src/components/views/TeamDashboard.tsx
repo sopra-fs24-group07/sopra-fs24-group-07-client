@@ -167,9 +167,6 @@ const TeamDashboard: React.FC = () => {
               isOpen={isTeamSettingsOpen}
               onClose={closeTeamSettings}
             />
-            <button disabled className="green-button">
-              Apps
-            </button>
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={2}
