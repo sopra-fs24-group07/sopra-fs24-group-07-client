@@ -147,7 +147,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
               ))}
             </ul>
             {/*TODO: add onClick={LeaveTeam} when API is ready  */}
-            <Button width="80%" className="leave-team">
+            <Button onClick={LeaveTeam} width="80%" className="leave-team">
               Leave Team
             </Button>
             {leaveError && (
