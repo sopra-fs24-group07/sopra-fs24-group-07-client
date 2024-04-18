@@ -7,7 +7,6 @@ import "../../styles/popups/ProfileMenu.scss";
 
 const Player = ({ user }) => (
   <div className="profile container">
-    <div className="profile attribute">id: {user.id}</div>
     <div className="profile attribute">username: {user.username}</div>
     <div className="profile attribute">name: {user.name}</div>
   </div>
@@ -26,7 +25,7 @@ const Profile = ({ isOpen, onClose }) => {
       if (!isOpen) return;
 
       let token = localStorage.getItem("token");
-      let userId = localStorage.getItem("id"); // todo might need to change this depending on out implementation of our token to userId methods
+      let userId = localStorage.getItem("id");
 
       try {
         const response = await api.get(`/api/v1/users/${userId}`, {
@@ -35,7 +34,6 @@ const Profile = ({ isOpen, onClose }) => {
           },
         });
 
-        // todo The following 4 lines set the user info to the info from the backend
         setUser({
           id: response.data.userId,
           username: response.data.username,
