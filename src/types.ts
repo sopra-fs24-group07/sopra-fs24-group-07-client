@@ -8,5 +8,7 @@ export type User = {
 export type Team = {
   name: string;
   teamId: number;
-  inSession: boolean;
+  startDateTime: string;
+  endDateTime: string;
+  goalDateTime: string;
 };

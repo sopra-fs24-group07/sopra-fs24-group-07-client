@@ -1,41 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { api, handleError } from "helpers/api";
-import { Form, useParams } from "react-router-dom";
-import "styles/views/TeamsOverview.scss";
 import BaseContainer from "components/ui/BaseContainer";
-import "styles/views/TeamDashboard.scss";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
-import { Button } from "components/ui/Button";
-import PropTypes from "prop-types";
+import TeamDashboardSessionBox from "components/ui/TeamDashboardSessionBox";
 import KanbanBoard from "components/ui/KanbanBoard";
+import StatusComponent from "components/views/StatusComponent";
+import ProgressField from "components/views/ProgressField";
+import "styles/views/TeamsOverview.scss";
+import "styles/views/TeamDashboard.scss";
 import TeamSettings from "components/popups/TeamSetting";
+import { Button } from "components/ui/Button";
 
-//formfiel for Time Goal
-const FormField = (props) => {
-  return (
-    <input
-      className="timeInput"
-      placeholder="Enter time Goal"
-      value={props.value}
-      onChange={(e) => props.onChange(e.target.value)}
-    />
-  );
-};
-
-//check for numer as input
-FormField.propTypes = {
-  value: PropTypes.number,
-  onChange: PropTypes.func,
-};
-
-const TeamDashboard = () => {
-  const { teamId } = useParams();
-  const [time, setTime] = useState<string>(null);
-  //user Data, i.e. the users that are in a team
-  const [userData, setUserData] = useState([]);
-  //the Tasks of a team
-  const [teamTasks, setTeamTasks] = useState([]);
-  const token = localStorage.getItem("token");
+const TeamDashboard: React.FC = () => {
+  const { teamId } = useParams<{ teamId: string }>();
+  const [sessionStatus, setSessionStatus] = useState<string>("off");
+  const [goalMinutes, setGoalMinutes] = useState("00:30");
+  const [totalTime, setTotalTime] = useState(null);
+  const [startDateTime, setStartDateTime] = useState<string>(null);
+  const [userData, setUserData] = useState<any[]>([]);
+  const [teamTasks, setTeamTasks] = useState<any[]>([]);
+  const [teamName, setTeamName] = useState<any[]>([]);
+  const token = localStorage.getItem("token") || "";
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
 
   //open the Inspect Task Popup
@@ -49,7 +35,6 @@ const TeamDashboard = () => {
   };
 
   useEffect(() => {
-    //get the team members from the backend
     const fetchTeamMembers = async () => {
       try {
         const response = await api.get(`/api/v1/teams/${teamId}/users`, {
@@ -59,11 +44,9 @@ const TeamDashboard = () => {
         });
         setUserData(response.data);
       } catch (error) {
-        console.error(`Error fetching teams users: ${handleError(error)}`);
+        console.error(`Error fetching team's users: ${handleError(error)}`);
       }
     };
-
-    fetchTeamMembers();
 
     //TODO: should I move this to KanbanBoard for refreshing?
     //get the tasks of a team from the Backend
@@ -76,38 +59,56 @@ const TeamDashboard = () => {
         });
         setTeamTasks(response.data);
       } catch (error) {
-        console.error(`Error fetching teams tasks: ${handleError(error)}`);
+        console.error(`Error fetching team's tasks: ${handleError(error)}`);
       }
     };
 
-    fetchTeamTasks();
-  }, []);
+    const fetchTeamName = async () => {
+      let userId = localStorage.getItem("id");
+      try {
+        const response = await api.get(`/api/v1/users/${userId}/teams`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+        const numericTeamId = Number(teamId);
+        const team = response.data.find(
+          (team) => team.teamId === numericTeamId
+        );
 
-  //TODO: add startGroupSession with time goal and tasks
-  function startGroupSession() {
-    throw new Error("Function not implemented.");
-  }
+        const teamName = team ? team.name : "Team Name not found!";
+        setTeamName(teamName);
+      } catch (error) {
+        console.error(`Error fetching team's name: ${handleError(error)}`);
+      }
+    };
+    fetchTeamMembers();
+    fetchTeamTasks();
+    fetchTeamName();
+  }, [teamId, token]);
 
   return (
     <BaseContainer>
       <div className="team-dashboard container">
-        <h2>This is the dashboard for team {teamId}</h2>
+        <h2>This is the dashboard for {teamName}</h2>
         <div className="team-dashboard grid">
-          <TeamDashboardBox
+          <TeamDashboardSessionBox
             startRow={1}
             startColumn={1}
             endRow={2}
             endColumn={2}
           >
-            <div className="timeGoalBox">
-              Time Goal:
-              <FormField onChange={(t) => setTime(t)} />
-              {/*TODO: enable button when Session is implemented */}
-              <Button disabled width="100%" onClick={() => startGroupSession()}>
-                Start Group Session
-              </Button>
-            </div>
-          </TeamDashboardBox>
+            <StatusComponent
+              sessionStatus={sessionStatus}
+              setSessionStatus={setSessionStatus}
+              goalMinutes={goalMinutes}
+              setGoalMinutes={setGoalMinutes}
+              startDateTime={startDateTime}
+              setStartDateTime={setStartDateTime}
+              totalTime={totalTime}
+              setTotalTime={setTotalTime}
+            />
+          </TeamDashboardSessionBox>
           <TeamDashboardBox
             startRow={2}
             startColumn={1}
@@ -115,7 +116,6 @@ const TeamDashboard = () => {
             endColumn={2}
           >
             <div>
-              {/* Mapping of the Team Members */}
               Team Members
               <div>
                 {userData.map((member) => (
@@ -130,8 +130,12 @@ const TeamDashboard = () => {
             endRow={2}
             endColumn={3}
           >
-            {/* TODO Implement Time Progress */}
-            Progress Field
+            <ProgressField
+              sessionStatus={sessionStatus}
+              goalMinutes={goalMinutes}
+              startDateTime={startDateTime}
+              totalTime={totalTime}
+            />
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={1}
@@ -156,10 +160,24 @@ const TeamDashboard = () => {
             endColumn={5}
           >
             <div>
-              {/* The KanbanBoard which takes the Team Tasks */}
-              Kanban Board
-              <KanbanBoard teamTasks={teamTasks}></KanbanBoard>
+              <Button onClick={openTeamSettings}>Settings</Button>
             </div>
+
+            <TeamSettings
+              isOpen={isTeamSettingsOpen}
+              onClose={closeTeamSettings}
+            />
+            <button disabled className="green-button">
+              Apps
+            </button>
+          </TeamDashboardBox>
+          <TeamDashboardBox
+            startRow={2}
+            startColumn={2}
+            endRow={20}
+            endColumn={5}
+          >
+            <KanbanBoard teamTasks={teamTasks} />
           </TeamDashboardBox>
         </div>
       </div>

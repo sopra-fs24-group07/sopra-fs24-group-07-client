@@ -13,8 +13,10 @@ export const Button = (props) => (
 );
 
 Button.propTypes = {
-  width: PropTypes.number,
-  style: PropTypes.string,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  style: PropTypes.object,
   className: PropTypes.string,
   children: PropTypes.node,
+  onClick: PropTypes.func,
+  disabled: PropTypes.string,
 };
