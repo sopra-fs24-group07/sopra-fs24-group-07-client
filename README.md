@@ -87,5 +87,3 @@ To github.com:sopra-fs24-group07/sopra-fs24-group-07-server
  ! [remote rejected] main -> main (protected branch hook declined)
 error: failed to push some refs to 'github.com:sopra-fs24-group07/sopra-fs24-group-07-server
 ```
-
-test change
