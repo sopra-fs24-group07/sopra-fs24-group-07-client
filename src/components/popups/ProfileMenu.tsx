@@ -29,9 +29,7 @@ const ProfileMenu = ({
           </Button>
         </div>
         <div className="profileMenu-actions">
-          <Button disabled onClick={onProfileClick}>
-            Profile
-          </Button>
+          <Button onClick={onProfileClick}>Profile</Button>
           <Button onClick={onProfileSettingsClick}>Settings</Button>
           <Button className="red-button" onClick={doLogout}>
             Logout

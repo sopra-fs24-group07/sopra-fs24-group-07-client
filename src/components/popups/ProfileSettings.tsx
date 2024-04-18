@@ -109,7 +109,7 @@ const ProfileSettings = ({ isOpen, onClose }) => {
         <Button className="green-button" disabled onClick={saveChanges}>
           Save
         </Button>
-        <Button className="red-button" disabled onClick={onClose}>
+        <Button className="red-button" onClick={onClose}>
           Cancel
         </Button>
         {error && <div className="error-message">{error}</div>}
