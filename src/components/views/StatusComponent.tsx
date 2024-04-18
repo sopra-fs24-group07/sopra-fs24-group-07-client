@@ -37,6 +37,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
   const { teamId } = useParams<{ teamId: string }>();
 
   useEffect(() => {
+
     const fetchStatus = async () => {
       try {
         const token = localStorage.getItem("token");
