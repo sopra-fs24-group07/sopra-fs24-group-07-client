@@ -62,6 +62,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
 
   if (sessionStatus === "on" && startDateTime) {
     const { remainingTime, progress } = calculateRemainingTime();
+
     return (
       <div>
         <h2>Session Progress</h2>
@@ -88,6 +89,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
     );
   } else {
     const { remainingTime, progress } = calculateRemainingTime();
+
     return (
       <div>
         <h2>Team Progress</h2>

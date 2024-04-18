@@ -20,6 +20,7 @@ interface StatusComponentProps {
 // Converts "HH:MM" to total minutes
 function timeToMinutes(time) {
   const [hours, minutes] = time.split(":").map(Number);
+
   return hours * 60 + minutes;
 }
 
@@ -27,6 +28,7 @@ function timeToMinutes(time) {
 function minutesToTime(minutes) {
   let hours = Math.floor(minutes / 60);
   let mins = minutes % 60;
+
   return `${hours.toString().padStart(2, "0")}:${mins
     .toString()
     .padStart(2, "0")}`;
@@ -63,6 +65,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
           setGoalMinutes("00:30");
           setStartDateTime(null);
           setTotalTime("00:00");
+
           return;
         }
 
@@ -118,6 +121,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
       const token = localStorage.getItem("token");
       if (!token) {
         setError("Authentication token is missing");
+
         return;
       }
 
