@@ -1,0 +1,32 @@
+@import "../theme";
+
+.invite {
+  &.container {
+    margin-top: 2em;
+    min-height: 300px;
+    @include center;
+  }
+
+  &.inside {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60%;
+    font-weight: 500;
+    max-width: 30em;
+    height: 20em;
+    padding-left: 37px;
+    padding-right: 37px;
+    border-radius: 0.75em;
+    background-color: $accentDark;
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+    box-shadow: $dropShadow;
+  }
+
+  &.text {
+    font-size: 30px;
+    font-weight: 500;
+  }
+}

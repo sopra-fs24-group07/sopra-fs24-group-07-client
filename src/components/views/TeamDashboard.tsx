@@ -28,6 +28,21 @@ const TeamDashboard: React.FC = () => {
     setTeamSettingsOpen(true);
   };
 
+const TeamDashboard = () => {
+  const { teamId } = useParams();
+  const [time, setTime] = useState<string>(null);
+  //user Data, i.e. the users that are in a team
+  const [userData, setUserData] = useState([]);
+  //the Tasks of a team
+  const [teamTasks, setTeamTasks] = useState([]);
+  const token = localStorage.getItem("token");
+  const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
+
+  //open the Inspect Task Popup
+  const openTeamSettings = () => {
+    setTeamSettingsOpen(true);
+  };
+
   //close the Inspect Task Popup
   const closeTeamSettings = () => {
     setTeamSettingsOpen(false);
@@ -47,6 +62,10 @@ const TeamDashboard: React.FC = () => {
       }
     };
 
+    fetchTeamMembers();
+
+    //TODO: should I move this to KanbanBoard for refreshing?
+    //get the tasks of a team from the Backend
     const fetchTeamTasks = async () => {
       try {
         const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
@@ -77,7 +96,6 @@ const TeamDashboard: React.FC = () => {
         console.error(`Error fetching team's name: ${handleError(error)}`);
       }
     }
-
     fetchTeamMembers();
     fetchTeamTasks();
     fetchTeamName();
@@ -104,7 +122,28 @@ const TeamDashboard: React.FC = () => {
           <TeamDashboardBox startRow={1} startColumn={2} endRow={2} endColumn={3}>
             <ProgressField sessionStatus={sessionStatus} goalMinutes={goalMinutes} startDateTime={startDateTime} totalTime={totalTime} />
           </TeamDashboardBox>
-          <TeamDashboardBox startRow={1} startColumn={3} endRow={2} endColumn={5}>
+          <TeamDashboardBox
+            startRow={1}
+            startColumn={3}
+            endRow={2}
+            endColumn={5}
+          >
+            {/* TODO Implement Team Settings */}
+            <div>
+              <Button onClick={openTeamSettings}>Team Settings</Button>
+            </div>
+
+            <TeamSettings
+              isOpen={isTeamSettingsOpen}
+              onClose={closeTeamSettings}
+            />
+          </TeamDashboardBox>
+          <TeamDashboardBox
+            startRow={2}
+            startColumn={2}
+            endRow={20}
+            endColumn={5}
+          >
             <div>
               <Button onClick={openTeamSettings}>Settings</Button>
             </div>
