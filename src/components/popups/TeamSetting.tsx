@@ -5,6 +5,29 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 
+const FormField = (props) => {
+  return (
+    <div className="createTeam field">
+      <label className="createTeam label">{props.label}</label>
+      <input
+        className="createTeam input"
+        placeholder="enter here..."
+        value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
+        disabled={true}
+      />
+    </div>
+  );
+};
+
+FormField.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.input,
+  type: PropTypes.string,
+  disabled: PropTypes.bool,
+};
+
 const TeamSettings = ({ isOpen, onClose }) => {
   //const [editMode, setEditMode] = useState(false); EDIT Mode: for extensibility in M4
   const [teamName, setTeamName] = useState();
@@ -117,22 +140,24 @@ const TeamSettings = ({ isOpen, onClose }) => {
   return (
     <div className="TeamSetting overlay" onClick={doClose}>
       <div className="TeamSetting content" onClick={(e) => e.stopPropagation()}>
-        <Button className="red-button" onClick={doClose}>
-          Close
-        </Button>
+        <div className="TeamSetting header">
+          <h2 className="TeamSetting headline">Team Settings</h2>
+          <Button className="red-button" onClick={doClose}>
+            Close
+          </Button>
+        </div>
         {error && <p>{error}</p>}
         {!error && (
           <div>
-            <h2 className="TeamSetting headline">Team Settings</h2>
             <h3 className="TeamSetting headline">Team Name</h3>
-            <input
+            <FormField
               className="TeamSetting input"
               value={teamName}
               placeholder="Team Name..."
               disabled
             />
             <h3 className="TeamSetting headline">Team Description</h3>
-            <input
+            <FormField
               className="TeamSetting input"
               value={teamDescription}
               placeholder="Team Description..."

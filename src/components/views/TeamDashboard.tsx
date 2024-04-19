@@ -12,6 +12,7 @@ import "styles/views/TeamDashboard.scss";
 import TeamSettings from "components/popups/TeamSetting";
 import { Button } from "components/ui/Button";
 import VoiceChat from "components/ui/VoiceChat";
+import SessionTaskBoard from "../ui/SessionTaskBoard";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -22,15 +23,15 @@ const TeamDashboard: React.FC = () => {
   const [userData, setUserData] = useState<any[]>([]);
   const [teamTasks, setTeamTasks] = useState<any[]>([]);
   const [teamName, setTeamName] = useState<any[]>([]);
+  const [teamDesc, setTeamDesc] = useState<any[]>([]);
   const token = localStorage.getItem("token") || "";
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
+  const [checkedTasks, setCheckedTasks] = useState(new Set());
 
-  //open the Inspect Task Popup
   const openTeamSettings = () => {
     setTeamSettingsOpen(true);
   };
 
-  //close the Inspect Task Popup
   const closeTeamSettings = () => {
     setTeamSettingsOpen(false);
   };
@@ -49,8 +50,6 @@ const TeamDashboard: React.FC = () => {
       }
     };
 
-    //TODO: should I move this to KanbanBoard for refreshing?
-    //get the tasks of a team from the Backend
     const fetchTeamTasks = async () => {
       try {
         const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
@@ -64,7 +63,7 @@ const TeamDashboard: React.FC = () => {
       }
     };
 
-    const fetchTeamName = async () => {
+    const fetchTeamInfo = async () => {
       let userId = localStorage.getItem("id");
       try {
         const response = await api.get(`/api/v1/users/${userId}/teams`, {
@@ -78,24 +77,58 @@ const TeamDashboard: React.FC = () => {
         );
 
         const teamName = team ? team.name : "Team Name not found!";
+        const teamDesc = team
+          ? team.description
+          : "Team Description not found!";
         setTeamName(teamName);
+        setTeamDesc(teamDesc);
       } catch (error) {
         console.error(`Error fetching team's name: ${handleError(error)}`);
       }
     };
+
     fetchTeamMembers();
     fetchTeamTasks();
-    fetchTeamName();
+    fetchTeamInfo();
   }, [teamId, token]);
 
-  console.log("XXX", startDateTime);
-  console.log("XXX", goalMinutes);
-  console.log("XXX", sessionStatus);
+  useEffect(() => {
+    const updateTaskStatus = async () => {
+      if (sessionStatus === "off" && checkedTasks.size > 0) {
+        try {
+          const updates = Array.from(checkedTasks).map((taskId) => {
+            const task = teamTasks.find((t) => t.taskId === taskId);
+            if (task) {
+              task.status = "DONE";
+              const requestBody = JSON.stringify(task);
+
+              return api.put(
+                `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
+                requestBody,
+                {
+                  headers: {
+                    Authorization: `${token}`,
+                  },
+                }
+              );
+            }
+          });
+
+          await Promise.all(updates);
+          console.log("Tasks statuses updated to DONE");
+          setCheckedTasks(new Set());
+        } catch (error) {
+          console.error(`Error updating task statuses: ${handleError(error)}`);
+        }
+      }
+    };
+
+    updateTaskStatus();
+  }, [sessionStatus, checkedTasks]);
 
   return (
     <BaseContainer>
       <div className="team-dashboard container">
-        <h2>This is the dashboard for {teamName}</h2>
         <div className="team-dashboard grid">
           <TeamDashboardSessionBox
             startRow={1}
@@ -112,6 +145,7 @@ const TeamDashboard: React.FC = () => {
               setStartDateTime={setStartDateTime}
               totalTime={totalTime}
               setTotalTime={setTotalTime}
+              teamName={teamName}
             />
           </TeamDashboardSessionBox>
           <TeamDashboardBox
@@ -151,15 +185,10 @@ const TeamDashboard: React.FC = () => {
             endRow={2}
             endColumn={5}
           >
-            {/* TODO Implement Team Settings */}
             <div>
               <Button onClick={openTeamSettings}>Team Settings</Button>
+              <p>{teamDesc}</p>
             </div>
-
-            <TeamSettings
-              isOpen={isTeamSettingsOpen}
-              onClose={closeTeamSettings}
-            />
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={2}
@@ -167,24 +196,26 @@ const TeamDashboard: React.FC = () => {
             endRow={20}
             endColumn={5}
           >
-            <div>
-              <Button onClick={openTeamSettings}>Settings</Button>
-            </div>
-
-            <TeamSettings
-              isOpen={isTeamSettingsOpen}
-              onClose={closeTeamSettings}
-            />
-          </TeamDashboardBox>
-          <TeamDashboardBox
-            startRow={2}
-            startColumn={2}
-            endRow={20}
-            endColumn={5}
-          >
-            <KanbanBoard teamTasks={teamTasks} />
+            {sessionStatus === "off" && (
+              <KanbanBoard
+                teamTasks={teamTasks}
+                sessionStatus={sessionStatus}
+              />
+            )}
+            {sessionStatus === "on" && (
+              <SessionTaskBoard
+                teamId={teamId}
+                teamTasks={teamTasks.filter(
+                  (task) => task.status === "IN_SESSION"
+                )}
+                sessionStatus={sessionStatus}
+                checkedTasks={checkedTasks}
+                setCheckedTasks={setCheckedTasks}
+              />
+            )}
           </TeamDashboardBox>
         </div>
+        <TeamSettings isOpen={isTeamSettingsOpen} onClose={closeTeamSettings} />
       </div>
     </BaseContainer>
   );

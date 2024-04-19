@@ -10,7 +10,7 @@ import InspectTask from "components/popups/InspectTask";
 
 function TaskCard(props) {
   const token = localStorage.getItem("token");
-  const { task, col } = props;
+  const { task, col, sessionStatus } = props;
   const { teamId } = useParams();
   const taskId = task.id;
   const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);
@@ -92,7 +92,7 @@ function TaskCard(props) {
     <div className="taskContainer">
       {/*create the go Left button for Tasks in Done and In Session */}
       {/*ToDo: onClick={() => updateTaskStatusLeft(task, col)} and remove styling*/}
-      {(col === "DONE" || col === "IN_SESSION") && (
+      {(col === "DONE" || col === "IN_SESSION") && sessionStatus === "off" && (
         <Button
           className="goLeft"
           onClick={() => updateTaskStatusLeft(task, col)}
@@ -108,7 +108,7 @@ function TaskCard(props) {
 
       {/*create the go Right button for Tasks in To-do and In Session */}
       {/*ToDo: onClick={() => updateTaskStatusRight(task, col)} and remove styling */}
-      {(col === "TODO" || col === "IN_SESSION") && (
+      {(col === "TODO" || col === "IN_SESSION") && sessionStatus === "off" && (
         <Button
           className="goRight"
           onClick={() => updateTaskStatusRight(task, col)}
@@ -129,6 +129,7 @@ function TaskCard(props) {
 TaskCard.propTypes = {
   task: PropTypes.object,
   col: PropTypes.string,
+  sessionStatus: PropTypes.string,
 };
 
 export default TaskCard;

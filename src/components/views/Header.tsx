@@ -13,6 +13,7 @@ const Header = (props) => {
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
   const [isProfileOpen, setProfileOpen] = useState(false);
   const [isProfileSettingsOpen, setProfileSettingsOpen] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
 
   const goTeamsOverview = () => {
     navigate("/teams");
@@ -33,15 +34,31 @@ const Header = (props) => {
 
   const closeProfile = () => {
     setProfileOpen(false);
+    setConfirmationMessage("");
   };
 
   const openProfileSettings = () => {
     setProfileSettingsOpen(true);
-    closeProfileMenu(); // Optionally close the profile menu when opening settings
+    closeProfileMenu();
   };
 
   const closeProfileSettings = () => {
     setProfileSettingsOpen(false);
+  };
+
+  const handleProfileOpenAfterSettings = (showMessage) => {
+    setProfileSettingsOpen(false);
+    setProfileOpen(true);
+    if (showMessage) {
+      setConfirmationMessage("Changes have been saved");
+    } else {
+      setConfirmationMessage("");
+    }
+  };
+
+  const handleSettingsOpenAfterProfile = () => {
+    setProfileOpen(false);
+    setProfileSettingsOpen(true);
   };
 
   return (
@@ -64,10 +81,16 @@ const Header = (props) => {
           onProfileClick={openProfile}
           onProfileSettingsClick={openProfileSettings}
         />
-        <Profile isOpen={isProfileOpen} onClose={closeProfile} />
+        <Profile
+          isOpen={isProfileOpen}
+          onClose={closeProfile}
+          message={confirmationMessage}
+          onSettingsOpen={handleSettingsOpenAfterProfile}
+        />
         <ProfileSettings
           isOpen={isProfileSettingsOpen}
           onClose={closeProfileSettings}
+          onProfileOpen={handleProfileOpenAfterSettings}
         />
       </div>
     </div>

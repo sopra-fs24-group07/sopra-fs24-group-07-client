@@ -11,7 +11,7 @@ const FormField = (props) => {
       <label className="createTeam label">{props.label}</label>
       <input
         className="createTeam input"
-        placeholder="enter here.."
+        placeholder={props.placeholder}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
       />
@@ -24,6 +24,7 @@ FormField.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   type: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
 const CreateTask = ({ isOpen, onClose }) => {
@@ -117,19 +118,24 @@ const CreateTask = ({ isOpen, onClose }) => {
   return (
     <div className="createTeam overlay" onClick={doClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <Button className="red-button" onClick={doClose}>
-          Close
-        </Button>
-        <h2>Create Task</h2>
+        <div className="createTeam header">
+          <h2>Create Task</h2>
+          <Button className="red-button" onClick={doClose}>
+            Close
+          </Button>
+        </div>
+        <h3 className="createTeam headline">Title</h3>
         <FormField
-          label="title"
+          className="createTeam input"
           value={title}
+          placeholder="enter title..."
           onChange={(ti: string) => setTitle(ti)}
         />
-
+        <h3 className="createTeam headline">Description</h3>
         <FormField
-          label="description"
+          className="createTeam input"
           value={description}
+          placeholder="enter description..."
           onChange={(dc: string) => setDescription(dc)}
         />
 

@@ -8,7 +8,7 @@ function KanbanBoard(props) {
   //define the three columns we have
   const columns = ["TODO", "IN_SESSION", "DONE"];
   //get teams tasks from the props
-  const { teamTasks } = props;
+  const { teamTasks, sessionStatus } = props;
 
   return (
     <div className="board">
@@ -19,6 +19,7 @@ function KanbanBoard(props) {
             key={col}
             column={col}
             teamTasks={teamTasks}
+            sessionStatus={sessionStatus}
           ></ColumnContainer>
         ))}
       </div>
@@ -29,6 +30,7 @@ function KanbanBoard(props) {
 //check teamTasks to be array
 KanbanBoard.propTypes = {
   teamTasks: PropTypes.array,
+  sessionStatus: PropTypes.string,
 };
 
 export default KanbanBoard;
