@@ -24,6 +24,7 @@ const SessionTaskBoard = ({
   };
 
   console.log("checked", checkedTasks);
+
   return (
     <div className="session-taskboard">
       <h3>Session Tasks</h3>

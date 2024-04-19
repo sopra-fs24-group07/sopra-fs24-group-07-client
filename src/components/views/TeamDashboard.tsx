@@ -101,6 +101,7 @@ const TeamDashboard: React.FC = () => {
             if (task) {
               task.status = "DONE";
               const requestBody = JSON.stringify(task);
+
               return api.put(
                 `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
                 requestBody,
