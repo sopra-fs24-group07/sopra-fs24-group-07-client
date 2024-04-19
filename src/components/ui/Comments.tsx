@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { api, handleError } from "helpers/api";
+import CommentCard from "./CommentCard";
 
 const FormField = ({ value, onChange, error }) => {
   return (
@@ -38,7 +39,7 @@ const Comments = (props) => {
     try {
       const requestBody = JSON.stringify({ text: comment });
       const response = await api.post(
-        `/teams/${teamId}/tasks/${taskId}/comments`,
+        `/api/v1/teams/${teamId}/tasks/${taskId}/comments`,
         requestBody,
         {
           headers: {
@@ -59,7 +60,7 @@ const Comments = (props) => {
     const fetchComments = async () => {
       try {
         const response = await api.get(
-          `/teams/${teamId}/tasks/${taskId}/comments`,
+          `/api/v1/teams/${teamId}/tasks/${taskId}/comments`,
           {
             headers: {
               Authorization: `${token}`,
@@ -78,9 +79,10 @@ const Comments = (props) => {
 
   return (
     <div>
-      <div>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <FormField value={comment} onChange={setComment} error={error} />
         <Button
+          style={{ marginBottom: "10px" }}
           disabled={!comment}
           className="green-button"
           onClick={createComment}
@@ -88,12 +90,10 @@ const Comments = (props) => {
           Submit
         </Button>
       </div>
-      <div>
+      <div className="section">
         {/*will add a CommentCard component for this later */}
         {allComments.map((commi) => (
-          <div key={commi.commentId}>
-            {commi.authorName}: {commi.text}
-          </div>
+          <CommentCard key={commi.commentId} comment={commi}></CommentCard>
         ))}
       </div>
     </div>
