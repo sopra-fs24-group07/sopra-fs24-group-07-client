@@ -32,7 +32,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const navigate = useNavigate();
   const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
-  const [errors, setErrors] = useState({ name: "", description: "", general: "" });
+  const [errors, setErrors] = useState({
+    name: "",
+    description: "",
+    general: "",
+  });
 
   const validateForm = () => {
     let isValid = true;

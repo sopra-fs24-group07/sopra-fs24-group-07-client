@@ -113,7 +113,6 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
       );
       setIsLeave(true);
       navigate("/teams");
-
     } catch (error) {
       setLeaveError("Failed to leave team");
       console.error("Failed to leave team:", handleError(error));
@@ -219,7 +218,7 @@ TeamSettings.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
-  setIsLeave: PropTypes.func
+  setIsLeave: PropTypes.func,
 };
 
 export default TeamSettings;

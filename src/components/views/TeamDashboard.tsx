@@ -47,7 +47,6 @@ const TeamDashboard: React.FC = () => {
       window.location.reload();
     });
 
-
     channel.bind("team-update", (data: { userId: string }) => {
       if (data.userId !== localStorage.getItem("id")) {
         window.location.reload();
@@ -58,10 +57,7 @@ const TeamDashboard: React.FC = () => {
       channel.unbind_all();
       channel.unsubscribe();
     };
-
-
   }, [teamId, setSessionStatus]);
-
 
   const openTeamSettings = () => {
     setTeamSettingsOpen(true);
@@ -245,7 +241,9 @@ const TeamDashboard: React.FC = () => {
               <SessionTaskBoard
                 teamId={teamId}
                 teamTasks={teamTasks.filter(
-                  (task) => task.status === "IN_SESSION"
+                  (task) =>
+                    task.status === "IN_SESSION" ||
+                    task.status === "IN_SESSION_DONE"
                 )}
                 sessionStatus={sessionStatus}
                 checkedTasks={checkedTasks}
@@ -254,7 +252,12 @@ const TeamDashboard: React.FC = () => {
             )}
           </TeamDashboardBox>
         </div>
-        <TeamSettings isOpen={isTeamSettingsOpen} onClose={closeTeamSettings} isLeave={isLeave} setIsLeave={setIsLeave} />
+        <TeamSettings
+          isOpen={isTeamSettingsOpen}
+          onClose={closeTeamSettings}
+          isLeave={isLeave}
+          setIsLeave={setIsLeave}
+        />
       </div>
     </BaseContainer>
   );
