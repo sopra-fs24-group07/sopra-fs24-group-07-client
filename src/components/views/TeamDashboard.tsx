@@ -45,6 +45,10 @@ const TeamDashboard: React.FC = () => {
       window.location.reload();
     });
 
+    channel.bind("team-update", (data: { status: string }) => {
+      window.location.reload();
+    });
+
     return () => {
       channel.unbind_all();
       channel.unsubscribe();
