@@ -14,6 +14,7 @@ const FormField = (props) => {
         placeholder={props.placeholder}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
+        disabled={!props.disabled}
       />
     </div>
   );
@@ -25,6 +26,7 @@ FormField.propTypes = {
   onChange: PropTypes.func,
   type: PropTypes.string,
   placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 const InspectTask = ({ isOpen, onClose, task }) => {
@@ -155,6 +157,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           value={taskTitle}
           placeholder="enter title..."
           onChange={(ti: string) => setTaskTitle(ti)}
+          disabled={editMode}
         />
         <h3 className="createTeam headline">Description</h3>
         <FormField
@@ -162,6 +165,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           value={taskDescription}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
+          disabled={editMode}
         />
 
         {error && <p>{error}</p>}
