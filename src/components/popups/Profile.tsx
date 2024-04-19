@@ -16,7 +16,7 @@ Player.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
-const Profile = ({ isOpen, onClose }) => {
+const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
@@ -48,6 +48,10 @@ const Profile = ({ isOpen, onClose }) => {
     fetchUser();
   }, [isOpen]);
 
+  const openSettings = () => {
+    onSettingsOpen();
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -59,7 +63,11 @@ const Profile = ({ isOpen, onClose }) => {
             Close
           </Button>
         </div>
+        {message && <div className="confirmation-message">{message}</div>}
         {user && <Player user={user} />}
+        <Button className="green-button" onClick={openSettings}>
+          Edit
+        </Button>
         {error && <div className="error-message">{error}</div>}
       </div>
     </div>
@@ -69,6 +77,8 @@ const Profile = ({ isOpen, onClose }) => {
 Profile.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  message: PropTypes.string,
+  onSettingsOpen: PropTypes.func,
 };
 
 export default Profile;
