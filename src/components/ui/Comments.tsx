@@ -47,6 +47,8 @@ const Comments = (props) => {
         }
       );
       console.log(response);
+      setError("");
+      setComment("");
     } catch (error) {
       console.error("Error creating comment:", handleError(error));
       setError("Could not create Comment");
