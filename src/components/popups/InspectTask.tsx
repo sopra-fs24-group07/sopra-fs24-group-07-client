@@ -5,6 +5,28 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 
+const FormField = (props) => {
+  return (
+    <div className="createTeam field">
+      <label className="createTeam label">{props.label}</label>
+      <input
+        className="createTeam input"
+        placeholder={props.placeholder}
+        value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
+      />
+    </div>
+  );
+};
+
+FormField.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+};
+
 const InspectTask = ({ isOpen, onClose, task }) => {
   const [editMode, setEditMode] = useState(false);
   const [taskTitle, setTaskTitle] = useState(task.title);
@@ -127,19 +149,19 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           Close
         </Button>
         <h2>Create Task</h2>
-        <h3>Task Title</h3>
-        <input
+        <h3 className="createTeam headline">Title</h3>
+        <FormField
+          className="createTeam input"
           value={taskTitle}
-          onChange={(tati) => setTaskTitle(tati.target.value)}
-          placeholder="Task Title..."
-          disabled={!editMode}
+          placeholder="enter title..."
+          onChange={(ti: string) => setTaskTitle(ti)}
         />
-        <h3>Task Description</h3>
-        <input
+        <h3 className="createTeam headline">Description</h3>
+        <FormField
+          className="createTeam input"
           value={taskDescription}
-          onChange={(tade) => setTaskDescription(tade.target.value)}
-          placeholder="Task Description..."
-          disabled={!editMode}
+          placeholder="enter description..."
+          onChange={(dc: string) => setTaskDescription(dc)}
         />
 
         {error && <p>{error}</p>}

@@ -8,13 +8,15 @@ const TeamDashboardSessionBox = ({
   endColumn,
   children,
 }) => (
-  <div
-    className="team-dashboard box-session"
-    style={{
-      gridArea: `${startRow} / ${startColumn} / ${endRow} / ${endColumn}`,
-    }}
-  >
-    {children}
+  <div>
+    <div
+      className="team-dashboard box"
+      style={{
+        gridArea: `${startRow} / ${startColumn} / ${endRow} / ${endColumn}`,
+      }}
+    >
+      <div>{children}</div>
+    </div>
   </div>
 );
 
@@ -24,6 +26,7 @@ TeamDashboardSessionBox.propTypes = {
   endRow: PropTypes.number.isRequired,
   endColumn: PropTypes.number.isRequired,
   children: PropTypes.node,
+  title: PropTypes.string,
 };
 
 export default TeamDashboardSessionBox;
