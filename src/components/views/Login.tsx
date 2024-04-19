@@ -99,8 +99,7 @@ const Login = () => {
         )}
         <div className="login form">
           <FormField label="Username" value={username} onChange={setUsername} />{" "}
-          {/* FORMFIELD FOR USERNAME, NO VALIDATION FROM FRONTEND */}
-          <FormField // FORMFIELD FOR PASSWORD, NO VALIDATION FROM FRONTEND
+          <FormField
             label="Password"
             value={password}
             type="password"
