@@ -86,7 +86,14 @@ const Comments = (props) => {
           Submit
         </Button>
       </div>
-      <div></div>
+      <div>
+        {/*will add a CommentCard component for this later */}
+        {allComments.map((commi) => (
+          <div key={commi.commentId}>
+            {commi.authorName}: {commi.text}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
