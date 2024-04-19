@@ -28,7 +28,7 @@ FormField.propTypes = {
   disabled: PropTypes.bool,
 };
 
-const TeamSettings = ({ isOpen, onClose }) => {
+const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
   //const [editMode, setEditMode] = useState(false); EDIT Mode: for extensibility in M4
   const [teamName, setTeamName] = useState();
   const [teamDescription, setTeamDescription] = useState();
@@ -59,10 +59,13 @@ const TeamSettings = ({ isOpen, onClose }) => {
         setInviteURL(`${baseURL}/invitation/${foundTeam.teamUUID}`);
       } catch (error) {
         setError("Something went wrong. Please try again");
+        /*
         if (error.response.status === 401) {
           setLeaveError("You are not authorized to do this");
         }
         console.error(handleError(error));
+
+         */
       }
     };
 
@@ -108,7 +111,9 @@ const TeamSettings = ({ isOpen, onClose }) => {
           },
         }
       );
+      setIsLeave(true);
       navigate("/teams");
+
     } catch (error) {
       setLeaveError("Failed to leave team");
       console.error("Failed to leave team:", handleError(error));
@@ -214,6 +219,7 @@ TeamSettings.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
+  setIsLeave: PropTypes.func
 };
 
 export default TeamSettings;

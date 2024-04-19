@@ -29,6 +29,7 @@ const TeamDashboard: React.FC = () => {
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
   const navigate = useNavigate();
+  const [isLeave, setIsLeave] = useState<boolean>(false);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
@@ -46,10 +47,10 @@ const TeamDashboard: React.FC = () => {
       window.location.reload();
     });
 
+
     channel.bind("team-update", (data: { userId: string }) => {
-      window.location.reload();
-      if (data.userId === localStorage.getItem("id")) {
-        navigate("/teams");
+      if (data.userId !== localStorage.getItem("id")) {
+        window.location.reload();
       }
     });
 
@@ -57,7 +58,10 @@ const TeamDashboard: React.FC = () => {
       channel.unbind_all();
       channel.unsubscribe();
     };
+
+
   }, [teamId, setSessionStatus]);
+
 
   const openTeamSettings = () => {
     setTeamSettingsOpen(true);
@@ -65,6 +69,10 @@ const TeamDashboard: React.FC = () => {
 
   const closeTeamSettings = () => {
     setTeamSettingsOpen(false);
+    if (isLeave) {
+      navigate("/teams");
+      setIsLeave(false);
+    }
   };
 
   useEffect(() => {
@@ -246,7 +254,7 @@ const TeamDashboard: React.FC = () => {
             )}
           </TeamDashboardBox>
         </div>
-        <TeamSettings isOpen={isTeamSettingsOpen} onClose={closeTeamSettings} />
+        <TeamSettings isOpen={isTeamSettingsOpen} onClose={closeTeamSettings} isLeave={isLeave} setIsLeave={setIsLeave} />
       </div>
     </BaseContainer>
   );
