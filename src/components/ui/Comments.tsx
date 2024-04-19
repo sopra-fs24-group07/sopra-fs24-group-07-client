@@ -16,7 +16,6 @@ const FormField = ({ value, onChange, error }) => {
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
-      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };
@@ -35,7 +34,20 @@ const Comments = (props) => {
   const [error, setError] = useState("");
   const [allComments, setAllComments] = useState([]);
 
+  const validateForm = () => {
+    let isValid = true;
+
+    if (comment.length > 100) {
+      setError("The comment exceeds 100 characters");
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
   const createComment = async () => {
+    if (!validateForm()) return;
+
     try {
       const requestBody = JSON.stringify({ text: comment });
       const response = await api.post(
@@ -47,7 +59,6 @@ const Comments = (props) => {
           },
         }
       );
-      console.log(response);
       setError("");
       setComment("");
     } catch (error) {
@@ -67,7 +78,6 @@ const Comments = (props) => {
             },
           }
         );
-        console.log(response.data);
         setAllComments(response.data);
       } catch (error) {
         console.error("Error fetching comments:", handleError(error));
@@ -90,6 +100,7 @@ const Comments = (props) => {
           Submit
         </Button>
       </div>
+      {error && <div className="error-message">{error}</div>}
       <div className="section">
         {/*will add a CommentCard component for this later */}
         {allComments.map((commi) => (
