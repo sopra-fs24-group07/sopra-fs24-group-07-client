@@ -23,7 +23,7 @@ const FormField = (props) => {
 FormField.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
-  onChange: PropTypes.input,
+  onChange: PropTypes.func,
   type: PropTypes.string,
   disabled: PropTypes.bool,
 };
@@ -66,8 +66,6 @@ const TeamSettings = ({ isOpen, onClose }) => {
       }
     };
 
-    fetchUserTeam();
-
     const fetchTeamMembers = async () => {
       try {
         const response = await api.get(`/api/v1/teams/${teamId}/users`, {
@@ -85,6 +83,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
       }
     };
 
+    fetchUserTeam();
     fetchTeamMembers();
   }, []);
 
@@ -112,6 +111,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
       navigate("/teams");
     } catch (error) {
       setLeaveError("Failed to leave team");
+      console.error("Failed to leave team:", handleError(error));
       if (error.response.status === 401) {
         setLeaveError("You are not authorized to leave the team, sorry!");
       } else if (error.response.status === 404) {
@@ -171,7 +171,6 @@ const TeamSettings = ({ isOpen, onClose }) => {
                 </li>
               ))}
             </ul>
-            {/*TODO: add onClick={LeaveTeam} when API is ready  */}
             <Button onClick={LeaveTeam} width="80%" className="leave-team">
               Leave Team
             </Button>
@@ -194,18 +193,16 @@ const TeamSettings = ({ isOpen, onClose }) => {
                 </div>
               )}
             </div>
-
             {/* EDIT Mode: for extensibility in M4: error && <p>{error}</p> */}
-
             {/* EDIT Mode: for extensibility in M4:
-        <div>
-          {!editMode && (
-            <Button className="green-button" onClick={ActivateEditMode}>
-              Edit
-            </Button>
-          )}
-        </div>
-        */}
+            <div>
+              {!editMode && (
+                  <Button className="green-button" onClick={ActivateEditMode}>
+                    Edit
+                  </Button>
+              )}
+              </div>
+            */}
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
@@ -28,6 +28,7 @@ const TeamDashboard: React.FC = () => {
   const token = localStorage.getItem("token") || "";
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
+  const navigate = useNavigate();
 
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
@@ -41,12 +42,15 @@ const TeamDashboard: React.FC = () => {
       window.location.reload();
     });
 
-    channel.bind("task-update", (data: { status: string }) => {
+    channel.bind("task-update", () => {
       window.location.reload();
     });
 
-    channel.bind("team-update", (data: { status: string }) => {
+    channel.bind("team-update", (data: { userId: string }) => {
       window.location.reload();
+      if (data.userId === localStorage.getItem("id")) {
+        navigate("/teams");
+      }
     });
 
     return () => {
