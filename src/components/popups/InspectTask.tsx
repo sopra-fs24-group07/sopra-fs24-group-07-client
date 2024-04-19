@@ -141,8 +141,13 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           placeholder="Task Description..."
           disabled={!editMode}
         />
-        <h3>Comments</h3>
-        <Comments taskId={task.taskId} />
+        {!editMode && (
+          <div>
+            <h3>Comments</h3>
+            <Comments taskId={task.taskId} />
+          </div>
+        )}
+
         {error && <p>{error}</p>}
 
         <div>
