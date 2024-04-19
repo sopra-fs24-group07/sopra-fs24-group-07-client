@@ -13,6 +13,7 @@ import TeamSettings from "components/popups/TeamSetting";
 import { Button } from "components/ui/Button";
 import VoiceChat from "components/ui/VoiceChat";
 import SessionTaskBoard from "../ui/SessionTaskBoard";
+import Pusher from "pusher-js";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -27,6 +28,28 @@ const TeamDashboard: React.FC = () => {
   const token = localStorage.getItem("token") || "";
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
+
+  useEffect(() => {
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
+      cluster: "eu",
+      forceTLS: true,
+    });
+
+    const channel = pusher.subscribe(`team-${teamId}`);
+    channel.bind("session-update", (data: { status: string }) => {
+      setSessionStatus(data.status);
+      window.location.reload();
+    });
+
+    channel.bind("task-update", (data: { status: string }) => {
+      window.location.reload();
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [teamId, setSessionStatus]);
 
   const openTeamSettings = () => {
     setTeamSettingsOpen(true);
