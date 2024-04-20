@@ -80,6 +80,7 @@ const Comments = (props) => {
           }
         );
         setAllComments(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching comments:", handleError(error));
         setError("Could not load comments");
