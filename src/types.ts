@@ -12,3 +12,10 @@ export type Team = {
   endDateTime: string;
   goalDateTime: string;
 };
+
+export type Task = {
+  taskId: string;
+  title: number;
+  description: string;
+  status: string;
+};

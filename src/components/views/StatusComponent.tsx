@@ -15,6 +15,7 @@ interface StatusComponentProps {
   setStartDateTime: (startDateTime: string) => void;
   totalTime: string;
   setTotalTime: (totalTime: string) => void;
+  teamName: string;
 }
 
 // Converts "HH:MM" to total minutes
@@ -43,6 +44,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
   setStartDateTime,
   totalTime,
   setTotalTime,
+  teamName,
 }) => {
   const [error, setError] = useState<string>("");
   const { teamId } = useParams<{ teamId: string }>();
@@ -98,22 +100,6 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
               new Date().toISOString().substring(11, 16)
           );
         }
-
-        const pusher = new Pusher("98eb073ecf324dc1bf65", {
-          cluster: "eu",
-          forceTLS: true,
-        });
-
-        const channel = pusher.subscribe(`team-${teamId}`);
-        channel.bind("session-update", (data: { status: string }) => {
-          window.location.reload();
-          setSessionStatus(data.status);
-        });
-
-        return () => {
-          channel.unbind_all();
-          channel.unsubscribe();
-        };
       } catch (error) {
         setError(
           `Error fetching initial session status: ${
@@ -174,7 +160,25 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
 
   return (
     <div>
-      <h3>Session: {sessionStatus}</h3>
+      <h4>
+        team
+        <span style={{ fontSize: "1.2em", color: "#cdf9da" }}>
+          {" "}
+          {teamName}{" "}
+        </span>
+        <br />
+        is
+        <span
+          style={{
+            fontSize: "1.2em",
+            color: "#cdf9da",
+          }}
+        >
+          {" "}
+          {sessionStatus === "on" ? "IN" : "NOT IN"}{" "}
+        </span>
+        session
+      </h4>
       <div className="sessionbox">
         Set Goal:
         <input
@@ -185,6 +189,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
           onChange={(e) => setGoalMinutes(e.target.value || "00:00")}
           disabled={sessionStatus === "on"}
         />
+        <br />
         {sessionStatus === "off" ? (
           <Button className="green-button" onClick={() => updateStatus("on")}>
             Start Group Session
@@ -209,6 +214,7 @@ StatusComponent.propTypes = {
   setTotalTime: PropTypes.func.isRequired,
   startDateTime: PropTypes.string,
   setStartDateTime: PropTypes.func.isRequired,
+  teamName: PropTypes.string,
 };
 
 export default StatusComponent;

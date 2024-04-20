@@ -1,7 +1,10 @@
+@import "../theme";
+
 .board {
-  margin: auto;
+  max-width: calc(100% - 2em);
+  margin: 1em;
+  box-sizing: border-box;
   display: flex;
-  width: auto;
   align-items: center;
 }
 

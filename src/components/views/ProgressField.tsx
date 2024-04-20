@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 interface ProgressFieldProps {
   sessionStatus: string;
   goalMinutes: string;
-  startDateTime?: string;
+  startDateTime: string;
   totalTime: string;
 }
 
@@ -27,6 +27,8 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
   }, []);
 
   useEffect(() => {
+    console.log("STATUS CHANGE", sessionStatus);
+    console.log(startDateTime);
     if (!startDateTime || sessionStatus !== "on") {
       setRemainingTime("00:00:00");
       setProgress(0);

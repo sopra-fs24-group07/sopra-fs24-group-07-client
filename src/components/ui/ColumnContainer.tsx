@@ -10,7 +10,7 @@ import CreateTask from "../popups/CreateTask";
 
 function ColumnContainer(props) {
   //get the columns and tasks from props
-  const { column, teamTasks } = props;
+  const { column, teamTasks, sessionStatus } = props;
   //new Task that can be created
   const [newTask, setNewTask] = useState(null);
   //set State of Create Task Popup
@@ -32,11 +32,18 @@ function ColumnContainer(props) {
       <div className="tasksArea">
         {teamTasks.map((task) => {
           if (task.status === column)
-            return <TaskCard key={task.id} task={task} col={column}></TaskCard>;
+            return (
+              <TaskCard
+                key={task.id}
+                task={task}
+                col={column}
+                sessionStatus={sessionStatus}
+              ></TaskCard>
+            );
         })}
       </div>
       {/*display the createTask button for the To-do coloumn*/}
-      {column === "TODO" && (
+      {column === "TODO" && sessionStatus === "off" && (
         <div className="createTask container">
           <Button
             width="100%"
@@ -59,6 +66,7 @@ function ColumnContainer(props) {
 ColumnContainer.propTypes = {
   column: PropTypes.string,
   teamTasks: PropTypes.array,
+  sessionStatus: PropTypes.string,
 };
 
 export default ColumnContainer;
