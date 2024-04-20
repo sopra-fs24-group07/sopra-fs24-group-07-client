@@ -8,12 +8,41 @@ import AgoraRTM from "agora-rtm-sdk"; //RTM for Channels, Users, etc.
 import BaseContainer from "./BaseContainer";
 import { Button } from "./Button";
 
+const Spinner = () => (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black background
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 1000, // Ensures it is on top of other elements
+    }}
+  >
+    <div
+      style={{
+        width: "40px",
+        height: "40px",
+        border: "4px solid #f3f3f3",
+        borderTop: "4px solid #3498db",
+        borderRadius: "50%",
+        animation: "spin 1s linear infinite",
+      }}
+    />
+  </div>
+);
+
 function VoiceChat() {
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
   const TOKEN = null;
 
   const [errorUserName, setErrorUserName] = useState("");
   const [errorGetTasks, setErrorGetTasks] = useState("");
+  const [errorGeneral, setErrorGeneral] = useState("");
 
   //IDs for identification, which we will use the userId for
   let rtcUID;
@@ -40,6 +69,9 @@ function VoiceChat() {
   //the Clients, which will be initialized later
   let rtcClient;
   let rtmClient;
+
+  //to display the Spinner
+  const [isLoading, setIsLoading] = useState(false);
 
   const initRTM = async (name, taskid) => {
     //init rtm client with app ID
@@ -199,22 +231,30 @@ function VoiceChat() {
         console.error(`Error fetching user info: ${handleError(error)}`);
       }
       if (userName) {
-        //initalize rtc and rtm with the userName
-        await initRTC(taskid);
-        await initRTM(userName, taskid);
+        setIsLoading(true);
+        try {
+          //initalize rtc and rtm with the userName
+          await initRTC(taskid);
+          await initRTM(userName, taskid);
 
-        //hide the channels
-        ChannelList.style.display = "none";
-        //show the voice room controls
-        document.getElementById("room-header").style.display = "flex";
-        //display the room-name
-        document.getElementById("room-name").innerHTML = roomName;
-        //leave the channel if windows is closed
-        window.addEventListener("beforeunload", leaveRoom);
-        //leave the channel if back to teams button is clicked
-        document.getElementById("back-button").addEventListener("click", () => {
-          leaveRoom();
-        });
+          //hide the channels
+          ChannelList.style.display = "none";
+          //show the voice room controls
+          document.getElementById("room-header").style.display = "flex";
+          //display the room-name
+          document.getElementById("room-name").innerHTML = roomName;
+          //leave the channel if windows is closed
+          window.addEventListener("beforeunload", leaveRoom);
+          //leave the channel if back to teams button is clicked
+          document
+            .getElementById("back-button")
+            .addEventListener("click", leaveRoom);
+        } catch (error) {
+          setErrorGeneral(
+            "An unexpected error occured. Please try to logout and login again"
+          );
+        }
+        setIsLoading(false);
       }
     };
 
@@ -241,9 +281,7 @@ function VoiceChat() {
       window.removeEventListener("beforeunload", leaveRoom);
       document
         .getElementById("back-button")
-        .removeEventListener("click", () => {
-          leaveRoom();
-        });
+        .removeEventListener("click", leaveRoom);
     };
 
     //leave rtm Client
@@ -299,8 +337,10 @@ function VoiceChat() {
         <div className="rooms" id="channels"></div>
         {errorUserName && <div>{errorUserName}</div>}
         {errorGetTasks && <div>{errorGetTasks}</div>}
+        {errorGeneral && <div>{errorGeneral}</div>}
       </form>
       <div className="members" id="members"></div>
+      {isLoading && <Spinner />}
     </BaseContainer>
   );
 }
