@@ -200,8 +200,12 @@ function VoiceChat() {
         document.getElementById("room-header").style.display = "flex";
         //display the room-name
         document.getElementById("room-name").innerHTML = roomName;
-        //leave the channel if windows is closed;
+        //leave the channel if windows is closed
         window.addEventListener("beforeunload", leaveRoom);
+        //leave the channel if back to teams button is clicked
+        document.getElementById("back-button").addEventListener("click", () => {
+          leaveRoom();
+        });
       }
     };
 

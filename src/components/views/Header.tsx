@@ -67,7 +67,9 @@ const Header = (props) => {
         {location.pathname === "/teams" ? (
           <span>Your Teams</span>
         ) : (
-          <Button onClick={() => goTeamsOverview()}>{"< Back to Teams"}</Button>
+          <Button id="back-button" onClick={() => goTeamsOverview()}>
+            {"< Back to Teams"}
+          </Button>
         )}
       </div>
       <h1 className="header title">
