@@ -1,0 +1,22 @@
+@import "../theme";
+
+.input {
+  height: 35px;
+  padding-left: 15px;
+  margin-left: -4px;
+  border: none;
+  border-radius: 0.75em;
+  margin-bottom: 10px;
+  background: transparentize(white, 0.85);
+  color: $background;
+  width: auto;
+}
+
+.section {
+  max-height: 200px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

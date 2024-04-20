@@ -28,6 +28,7 @@ FormField.propTypes = {
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
 };
+import Comments from "components/ui/Comments";
 
 const InspectTask = ({ isOpen, onClose, task }) => {
   const [editMode, setEditMode] = useState(false);
@@ -150,7 +151,6 @@ const InspectTask = ({ isOpen, onClose, task }) => {
         <Button className="red-button" onClick={doClose}>
           Close
         </Button>
-        <h2>Create Task</h2>
         <h3 className="createTeam headline">Title</h3>
         <FormField
           className="createTeam input"
@@ -167,6 +167,12 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           onChange={(dc: string) => setTaskDescription(dc)}
           disabled={editMode}
         />
+        {!editMode && (
+          <div>
+            <h3>Comments</h3>
+            <Comments taskId={task.taskId} />
+          </div>
+        )}
 
         {error && <p>{error}</p>}
 
