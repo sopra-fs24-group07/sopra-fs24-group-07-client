@@ -22,7 +22,7 @@ function VoiceChat() {
 
   //set as different IDs for each use-ase
   const setIds = async () => {
-    rtcUID = localStorage.getItem("id");
+    rtcUID = parseInt(localStorage.getItem("id"));
     rtmUID = localStorage.getItem("id");
     userId = localStorage.getItem("id");
   };
@@ -41,7 +41,7 @@ function VoiceChat() {
   let rtcClient;
   let rtmClient;
 
-  const initRTM = async (name) => {
+  const initRTM = async (name, taskid) => {
     //init rtm client with app ID
     rtmClient = AgoraRTM.createInstance(APP_ID);
     await rtmClient.login({ uid: rtmUID, token: TOKEN });
@@ -53,7 +53,9 @@ function VoiceChat() {
     });
 
     //create the channel with roomName, teamId and them join
-    channel = rtmClient.createChannel(roomName + teamId.toString());
+    channel = rtmClient.createChannel(
+      taskid.toString() + roomName + teamId.toString()
+    );
     await channel.join();
 
     // get the members that are in a channel
@@ -64,14 +66,19 @@ function VoiceChat() {
     channel.on("MemberLeft", handleMemberLeft);
   };
 
-  const initRTC = async () => {
+  const initRTC = async (taskid) => {
     rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     //handle user join/leave
     rtcClient.on("user-published", handleUserPublished);
     rtcClient.on("user-left", handleUserLeft);
 
-    await rtcClient.join(APP_ID, roomName + teamId.toString(), TOKEN, rtcUID);
+    await rtcClient.join(
+      APP_ID,
+      taskid.toString() + roomName + teamId.toString(),
+      TOKEN,
+      rtcUID
+    );
 
     //track and publish local audio track
     localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
@@ -157,7 +164,7 @@ function VoiceChat() {
           (task) => task.status === "IN_SESSION"
         );
         console.log(inSessionTasks);
-        setTasks(["main", ...inSessionTasks.map((task) => task.title)]);
+        setTasks([{ title: "main", taskId: "XX" }, ...inSessionTasks]);
       } catch (error) {
         setErrorGetTasks(
           "Error while creating channels. Please try again later"
@@ -170,6 +177,8 @@ function VoiceChat() {
 
     const enterRoom = async (e) => {
       e.preventDefault();
+      console.log("ABC", e.submitter.dataset.taskid);
+      const taskid = e.submitter.dataset.taskid;
       //setRoomName(e.submitter.value.toLowerCase());
       roomName = e.submitter.value;
       roomName = roomName.toLowerCase();
@@ -191,8 +200,8 @@ function VoiceChat() {
       }
       if (userName) {
         //initalize rtc and rtm with the userName
-        await initRTC();
-        await initRTM(userName);
+        await initRTC(taskid);
+        await initRTM(userName, taskid);
 
         //hide the channels
         ChannelList.style.display = "none";
@@ -263,7 +272,7 @@ function VoiceChat() {
   useEffect(() => {
     const initChannels = async () => {
       tasks.map((breakoutRoom) => {
-        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom}" />`;
+        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom.title}" data-taskid="${breakoutRoom.taskId}" />`;
         document
           .getElementById("channels")
           .insertAdjacentHTML("beforeend", newChannel);
