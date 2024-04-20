@@ -195,7 +195,6 @@ function VoiceChat() {
         let inSessionTasks = response.data.filter(
           (task) => task.status === "IN_SESSION"
         );
-        console.log(inSessionTasks);
         setTasks([{ title: "main", taskId: "XX" }, ...inSessionTasks]);
       } catch (error) {
         setErrorGetTasks(
@@ -207,11 +206,14 @@ function VoiceChat() {
 
     fetchUserTasks();
 
+    //TODO:
+    document.addEventListener("checkBoxChange", fetchUserTasks);
+    //to make this work we need to add: document.dispatchEvent(new CustomEvent('checkBoxChange'))
+    //inside of channel.bind("task-update" Team in TeamDashBoard.tsx
+
     const enterRoom = async (e) => {
       e.preventDefault();
-      console.log("ABC", e.submitter.dataset.taskid);
       const taskid = e.submitter.dataset.taskid;
-      //setRoomName(e.submitter.value.toLowerCase());
       roomName = e.submitter.value;
       roomName = roomName.toLowerCase();
 
@@ -309,6 +311,7 @@ function VoiceChat() {
 
   useEffect(() => {
     const initChannels = async () => {
+      document.getElementById("channels").innerHTML = "";
       tasks.map((breakoutRoom) => {
         let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom.title}" data-taskid="${breakoutRoom.taskId}" />`;
         document
