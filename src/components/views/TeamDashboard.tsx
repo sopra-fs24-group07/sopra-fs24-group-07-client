@@ -26,6 +26,7 @@ const TeamDashboard: React.FC = () => {
   const [teamName, setTeamName] = useState<any[]>([]);
   const [teamDesc, setTeamDesc] = useState<any[]>([]);
   const token = localStorage.getItem("token") || "";
+  const userId = localStorage.getItem("id");
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
   const navigate = useNavigate();
@@ -101,9 +102,14 @@ const TeamDashboard: React.FC = () => {
             Authorization: `${token}`,
           },
         });
+        const foundUser = response.data.find((user) => user.userId === userId);
+        if (!foundUser) {
+          navigate("/teams");
+        }
         setUserData(response.data);
       } catch (error) {
         console.error(`Error fetching team's users: ${handleError(error)}`);
+        navigate("/teams");
       }
     };
 
