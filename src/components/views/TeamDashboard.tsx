@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
@@ -28,6 +28,36 @@ const TeamDashboard: React.FC = () => {
   const token = localStorage.getItem("token") || "";
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
+  const navigate = useNavigate();
+  const [isLeave, setIsLeave] = useState<boolean>(false);
+
+  useEffect(() => {
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
+      cluster: "eu",
+      forceTLS: true,
+    });
+
+    const channel = pusher.subscribe(`team-${teamId}`);
+    channel.bind("session-update", (data: { status: string }) => {
+      setSessionStatus(data.status);
+      window.location.reload();
+    });
+
+    channel.bind("task-update", () => {
+      window.location.reload();
+    });
+
+    channel.bind("team-update", (data: { userId: string }) => {
+      if (data.userId !== localStorage.getItem("id")) {
+        window.location.reload();
+      }
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [teamId, setSessionStatus]);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
@@ -57,6 +87,10 @@ const TeamDashboard: React.FC = () => {
 
   const closeTeamSettings = () => {
     setTeamSettingsOpen(false);
+    if (isLeave) {
+      navigate("/teams");
+      setIsLeave(false);
+    }
   };
 
   useEffect(() => {
@@ -229,7 +263,9 @@ const TeamDashboard: React.FC = () => {
               <SessionTaskBoard
                 teamId={teamId}
                 teamTasks={teamTasks.filter(
-                  (task) => task.status === "IN_SESSION"
+                  (task) =>
+                    task.status === "IN_SESSION" ||
+                    task.status === "IN_SESSION_DONE"
                 )}
                 sessionStatus={sessionStatus}
                 checkedTasks={checkedTasks}
@@ -238,7 +274,12 @@ const TeamDashboard: React.FC = () => {
             )}
           </TeamDashboardBox>
         </div>
-        <TeamSettings isOpen={isTeamSettingsOpen} onClose={closeTeamSettings} />
+        <TeamSettings
+          isOpen={isTeamSettingsOpen}
+          onClose={closeTeamSettings}
+          isLeave={isLeave}
+          setIsLeave={setIsLeave}
+        />
       </div>
     </BaseContainer>
   );

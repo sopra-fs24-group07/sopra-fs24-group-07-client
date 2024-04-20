@@ -23,12 +23,12 @@ const FormField = (props) => {
 FormField.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
-  onChange: PropTypes.input,
+  onChange: PropTypes.func,
   type: PropTypes.string,
   disabled: PropTypes.bool,
 };
 
-const TeamSettings = ({ isOpen, onClose }) => {
+const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
   //const [editMode, setEditMode] = useState(false); EDIT Mode: for extensibility in M4
   const [teamName, setTeamName] = useState();
   const [teamDescription, setTeamDescription] = useState();
@@ -59,14 +59,15 @@ const TeamSettings = ({ isOpen, onClose }) => {
         setInviteURL(`${baseURL}/invitation/${foundTeam.teamUUID}`);
       } catch (error) {
         setError("Something went wrong. Please try again");
+        /*
         if (error.response.status === 401) {
           setLeaveError("You are not authorized to do this");
         }
         console.error(handleError(error));
+
+         */
       }
     };
-
-    fetchUserTeam();
 
     const fetchTeamMembers = async () => {
       try {
@@ -85,6 +86,7 @@ const TeamSettings = ({ isOpen, onClose }) => {
       }
     };
 
+    fetchUserTeam();
     fetchTeamMembers();
   }, []);
 
@@ -109,9 +111,11 @@ const TeamSettings = ({ isOpen, onClose }) => {
           },
         }
       );
+      setIsLeave(true);
       navigate("/teams");
     } catch (error) {
       setLeaveError("Failed to leave team");
+      console.error("Failed to leave team:", handleError(error));
       if (error.response.status === 401) {
         setLeaveError("You are not authorized to leave the team, sorry!");
       } else if (error.response.status === 404) {
@@ -171,7 +175,6 @@ const TeamSettings = ({ isOpen, onClose }) => {
                 </li>
               ))}
             </ul>
-            {/*TODO: add onClick={LeaveTeam} when API is ready  */}
             <Button onClick={LeaveTeam} width="80%" className="leave-team">
               Leave Team
             </Button>
@@ -194,18 +197,16 @@ const TeamSettings = ({ isOpen, onClose }) => {
                 </div>
               )}
             </div>
-
             {/* EDIT Mode: for extensibility in M4: error && <p>{error}</p> */}
-
             {/* EDIT Mode: for extensibility in M4:
-        <div>
-          {!editMode && (
-            <Button className="green-button" onClick={ActivateEditMode}>
-              Edit
-            </Button>
-          )}
-        </div>
-        */}
+            <div>
+              {!editMode && (
+                  <Button className="green-button" onClick={ActivateEditMode}>
+                    Edit
+                  </Button>
+              )}
+              </div>
+            */}
           </div>
         )}
       </div>
@@ -217,6 +218,7 @@ TeamSettings.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
+  setIsLeave: PropTypes.func,
 };
 
 export default TeamSettings;

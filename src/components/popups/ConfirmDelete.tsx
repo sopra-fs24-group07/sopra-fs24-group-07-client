@@ -41,6 +41,7 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
       }
     } catch (err) {
       setError("Deletion failed. Please try again.");
+      console.error("Error during account deletion:", err);
     }
   };
 
@@ -53,14 +54,14 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
           type="text"
           placeholder="Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(newValue) => setUsername(newValue)}
         />
         <FormField
           label="Password"
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(newValue) => setPassword(newValue)}
         />
         <Button onClick={handleLoginAndDelete}>Confirm</Button>
         <Button onClick={onCancel}>Cancel</Button>
@@ -71,7 +72,7 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
 };
 
 ConfirmDelete.propTypes = {
-  onCancel: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
 };
 

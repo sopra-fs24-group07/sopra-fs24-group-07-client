@@ -60,13 +60,15 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
           },
         });
 
-        setUser({
+        const fetchedUser = {
           id: response.data.userId,
           username: response.data.username,
           name: response.data.name,
-        });
-        setUsername(user.username);
-        setName(user.name);
+        };
+
+        setUser(fetchedUser);
+        setUsername(fetchedUser.username);
+        setName(fetchedUser.name);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
         setError("Failed to fetch user data");
@@ -144,8 +146,8 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   };
 
   const closeProfileSettings = () => {
-    setShowConfirmationPopup(false); // Close any open confirmation popup
-    onClose(); // Perform the original close operation
+    setShowConfirmationPopup(false);
+    onClose();
   };
 
   const openProfileOnClose = () => {

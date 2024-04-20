@@ -32,7 +32,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const navigate = useNavigate();
   const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
-  const [errors, setErrors] = useState({ name: "", description: "" });
+  const [errors, setErrors] = useState({
+    name: "",
+    description: "",
+    general: "",
+  });
 
   const validateForm = () => {
     let isValid = true;
@@ -78,7 +82,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       });
 
       onCreateTeamClick(response.data.teamId);
-      navigate(`/teams/${response.data.teamId}`);
+      //navigate(`/teams/${response.data.teamId}`);
     } catch (error) {
       console.error("Error creating team:", handleError(error));
       setErrors((prev) => ({
