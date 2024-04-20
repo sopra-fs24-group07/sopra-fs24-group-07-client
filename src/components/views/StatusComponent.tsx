@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Pusher from "pusher-js";
 import { useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api } from "helpers/api";
