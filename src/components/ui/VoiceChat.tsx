@@ -230,6 +230,11 @@ function VoiceChat() {
       document.getElementById("members").innerHTML = "";
       //remove eventListener to avoid error on closing component
       window.removeEventListener("beforeunload", leaveRoom);
+      document
+        .getElementById("back-button")
+        .removeEventListener("click", () => {
+          leaveRoom();
+        });
     };
 
     //leave rtm Client
