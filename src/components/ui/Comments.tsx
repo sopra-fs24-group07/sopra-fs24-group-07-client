@@ -29,6 +29,7 @@ FormField.propTypes = {
 const Comments = (props) => {
   const { teamId } = useParams();
   const { taskId } = props;
+  const userId = localStorage.getItem("id");
   const token = localStorage.getItem("token");
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
@@ -49,7 +50,7 @@ const Comments = (props) => {
     if (!validateForm()) return;
 
     try {
-      const requestBody = JSON.stringify({ text: comment });
+      const requestBody = JSON.stringify({ text: comment, userId: userId });
       const response = await api.post(
         `/api/v1/teams/${teamId}/tasks/${taskId}/comments`,
         requestBody,
