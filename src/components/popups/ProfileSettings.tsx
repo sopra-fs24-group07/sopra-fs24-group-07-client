@@ -69,6 +69,10 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
         setUser(fetchedUser);
         setUsername(fetchedUser.username);
         setName(fetchedUser.name);
+        setError("");
+        setPassword("");
+        setRepPassword("");
+        setErrors({ username: "", name: "", password: "", repPassword: "" });
       } catch (error) {
         console.error("Failed to fetch user data:", error);
         setError("Failed to fetch user data");
