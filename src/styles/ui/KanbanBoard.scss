@@ -1,14 +1,16 @@
 @import "../theme";
 
 .board {
-  max-width: calc(100% - 2em);
-  margin: 1em;
+  margin: 0.1em;
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .cols {
+  align-items: center;
+  width: 100%;
   display: flex;
   gap: 15px;
 }

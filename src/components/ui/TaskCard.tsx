@@ -93,28 +93,33 @@ function TaskCard(props) {
       {/*create the go Left button for Tasks in Done and In Session */}
       {/*ToDo: onClick={() => updateTaskStatusLeft(task, col)} and remove styling*/}
       {(col === "DONE" || col === "IN_SESSION") && sessionStatus === "off" && (
-        <Button
+        <button
           className="goLeft"
           onClick={() => updateTaskStatusLeft(task, col)}
         >
           &lt;
-        </Button>
+        </button>
       )}
 
       {/*task title that opens the task details */}
-      <Link onClick={openInspectTask} className="taskTitle">
+      <Link
+        onClick={openInspectTask}
+        className={`taskTitle ${col === "TODO" ? "taskTitle left" : ""} ${
+          col === "DONE" ? "right" : ""
+        }`}
+      >
         {task.title}
       </Link>
 
       {/*create the go Right button for Tasks in To-do and In Session */}
       {/*ToDo: onClick={() => updateTaskStatusRight(task, col)} and remove styling */}
       {(col === "TODO" || col === "IN_SESSION") && sessionStatus === "off" && (
-        <Button
+        <button
           className="goRight"
           onClick={() => updateTaskStatusRight(task, col)}
         >
           &gt;
-        </Button>
+        </button>
       )}
       <InspectTask
         isOpen={isInspectTaskOpen}

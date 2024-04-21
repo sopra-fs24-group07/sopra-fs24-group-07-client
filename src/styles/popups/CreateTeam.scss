@@ -1,6 +1,7 @@
 @import "../theme";
 
 .createTeam {
+  z-index: 1000;
   &.container {
     position: fixed;
     top: 0;
