@@ -38,8 +38,8 @@ const Comments = (props) => {
   const validateForm = () => {
     let isValid = true;
 
-    if (comment.length > 100) {
-      setError("The comment exceeds 100 characters");
+    if (comment.length > 500) {
+      setError("The comment exceeds 500 characters");
       isValid = false;
     }
 
@@ -103,7 +103,6 @@ const Comments = (props) => {
       </div>
       {error && <div className="error-message">{error}</div>}
       <div className="section">
-        {/*will add a CommentCard component for this later */}
         {allComments.map((commi) => (
           <CommentCard key={commi.commentId} comment={commi}></CommentCard>
         ))}
