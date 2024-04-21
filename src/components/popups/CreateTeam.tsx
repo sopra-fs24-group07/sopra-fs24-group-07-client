@@ -45,8 +45,8 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     if (!teamName) {
       newErrors.name = "Team name is required";
       isValid = false;
-    } else if (teamName.length > 100) {
-      newErrors.name = "The name exceeds 100 characters";
+    } else if (teamName.length > 50) {
+      newErrors.name = "The name exceeds 50 characters";
       isValid = false;
     }
 
