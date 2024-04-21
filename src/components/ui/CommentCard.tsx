@@ -13,7 +13,6 @@ function CommentCard(props) {
 
   return (
     <div className="comContainer">
-      {/*task title that opens the task details */}
       <div className="comAuthor">{comment.authorName}</div>
       <div className="comText">{comment.text}</div>
       <div className="comDate">{creationDate}</div>
