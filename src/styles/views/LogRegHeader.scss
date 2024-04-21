@@ -1,0 +1,25 @@
+@import "../theme";
+
+.header {
+  &.container {
+    display: flex;
+    justify-content: center; /* Align buttons to the left and right */
+    align-items: center; /* Center the title vertically */
+    height: 5em;
+    box-shadow: $dropShadow;
+    background-color: $accentDark;
+  }
+
+  &.title {
+    font-weight: bold;
+    color: $background;
+    text-align: center; /* Center the title horizontally */
+  }
+
+  &.titlelarge {
+    font-weight: bold;
+    font-size: 150%;
+    color: $background;
+  }
+
+}
