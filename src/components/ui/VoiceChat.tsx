@@ -7,6 +7,7 @@ import AgoraRTC from "agora-rtc-sdk-ng"; //RTC for voice transmitting
 import AgoraRTM from "agora-rtm-sdk"; //RTM for Channels, Users, etc.
 import BaseContainer from "./BaseContainer";
 import { Button } from "./Button";
+import { Spinner } from "./Spinner";
 
 function VoiceChat() {
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
@@ -14,6 +15,7 @@ function VoiceChat() {
 
   const [errorUserName, setErrorUserName] = useState("");
   const [errorGetTasks, setErrorGetTasks] = useState("");
+  const [errorGeneral, setErrorGeneral] = useState("");
 
   //IDs for identification, which we will use the userId for
   let rtcUID;
@@ -22,7 +24,7 @@ function VoiceChat() {
 
   //set as different IDs for each use-ase
   const setIds = async () => {
-    rtcUID = localStorage.getItem("id");
+    rtcUID = parseInt(localStorage.getItem("id"));
     rtmUID = localStorage.getItem("id");
     userId = localStorage.getItem("id");
   };
@@ -41,7 +43,10 @@ function VoiceChat() {
   let rtcClient;
   let rtmClient;
 
-  const initRTM = async (name) => {
+  //to display the Spinner
+  const [isLoading, setIsLoading] = useState(false);
+
+  const initRTM = async (name, taskid) => {
     //init rtm client with app ID
     rtmClient = AgoraRTM.createInstance(APP_ID);
     await rtmClient.login({ uid: rtmUID, token: TOKEN });
@@ -53,7 +58,9 @@ function VoiceChat() {
     });
 
     //create the channel with roomName, teamId and them join
-    channel = rtmClient.createChannel(roomName + teamId.toString());
+    channel = rtmClient.createChannel(
+      taskid.toString() + roomName + teamId.toString()
+    );
     await channel.join();
 
     // get the members that are in a channel
@@ -64,14 +71,19 @@ function VoiceChat() {
     channel.on("MemberLeft", handleMemberLeft);
   };
 
-  const initRTC = async () => {
+  const initRTC = async (taskid) => {
     rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     //handle user join/leave
     rtcClient.on("user-published", handleUserPublished);
     rtcClient.on("user-left", handleUserLeft);
 
-    await rtcClient.join(APP_ID, roomName + teamId.toString(), TOKEN, rtcUID);
+    await rtcClient.join(
+      APP_ID,
+      taskid.toString() + roomName + teamId.toString(),
+      TOKEN,
+      rtcUID
+    );
 
     //track and publish local audio track
     localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
@@ -156,8 +168,7 @@ function VoiceChat() {
         let inSessionTasks = response.data.filter(
           (task) => task.status === "IN_SESSION"
         );
-        console.log(inSessionTasks);
-        setTasks(["main", ...inSessionTasks.map((task) => task.title)]);
+        setTasks([{ title: "main", taskId: "XX" }, ...inSessionTasks]);
       } catch (error) {
         setErrorGetTasks(
           "Error while creating channels. Please try again later"
@@ -168,9 +179,14 @@ function VoiceChat() {
 
     fetchUserTasks();
 
+    //TODO:
+    document.addEventListener("checkBoxChange", fetchUserTasks);
+    //to make this work we need to add: document.dispatchEvent(new CustomEvent('checkBoxChange'))
+    //inside of channel.bind("task-update" Team in TeamDashBoard.tsx
+
     const enterRoom = async (e) => {
       e.preventDefault();
-      //setRoomName(e.submitter.value.toLowerCase());
+      const taskid = e.submitter.dataset.taskid;
       roomName = e.submitter.value;
       roomName = roomName.toLowerCase();
 
@@ -190,18 +206,30 @@ function VoiceChat() {
         console.error(`Error fetching user info: ${handleError(error)}`);
       }
       if (userName) {
-        //initalize rtc and rtm with the userName
-        await initRTC();
-        await initRTM(userName);
+        setIsLoading(true);
+        try {
+          //initalize rtc and rtm with the userName
+          await initRTC(taskid);
+          await initRTM(userName, taskid);
 
-        //hide the channels
-        ChannelList.style.display = "none";
-        //show the voice room controls
-        document.getElementById("room-header").style.display = "flex";
-        //display the room-name
-        document.getElementById("room-name").innerHTML = roomName;
-        //leave the channel if windows is closed;
-        window.addEventListener("beforeunload", leaveRoom);
+          //hide the channels
+          ChannelList.style.display = "none";
+          //show the voice room controls
+          document.getElementById("room-header").style.display = "flex";
+          //display the room-name
+          document.getElementById("room-name").innerHTML = roomName;
+          //leave the channel if windows is closed
+          window.addEventListener("beforeunload", leaveRoom);
+          //leave the channel if back to teams button is clicked
+          document
+            .getElementById("back-button")
+            .addEventListener("click", leaveRoom);
+        } catch (error) {
+          setErrorGeneral(
+            "An unexpected error occured. Please try to logout and login again"
+          );
+        }
+        setIsLoading(false);
       }
     };
 
@@ -226,6 +254,9 @@ function VoiceChat() {
       document.getElementById("members").innerHTML = "";
       //remove eventListener to avoid error on closing component
       window.removeEventListener("beforeunload", leaveRoom);
+      document
+        .getElementById("back-button")
+        .removeEventListener("click", leaveRoom);
     };
 
     //leave rtm Client
@@ -253,8 +284,9 @@ function VoiceChat() {
 
   useEffect(() => {
     const initChannels = async () => {
+      document.getElementById("channels").innerHTML = "";
       tasks.map((breakoutRoom) => {
-        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom}" />`;
+        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom.title}" data-taskid="${breakoutRoom.taskId}" />`;
         document
           .getElementById("channels")
           .insertAdjacentHTML("beforeend", newChannel);
@@ -281,8 +313,10 @@ function VoiceChat() {
         <div className="rooms" id="channels"></div>
         {errorUserName && <div>{errorUserName}</div>}
         {errorGetTasks && <div>{errorGetTasks}</div>}
+        {errorGeneral && <div>{errorGeneral}</div>}
       </form>
       <div className="members" id="members"></div>
+      {isLoading && <Spinner />}
     </BaseContainer>
   );
 }
