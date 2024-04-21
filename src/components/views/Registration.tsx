@@ -6,6 +6,7 @@ import { Button } from "components/ui/Button";
 import "styles/views/Register.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
+import { Spinner } from "components/ui/Spinner";
 
 const FormField = ({ label, value, onChange, type = "text", error }) => (
   <div className="register field">
@@ -27,34 +28,6 @@ FormField.propTypes = {
   type: PropTypes.string,
   error: PropTypes.string,
 };
-
-const Spinner = () => (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black background
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-    }}
-  >
-    <div
-      style={{
-        width: "40px",
-        height: "40px",
-        border: "4px solid #f3f3f3",
-        borderTop: "4px solid #3498db",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
-      }}
-    />
-  </div>
-);
 
 const Registration = () => {
   const navigate = useNavigate();
