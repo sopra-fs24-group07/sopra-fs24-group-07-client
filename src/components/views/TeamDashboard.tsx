@@ -14,6 +14,7 @@ import { Button } from "components/ui/Button";
 import VoiceChat from "components/ui/VoiceChat";
 import SessionTaskBoard from "../ui/SessionTaskBoard";
 import Pusher from "pusher-js";
+import MemberCard from "components/ui/MemberCard";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -219,13 +220,15 @@ const TeamDashboard: React.FC = () => {
             endColumn={2}
           >
             {sessionStatus === "off" && (
-              <div>
+              <div className="memContainer">
                 Team Members
-                <div>
-                  {userData.map((member) => (
-                    <div key={member.id}>{member.username}</div>
-                  ))}
-                </div>
+                {userData.map((member) => (
+                  <MemberCard
+                    key={member.id}
+                    MemberName={member.username}
+                    className="memCards"
+                  ></MemberCard>
+                ))}
               </div>
             )}
             {sessionStatus === "on" && <VoiceChat />}
