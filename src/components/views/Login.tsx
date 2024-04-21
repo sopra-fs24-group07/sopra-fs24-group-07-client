@@ -97,7 +97,7 @@ const Login = () => {
           </div>
           {error && <p className="login error">{error}</p>}
 
-          <label className="login message">Already haven an account?</label>
+          <label className="login message">Don&#39;t have an acoount?</label>
           <Button width="60%" onClick={() => navigate("/register")}>
             Go to Register
           </Button>
