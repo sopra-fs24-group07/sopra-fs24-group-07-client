@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
-import TeamDashboardSessionBox from "components/ui/TeamDashboardSessionBox";
 import KanbanBoard from "components/ui/KanbanBoard";
 import StatusComponent from "components/views/StatusComponent";
 import ProgressField from "components/views/ProgressField";
@@ -195,24 +194,26 @@ const TeamDashboard: React.FC = () => {
     <BaseContainer>
       <div className="team-dashboard container">
         <div className="team-dashboard grid">
-          <TeamDashboardSessionBox
+          <TeamDashboardBox
             startRow={1}
             startColumn={1}
             endRow={2}
             endColumn={2}
           >
-            <StatusComponent
-              sessionStatus={sessionStatus}
-              setSessionStatus={setSessionStatus}
-              goalMinutes={goalMinutes}
-              setGoalMinutes={setGoalMinutes}
-              startDateTime={startDateTime}
-              setStartDateTime={setStartDateTime}
-              totalTime={totalTime}
-              setTotalTime={setTotalTime}
-              teamName={teamName}
-            />
-          </TeamDashboardSessionBox>
+            <div className="team-dashboard statusBox">
+              <StatusComponent
+                sessionStatus={sessionStatus}
+                setSessionStatus={setSessionStatus}
+                goalMinutes={goalMinutes}
+                setGoalMinutes={setGoalMinutes}
+                startDateTime={startDateTime}
+                setStartDateTime={setStartDateTime}
+                totalTime={totalTime}
+                setTotalTime={setTotalTime}
+                teamName={teamName}
+              />
+            </div>
+          </TeamDashboardBox>
           <TeamDashboardBox
             startRow={2}
             startColumn={1}
@@ -247,6 +248,7 @@ const TeamDashboard: React.FC = () => {
             />
           </TeamDashboardBox>
           <TeamDashboardBox
+            className="team-dashboard box"
             startRow={1}
             startColumn={3}
             endRow={2}
