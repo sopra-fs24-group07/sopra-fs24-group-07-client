@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
-import TeamDashboardSessionBox from "components/ui/TeamDashboardSessionBox";
 import KanbanBoard from "components/ui/KanbanBoard";
 import StatusComponent from "components/views/StatusComponent";
 import ProgressField from "components/views/ProgressField";
@@ -14,6 +13,7 @@ import { Button } from "components/ui/Button";
 import VoiceChat from "components/ui/VoiceChat";
 import SessionTaskBoard from "../ui/SessionTaskBoard";
 import Pusher from "pusher-js";
+import MemberCard from "components/ui/MemberCard";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -194,24 +194,26 @@ const TeamDashboard: React.FC = () => {
     <BaseContainer>
       <div className="team-dashboard container">
         <div className="team-dashboard grid">
-          <TeamDashboardSessionBox
+          <TeamDashboardBox
             startRow={1}
             startColumn={1}
             endRow={2}
             endColumn={2}
           >
-            <StatusComponent
-              sessionStatus={sessionStatus}
-              setSessionStatus={setSessionStatus}
-              goalMinutes={goalMinutes}
-              setGoalMinutes={setGoalMinutes}
-              startDateTime={startDateTime}
-              setStartDateTime={setStartDateTime}
-              totalTime={totalTime}
-              setTotalTime={setTotalTime}
-              teamName={teamName}
-            />
-          </TeamDashboardSessionBox>
+            <div className="team-dashboard statusBox">
+              <StatusComponent
+                sessionStatus={sessionStatus}
+                setSessionStatus={setSessionStatus}
+                goalMinutes={goalMinutes}
+                setGoalMinutes={setGoalMinutes}
+                startDateTime={startDateTime}
+                setStartDateTime={setStartDateTime}
+                totalTime={totalTime}
+                setTotalTime={setTotalTime}
+                teamName={teamName}
+              />
+            </div>
+          </TeamDashboardBox>
           <TeamDashboardBox
             startRow={2}
             startColumn={1}
@@ -219,13 +221,15 @@ const TeamDashboard: React.FC = () => {
             endColumn={2}
           >
             {sessionStatus === "off" && (
-              <div>
+              <div className="memContainer">
                 Team Members
-                <div>
-                  {userData.map((member) => (
-                    <div key={member.id}>{member.username}</div>
-                  ))}
-                </div>
+                {userData.map((member) => (
+                  <MemberCard
+                    key={member.id}
+                    MemberName={member.username}
+                    className="memCards"
+                  ></MemberCard>
+                ))}
               </div>
             )}
             {sessionStatus === "on" && <VoiceChat />}
@@ -244,14 +248,20 @@ const TeamDashboard: React.FC = () => {
             />
           </TeamDashboardBox>
           <TeamDashboardBox
+            className="team-dashboard box"
             startRow={1}
             startColumn={3}
             endRow={2}
             endColumn={5}
           >
-            <div>
-              <Button onClick={openTeamSettings}>Team Settings</Button>
-              <p>{teamDesc}</p>
+            <div className="team-dashboard settingsBox">
+              <Button
+                className="team-dashboard settingsButton"
+                onClick={openTeamSettings}
+              >
+                Team Settings
+              </Button>
+              <div className="team-dashboard description">{teamDesc}</div>
             </div>
           </TeamDashboardBox>
           <TeamDashboardBox

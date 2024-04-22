@@ -1,6 +1,13 @@
 @import "../theme";
 
+.memContainer {
+  width: 100%;
+  font-size: 30px;
+  font-weight: bold;
+}
+
 .team-dashboard {
+  scrollbar-width: thin;
   &.container {
     margin-top: 2em;
     min-height: 300px;
@@ -26,9 +33,12 @@
     gap: 0.5em;
     align-items: flex-start;
     background-color: $accentDark;
-    border: 1px solid $background;
+    //border: 1px solid $background;
+    height: auto;
+    box-shadow: $dropShadow;
     font-size: 1.5rem;
     border-radius: 10px;
+    width: 100%;
     max-width: calc(100% - 2em);
     margin: 1em;
     position: relative;
@@ -43,6 +53,36 @@
     border: 1px solid $background;
     font-size: 1.5rem;
     border-radius: 10px;
+  }
+
+  &.settingsBox {
+    width: 100%;
+  }
+
+  &.statusBox {
+    width: 100%;
+  }
+
+  &.description {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    position: absolute;
+    top: 80px; /* Position the description below the button */
+    left: 0;
+    right: 2px;
+    bottom: 10px;
+    overflow: auto;
+    margin: 0;
+    padding-left: 1em;
+    padding-right: 0.4em; /* Adjust padding as needed */
+    box-sizing: border-box;
+  }
+
+  &.settingsButton {
+    position: relative;
+    font-size: medium;
+    height: 50px;
+    width: 100%;
   }
 }
 

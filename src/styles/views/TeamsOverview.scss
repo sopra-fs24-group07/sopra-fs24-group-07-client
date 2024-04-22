@@ -23,15 +23,34 @@
     margin-top: 2em;
   }
 
+  &.header {
+    text-align: center;
+    margin-bottom: -2em;
+  }
   &.grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     grid-gap: 2em;
     justify-items: stretch;
     width: 100%;
-    button {
-      height: 50px;
+
+    .team {
+      height: 100px;
+      width: auto;
       padding: 10px 0;
+      font-size: 100%;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    .create {
+      height: 100px;
+      width: auto;
+      padding: 10px 0;
+      font-size: 100%;
+      border: none;
+      color: $background;
+      background-color: $paletteGreen;
     }
   }
 }

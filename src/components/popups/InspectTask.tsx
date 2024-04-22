@@ -1,16 +1,32 @@
 import React, { useState } from "react";
-import "../../styles/popups/CreateTeam.scss";
+import "../../styles/popups/InspectTask.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
+import Comments from "components/ui/Comments";
 
 const FormField = (props) => {
   return (
-    <div className="createTeam field">
-      <label className="createTeam label">{props.label}</label>
+    <div className="inspectTask field">
+      <label className="inspectTask label">{props.label}</label>
       <input
-        className="createTeam input"
+        className="inspectTask input"
+        placeholder={props.placeholder}
+        value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
+        disabled={!props.disabled}
+      />
+    </div>
+  );
+};
+
+const FormFieldLong = (props) => {
+  return (
+    <div className="inspectTask field">
+      <label className="inspectTask label">{props.label}</label>
+      <textarea
+        className="inspectTask textarea"
         placeholder={props.placeholder}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
@@ -28,7 +44,15 @@ FormField.propTypes = {
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
 };
-import Comments from "components/ui/Comments";
+
+FormFieldLong.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
+};
 
 const InspectTask = ({ isOpen, onClose, task }) => {
   const [editMode, setEditMode] = useState(false);
@@ -74,13 +98,13 @@ const InspectTask = ({ isOpen, onClose, task }) => {
     setEditMode(true);
   };
   const DeactivateEditMode = () => {
+    setTaskTitle(task.title);
+    setTaskDescription(task.description);
+    setError("");
     setEditMode(false);
   };
 
   const doClose = () => {
-    setTaskTitle(task.title);
-    setTaskDescription(task.description);
-    setError("");
     DeactivateEditMode();
     onClose();
   };
@@ -116,13 +140,15 @@ const InspectTask = ({ isOpen, onClose, task }) => {
 
   const DeleteTask = async () => {
     try {
-      const response = await api.delete(
+      task.status = "DELETED";
+      const requestBody = JSON.stringify(task);
+      const response = await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
+        requestBody,
         {
           headers: {
             Authorization: `${token}`,
           },
-          params: {},
         }
       );
       //maybe remove when external api is ready
@@ -146,55 +172,67 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   };
 
   return (
-    <div className="createTeam overlay" onClick={doClose}>
-      <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <Button className="red-button" onClick={doClose}>
-          Close
-        </Button>
-        <h3 className="createTeam headline">Title</h3>
+    <div className="inspectTask overlay" onClick={doClose}>
+      <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
+        <div className="inspectTask header">
+          {!editMode && (
+            <Button className="red-button bts" onClick={doClose}>
+              Close
+            </Button>
+          )}
+          {editMode && (
+            <Button className="red-button bts" onClick={DeactivateEditMode}>
+              Cancel
+            </Button>
+          )}
+          {!editMode && (
+            <Button
+              className="green-button inspectTask edit bts"
+              onClick={ActivateEditMode}
+            >
+              Edit
+            </Button>
+          )}
+        </div>
+        <h3 className="inspectTask headline">Task Title</h3>
         <FormField
-          className="createTeam input"
+          className="inspectTask input"
           value={taskTitle}
           placeholder="enter title..."
           onChange={(ti: string) => setTaskTitle(ti)}
           disabled={editMode}
         />
-        <h3 className="createTeam headline">Description</h3>
-        <FormField
-          className="createTeam input"
+        <h3 className="inspectTask headline">Task Description</h3>
+        <FormFieldLong
+          className="inspectTask textarea"
           value={taskDescription}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
           disabled={editMode}
         />
         {!editMode && (
-          <div>
-            <h3>Comments</h3>
+          <>
+            <h3 className="inspectTask headline">Comments</h3>
             <Comments taskId={task.taskId} />
-          </div>
+          </>
         )}
 
         {error && <p>{error}</p>}
 
-        <div>
-          {!editMode && (
-            <Button className="green-button" onClick={ActivateEditMode}>
-              Edit
-            </Button>
-          )}
-          {/*ToDO: enable when API is ready */}
-          {editMode && (
-            <Button className="red-button" onClick={DeleteTask} disabled>
-              Delete
-            </Button>
-          )}
+        <div className="inspectTask header">
           {editMode && (
             <Button
               disabled={!taskTitle}
-              className="green-button"
+              className="green-button bts"
               onClick={EditTask}
             >
               Save
+            </Button>
+          )}
+
+          {editMode && (
+            <Button className="red-button bts" onClick={DeleteTask}>
+              Delete
             </Button>
           )}
         </div>

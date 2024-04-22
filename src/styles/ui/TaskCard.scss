@@ -2,9 +2,13 @@
 
 .taskContainer {
   //border: 1px solid black;
+  position: relative;
   border-radius: 7px;
   margin: 5px;
   background-color: $accentDark;
+  width: 100%;
+  align-items: center;
+  box-shadow: $dropShadow;
   //cursor: grab;
 
   &:hover {
@@ -15,12 +19,47 @@
 .taskTitle {
   display: inline-block;
   text-decoration: none;
+  width: calc(100% - 46px);
+  margin-left: 23px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  &.left {
+    width: calc(100% - 23px);
+    margin-left: 0%;
+  }
+
+  &.right {
+    margin-left: 23px;
+    width: calc(100% - 23px);
+  }
+}
+
+.goRight,
+.goLeft {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  height: 100%;
+  font-weight: 800;
+  font-size: 16px;
+  align-items: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: $accent;
+  transition: all 0.3s ease;
+  box-shadow: $dropShadow;
+  &:hover {
+    transform: translateY(-55%);
+  }
 }
 
 .goRight {
-  float: right;
+  right: 0; /* Align the right button to the right */
 }
 
 .goLeft {
-  float: left;
+  left: 0; /* Align the left button to the left */
 }

@@ -1,37 +1,25 @@
 @import "../theme";
 
-.TeamSetting {
-  &.error {
-    width: 100%;
-    margin-top: 0px;
-    font-size: 15px;
-  }
-
-  &.copied {
-    width: 100%;
-    margin-top: -10px;
-    margin-bottom: 5px;
-    margin-left: 10px;
-    font-size: 15px;
-  }
+.inspectTask {
+  z-index: 1000;
   &.container {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    font-size: large;
+    border-radius: $borderRadius;
   }
 
   &.content {
-    max-width: 420px;
     background-color: $accentDark;
     padding: 20px;
     border-radius: 8px;
     box-shadow: $dropShadow;
-    font-size: larger;
   }
 
   &.header {
@@ -67,11 +55,11 @@
 
   &.textarea {
     height: auto;
-    width: 100%;
-    max-width: 383px;
-    min-width: 383px;
+    width: auto;
     min-height: 200px;
     max-height: 300px;
+    min-width: 630px;
+    max-width: 620px;
     padding-left: 15px;
     margin-left: -4px;
     border: none;
@@ -86,17 +74,6 @@
     margin-bottom: 0;
   }
 
-  &.list {
-    margin-top: 0;
-    margin-bottom: 30px;
-  }
-
-  &.listItem {
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-  }
-
   &.overlay {
     position: fixed;
     top: 0;
@@ -108,40 +85,13 @@
     justify-content: center;
     align-items: center;
   }
-}
 
-.leave-team {
-  width: 100%;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: medium;
-  text-align: center;
-  height: 35px;
-  border: none;
-  border-radius: $borderRadius;
-  cursor: pointer;
-  color: $background;
-  background-color: $paletteRed;
-  transition: all 0.3s ease;
-  box-shadow: $dropShadow;
-  padding: 6px;
-
-  &:hover {
-    transform: translateY(-4px);
-  }
-  &:disabled {
-    cursor: default;
-    opacity: 0.4;
-    &:hover {
-      transform: none;
-    }
+  &.edit {
+    margin-left: auto;
   }
 }
 
-.invite-user {
-  width: 100%;
-  margin-bottom: 5px;
-  font-weight: 700;
-  text-transform: uppercase;
+.bts {
   font-size: medium;
+  width: 15%;
 }

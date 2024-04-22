@@ -10,6 +10,7 @@ import CreateTeam from "../popups/CreateTeam";
 
 const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
@@ -30,6 +31,21 @@ const TeamsOverview = () => {
     };
 
     fetchUserTeams();
+
+    const fetchUserInfo = async () => {
+      try {
+        const response = await api.get(`/api/v1/users/${userId}`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+        setUserName(response.data.username);
+      } catch (error) {
+        console.error(`Error fetching user info: ${handleError(error)}`);
+      }
+    };
+
+    fetchUserInfo();
   }, []);
 
   const openCreateTeam = () => {
@@ -46,17 +62,19 @@ const TeamsOverview = () => {
 
   return (
     <BaseContainer>
+      <h1 className="teams-overview header">{userName}&#39;s Teams</h1>
       <div className="teams-overview container">
         <div className="teams-overview grid">
           {userTeams.map((team) => (
             <Button
+              className="team"
               key={team.teamId}
               onClick={() => navigate(`/teams/${team.teamId}`)}
             >
-              {team.name} - id: {team.teamId}
+              {team.name}
             </Button>
           ))}
-          <Button className="green-button" onClick={openCreateTeam}>
+          <Button className="team create" onClick={openCreateTeam}>
             Create Team
           </Button>
           <CreateTeam

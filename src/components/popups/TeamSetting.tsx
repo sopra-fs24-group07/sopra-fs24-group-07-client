@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/popups/TeamSetting.scss";
+import "../../styles/popups/InspectTask.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
@@ -7,10 +8,23 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const FormField = (props) => {
   return (
-    <div className="createTeam field">
-      <label className="createTeam label">{props.label}</label>
+    <div className="TeamSetting field">
       <input
-        className="createTeam input"
+        className="TeamSetting input"
+        placeholder="enter here..."
+        value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
+        disabled={true}
+      />
+    </div>
+  );
+};
+
+const FormFieldLong = (props) => {
+  return (
+    <div className="TeamSetting field">
+      <textarea
+        className="TeamSetting textarea"
         placeholder="enter here..."
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
@@ -21,7 +35,13 @@ const FormField = (props) => {
 };
 
 FormField.propTypes = {
-  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  disabled: PropTypes.bool,
+};
+
+FormFieldLong.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   type: PropTypes.string,
@@ -119,7 +139,7 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
       if (error.response.status === 401) {
         setLeaveError("You are not authorized to leave the team, sorry!");
       } else if (error.response.status === 404) {
-        setLeaveError("You are not a member of this team anymore");
+        setLeaveError("Something went wrong. Try again later");
       }
     }
   };
@@ -161,42 +181,39 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
               disabled
             />
             <h3 className="TeamSetting headline">Team Description</h3>
-            <FormField
+            <FormFieldLong
               className="TeamSetting input"
               value={teamDescription}
               placeholder="Team Description..."
               disabled
             />
-            <h3 className="TeamSetting headline">Team Members</h3>
-            <ul className="TeamSetting list">
-              {teamMembers.map((member) => (
-                <li key={member.id}>
-                  {member.username}, {member.name}
-                </li>
-              ))}
-            </ul>
-            <Button onClick={LeaveTeam} width="80%" className="leave-team">
-              Leave Team
-            </Button>
-            {leaveError && (
-              <div className="TeamSetting error">{leaveError}</div>
-            )}
             <div>
-              <Button
-                width="80%"
-                className="invite-user"
-                onClick={CopyInvitationLink}
-              >
+              <h3 className="TeamSetting headline">Team Members</h3>
+              <Button className="invite-user" onClick={CopyInvitationLink}>
                 Invite User
               </Button>
               {copied && (
                 <div>
                   <input className="TeamSetting input" value={inviteURL} />
                   <br />
-                  <div className="TeamSetting error">{copied}</div>
+                  <div className="TeamSetting copied">{copied}</div>
                 </div>
               )}
+              <ul className="TeamSetting list">
+                {teamMembers.map((member) => (
+                  <li className="TeamSetting listItem" key={member.id}>
+                    {member.username} ({member.name})
+                  </li>
+                ))}
+              </ul>
             </div>
+            <Button onClick={LeaveTeam} className="leave-team">
+              Leave Team
+            </Button>
+            {leaveError && (
+              <div className="TeamSetting error">{leaveError}</div>
+            )}
+            <div></div>
             {/* EDIT Mode: for extensibility in M4: error && <p>{error}</p> */}
             {/* EDIT Mode: for extensibility in M4:
             <div>

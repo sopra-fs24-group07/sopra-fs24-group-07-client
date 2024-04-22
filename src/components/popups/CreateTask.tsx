@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/popups/CreateTeam.scss";
+import "../../styles/popups/InspectTask.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
@@ -7,10 +7,24 @@ import { useParams } from "react-router-dom";
 
 const FormField = (props) => {
   return (
-    <div className="createTeam field">
-      <label className="createTeam label">{props.label}</label>
+    <div className="inspectTask field">
+      <label className="inspectTask label">{props.label}</label>
       <input
-        className="createTeam input"
+        className="inspectTask input"
+        placeholder={props.placeholder}
+        value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
+      />
+    </div>
+  );
+};
+
+const FormFieldLong = (props) => {
+  return (
+    <div className="inspectTask field">
+      <label className="inspectTask label">{props.label}</label>
+      <textarea
+        className="inspectTask textarea"
         placeholder={props.placeholder}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
@@ -20,6 +34,14 @@ const FormField = (props) => {
 };
 
 FormField.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+};
+
+FormFieldLong.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
@@ -116,24 +138,27 @@ const CreateTask = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="createTeam overlay" onClick={doClose}>
-      <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <div className="createTeam header">
-          <h2>Create Task</h2>
-          <Button className="red-button" onClick={doClose}>
+    <div className="inspectTask overlay" onClick={doClose}>
+      <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
+        <div className="inspectTask header">
+          <h2 className="inspectTask headline">Create Task</h2>
+          <Button
+            className="red-button bts inspectTask headline"
+            onClick={doClose}
+          >
             Close
           </Button>
         </div>
-        <h3 className="createTeam headline">Title</h3>
+        <h3 className="inspectTask headline">Title</h3>
         <FormField
-          className="createTeam input"
+          className="inspectTask input"
           value={title}
           placeholder="enter title..."
           onChange={(ti: string) => setTitle(ti)}
         />
-        <h3 className="createTeam headline">Description</h3>
-        <FormField
-          className="createTeam input"
+        <h3 className="inspectTask headline">Description</h3>
+        <FormFieldLong
+          className="inspectTask textarea"
           value={description}
           placeholder="enter description..."
           onChange={(dc: string) => setDescription(dc)}
@@ -142,7 +167,7 @@ const CreateTask = ({ isOpen, onClose }) => {
         {error && <p>{error}</p>}
 
         <Button
-          className="green-button"
+          className="green-button bts"
           disabled={!title}
           onClick={() => {
             CreateTask();

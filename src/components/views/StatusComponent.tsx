@@ -4,6 +4,7 @@ import { Button } from "components/ui/Button";
 import { api } from "helpers/api";
 import PropTypes from "prop-types";
 import "styles/views/TeamDashboard.scss";
+import "styles/views/StatusComponent.scss";
 
 interface StatusComponentProps {
   sessionStatus: string;
@@ -158,13 +159,10 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
   };
 
   return (
-    <div>
-      <h4>
+    <div className="StatComp container">
+      <h4 className="StatComp headline">
         team
-        <span style={{ fontSize: "1.2em", color: "#cdf9da" }}>
-          {" "}
-          {teamName}{" "}
-        </span>
+        <span className="StatComp spanner"> {teamName} </span>
         <br />
         is
         <span
@@ -178,10 +176,10 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
         </span>
         session
       </h4>
-      <div className="sessionbox">
-        Set Goal:
+      <div className="StatComp timeGoal">
+        {sessionStatus === "on" ? "Your Goal:" : "Set Goal:"}{" "}
         <input
-          className="timeInput"
+          className="StatComp timeInput"
           placeholder="Enter time goal"
           value={goalMinutes}
           type="time"
@@ -189,16 +187,22 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
           disabled={sessionStatus === "on"}
         />
         <br />
-        {sessionStatus === "off" ? (
-          <Button className="green-button" onClick={() => updateStatus("on")}>
-            Start Group Session
-          </Button>
-        ) : (
-          <Button className="red-button" onClick={() => updateStatus("off")}>
-            Stop Group Session
-          </Button>
-        )}
       </div>
+      {sessionStatus === "off" ? (
+        <Button
+          className="green-button StatComp btn"
+          onClick={() => updateStatus("on")}
+        >
+          Start Group Session
+        </Button>
+      ) : (
+        <Button
+          className="red-button StatComp btn"
+          onClick={() => updateStatus("off")}
+        >
+          Stop Group Session
+        </Button>
+      )}
       {error && <p className="error-message">{error}</p>}
     </div>
   );

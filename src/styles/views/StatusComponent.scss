@@ -1,0 +1,45 @@
+@import "../theme";
+
+.StatComp {
+  &.container {
+    align-items: center;
+    width: 100%;
+    max-width: 275px;
+  }
+
+  &.headline {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  &.spanner {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    font-size: 1.2em;
+    color: #cdf9da;
+  }
+
+  &.btn {
+    width: 100%;
+    height: auto;
+    font-size: 18px;
+    margin-top: 15px;
+    font-weight: 600;
+  }
+
+  &.timeGoal {
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 25px;
+    font-weight: 550;
+  }
+
+  &.timeInput {
+    flex: 1;
+    border: none;
+    margin-left: 15px;
+    text-align: center;
+  }
+}

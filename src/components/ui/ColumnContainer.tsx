@@ -28,7 +28,10 @@ function ColumnContainer(props) {
 
   return (
     <div className="col">
-      <div>{column}</div> {/*name of the column*/}
+      <div className="colName">
+        {column === "IN_SESSION" ? "NEXT SESSION" : column}
+      </div>{" "}
+      {/*name of the column*/}
       <div className="tasksArea">
         {teamTasks.map((task) => {
           if (task.status === column)

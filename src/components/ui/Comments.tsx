@@ -8,15 +8,13 @@ import CommentCard from "./CommentCard";
 
 const FormField = ({ value, onChange, error }) => {
   return (
-    <div>
-      <input
-        className="input"
-        type="text"
-        placeholder="enter comment.."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
+    <input
+      className="input"
+      type="text"
+      placeholder="enter comment.."
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    />
   );
 };
 
@@ -89,13 +87,12 @@ const Comments = (props) => {
   }, []);
 
   return (
-    <div>
-      <div style={{ display: "flex", alignItems: "center" }}>
+    <div className="wrapper">
+      <div className="in-line">
         <FormField value={comment} onChange={setComment} error={error} />
         <Button
-          style={{ marginBottom: "10px" }}
           disabled={!comment}
-          className="green-button"
+          className={"green-button submit"}
           onClick={createComment}
         >
           Submit
