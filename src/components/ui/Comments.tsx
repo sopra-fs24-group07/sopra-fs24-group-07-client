@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { api, handleError } from "helpers/api";
 import CommentCard from "./CommentCard";
+import Pusher from "pusher-js";
 
 const FormField = ({ value, onChange, error }) => {
   return (
@@ -44,6 +45,24 @@ const Comments = (props) => {
     return isValid;
   };
 
+  useEffect(() => {
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
+      cluster: "eu",
+      forceTLS: true,
+    });
+
+    const channel = pusher.subscribe(`team-${teamId}`);
+
+    channel.bind("comment-update", (data) => {
+      fetchComments();
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [teamId]);
+
   const createComment = async () => {
     if (!validateForm()) return;
 
@@ -66,23 +85,25 @@ const Comments = (props) => {
     }
   };
 
+
+  const fetchComments = async () => {
+    try {
+      const response = await api.get(
+        `/api/v1/teams/${teamId}/tasks/${taskId}/comments`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setAllComments(response.data);
+    } catch (error) {
+      console.error("Error fetching comments:", handleError(error));
+      setError("Could not load comments");
+    }
+  };
+
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await api.get(
-          `/api/v1/teams/${teamId}/tasks/${taskId}/comments`,
-          {
-            headers: {
-              Authorization: `${token}`,
-            },
-          }
-        );
-        setAllComments(response.data);
-      } catch (error) {
-        console.error("Error fetching comments:", handleError(error));
-        setError("Could not load comments");
-      }
-    };
     fetchComments();
   }, []);
 
