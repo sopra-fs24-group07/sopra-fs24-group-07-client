@@ -46,6 +46,7 @@ const TeamDashboard: React.FC = () => {
 
     channel.bind("task-update", () => {
       fetchTeamTasks();
+      document.dispatchEvent(new CustomEvent("checkBoxChange"));
     });
 
     channel.bind("team-update", (data: { userId: string }) => {
