@@ -6,6 +6,9 @@ import { Button } from "components/ui/Button";
 import "styles/views/Register.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
+import { Spinner } from "components/ui/Spinner";
+import logo from "../../assets/logo.png";
+import LogRegHeader from "./LogRegHeader";
 
 const FormField = ({ label, value, onChange, type = "text", error }) => (
   <div className="register field">
@@ -27,34 +30,6 @@ FormField.propTypes = {
   type: PropTypes.string,
   error: PropTypes.string,
 };
-
-const Spinner = () => (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black background
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-    }}
-  >
-    <div
-      style={{
-        width: "40px",
-        height: "40px",
-        border: "4px solid #f3f3f3",
-        borderTop: "4px solid #3498db",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
-      }}
-    />
-  </div>
-);
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -139,55 +114,64 @@ const Registration = () => {
   };
 
   return (
-    <BaseContainer>
-      <div className="register container">
-        {sessionStorage.getItem("teamUUID") && (
-          <p>Please Register to join the team</p>
-        )}
-        <div className="register form">
-          <FormField
-            label="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <FormField
-            label="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <FormField
-            label="Password"
-            value={password}
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <FormField
-            label="Repeat Password"
-            value={repPassword}
-            type="password"
-            onChange={(e) => setRepPassword(e.target.value)}
-          />
-          <div className="register button-container">
-            <Button width="50%" onClick={() => navigate("/login")}>
-              Login
-            </Button>
-            <Button
-              disabled={!username || !name || !password || !repPassword}
-              width="50%"
-              onClick={doRegister}
-            >
-              Register
+    <div>
+      <LogRegHeader></LogRegHeader>
+      <BaseContainer>
+        <div className="register center-align">
+          <img className="register logo" src={logo} alt="Logo" />
+          <div className="register container">
+            {sessionStorage.getItem("teamUUID") && (
+              <p>Please Register to join the team</p>
+            )}
+            <div className="register form">
+              <FormField
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <FormField
+                label="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <FormField
+                label="Password"
+                value={password}
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <FormField
+                label="Repeat Password"
+                value={repPassword}
+                type="password"
+                onChange={(e) => setRepPassword(e.target.value)}
+              />
+              <div className="register button-container">
+                <Button
+                  disabled={!username || !name || !password || !repPassword}
+                  width="50%"
+                  onClick={doRegister}
+                >
+                  Register
+                </Button>
+              </div>
+            </div>
+            {getAllErrorMessages().map((error, index) => (
+              <div key={index} className="error-message">
+                {error}
+              </div>
+            ))}
+            <label className="register message">
+              Already haven an account?
+            </label>
+            <Button width="60%" onClick={() => navigate("/login")}>
+              Go to Login
             </Button>
           </div>
         </div>
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
-            {error}
-          </div>
-        ))}
-      </div>
-      {isLoading ? <Spinner /> : ""}
-    </BaseContainer>
+        {isLoading ? <Spinner /> : ""}
+      </BaseContainer>
+    </div>
   );
 };
 
