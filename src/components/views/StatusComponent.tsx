@@ -179,7 +179,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
         session
       </h4>
       <div className="sessionbox">
-        Set Goal:
+        {sessionStatus === "on" ? "Your Goal:" : "Set Goal:"}{" "}
         <input
           className="timeInput"
           placeholder="Enter time goal"

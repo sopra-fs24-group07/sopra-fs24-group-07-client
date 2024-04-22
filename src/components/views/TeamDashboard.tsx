@@ -259,7 +259,7 @@ const TeamDashboard: React.FC = () => {
               >
                 Team Settings
               </Button>
-              {teamDesc}
+              <div className="team-dashboard description">{teamDesc}</div>
             </div>
           </TeamDashboardBox>
           <TeamDashboardBox

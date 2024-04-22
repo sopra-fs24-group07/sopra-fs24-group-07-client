@@ -54,8 +54,16 @@
 
   &.settingsBox {
     width: 100%;
+  }
+
+  &.description {
+    width: auto;
+    max-height: 180px;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-bottom: 0;
   }
 
   &.settingsButton {
