@@ -140,11 +140,14 @@ const CreateTask = ({ isOpen, onClose }) => {
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
-        <Button className="red-button bts" onClick={doClose}>
-          Close
-        </Button>
         <div className="inspectTask header">
           <h2 className="inspectTask headline">Create Task</h2>
+          <Button
+            className="red-button bts inspectTask headline"
+            onClick={doClose}
+          >
+            Close
+          </Button>
         </div>
         <h3 className="inspectTask headline">Title</h3>
         <FormField
