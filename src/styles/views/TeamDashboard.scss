@@ -7,6 +7,7 @@
 }
 
 .team-dashboard {
+  scrollbar-width: thin;
   &.container {
     margin-top: 2em;
     min-height: 300px;
@@ -68,8 +69,8 @@
     position: absolute;
     top: 80px; /* Position the description below the button */
     left: 0;
-    right: 0;
-    bottom: 0;
+    right: 2px;
+    bottom: 10px;
     overflow: auto;
     margin: 0;
     padding-left: 1em;
