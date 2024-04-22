@@ -52,7 +52,6 @@ function TaskCard(props) {
     } catch (error) {
       console.error("Error moving Task:", handleError(error));
     }
-
   }
 
   //handle if a Task is moved to column to the left
@@ -81,8 +80,6 @@ function TaskCard(props) {
     } catch (error) {
       console.error("Error moving Task:", handleError(error));
     }
-
-
   }
 
   return (

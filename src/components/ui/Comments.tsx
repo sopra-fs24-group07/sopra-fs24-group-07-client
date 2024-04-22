@@ -85,7 +85,6 @@ const Comments = (props) => {
     }
   };
 
-
   const fetchComments = async () => {
     try {
       const response = await api.get(

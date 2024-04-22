@@ -42,12 +42,10 @@ const TeamDashboard: React.FC = () => {
     channel.bind("session-update", (data: { status: string }) => {
       setSessionStatus(data.status);
       fetchStatus();
-
     });
 
     channel.bind("task-update", () => {
       fetchTeamTasks();
-
     });
 
     channel.bind("team-update", (data: { userId: string }) => {
@@ -114,22 +112,16 @@ const TeamDashboard: React.FC = () => {
         },
       });
       const numericTeamId = Number(teamId);
-      const team = response.data.find(
-        (team) => team.teamId === numericTeamId
-      );
+      const team = response.data.find((team) => team.teamId === numericTeamId);
 
       const teamName = team ? team.name : "Team Name not found!";
-      const teamDesc = team
-        ? team.description
-        : "Team Description not found!";
+      const teamDesc = team ? team.description : "Team Description not found!";
       setTeamName(teamName);
       setTeamDesc(teamDesc);
     } catch (error) {
       console.error(`Error fetching team's name: ${handleError(error)}`);
     }
   };
-
-
 
   function minutesToTime(minutes) {
     let hours = Math.floor(minutes / 60);
@@ -186,7 +178,7 @@ const TeamDashboard: React.FC = () => {
         setGoalMinutes(formattedTime);
         setStartDateTime(
           mostRecentSession.startDateTime ||
-          new Date().toISOString().substring(11, 16)
+            new Date().toISOString().substring(11, 16)
         );
       }
     } catch (error) {
@@ -198,11 +190,7 @@ const TeamDashboard: React.FC = () => {
     }
   };
 
-
-
   useEffect(() => {
-
-
     fetchTeamMembers();
     fetchTeamTasks();
     fetchTeamInfo();

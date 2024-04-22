@@ -116,7 +116,6 @@ const CreateTask = ({ isOpen, onClose }) => {
       );
       //reset input fields after submitting
       doClose();
-
     } catch (error) {
       //new error handling with status codes
       setError("Failed to create the Task");
