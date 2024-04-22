@@ -84,8 +84,7 @@ function TaskCard(props) {
       console.error("Error moving Task:", handleError(error));
     }
 
-    //maybe remove when external api is ready
-    location.reload();
+
   }
 
   return (
