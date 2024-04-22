@@ -194,7 +194,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
             </Button>
           )}
         </div>
-        <h3 className="inspectTask headline">Title</h3>
+        <h3 className="inspectTask headline">Task Title</h3>
         <FormField
           className="inspectTask input"
           value={taskTitle}
@@ -202,7 +202,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           onChange={(ti: string) => setTaskTitle(ti)}
           disabled={editMode}
         />
-        <h3 className="inspectTask headline">Description</h3>
+        <h3 className="inspectTask headline">Task Description</h3>
         <FormFieldLong
           className="inspectTask textarea"
           value={taskDescription}
