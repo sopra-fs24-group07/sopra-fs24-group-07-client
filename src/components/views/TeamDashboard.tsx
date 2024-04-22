@@ -102,14 +102,15 @@ const TeamDashboard: React.FC = () => {
             Authorization: `${token}`,
           },
         });
-        const foundUser = response.data.find((user) => user.userId === userId);
+        const foundUser = response.data.find(
+          (user) => user.userId === parseInt(userId)
+        );
         if (!foundUser) {
           navigate("/teams");
         }
         setUserData(response.data);
       } catch (error) {
         console.error(`Error fetching team's users: ${handleError(error)}`);
-        navigate("/teams");
       }
     };
 

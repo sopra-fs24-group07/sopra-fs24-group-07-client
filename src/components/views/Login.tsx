@@ -6,6 +6,9 @@ import User from "models/User";
 import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
+import { Spinner } from "components/ui/Spinner";
+import logo from "../../assets/logo.png";
+import LogRegHeader from "./LogRegHeader";
 
 //NEW FORMFIELD: WITHOUT CODE REPETITION
 const FormField = ({ label, value, onChange, type = "text" }) => (
@@ -31,34 +34,6 @@ FormField.propTypes = {
   onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
 };
-
-const Spinner = () => (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black background
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000, // Ensures it is on top of other elements
-    }}
-  >
-    <div
-      style={{
-        width: "40px",
-        height: "40px",
-        border: "4px solid #f3f3f3",
-        borderTop: "4px solid #3498db",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
-      }}
-    />
-  </div>
-);
 
 const Login = () => {
   const navigate = useNavigate();
@@ -92,36 +67,48 @@ const Login = () => {
   };
 
   return (
-    <BaseContainer>
-      <div className="login container">
-        {sessionStorage.getItem("teamUUID") && (
-          <p>Please Login to join the team</p>
-        )}
-        <div className="login form">
-          <FormField label="Username" value={username} onChange={setUsername} />{" "}
-          <FormField
-            label="Password"
-            value={password}
-            type="password"
-            onChange={setPassword}
-          />
-          <div className="login button-container">
-            <Button
-              disabled={!username || !password}
-              width="50%"
-              onClick={doLogin}
-            >
-              Login
-            </Button>
-            <Button width="50%" onClick={() => navigate("/register")}>
-              Register
+    <div>
+      <LogRegHeader></LogRegHeader>
+      <BaseContainer>
+        <div className="login center-align">
+          <img className="login logo" src={logo} alt="Logo" />
+          <div className="login container">
+            {sessionStorage.getItem("teamUUID") && (
+              <p>Please Login to join the team</p>
+            )}
+            <div className="login form">
+              <FormField
+                label="Username"
+                value={username}
+                onChange={setUsername}
+              />{" "}
+              <FormField
+                label="Password"
+                value={password}
+                type="password"
+                onChange={setPassword}
+              />
+              <div className="login button-container">
+                <Button
+                  disabled={!username || !password}
+                  width="65%"
+                  onClick={doLogin}
+                >
+                  Login
+                </Button>
+              </div>
+            </div>
+            {error && <p className="login error">{error}</p>}
+
+            <label className="login message">Don&#39;t have an acoount?</label>
+            <Button width="60%" onClick={() => navigate("/register")}>
+              Go to Register
             </Button>
           </div>
         </div>
-        {error && <p className="login error">{error}</p>}
-      </div>
-      {isLoading ? <Spinner /> : ""}
-    </BaseContainer>
+        {isLoading ? <Spinner /> : ""}
+      </BaseContainer>
+    </div>
   );
 };
 
