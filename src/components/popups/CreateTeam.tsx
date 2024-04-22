@@ -5,10 +5,9 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate } from "react-router-dom";
 
-const FormField = ({ label, value, onChange, error }) => {
+const FormField = ({ value, onChange, error }) => {
   return (
     <div className="createTeam field">
-      <label className="createTeam label">{label}</label>
       <input
         className="createTeam input"
         type="text"
@@ -21,8 +20,28 @@ const FormField = ({ label, value, onChange, error }) => {
   );
 };
 
+const FormFieldLong = ({ value, onChange, error }) => {
+  return (
+    <div className="createTeam field">
+      <textarea
+        className="createTeam textarea"
+        type="text"
+        placeholder="enter here.."
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {error && <p className="error-message">{error}</p>}
+    </div>
+  );
+};
+
 FormField.propTypes = {
-  label: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
+
+FormFieldLong.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
@@ -97,24 +116,30 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   return (
     <div className="createTeam overlay" onClick={onClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <Button className="red-button" onClick={onClose}>
-          Close
-        </Button>
-        <h2>Create Team</h2>
+        <div className="createTeam header">
+          <h2>Create Team</h2>
+          <Button width="20%" className="red-button bts" onClick={onClose}>
+            Close
+          </Button>
+        </div>
+        <h3 className="createTeam headline">Name</h3>
         <FormField
-          label="Name"
           value={teamName}
           onChange={setTeamName}
           error={errors.name}
         />
-        <FormField
-          label="Description"
+        <h3 className="createTeam headline">Description</h3>
+        <FormFieldLong
           value={teamDescription}
           onChange={setTeamDescription}
           error={errors.description}
         />
-        <Button className="green-button" onClick={createTeam}>
-          Accept
+        <Button
+          width="100%"
+          className="green-button createTeam cButton"
+          onClick={createTeam}
+        >
+          Create
         </Button>
         {errors.general && (
           <div className="error-message">{errors.general}</div>
