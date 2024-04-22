@@ -51,6 +51,19 @@
     font-size: 1.5rem;
     border-radius: 10px;
   }
+
+  &.settingsBox {
+    width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  &.settingsButton {
+    font-size: medium;
+    height: 50px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 .timeInput {

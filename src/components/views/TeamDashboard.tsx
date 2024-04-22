@@ -252,9 +252,14 @@ const TeamDashboard: React.FC = () => {
             endRow={2}
             endColumn={5}
           >
-            <div>
-              <Button onClick={openTeamSettings}>Team Settings</Button>
-              <p>{teamDesc}</p>
+            <div className="team-dashboard settingsBox">
+              <Button
+                className="team-dashboard settingsButton"
+                onClick={openTeamSettings}
+              >
+                Team Settings
+              </Button>
+              {teamDesc}
             </div>
           </TeamDashboardBox>
           <TeamDashboardBox
