@@ -273,7 +273,12 @@ const TeamDashboard: React.FC = () => {
                 ))}
               </div>
             )}
-            {sessionStatus === "on" && <VoiceChat />}
+            {sessionStatus === "on" && (
+              <div className="memContainer">
+                VoiceChat
+                <VoiceChat />
+              </div>
+            )}
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={1}
