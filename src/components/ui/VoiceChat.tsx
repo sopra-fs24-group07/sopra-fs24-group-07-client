@@ -213,6 +213,7 @@ function VoiceChat() {
           ChannelList.style.display = "none";
           //show the voice room controls
           document.getElementById("room-header").style.display = "flex";
+          document.getElementById("room-footer").style.display = "flex";
           //display the room-name
           document.getElementById("room-name").innerHTML = roomName;
           //leave the channel if windows is closed
@@ -247,6 +248,7 @@ function VoiceChat() {
       document.getElementById("form").style.display = "block";
       //remove channel control buttons
       document.getElementById("room-header").style.display = "none";
+      document.getElementById("room-footer").style.display = "none";
       //remove the room name
       document.getElementById("room-name").innerHTML = "";
       //empty members
@@ -305,9 +307,6 @@ function VoiceChat() {
           <Button id="leave-button" className="leave-button">
             Leave
           </Button>
-          <Button className="mute-button" id="mute-button">
-            {buttonText}
-          </Button>
         </div>
       </div>
       <form id="form">
@@ -317,6 +316,11 @@ function VoiceChat() {
         {errorGeneral && <div>{errorGeneral}</div>}
       </form>
       <div className="members" id="members"></div>
+      <div id="room-footer" className="room-footer">
+        <Button className="mute-button" id="mute-button">
+          {buttonText}
+        </Button>
+      </div>
       {isLoading && <Spinner />}
     </BaseContainer>
   );
