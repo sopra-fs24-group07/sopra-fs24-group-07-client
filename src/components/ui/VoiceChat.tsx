@@ -179,10 +179,7 @@ function VoiceChat() {
 
     fetchUserTasks();
 
-    //TODO:
     document.addEventListener("checkBoxChange", fetchUserTasks);
-    //to make this work we need to add: document.dispatchEvent(new CustomEvent('checkBoxChange'))
-    //inside of channel.bind("task-update" Team in TeamDashBoard.tsx
 
     const enterRoom = async (e) => {
       e.preventDefault();
@@ -224,6 +221,8 @@ function VoiceChat() {
           document
             .getElementById("back-button")
             .addEventListener("click", leaveRoom);
+
+          document.addEventListener("endSession", leaveRoom);
         } catch (error) {
           setErrorGeneral(
             "An unexpected error occured. Please try to logout and login again"
@@ -257,6 +256,8 @@ function VoiceChat() {
       document
         .getElementById("back-button")
         .removeEventListener("click", leaveRoom);
+
+      document.removeEventListener("endSession", leaveRoom);
     };
 
     //leave rtm Client

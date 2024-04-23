@@ -42,6 +42,7 @@ const TeamDashboard: React.FC = () => {
     channel.bind("session-update", (data: { status: string }) => {
       setSessionStatus(data.status);
       fetchStatus();
+      document.dispatchEvent(new CustomEvent("endSession"));
     });
 
     channel.bind("task-update", () => {
