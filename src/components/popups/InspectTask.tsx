@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
+import { Spinner } from "components/ui/Spinner";
 
 const FormField = (props) => {
   return (
@@ -66,6 +67,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
     description: "",
   });
   const [generalError, setGeneralError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!isOpen) return null;
 
@@ -110,6 +112,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   };
 
   const EditTask = async () => {
+    setIsLoading(true);
     if (!validateForm()) return;
     try {
       task.title = taskTitle;
@@ -124,6 +127,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           },
         }
       );
+      setIsLoading(false);
       //maybe remove when external api is ready
       location.reload();
     } catch (error) {
@@ -139,6 +143,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
   };
 
   const DeleteTask = async () => {
+    setIsLoading(true);
     try {
       task.status = "DELETED";
       const requestBody = JSON.stringify(task);
@@ -152,6 +157,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
         }
       );
       //maybe remove when external api is ready
+      setIsLoading(false);
       location.reload();
     } catch (error) {
       setError("Failed to delete the Task");
@@ -242,6 +248,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           </div>
         ))}
       </div>
+      {isLoading ? <Spinner /> : ""}
     </div>
   );
 };
