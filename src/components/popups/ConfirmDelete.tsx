@@ -50,9 +50,14 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
     <div className="confirmation-popup">
       <div className="popup-content">
         <h3>Confirm Deletion</h3>
-        <p className="disclaimer">After deleting your account you will not be able to log in anymore.<br/ >
-          You will be removed from all your teams and all your comments on tasks are deleted.<br />
-          Please confirm the delete request with your username and password.</p>
+        <p className="disclaimer">
+          After deleting your account you will not be able to log in anymore.
+          <br />
+          You will be removed from all your teams and all your comments on tasks
+          are deleted.
+          <br />
+          Please confirm the delete request with your username and password.
+        </p>
         <p className="disclaimer important">This action cannot be reverted!</p>
         <FormField
           label="Username"
@@ -68,7 +73,9 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
           value={password}
           onChange={(newValue) => setPassword(newValue)}
         />
-        <Button className="green-button" onClick={handleLoginAndDelete}>Confirm</Button>
+        <Button className="green-button" onClick={handleLoginAndDelete}>
+          Confirm
+        </Button>
         <Button onClick={onCancel}>Cancel</Button>
         {error && <div className="error-message">{error}</div>}
       </div>
