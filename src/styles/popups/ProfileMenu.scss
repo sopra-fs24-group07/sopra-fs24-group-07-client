@@ -69,3 +69,15 @@
     box-shadow: $dropShadow;
   }
 }
+
+.disclaimer {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  color: #666;
+  text-align: left;
+
+  &.important {
+    color: #d00;
+    font-weight: bold;
+  }
+}
