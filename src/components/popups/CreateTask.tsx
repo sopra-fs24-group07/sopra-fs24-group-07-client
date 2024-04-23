@@ -116,8 +116,6 @@ const CreateTask = ({ isOpen, onClose }) => {
       );
       //reset input fields after submitting
       doClose();
-      //maybe remove when external api is ready
-      location.reload();
     } catch (error) {
       //new error handling with status codes
       setError("Failed to create the Task");

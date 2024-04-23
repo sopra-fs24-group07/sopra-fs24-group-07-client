@@ -52,9 +52,6 @@ function TaskCard(props) {
     } catch (error) {
       console.error("Error moving Task:", handleError(error));
     }
-
-    //maybe remove when external api is ready
-    location.reload();
   }
 
   //handle if a Task is moved to column to the left
@@ -83,9 +80,6 @@ function TaskCard(props) {
     } catch (error) {
       console.error("Error moving Task:", handleError(error));
     }
-
-    //maybe remove when external api is ready
-    location.reload();
   }
 
   return (

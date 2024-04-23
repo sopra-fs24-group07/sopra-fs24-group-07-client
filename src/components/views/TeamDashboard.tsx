@@ -41,39 +41,18 @@ const TeamDashboard: React.FC = () => {
     const channel = pusher.subscribe(`team-${teamId}`);
     channel.bind("session-update", (data: { status: string }) => {
       setSessionStatus(data.status);
-      window.location.reload();
+      fetchStatus();
     });
 
     channel.bind("task-update", () => {
-      window.location.reload();
+      fetchTeamTasks();
+      document.dispatchEvent(new CustomEvent("checkBoxChange"));
     });
 
     channel.bind("team-update", (data: { userId: string }) => {
       if (data.userId !== localStorage.getItem("id")) {
-        window.location.reload();
+        fetchTeamMembers();
       }
-    });
-
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [teamId, setSessionStatus]);
-
-  useEffect(() => {
-    const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
-      cluster: "eu",
-      forceTLS: true,
-    });
-
-    const channel = pusher.subscribe(`team-${teamId}`);
-    channel.bind("session-update", (data: { status: string }) => {
-      setSessionStatus(data.status);
-      window.location.reload();
-    });
-
-    channel.bind("task-update", (data: { status: string }) => {
-      window.location.reload();
     });
 
     return () => {
@@ -93,64 +72,126 @@ const TeamDashboard: React.FC = () => {
       setIsLeave(false);
     }
   };
+  const fetchTeamMembers = async () => {
+    try {
+      const response = await api.get(`/api/v1/teams/${teamId}/users`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      const foundUser = response.data.find(
+        (user) => user.userId === parseInt(userId)
+      );
+      if (!foundUser) {
+        navigate("/teams");
+      }
+      setUserData(response.data);
+    } catch (error) {
+      console.error(`Error fetching team's users: ${handleError(error)}`);
+    }
+  };
+
+  const fetchTeamTasks = async () => {
+    try {
+      const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      setTeamTasks(response.data);
+    } catch (error) {
+      console.error(`Error fetching team's tasks: ${handleError(error)}`);
+    }
+  };
+
+  const fetchTeamInfo = async () => {
+    let userId = localStorage.getItem("id");
+    try {
+      const response = await api.get(`/api/v1/users/${userId}/teams`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      const numericTeamId = Number(teamId);
+      const team = response.data.find((team) => team.teamId === numericTeamId);
+
+      const teamName = team ? team.name : "Team Name not found!";
+      const teamDesc = team ? team.description : "Team Description not found!";
+      setTeamName(teamName);
+      setTeamDesc(teamDesc);
+    } catch (error) {
+      console.error(`Error fetching team's name: ${handleError(error)}`);
+    }
+  };
+
+  function minutesToTime(minutes) {
+    let hours = Math.floor(minutes / 60);
+    let mins = minutes % 60;
+
+    return `${hours.toString().padStart(2, "0")}:${mins
+      .toString()
+      .padStart(2, "0")}`;
+  }
+  const fetchStatus = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const response = await api.get(`/api/v1/teams/${teamId}/sessions`, {
+        headers: { Authorization: `${token}` },
+      });
+
+      const sessions = response.data;
+      if (!sessions || sessions.length === 0) {
+        setSessionStatus("off");
+        setGoalMinutes("00:30");
+        setStartDateTime(null);
+        setTotalTime("00:00");
+
+        return;
+      }
+
+      let totalMinutes = 0;
+      sessions.forEach((session) => {
+        if (session.endDateTime) {
+          const startTime = new Date(session.startDateTime).getTime();
+          const endTime = new Date(session.endDateTime).getTime();
+          const diffMinutes = (endTime - startTime) / (1000 * 60);
+          totalMinutes += diffMinutes;
+        }
+      });
+
+      const formattedTotalTime = minutesToTime(Math.round(totalMinutes));
+      setTotalTime(formattedTotalTime);
+
+      const mostRecentSession = sessions[0];
+      if (mostRecentSession) {
+        const status =
+          mostRecentSession.startDateTime && !mostRecentSession.endDateTime
+            ? "on"
+            : "off";
+        setSessionStatus(status);
+        const formattedTime = minutesToTime(
+          mostRecentSession.goalMinutes || 30
+        );
+        setGoalMinutes(formattedTime);
+        setStartDateTime(
+          mostRecentSession.startDateTime ||
+            new Date().toISOString().substring(11, 16)
+        );
+      }
+    } catch (error) {
+      console.log(
+        `Error fetching initial session status: ${
+          error.response?.data?.message || error.message
+        }`
+      );
+    }
+  };
 
   useEffect(() => {
-    const fetchTeamMembers = async () => {
-      try {
-        const response = await api.get(`/api/v1/teams/${teamId}/users`, {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
-        const foundUser = response.data.find(
-          (user) => user.userId === parseInt(userId)
-        );
-        if (!foundUser) {
-          navigate("/teams");
-        }
-        setUserData(response.data);
-      } catch (error) {
-        console.error(`Error fetching team's users: ${handleError(error)}`);
-      }
-    };
-
-    const fetchTeamTasks = async () => {
-      try {
-        const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
-        setTeamTasks(response.data);
-      } catch (error) {
-        console.error(`Error fetching team's tasks: ${handleError(error)}`);
-      }
-    };
-
-    const fetchTeamInfo = async () => {
-      let userId = localStorage.getItem("id");
-      try {
-        const response = await api.get(`/api/v1/users/${userId}/teams`, {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
-        const numericTeamId = Number(teamId);
-        const team = response.data.find(
-          (team) => team.teamId === numericTeamId
-        );
-
-        const teamName = team ? team.name : "Team Name not found!";
-        const teamDesc = team
-          ? team.description
-          : "Team Description not found!";
-        setTeamName(teamName);
-        setTeamDesc(teamDesc);
-      } catch (error) {
-        console.error(`Error fetching team's name: ${handleError(error)}`);
-      }
-    };
-
     fetchTeamMembers();
     fetchTeamTasks();
     fetchTeamInfo();
