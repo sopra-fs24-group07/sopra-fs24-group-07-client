@@ -6,7 +6,9 @@ import { Button } from "./Button";
 
 function CommentCard(props) {
   const { comment, doDelete, isFake } = props;
-  const creationDate = new Date(comment.creationDate).toLocaleDateString("de", {
+  const creationDate = new Date(
+    comment.creationDate + " UTC"
+  ).toLocaleDateString("de-DE", {
     hour: "2-digit",
     minute: "2-digit",
     day: "2-digit",
