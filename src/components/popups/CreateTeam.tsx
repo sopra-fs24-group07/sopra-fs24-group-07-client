@@ -115,6 +115,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
         general: "Failed to create team. Please try again.",
       }));
     }
+    setIsLoading(false);
   };
 
   if (!isOpen) return null;
