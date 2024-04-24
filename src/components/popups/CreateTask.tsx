@@ -118,7 +118,6 @@ const CreateTask = ({ isOpen, onClose }) => {
         }
       );
       //reset input fields after submitting
-      setIsLoading(false);
       doClose();
     } catch (error) {
       //new error handling with status codes
@@ -130,6 +129,7 @@ const CreateTask = ({ isOpen, onClose }) => {
       }
       console.error("Error creating new Task:", handleError(error));
     }
+    setIsLoading(false);
   };
 
   const getAllErrorMessages = () => {

@@ -127,7 +127,6 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           },
         }
       );
-      setIsLoading(false);
       //maybe remove when external api is ready
       location.reload();
     } catch (error) {
@@ -140,6 +139,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
       }
       console.error("Error editing Task:", handleError(error));
     }
+    setIsLoading(false);
   };
 
   const DeleteTask = async () => {

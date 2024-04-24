@@ -138,14 +138,13 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
         setName(updatedUser.name);
         setPassword("");
         setRepPassword("");
-        onClose();
         onProfileOpen(true);
-        setIsLoading(false);
       } catch (error) {
         console.error("Failed to save changes:", error);
         setError("Failed to save changes");
       }
     }
+    setIsLoading(false);
     onClose();
   };
 
