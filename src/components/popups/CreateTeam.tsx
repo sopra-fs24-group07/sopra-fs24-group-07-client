@@ -4,6 +4,7 @@ import "../../styles/popups/CreateTeam.scss";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "components/ui/Spinner";
 
 const FormField = ({ value, onChange, error }) => {
   return (
@@ -56,6 +57,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     description: "",
     general: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     let isValid = true;
@@ -85,6 +87,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   };
 
   const createTeam = async () => {
+    setIsLoading(true);
     if (!validateForm()) return;
 
     try {
@@ -101,6 +104,9 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       });
 
       onCreateTeamClick(response.data.teamId);
+      setTimeout(() => {
+        setIsLoading(false); // Set loading to false after the delay and navigation
+      }, 500);
       //navigate(`/teams/${response.data.teamId}`);
     } catch (error) {
       console.error("Error creating team:", handleError(error));
@@ -145,6 +151,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           <div className="error-message">{errors.general}</div>
         )}
       </div>
+      {isLoading ? <Spinner /> : ""}
     </div>
   );
 };

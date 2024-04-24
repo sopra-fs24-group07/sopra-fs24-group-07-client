@@ -4,6 +4,7 @@ import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
+import { Spinner } from "components/ui/Spinner";
 
 const FormField = (props) => {
   return (
@@ -64,6 +65,7 @@ const CreateTask = ({ isOpen, onClose }) => {
     description: "",
   });
   const [generalError, setGeneralError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!isOpen) return null;
 
@@ -102,6 +104,7 @@ const CreateTask = ({ isOpen, onClose }) => {
 
   //try to create a task via api pst call
   const CreateTask = async () => {
+    setIsLoading(true);
     if (!validateForm()) return;
     try {
       const requestBody = JSON.stringify({ title, description });
@@ -126,6 +129,7 @@ const CreateTask = ({ isOpen, onClose }) => {
       }
       console.error("Error creating new Task:", handleError(error));
     }
+    setIsLoading(false);
   };
 
   const getAllErrorMessages = () => {
@@ -179,6 +183,7 @@ const CreateTask = ({ isOpen, onClose }) => {
           </div>
         ))}
       </div>
+      {isLoading ? <Spinner /> : ""}
     </div>
   );
 };

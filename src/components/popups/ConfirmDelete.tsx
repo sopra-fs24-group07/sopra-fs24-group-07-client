@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { api } from "helpers/api";
 import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
+import "../../styles/popups/ProfileMenu.scss";
 
 const FormField = ({ label, value, onChange, type = "text" }) => (
   <div className="register field">
@@ -49,6 +50,15 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
     <div className="confirmation-popup">
       <div className="popup-content">
         <h3>Confirm Deletion</h3>
+        <p className="disclaimer">
+          After deleting your account you will not be able to log-in anymore.
+          <br />
+          You will be removed from all your teams and all your comments on tasks
+          are deleted.
+          <br />
+          Please confirm the delete request with your username and password.
+        </p>
+        <p className="disclaimer important">This action cannot be reverted!</p>
         <FormField
           label="Username"
           type="text"
@@ -63,7 +73,9 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
           value={password}
           onChange={(newValue) => setPassword(newValue)}
         />
-        <Button onClick={handleLoginAndDelete}>Confirm</Button>
+        <Button className="green-button" onClick={handleLoginAndDelete}>
+          Confirm
+        </Button>
         <Button onClick={onCancel}>Cancel</Button>
         {error && <div className="error-message">{error}</div>}
       </div>

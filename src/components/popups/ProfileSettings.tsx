@@ -5,6 +5,7 @@ import { Button } from "components/ui/Button";
 import "../../styles/popups/ProfileMenu.scss";
 import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "./ConfirmDelete";
+import { Spinner } from "components/ui/Spinner";
 
 const FormField = ({ label, value, onChange, type = "text" }) => (
   <div className="register field">
@@ -45,6 +46,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   });
   const [generalError, setGeneralError] = useState("");
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchUser() {
@@ -116,6 +118,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
 
   const saveChanges = async () => {
     if (!validateForm()) return;
+    setIsLoading(true);
     let updatedUser = { ...user, username, name, password };
     let token = localStorage.getItem("token");
     let userId = localStorage.getItem("id");
@@ -135,13 +138,13 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
         setName(updatedUser.name);
         setPassword("");
         setRepPassword("");
-        onClose();
         onProfileOpen(true);
       } catch (error) {
         console.error("Failed to save changes:", error);
         setError("Failed to save changes");
       }
     }
+    setIsLoading(false);
     onClose();
   };
 
@@ -236,6 +239,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
           </div>
         ))}
       </div>
+      {isLoading ? <Spinner /> : ""}
     </div>
   );
 };
