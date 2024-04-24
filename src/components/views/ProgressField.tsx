@@ -16,7 +16,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
   const [currentTime, setCurrentTime] = useState(new Date());
   const [remainingTime, setRemainingTime] = useState("00:00:00");
   const [progress, setProgress] = useState(0);
-  const [inSes, setInSes] = useState(false);
+  //const [inSes, setInSes] = useState(false);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -30,7 +30,6 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
     if (!startDateTime || sessionStatus !== "on") {
       setRemainingTime("00:00:00");
       setProgress(0);
-      setInSes(false);
 
       return;
     }
@@ -59,7 +58,6 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
         .toString()
         .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
       setRemainingTime(formattedTime);
-      setInSes(remainingTimeMs > 0);
     };
 
     calculateRemainingTime();
@@ -67,7 +65,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
 
   return (
     <div>
-      {inSes ? (
+      {sessionStatus === "on" ? (
         <div>
           <h2>Session Progress</h2>
           <div style={{ width: "100%", margin: "10px 0", fontSize: "16px" }}>
