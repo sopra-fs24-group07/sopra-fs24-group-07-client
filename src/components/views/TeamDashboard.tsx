@@ -238,7 +238,7 @@ const TeamDashboard: React.FC = () => {
     };
 
     updateTaskStatus();
-  }, [sessionStatus, teamTasks]);
+  }, [sessionStatus]);
 
   return (
     <BaseContainer>
