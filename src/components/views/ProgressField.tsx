@@ -59,7 +59,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
         .toString()
         .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
       setRemainingTime(formattedTime);
-      setInSes((remainingTimeMs > 0));
+      setInSes(remainingTimeMs > 0);
     };
 
     calculateRemainingTime();

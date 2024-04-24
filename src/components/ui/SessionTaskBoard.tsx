@@ -12,7 +12,8 @@ const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
 
   const handleCheckboxChange = async (task) => {
     // Toggle task status based on current status
-    task.status = task.status === "IN_SESSION" ? "IN_SESSION_DONE" : "IN_SESSION";
+    task.status =
+      task.status === "IN_SESSION" ? "IN_SESSION_DONE" : "IN_SESSION";
 
     try {
       const requestBody = JSON.stringify(task);
@@ -62,14 +63,15 @@ const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
 SessionTaskBoard.propTypes = {
   teamTasks: PropTypes.arrayOf(
     PropTypes.shape({
-      taskId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      taskId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
       title: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       status: PropTypes.string.isRequired,
     })
   ).isRequired,
   sessionStatus: PropTypes.string,
-  teamId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  teamId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default SessionTaskBoard;

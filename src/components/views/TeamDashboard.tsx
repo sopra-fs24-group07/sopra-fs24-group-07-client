@@ -202,9 +202,11 @@ const TeamDashboard: React.FC = () => {
       if (sessionStatus === "off") {
         try {
           // Filter tasks that need their status updated to 'DONE'
-          const tasksToUpdate = teamTasks.filter(task => task.status === "IN_SESSION_DONE");
+          const tasksToUpdate = teamTasks.filter(
+            (task) => task.status === "IN_SESSION_DONE"
+          );
 
-          const updates = tasksToUpdate.map(task => {
+          const updates = tasksToUpdate.map((task) => {
             task.status = "DONE";
             const requestBody = JSON.stringify(task);
 
@@ -223,10 +225,12 @@ const TeamDashboard: React.FC = () => {
           console.log("Tasks statuses updated to DONE");
 
           // Update the local state to reflect these changes
-          setTeamTasks(prevTasks => prevTasks.map(task => ({
-            ...task,
-            status: task.status === "IN_SESSION_DONE" ? "DONE" : task.status
-          })));
+          setTeamTasks((prevTasks) =>
+            prevTasks.map((task) => ({
+              ...task,
+              status: task.status === "IN_SESSION_DONE" ? "DONE" : task.status,
+            }))
+          );
         } catch (error) {
           console.error(`Error updating task statuses: ${handleError(error)}`);
         }
@@ -235,7 +239,6 @@ const TeamDashboard: React.FC = () => {
 
     updateTaskStatus();
   }, [sessionStatus, teamTasks]);
-
 
   return (
     <BaseContainer>
