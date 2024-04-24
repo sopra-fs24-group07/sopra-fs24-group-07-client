@@ -199,29 +199,34 @@ const TeamDashboard: React.FC = () => {
 
   useEffect(() => {
     const updateTaskStatus = async () => {
-      if (sessionStatus === "off" && checkedTasks.size > 0) {
+      if (sessionStatus === "off") {
         try {
-          const updates = Array.from(checkedTasks).map((taskId) => {
-            const task = teamTasks.find((t) => t.taskId === taskId);
-            if (task) {
-              task.status = "DONE";
-              const requestBody = JSON.stringify(task);
+          // Filter tasks that need their status updated to 'DONE'
+          const tasksToUpdate = teamTasks.filter(task => task.status === "IN_SESSION_DONE");
 
-              return api.put(
-                `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
-                requestBody,
-                {
-                  headers: {
-                    Authorization: `${token}`,
-                  },
-                }
-              );
-            }
+          const updates = tasksToUpdate.map(task => {
+            task.status = "DONE";
+            const requestBody = JSON.stringify(task);
+
+            return api.put(
+              `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
+              requestBody,
+              {
+                headers: {
+                  Authorization: `${token}`,
+                },
+              }
+            );
           });
 
           await Promise.all(updates);
           console.log("Tasks statuses updated to DONE");
-          setCheckedTasks(new Set());
+
+          // Update the local state to reflect these changes
+          setTeamTasks(prevTasks => prevTasks.map(task => ({
+            ...task,
+            status: task.status === "IN_SESSION_DONE" ? "DONE" : task.status
+          })));
         } catch (error) {
           console.error(`Error updating task statuses: ${handleError(error)}`);
         }
@@ -229,7 +234,8 @@ const TeamDashboard: React.FC = () => {
     };
 
     updateTaskStatus();
-  }, [sessionStatus, checkedTasks]);
+  }, [sessionStatus, teamTasks]);
+
 
   return (
     <BaseContainer>

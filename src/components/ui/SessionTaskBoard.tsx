@@ -3,13 +3,7 @@ import PropTypes from "prop-types";
 import "../../styles/ui/SessionTaskBoard.scss";
 import { api, handleError } from "helpers/api";
 
-const SessionTaskBoard = ({
-  teamId,
-  teamTasks,
-  sessionStatus,
-  checkedTasks,
-  setCheckedTasks,
-}) => {
+const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
   if (!teamTasks) {
     return <p>No tasks currently in session!</p>;
   }
@@ -17,14 +11,8 @@ const SessionTaskBoard = ({
   const token = localStorage.getItem("token");
 
   const handleCheckboxChange = async (task) => {
-    const newCheckedTasks = new Set(checkedTasks);
-    if (newCheckedTasks.has(task.taskId)) {
-      task.status = "IN_SESSION";
-      newCheckedTasks.delete(task.taskId);
-    } else {
-      task.status = "IN_SESSION_DONE";
-      newCheckedTasks.add(task.taskId);
-    }
+    // Toggle task status based on current status
+    task.status = task.status === "IN_SESSION" ? "IN_SESSION_DONE" : "IN_SESSION";
 
     try {
       const requestBody = JSON.stringify(task);
@@ -35,20 +23,10 @@ const SessionTaskBoard = ({
           headers: { Authorization: `${token}` },
         }
       );
-      setCheckedTasks(newCheckedTasks);
     } catch (error) {
-      console.error("Error moving Task:", handleError(error));
+      console.error("Error updating Task:", handleError(error));
     }
   };
-
-  React.useEffect(() => {
-    const initialCheckedTasks = new Set(
-      teamTasks
-        .filter((task) => task.status === "IN_SESSION_DONE")
-        .map((task) => task.taskId)
-    );
-    setCheckedTasks(initialCheckedTasks);
-  }, [teamTasks, setCheckedTasks]);
 
   return (
     <div className="session-taskboard">
@@ -59,7 +37,7 @@ const SessionTaskBoard = ({
             <label style={{ display: "flex", alignItems: "flex-start" }}>
               <input
                 type="checkbox"
-                checked={checkedTasks.has(task.taskId)}
+                checked={task.status === "IN_SESSION_DONE"}
                 disabled={sessionStatus === "off"}
                 onChange={() => handleCheckboxChange(task)}
               />
@@ -84,17 +62,14 @@ const SessionTaskBoard = ({
 SessionTaskBoard.propTypes = {
   teamTasks: PropTypes.arrayOf(
     PropTypes.shape({
-      taskId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+      taskId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       title: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       status: PropTypes.string.isRequired,
     })
   ).isRequired,
   sessionStatus: PropTypes.string,
-  teamId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  checkedTasks: PropTypes.instanceOf(Set).isRequired,
-  setCheckedTasks: PropTypes.func.isRequired,
+  teamId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default SessionTaskBoard;
