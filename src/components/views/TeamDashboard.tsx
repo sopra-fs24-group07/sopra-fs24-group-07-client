@@ -276,7 +276,7 @@ const TeamDashboard: React.FC = () => {
                 Team Members
                 {userData.map((member) => (
                   <MemberCard
-                    key={member.id}
+                    key={member.userId}
                     MemberName={member.username}
                     className="memCards"
                   ></MemberCard>
