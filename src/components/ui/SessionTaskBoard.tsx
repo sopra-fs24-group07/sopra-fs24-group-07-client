@@ -5,6 +5,7 @@ import { api, handleError } from "helpers/api";
 
 const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
   if (!teamTasks) {
+
     return <p>No tasks currently in session!</p>;
   }
 
