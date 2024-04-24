@@ -4,9 +4,8 @@ import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import CommentCard from "components/ui/CommentCard";
 
-
 const ConfirmCommentDelete = (props) => {
-  const {comment, teamId, taskId, doClose} = props;
+  const { comment, teamId, taskId, doClose } = props;
   const [deleteError, setDeleteError] = useState();
   const token = localStorage.getItem("token");
 
@@ -27,22 +26,26 @@ const ConfirmCommentDelete = (props) => {
   };
 
   const onConfirm = () => {
-    deleteComment()
-    doClose()
-  }
+    deleteComment();
+    doClose();
+  };
 
   const onCancel = () => {
-    doClose()
-  }
+    doClose();
+  };
 
   return (
-      <div>
-        <div>You are about to delete this comment</div>
-        <CommentCard comment={comment} isFake={true}></CommentCard>
-        <div>This action cannot be reverted</div>
-        <Button className="green-button comDeleteConfirm" onClick={onConfirm}>Confirm Deletion</Button>
-        <Button className="red-button" onClick={onCancel}>Cancel</Button>
-      </div>
+    <div>
+      <div>You are about to delete this comment</div>
+      <CommentCard comment={comment} isFake={true}></CommentCard>
+      <div>This action cannot be reverted</div>
+      <Button className="green-button comDeleteConfirm" onClick={onConfirm}>
+        Confirm Deletion
+      </Button>
+      <Button className="red-button" onClick={onCancel}>
+        Cancel
+      </Button>
+    </div>
   );
 };
 
@@ -52,7 +55,5 @@ ConfirmCommentDelete.propTypes = {
   teamId: PropTypes.number,
   doClose: PropTypes.function,
 };
-
-
 
 export default ConfirmCommentDelete;
