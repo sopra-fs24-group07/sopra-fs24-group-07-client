@@ -19,6 +19,19 @@
   word-wrap: break-word;
 }
 
+.comDelete {
+  margin-bottom: 2px;
+  margin-right: 3px;
+  margin-top: 3px;
+}
+
+.comHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .comText {
   font-size: 20px;
   color: #666666;

@@ -2,9 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../../styles/ui/CommentCard.scss";
 import { useParams } from "react-router-dom";
+import { Button } from "./Button";
 
 function CommentCard(props) {
-  const { comment } = props;
+  const { comment, doDelete } = props;
   const creationDate = new Date(comment.creationDate).toLocaleDateString("de", {
     hour: "2-digit",
     minute: "2-digit",
@@ -15,7 +16,15 @@ function CommentCard(props) {
 
   return (
     <div className="comContainer">
-      <div className="comAuthor">{comment.authorName}</div>
+      <div className="comHeader">
+        <div className="comAuthor">{comment.authorName}</div>
+        <Button
+          className="red-button comDelete"
+          onClick={() => doDelete(comment.commentId)}
+        >
+          DELETE
+        </Button>
+      </div>
       <div className="comText">{comment.text}</div>
       <div className="comDate">{creationDate}</div>
     </div>
@@ -25,6 +34,7 @@ function CommentCard(props) {
 //check prop types
 CommentCard.propTypes = {
   comment: PropTypes.object,
+  doDelete: PropTypes.function,
 };
 
 export default CommentCard;

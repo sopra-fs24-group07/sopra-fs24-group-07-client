@@ -45,6 +45,22 @@ const Comments = (props) => {
     return isValid;
   };
 
+  const deleteComment = async (commentId) => {
+    try {
+      const response = await api.delete(
+        `/api/v1/teams/${teamId}/tasks/${taskId}/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error deleting comment", handleError(error));
+      setError("Could not delete the comment");
+    }
+  };
+
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
       cluster: "eu",
@@ -65,7 +81,6 @@ const Comments = (props) => {
 
   const createComment = async () => {
     if (!validateForm()) return;
-
     try {
       const requestBody = JSON.stringify({ text: comment, userId: userId });
       const response = await api.post(
@@ -121,7 +136,11 @@ const Comments = (props) => {
       {error && <div className="error-message">{error}</div>}
       <div className="section">
         {allComments.map((commi) => (
-          <CommentCard key={commi.commentId} comment={commi}></CommentCard>
+          <CommentCard
+            key={commi.commentId}
+            doDelete={deleteComment}
+            comment={commi}
+          ></CommentCard>
         ))}
       </div>
     </div>
