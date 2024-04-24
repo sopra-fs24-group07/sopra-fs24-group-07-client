@@ -42,6 +42,7 @@ const TeamDashboard: React.FC = () => {
     channel.bind("session-update", (data: { status: string }) => {
       setSessionStatus(data.status);
       fetchStatus();
+      document.dispatchEvent(new CustomEvent("endSession"));
     });
 
     channel.bind("task-update", () => {
@@ -273,7 +274,12 @@ const TeamDashboard: React.FC = () => {
                 ))}
               </div>
             )}
-            {sessionStatus === "on" && <VoiceChat />}
+            {sessionStatus === "on" && (
+              <div className="memContainer">
+                VoiceChat
+                <VoiceChat />
+              </div>
+            )}
           </TeamDashboardBox>
           <TeamDashboardBox
             startRow={1}

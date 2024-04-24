@@ -16,6 +16,12 @@
   width: 100%;
 }
 
+.room-footer {
+  align-items: center;
+  display: none;
+  width: 100%;
+}
+
 .room-name {
   margin: 0;
   font-size: 35px;
@@ -67,7 +73,9 @@
   border-radius: $borderRadius;
   padding: 8px;
   text-align: center;
-  width: 80%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  width: 90%;
   margin: 4px;
   font-size: 25px;
   font-weight: bold;

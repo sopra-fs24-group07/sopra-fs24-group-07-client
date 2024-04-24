@@ -29,6 +29,20 @@ function VoiceChat() {
     userId = localStorage.getItem("id");
   };
 
+  //ids for document modification/listening
+  const documentId = {
+    members: "members",
+    roomHeader: "room-header",
+    roomFooter: "room-footer",
+    roomName: "room-name",
+    backButton: "back-button",
+    endSession: "endSession",
+    form: "from",
+    leaveButton: "leave-button",
+    muteButton: "mute-button",
+    channels: "channels",
+  };
+
   //the name of the room (a single task in our case)
   let roomName;
 
@@ -105,7 +119,7 @@ function VoiceChat() {
           <div>${name}</div>
       </div>`;
       document
-        .getElementById("members")
+        .getElementById(documentId.members)
         .insertAdjacentHTML("beforeend", newMember);
     }
   };
@@ -140,7 +154,7 @@ function VoiceChat() {
       </div>`;
 
     document
-      .getElementById("members")
+      .getElementById(documentId.members)
       .insertAdjacentHTML("beforeend", newMember);
   };
 
@@ -179,10 +193,7 @@ function VoiceChat() {
 
     fetchUserTasks();
 
-    //TODO:
     document.addEventListener("checkBoxChange", fetchUserTasks);
-    //to make this work we need to add: document.dispatchEvent(new CustomEvent('checkBoxChange'))
-    //inside of channel.bind("task-update" Team in TeamDashBoard.tsx
 
     const enterRoom = async (e) => {
       e.preventDefault();
@@ -215,15 +226,18 @@ function VoiceChat() {
           //hide the channels
           ChannelList.style.display = "none";
           //show the voice room controls
-          document.getElementById("room-header").style.display = "flex";
+          document.getElementById(documentId.roomHeader).style.display = "flex";
+          document.getElementById(documentId.roomFooter).style.display = "flex";
           //display the room-name
-          document.getElementById("room-name").innerHTML = roomName;
+          document.getElementById(documentId.roomName).innerHTML = roomName;
           //leave the channel if windows is closed
           window.addEventListener("beforeunload", leaveRoom);
           //leave the channel if back to teams button is clicked
           document
-            .getElementById("back-button")
+            .getElementById(documentId.backButton)
             .addEventListener("click", leaveRoom);
+
+          document.addEventListener(documentId.endSession, leaveRoom);
         } catch (error) {
           setErrorGeneral(
             "An unexpected error occured. Please try to logout and login again"
@@ -245,18 +259,21 @@ function VoiceChat() {
       leaveRtmChannel();
 
       //display channels
-      document.getElementById("form").style.display = "block";
+      document.getElementById(documentId.form).style.display = "block";
       //remove channel control buttons
-      document.getElementById("room-header").style.display = "none";
+      document.getElementById(documentId.roomHeader).style.display = "none";
+      document.getElementById(documentId.roomFooter).style.display = "none";
       //remove the room name
-      document.getElementById("room-name").innerHTML = "";
+      document.getElementById(documentId.roomName).innerHTML = "";
       //empty members
-      document.getElementById("members").innerHTML = "";
+      document.getElementById(documentId.members).innerHTML = "";
       //remove eventListener to avoid error on closing component
       window.removeEventListener("beforeunload", leaveRoom);
       document
-        .getElementById("back-button")
+        .getElementById(documentId.backButton)
         .removeEventListener("click", leaveRoom);
+
+      document.removeEventListener(documentId.endSession, leaveRoom);
     };
 
     //leave rtm Client
@@ -272,9 +289,9 @@ function VoiceChat() {
     };
 
     //just shortcuts
-    const ChannelList = document.getElementById("form");
-    const leaveButton = document.getElementById("leave-button");
-    const muteButton = document.getElementById("mute-button");
+    const ChannelList = document.getElementById(documentId.form);
+    const leaveButton = document.getElementById(documentId.leaveButton);
+    const muteButton = document.getElementById(documentId.muteButton);
 
     //add EventListener
     ChannelList.addEventListener("submit", enterRoom);
@@ -284,11 +301,11 @@ function VoiceChat() {
 
   useEffect(() => {
     const initChannels = async () => {
-      document.getElementById("channels").innerHTML = "";
+      document.getElementById(documentId.channels).innerHTML = "";
       tasks.map((breakoutRoom) => {
         let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom.title}" data-taskid="${breakoutRoom.taskId}" />`;
         document
-          .getElementById("channels")
+          .getElementById(documentId.channels)
           .insertAdjacentHTML("beforeend", newChannel);
       });
     };
@@ -298,24 +315,26 @@ function VoiceChat() {
 
   return (
     <BaseContainer className="base-container">
-      <div id="room-header" className="room-header">
-        <div id="room-header-controls" className="room-header-controls">
-          <h1 className="room-name" id="room-name"></h1>
-          <Button id="leave-button" className="leave-button">
+      <div id={documentId.roomHeader} className="room-header">
+        <div className="room-header-controls">
+          <h1 className="room-name" id={documentId.roomName}></h1>
+          <Button id={documentId.leaveButton} className="leave-button">
             Leave
-          </Button>
-          <Button className="mute-button" id="mute-button">
-            {buttonText}
           </Button>
         </div>
       </div>
-      <form id="form">
-        <div className="rooms" id="channels"></div>
+      <form id={documentId.form}>
+        <div className="rooms" id={documentId.channels}></div>
         {errorUserName && <div>{errorUserName}</div>}
         {errorGetTasks && <div>{errorGetTasks}</div>}
         {errorGeneral && <div>{errorGeneral}</div>}
       </form>
-      <div className="members" id="members"></div>
+      <div className="members" id={documentId.members}></div>
+      <div id={documentId.roomFooter} className="room-footer">
+        <Button className="mute-button" id={documentId.muteButton}>
+          {buttonText}
+        </Button>
+      </div>
       {isLoading && <Spinner />}
     </BaseContainer>
   );
