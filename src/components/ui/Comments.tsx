@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { api, handleError } from "helpers/api";
 import CommentCard from "./CommentCard";
 import Pusher from "pusher-js";
+import ConfirmCommentDelete from "components/popups/ConfirmCommentDelete";
 
 const FormField = ({ value, onChange, error }) => {
   return (
@@ -33,6 +34,8 @@ const Comments = (props) => {
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
   const [allComments, setAllComments] = useState([]);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState();
 
   const validateForm = () => {
     let isValid = true;
@@ -43,6 +46,15 @@ const Comments = (props) => {
     }
 
     return isValid;
+  };
+
+  const handleDeleteClick = (commi) => {
+    setCommentToDelete(commi);
+    setDeleteOpen(true);
+  };
+
+  const closeDelete = () => {
+    setDeleteOpen(false);
   };
 
   useEffect(() => {
@@ -65,7 +77,6 @@ const Comments = (props) => {
 
   const createComment = async () => {
     if (!validateForm()) return;
-
     try {
       const requestBody = JSON.stringify({ text: comment, userId: userId });
       const response = await api.post(
@@ -108,22 +119,38 @@ const Comments = (props) => {
 
   return (
     <div className="wrapper">
-      <div className="in-line">
-        <FormField value={comment} onChange={setComment} error={error} />
-        <Button
-          disabled={!comment}
-          className={"green-button submit"}
-          onClick={createComment}
-        >
-          Submit
-        </Button>
-      </div>
+      {!deleteOpen && (
+        <div className="in-line">
+          <FormField value={comment} onChange={setComment} error={error} />
+          <Button
+            disabled={!comment}
+            className={"green-button submit"}
+            onClick={createComment}
+          >
+            Submit
+          </Button>
+        </div>
+      )}
       {error && <div className="error-message">{error}</div>}
-      <div className="section">
-        {allComments.map((commi) => (
-          <CommentCard key={commi.commentId} comment={commi}></CommentCard>
-        ))}
-      </div>
+      {!deleteOpen && (
+        <div className="section">
+          {allComments.map((commi) => (
+            <CommentCard
+              key={commi.commentId}
+              doDelete={() => handleDeleteClick(commi)}
+              comment={commi}
+            ></CommentCard>
+          ))}
+        </div>
+      )}
+      {deleteOpen && (
+        <ConfirmCommentDelete
+          doClose={closeDelete}
+          comment={commentToDelete}
+          teamId={teamId}
+          taskId={taskId}
+        />
+      )}
     </div>
   );
 };
