@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { Button } from "./Button";
 
 function CommentCard(props) {
-  const { comment, doDelete } = props;
+  const { comment, doDelete, isFake } = props;
   const creationDate = new Date(comment.creationDate).toLocaleDateString("de", {
     hour: "2-digit",
     minute: "2-digit",
@@ -18,12 +18,14 @@ function CommentCard(props) {
     <div className="comContainer">
       <div className="comHeader">
         <div className="comAuthor">{comment.authorName}</div>
-        <Button
-          className="red-button comDelete"
-          onClick={() => doDelete(comment.commentId)}
-        >
-          DELETE
-        </Button>
+        {!isFake && (
+          <Button
+            className="red-button comDelete"
+            onClick={() => doDelete(comment)}
+          >
+            DELETE
+          </Button>
+        )}
       </div>
       <div className="comText">{comment.text}</div>
       <div className="comDate">{creationDate}</div>
@@ -33,8 +35,9 @@ function CommentCard(props) {
 
 //check prop types
 CommentCard.propTypes = {
-  comment: PropTypes.object,
+  comment: PropTypes.object.required,
   doDelete: PropTypes.function,
+  isFake: PropTypes.boolean,
 };
 
 export default CommentCard;
