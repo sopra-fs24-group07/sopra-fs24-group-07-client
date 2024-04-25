@@ -84,7 +84,6 @@ const TeamDashboard: React.FC = () => {
     setSessionHistoryOpen(false);
   };
 
-
   const fetchTeamMembers = async () => {
     try {
       const response = await api.get(`/api/v1/teams/${teamId}/users`, {
