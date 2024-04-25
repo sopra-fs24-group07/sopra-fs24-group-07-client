@@ -52,7 +52,7 @@ const ConfirmCommentDelete = (props) => {
 ConfirmCommentDelete.propTypes = {
   comment: PropTypes.object,
   taskId: PropTypes.number,
-  teamId: PropTypes.number,
+  teamId: PropTypes.string,
   doClose: PropTypes.function,
 };
 

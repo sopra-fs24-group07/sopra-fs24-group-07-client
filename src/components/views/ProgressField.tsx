@@ -35,7 +35,13 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
     }
 
     const calculateRemainingTime = () => {
-      const startTime = new Date(startDateTime);
+      const serverDate = new Date(startDateTime);
+
+      const clientTimeZoneOffset = new Date().getTimezoneOffset();
+      const offsetMilliseconds = clientTimeZoneOffset * 60000;
+
+      const startTime = new Date(serverDate.getTime() - offsetMilliseconds);
+
       const elapsedTimeMs = currentTime.getTime() - startTime.getTime();
       const goalTimeMinutes = goalMinutes.split(":").map(Number);
       const goalTimeMs =
