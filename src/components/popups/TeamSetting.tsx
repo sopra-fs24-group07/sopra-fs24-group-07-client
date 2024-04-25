@@ -52,7 +52,7 @@ FormFieldLong.propTypes = {
   disabled: PropTypes.bool,
 };
 
-const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
+const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [editMode, setEditMode] = useState(false);
   const [teamName, setTeamName] = useState();
   const [teamDescription, setTeamDescription] = useState();
@@ -146,6 +146,7 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
           Authorization: `${token}`,
         },
       });
+      onEdit();
       DeactivateEditMode();
     } catch (error) {
       setError("Something went wrong. Please try again");
@@ -304,8 +305,10 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
 TeamSettings.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   setIsLeave: PropTypes.func,
+  isLeave: PropTypes.boolean,
 };
 
 export default TeamSettings;

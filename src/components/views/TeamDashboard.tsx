@@ -352,6 +352,7 @@ const TeamDashboard: React.FC = () => {
           onClose={closeTeamSettings}
           isLeave={isLeave}
           setIsLeave={setIsLeave}
+          onEdit={fetchTeamInfo}
         />
       </div>
     </BaseContainer>
