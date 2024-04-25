@@ -119,6 +119,7 @@ function TaskCard(props) {
         isOpen={isInspectTaskOpen}
         onClose={closeInspectTask}
         task={task}
+        inSession={false}
       />
     </div>
   );

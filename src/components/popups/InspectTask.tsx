@@ -55,7 +55,7 @@ FormFieldLong.propTypes = {
   disabled: PropTypes.bool,
 };
 
-const InspectTask = ({ isOpen, onClose, task }) => {
+const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [editMode, setEditMode] = useState(false);
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDescription, setTaskDescription] = useState(task.description);
@@ -191,7 +191,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
               Cancel
             </Button>
           )}
-          {!editMode && (
+          {!editMode && !inSession && (
             <Button
               className="green-button inspectTask edit bts"
               onClick={ActivateEditMode}
@@ -257,6 +257,7 @@ InspectTask.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
+  inSession: PropTypes.bool,
 };
 
 export default InspectTask;

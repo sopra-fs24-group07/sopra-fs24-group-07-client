@@ -2,7 +2,7 @@
 
 .session-taskboard {
   max-width: calc(100% - 2em);
-  margin: 1em;
+  margin-left: 1em;
   box-sizing: border-box;
 
   .team-task-list {
@@ -12,7 +12,7 @@
     margin: 0;
     padding: 0 1em;
     border-radius: $borderRadius;
-    border: 1px solid $background;
+    box-shadow: $dropShadow;
 
     @media (max-width: 600px) {
       max-height: 300px;
