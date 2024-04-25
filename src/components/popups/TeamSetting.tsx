@@ -131,6 +131,7 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
           },
         }
       );
+      document.dispatchEvent(new CustomEvent("leave-team"));
       setIsLeave(true);
       navigate("/teams");
     } catch (error) {

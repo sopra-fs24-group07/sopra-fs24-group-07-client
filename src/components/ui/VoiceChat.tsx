@@ -41,6 +41,7 @@ function VoiceChat() {
     leaveButton: "leave-button",
     muteButton: "mute-button",
     channels: "channels",
+    leaveTeam: "leave-team",
   };
 
   //the name of the room (a single task in our case)
@@ -238,6 +239,7 @@ function VoiceChat() {
             .addEventListener("click", leaveRoom);
 
           document.addEventListener(documentId.endSession, leaveRoom);
+          document.addEventListener(documentId.leaveTeam, leaveRoom);
         } catch (error) {
           setErrorGeneral(
             "An unexpected error occured. Please try to logout and login again"
@@ -274,6 +276,7 @@ function VoiceChat() {
         .removeEventListener("click", leaveRoom);
 
       document.removeEventListener(documentId.endSession, leaveRoom);
+      document.removeEventListener(documentId.leaveTeam, leaveRoom);
     };
 
     //leave rtm Client
