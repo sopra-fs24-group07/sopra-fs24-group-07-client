@@ -16,6 +16,7 @@ const FormField = (props) => {
         onChange={(e) => props.onChange(e.target.value)}
         disabled={props.disabled}
       />
+      {props.error && <p className="TeamSetting error">{props.error}</p>}
     </div>
   );
 };
@@ -30,6 +31,7 @@ const FormFieldLong = (props) => {
         onChange={(e) => props.onChange(e.target.value)}
         disabled={props.disabled}
       />
+      {props.error && <p className="TeamSetting error">{props.error}</p>}
     </div>
   );
 };
@@ -38,6 +40,7 @@ FormField.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   type: PropTypes.string,
+  error: PropTypes.string,
   disabled: PropTypes.bool,
 };
 
@@ -45,6 +48,7 @@ FormFieldLong.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   type: PropTypes.string,
+  error: PropTypes.string,
   disabled: PropTypes.bool,
 };
 
@@ -61,8 +65,39 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
   const userId = localStorage.getItem("id");
   const [error, setError] = useState("");
   const [leaveError, setLeaveError] = useState("");
+  const [errors, setErrors] = useState({
+    name: "",
+    description: "",
+  });
   const baseURL = window.location.origin;
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    let isValid = true;
+    let newErrors = { name: "", description: "" };
+
+    if (!teamName) {
+      newErrors.name = "Team name is required";
+      isValid = false;
+    } else if (teamName.length > 50) {
+      newErrors.name = "The name exceeds 50 characters";
+      isValid = false;
+    }
+
+    if (!teamDescription) {
+      newErrors.description = "The description is required";
+      isValid = false;
+    }
+
+    if (teamDescription.length > 500) {
+      newErrors.description = "The description exceeds 500 characters";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+
+    return isValid;
+  };
 
   const fetchUserTeam = async () => {
     try {
@@ -100,6 +135,7 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
   };
 
   const editTeam = async () => {
+    if (!validateForm()) return;
     try {
       const requestBody = JSON.stringify({
         name: teamName,
@@ -128,6 +164,10 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
     setEditMode(true);
   };
   const DeactivateEditMode = () => {
+    setErrors({
+      name: "",
+      description: "",
+    });
     fetchUserTeam();
     setEditMode(false);
   };
@@ -196,6 +236,7 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
               onChange={setTeamName}
               placeholder="Team Name..."
               disabled={!editMode}
+              error={errors.name}
             />
             <h3 className="TeamSetting headline">Team Description</h3>
             <FormFieldLong
@@ -204,6 +245,7 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
               onChange={setTeamDescription}
               placeholder="Team Description..."
               disabled={!editMode}
+              error={errors.description}
             />
             {!editMode && (
               <div>
