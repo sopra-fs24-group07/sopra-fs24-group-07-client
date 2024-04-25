@@ -14,7 +14,7 @@ const FormField = (props) => {
         placeholder="enter here..."
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
-        disabled={true}
+        disabled={props.disabled}
       />
     </div>
   );
@@ -28,7 +28,7 @@ const FormFieldLong = (props) => {
         placeholder="enter here..."
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
-        disabled={true}
+        disabled={props.disabled}
       />
     </div>
   );
@@ -49,7 +49,7 @@ FormFieldLong.propTypes = {
 };
 
 const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
-  //const [editMode, setEditMode] = useState(false); EDIT Mode: for extensibility in M4
+  const [editMode, setEditMode] = useState(false);
   const [teamName, setTeamName] = useState();
   const [teamDescription, setTeamDescription] = useState();
   const [teamUUID, setTeamUUID] = useState();
@@ -64,62 +64,73 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
   const baseURL = window.location.origin;
   const navigate = useNavigate();
 
+  const fetchUserTeam = async () => {
+    try {
+      const response = await api.get(`/api/v1/users/${userId}/teams`, {
+        headers: { Authorization: `${token}` },
+      });
+      const foundTeam = response.data.find(
+        (team) => team.teamId === parseInt(teamId)
+      );
+      setTeamName(foundTeam.name);
+      setTeamDescription(foundTeam.description);
+      setTeamUUID(foundTeam.teamUUID);
+      setInviteURL(`${baseURL}/invitation/${foundTeam.teamUUID}`);
+    } catch (error) {
+      setError("Something went wrong. Please try again");
+      console.error("Something went wrong on:", handleError(error));
+    }
+  };
+
+  const fetchTeamMembers = async () => {
+    try {
+      const response = await api.get(`/api/v1/teams/${teamId}/users`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      setTeamMembers(response.data);
+    } catch (error) {
+      setError("Something went wrong. Please try again");
+      if (error.response.status === 401) {
+        setLeaveError("You are not authorized to do this");
+      }
+      console.error(handleError(error));
+    }
+  };
+
+  const editTeam = async () => {
+    try {
+      const requestBody = JSON.stringify({
+        name: teamName,
+        description: teamDescription,
+      });
+      const response = await api.put(`/api/v1/teams/${teamId}`, requestBody, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      DeactivateEditMode();
+    } catch (error) {
+      setError("Something went wrong. Please try again");
+      console.error("Error while updating Team", handleError(error));
+    }
+  };
+
   useEffect(() => {
-    const fetchUserTeam = async () => {
-      try {
-        const response = await api.get(`/api/v1/users/${userId}/teams`, {
-          headers: { Authorization: `${token}` },
-        });
-        const foundTeam = response.data.find(
-          (team) => team.teamId === parseInt(teamId)
-        );
-        setTeamName(foundTeam.name);
-        setTeamDescription(foundTeam.description);
-        setTeamUUID(foundTeam.teamUUID);
-        setInviteURL(`${baseURL}/invitation/${foundTeam.teamUUID}`);
-      } catch (error) {
-        setError("Something went wrong. Please try again");
-        /*
-        if (error.response.status === 401) {
-          setLeaveError("You are not authorized to do this");
-        }
-        console.error(handleError(error));
-
-         */
-      }
-    };
-
-    const fetchTeamMembers = async () => {
-      try {
-        const response = await api.get(`/api/v1/teams/${teamId}/users`, {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
-        setTeamMembers(response.data);
-      } catch (error) {
-        setError("Something went wrong. Please try again");
-        if (error.response.status === 401) {
-          setLeaveError("You are not authorized to do this");
-        }
-        console.error(handleError(error));
-      }
-    };
-
     fetchUserTeam();
     fetchTeamMembers();
   }, []);
 
   if (!isOpen) return null;
 
-  /* EDIT Mode: for extensibility in M4
   const ActivateEditMode = () => {
     setEditMode(true);
   };
   const DeactivateEditMode = () => {
+    fetchUserTeam();
     setEditMode(false);
   };
-  */
 
   const LeaveTeam = async () => {
     try {
@@ -157,7 +168,7 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
     setError("");
     setLeaveError("");
     setCopied("");
-    //DeactivateEditMode(); EDIT Mode: for extensibility in M4
+    DeactivateEditMode();
     onClose();
   };
 
@@ -165,7 +176,12 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
     <div className="TeamSetting overlay" onClick={doClose}>
       <div className="TeamSetting content" onClick={(e) => e.stopPropagation()}>
         <div className="TeamSetting header">
-          <h2 className="TeamSetting headline">Team Settings</h2>
+          <h2>Team Settings</h2>
+          {!editMode && (
+            <Button className="green-button" onClick={ActivateEditMode}>
+              Edit Team
+            </Button>
+          )}
           <Button className="red-button" onClick={doClose}>
             Close
           </Button>
@@ -177,53 +193,65 @@ const TeamSettings = ({ isOpen, onClose, setIsLeave }) => {
             <FormField
               className="TeamSetting input"
               value={teamName}
+              onChange={setTeamName}
               placeholder="Team Name..."
-              disabled
+              disabled={!editMode}
             />
             <h3 className="TeamSetting headline">Team Description</h3>
             <FormFieldLong
               className="TeamSetting input"
               value={teamDescription}
+              onChange={setTeamDescription}
               placeholder="Team Description..."
-              disabled
+              disabled={!editMode}
             />
-            <div>
-              <h3 className="TeamSetting headline">Team Members</h3>
-              <Button className="invite-user" onClick={CopyInvitationLink}>
-                Invite User
-              </Button>
-              {copied && (
+            {!editMode && (
+              <div>
                 <div>
-                  <input className="TeamSetting input" value={inviteURL} />
-                  <br />
-                  <div className="TeamSetting copied">{copied}</div>
+                  <h3 className="TeamSetting headline">Team Members</h3>
+                  <Button className="invite-user" onClick={CopyInvitationLink}>
+                    Invite User
+                  </Button>
+                  {copied && (
+                    <div>
+                      <input className="TeamSetting input" value={inviteURL} />
+                      <br />
+                      <div className="TeamSetting copied">{copied}</div>
+                    </div>
+                  )}
+                  <ul className="TeamSetting list">
+                    {teamMembers.map((member) => (
+                      <li className="TeamSetting listItem" key={member.id}>
+                        {member.username} ({member.name})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Button onClick={LeaveTeam} className="leave-team">
+                  Leave Team
+                </Button>
+                {leaveError && (
+                  <div className="TeamSetting error">{leaveError}</div>
+                )}
+              </div>
+            )}
+            <p>{error}</p>
+            <div>
+              {editMode && (
+                <div className="TeamSetting footer">
+                  <Button
+                    className="green-button"
+                    disabled={!teamName || !teamDescription}
+                    onClick={editTeam}
+                  >
+                    Save Changes
+                  </Button>
+                  <Button className="red-button" onClick={DeactivateEditMode}>
+                    Cancel
+                  </Button>
                 </div>
               )}
-              <ul className="TeamSetting list">
-                {teamMembers.map((member) => (
-                  <li className="TeamSetting listItem" key={member.id}>
-                    {member.username} ({member.name})
-                  </li>
-                ))}
-              </ul>
             </div>
-            <Button onClick={LeaveTeam} className="leave-team">
-              Leave Team
-            </Button>
-            {leaveError && (
-              <div className="TeamSetting error">{leaveError}</div>
-            )}
-            <div></div>
-            {/* EDIT Mode: for extensibility in M4: error && <p>{error}</p> */}
-            {/* EDIT Mode: for extensibility in M4:
-            <div>
-              {!editMode && (
-                  <Button className="green-button" onClick={ActivateEditMode}>
-                    Edit
-                  </Button>
-              )}
-              </div>
-            */}
           </div>
         )}
       </div>
