@@ -16,7 +16,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
   const [currentTime, setCurrentTime] = useState(new Date());
   const [remainingTime, setRemainingTime] = useState("00:00:00");
   const [progress, setProgress] = useState(0);
-  //const [inSes, setInSes] = useState(false);
+  const [goalReached, setGoalReached] = useState(false);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -30,18 +30,16 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
     if (!startDateTime || sessionStatus !== "on") {
       setRemainingTime("00:00:00");
       setProgress(0);
+      setGoalReached(false);
 
       return;
     }
 
     const calculateRemainingTime = () => {
       const serverDate = new Date(startDateTime);
-
       const clientTimeZoneOffset = new Date().getTimezoneOffset();
       const offsetMilliseconds = clientTimeZoneOffset * 60000;
-
       const startTime = new Date(serverDate.getTime() - offsetMilliseconds);
-
       const elapsedTimeMs = currentTime.getTime() - startTime.getTime();
       const goalTimeMinutes = goalMinutes.split(":").map(Number);
       const goalTimeMs =
@@ -54,16 +52,21 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
       );
       setProgress(progress);
 
-      const hours = Math.floor(remainingTimeMs / (1000 * 60 * 60));
-      const minutes = Math.floor(
-        (remainingTimeMs % (1000 * 60 * 60)) / (1000 * 60)
-      );
-      const seconds = Math.floor((remainingTimeMs % (1000 * 60)) / 1000);
+      if (remainingTimeMs <= 0) {
+        setGoalReached(true);
+        setRemainingTime("00:00:00");
+      } else {
+        const hours = Math.floor(remainingTimeMs / (1000 * 60 * 60));
+        const minutes = Math.floor(
+          (remainingTimeMs % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((remainingTimeMs % (1000 * 60)) / 1000);
 
-      const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-        .toString()
-        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-      setRemainingTime(formattedTime);
+        const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+        setRemainingTime(formattedTime);
+      }
     };
 
     calculateRemainingTime();
@@ -72,28 +75,35 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
   return (
     <div>
       {sessionStatus === "on" ? (
-        <div>
-          <h2>Session Progress</h2>
-          <div style={{ width: "100%", margin: "10px 0", fontSize: "16px" }}>
-            Time Remaining: {remainingTime}
-            <div
-              style={{
-                width: "100%",
-                backgroundColor: "#f4cdec",
-                borderRadius: "10px",
-              }}
-            >
+        !goalReached ? (
+          <div>
+            <h2>Session Progress</h2>
+            <div style={{ width: "100%", margin: "10px 0", fontSize: "16px" }}>
+              Time Remaining: {remainingTime}
               <div
                 style={{
-                  width: `${progress}%`,
-                  height: "20px",
-                  backgroundColor: "#cdf9da",
+                  width: "100%",
+                  backgroundColor: "#f4cdec",
                   borderRadius: "10px",
                 }}
-              ></div>
+              >
+                <div
+                  style={{
+                    width: `${progress}%`,
+                    height: "20px",
+                    backgroundColor: "#cdf9da",
+                    borderRadius: "10px",
+                  }}
+                ></div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div>
+            <h2>Session Complete</h2>
+            <p>The goal has been reached in {goalMinutes}!</p>
+          </div>
+        )
       ) : (
         <div>
           <h2>Team Progress</h2>
