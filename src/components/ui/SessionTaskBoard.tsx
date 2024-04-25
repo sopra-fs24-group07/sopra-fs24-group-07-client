@@ -49,34 +49,35 @@ const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
       <h3>Session Tasks</h3>
       <ul className="team-task-list">
         {teamTasks.map((task) => (
-          <>
-            <li
-              key={task.taskId}
-              style={{ listStyleType: "none", display: "flex" }}
+          <li
+            key={task.taskId}
+            style={{ listStyleType: "none", display: "flex" }}
+          >
+            <input
+              style={{ cursor: "pointer" }}
+              type="checkbox"
+              checked={task.status === "IN_SESSION_DONE"}
+              disabled={sessionStatus === "off"}
+              onChange={() => handleCheckboxChange(task)}
+            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginLeft: "5px",
+              }}
             >
-              <input
-                type="checkbox"
-                checked={task.status === "IN_SESSION_DONE"}
-                disabled={sessionStatus === "off"}
-                onChange={() => handleCheckboxChange(task)}
-                style={{ pointerEvents: "auto", cursor: "pointer" }}
-              />
-              <div
-                style={{
-                  marginLeft: "5px",
-                }}
+              <Link
+                onClick={() => openInspectTask(task)}
+                style={{ textDecoration: "none" }}
               >
-                <Link
-                  onClick={() => openInspectTask(task)}
-                  style={{ textDecoration: "none" }}
-                >
-                  {task.title}
-                </Link>
-              </div>
-            </li>
-          </>
+                {task.title}
+              </Link>
+            </div>
+          </li>
         ))}
       </ul>
+
       {inspectTask && (
         <InspectTask
           isOpen={isInspectTaskOpen}
