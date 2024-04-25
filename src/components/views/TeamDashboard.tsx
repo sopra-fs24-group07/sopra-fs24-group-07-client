@@ -9,6 +9,7 @@ import ProgressField from "components/views/ProgressField";
 import "styles/views/TeamsOverview.scss";
 import "styles/views/TeamDashboard.scss";
 import TeamSettings from "components/popups/TeamSetting";
+import SessionHistory from "components/popups/SessionHistory";
 import { Button } from "components/ui/Button";
 import VoiceChat from "components/ui/VoiceChat";
 import SessionTaskBoard from "../ui/SessionTaskBoard";
@@ -28,6 +29,7 @@ const TeamDashboard: React.FC = () => {
   const token = localStorage.getItem("token") || "";
   const userId = localStorage.getItem("id");
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
+  const [isSessionHistoryOpen, setSessionHistoryOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
@@ -73,6 +75,16 @@ const TeamDashboard: React.FC = () => {
       setIsLeave(false);
     }
   };
+
+  const openSessionHistory = () => {
+    setSessionHistoryOpen(true);
+  };
+
+  const closeSessionHistory = () => {
+    setSessionHistoryOpen(false);
+  };
+
+
   const fetchTeamMembers = async () => {
     try {
       const response = await api.get(`/api/v1/teams/${teamId}/users`, {
@@ -317,6 +329,12 @@ const TeamDashboard: React.FC = () => {
               >
                 Team Settings
               </Button>
+              <Button
+                className="team-dashboard settingsButton"
+                onClick={openSessionHistory}
+              >
+                Session History
+              </Button>
               <div className="team-dashboard description">{teamDesc}</div>
             </div>
           </TeamDashboardBox>
@@ -352,6 +370,11 @@ const TeamDashboard: React.FC = () => {
           onClose={closeTeamSettings}
           isLeave={isLeave}
           setIsLeave={setIsLeave}
+        />
+        <SessionHistory
+          isOpen={isSessionHistoryOpen}
+          onClose={closeSessionHistory}
+          sessionStatus={sessionStatus}
         />
       </div>
     </BaseContainer>

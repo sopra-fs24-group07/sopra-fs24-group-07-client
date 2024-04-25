@@ -66,7 +66,7 @@
   &.description {
     overflow-wrap: break-word;
     word-wrap: break-word;
-    position: absolute;
+    position: flex;
     top: 80px; /* Position the description below the button */
     left: 0;
     right: 2px;
