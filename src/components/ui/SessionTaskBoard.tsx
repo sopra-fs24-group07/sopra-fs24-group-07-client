@@ -10,18 +10,18 @@ const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
     return <p>No tasks currently in session!</p>;
   }
   const token = localStorage.getItem("token");
-  const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);
   const [inspectTask, setInspectTask] = useState(null);
-  let inTaskasd;
+  const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);
 
   //open the Inspect Task Popup
   const openInspectTask = (task) => {
-    inTaskasd = task;
+    setInspectTask(task);
     setInspectTaskOpen(true);
   };
 
   //close the Inspect Task Popup
   const closeInspectTask = () => {
+    setInspectTask(null);
     setInspectTaskOpen(false);
   };
 
@@ -81,7 +81,7 @@ const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
         <InspectTask
           isOpen={isInspectTaskOpen}
           onClose={closeInspectTask}
-          task={inTaskasd}
+          task={inspectTask}
           inSession={true}
         />
       )}
