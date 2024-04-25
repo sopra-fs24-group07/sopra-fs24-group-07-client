@@ -50,10 +50,10 @@ const TeamDashboard: React.FC = () => {
       document.dispatchEvent(new CustomEvent("checkBoxChange"));
     });
 
-    channel.bind("team-update", (data: { userId: string }) => {
-      if (data.userId !== localStorage.getItem("id")) {
-        fetchTeamMembers();
-      }
+    channel.bind("team-update", () => {
+      console.log("TEAM UPDATED!");
+      fetchTeamMembers();
+      fetchTeamInfo();
     });
 
     return () => {
