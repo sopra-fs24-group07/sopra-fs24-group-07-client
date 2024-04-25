@@ -6,8 +6,14 @@ import { Button } from "./Button";
 
 function CommentCard(props) {
   const { comment, doDelete, isFake } = props;
-  const creationDate = new Date(comment.creationDate).toLocaleString("de-DE", {
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+
+  const serverDate = new Date(comment.creationDate);
+
+  const clientTimeZoneOffset = new Date().getTimezoneOffset();
+  const offsetMilliseconds = clientTimeZoneOffset * 60000;
+
+  const clientDate = new Date(serverDate.getTime() - offsetMilliseconds);
+  const creationDate = clientDate.toLocaleDateString("de-DE", {
     hour: "2-digit",
     minute: "2-digit",
     day: "2-digit",
