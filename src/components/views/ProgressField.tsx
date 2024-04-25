@@ -31,6 +31,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
       setRemainingTime("00:00:00");
       setProgress(0);
       setGoalReached(false);
+
       return;
     }
 
@@ -43,7 +44,6 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
       const goalTimeMinutes = goalMinutes.split(":").map(Number);
       const goalTimeMs =
         (goalTimeMinutes[0] * 60 + goalTimeMinutes[1]) * 60 * 1000;
-      //const remainingTimeMs = goalTimeMs - elapsedTimeMs;
       const remainingTimeMs = goalTimeMs - elapsedTimeMs;
 
       const progress = Math.max(
