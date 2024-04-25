@@ -127,8 +127,7 @@ const InspectTask = ({ isOpen, onClose, task }) => {
           },
         }
       );
-      //maybe remove when external api is ready
-      location.reload();
+      DeactivateEditMode();
     } catch (error) {
       //new error handling
       setError("Failed to edit the Task");
@@ -158,7 +157,6 @@ const InspectTask = ({ isOpen, onClose, task }) => {
       );
       //maybe remove when external api is ready
       setIsLoading(false);
-      location.reload();
     } catch (error) {
       setError("Failed to delete the Task");
       if (error.response.status === 401) {
