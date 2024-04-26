@@ -98,6 +98,7 @@ const CreateTask = ({ isOpen, onClose }) => {
 
     setErrors(errors);
     setTimeout(() => {}, 500);
+    setIsLoading(false);
 
     return isValid;
   };
