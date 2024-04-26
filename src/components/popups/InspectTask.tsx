@@ -92,6 +92,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
 
     setErrors(errors);
     setTimeout(() => {}, 500);
+    setIsLoading(false);
 
     return isValid;
   };
