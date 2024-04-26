@@ -95,8 +95,18 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
       isValid = false;
     }
 
+    if (username.length > 100) {
+      errors.username = "Username exceeds the 100 character limit!";
+      isValid = false;
+    }
+
     if (!name) {
       errors.name = "Name is required";
+      isValid = false;
+    }
+
+    if (name.length > 100) {
+      errors.name = "Name exceeds the 100 character limit!";
       isValid = false;
     }
 
