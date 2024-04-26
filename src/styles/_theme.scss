@@ -8,8 +8,11 @@
    feel free to play around with these and see what other look you can come up with! :D
 */
 
-$accent: #97abff;
-$accentDark: #123597;
+$accent: #cdecf9;
+$accentDark: #89d2f1;
+$paletteRed: #f4cdec;
+$paletteOrange: #f9dacd;
+$paletteGreen: #cdf9da;
 $textColor: white;
 $background: #262632;
 
@@ -28,7 +31,7 @@ $fontMono: "Roboto Mono", monospace;
 /* a standard drop shadow */
 $dropShadow: 0 0.25em 0.25em rgba(0, 0, 0, 0.25);
 
-$borderRadius: 0.75em;
+$borderRadius: 10px;
 
 /* mixins
 

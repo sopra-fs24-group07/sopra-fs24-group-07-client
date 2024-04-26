@@ -1,0 +1,46 @@
+@import "../theme";
+
+.session-taskboard {
+  max-width: calc(100% - 2em);
+  margin-left: 1em;
+  box-sizing: border-box;
+
+  .team-task-list {
+    max-height: 400px;
+    background-color: $accent;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0 1em;
+    border-radius: $borderRadius;
+    box-shadow: $dropShadow;
+
+    @media (max-width: 600px) {
+      max-height: 300px;
+    }
+
+    li {
+      margin-bottom: 10px;
+      label {
+        display: flex;
+        align-items: flex-start;
+        cursor: default;
+        width: 100%; // Ensure the label takes full width of its container
+      }
+      input[type="checkbox"] {
+        margin-top: 0.5em; // Slight adjustment for alignment
+        margin-right: 5px;
+      }
+      div {
+        display: flex;
+        flex-direction: column;
+        width: 100%; // Ensure it takes the remaining space
+      }
+      strong {
+        overflow-wrap: break-word; // Ensure long titles wrap
+      }
+      span {
+        overflow-wrap: break-word; // Ensure descriptions wrap to a new line if they are too long
+      }
+    }
+  }
+}

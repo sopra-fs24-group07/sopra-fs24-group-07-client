@@ -2,12 +2,29 @@
 
 .header {
   &.container {
-    @include center;
+    display: flex;
+    justify-content: space-between; /* Align buttons to the left and right */
+    align-items: center; /* Center the title vertically */
+    height: 5em;
+    background-color: $accentDark;
   }
 
   &.title {
     font-weight: bold;
     color: $background;
-    text-align: center;
+    text-align: center; /* Center the title horizontally */
+  }
+
+  &.titlelarge {
+    font-weight: bold;
+    font-size: 150%;
+    color: $background;
+  }
+
+  &.button-container {
+    display: flex;
+    justify-content: center;
+    margin-left: 1em;
+    margin-right: 1em;
   }
 }

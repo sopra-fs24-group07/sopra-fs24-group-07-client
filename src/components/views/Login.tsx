@@ -1,87 +1,115 @@
 import React, { useState } from "react";
-import { api, handleError } from "helpers/api";
-import User from "models/User";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import { api } from "helpers/api";
+import User from "models/User";
 import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
+import { Spinner } from "components/ui/Spinner";
+import logo from "../../assets/logo.png";
+import LogRegHeader from "./LogRegHeader";
 
-/*
-It is possible to add multiple components inside a single file,
-however be sure not to clutter your files with an endless amount!
-As a rule of thumb, use one file per component and only add small,
-specific components that belong to the main one in the same file.
- */
-const FormField = (props) => {
-  return (
-    <div className="login field">
-      <label className="login label">{props.label}</label>
-      <input
-        className="login input"
-        placeholder="enter here.."
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
+//NEW FORMFIELD: WITHOUT CODE REPETITION
+const FormField = ({ label, value, onChange, type = "text" }) => (
+  <div className="register field">
+    <label className="register label" htmlFor={label}>
+      {label}
+    </label>
+    <input
+      className="register input"
+      placeholder="enter here.."
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      id={label}
+    />
+  </div>
+);
 
+// SEE NEW TYPE "type"
 FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  type: PropTypes.string,
 };
 
 const Login = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState<string>(null);
-  const [username, setUsername] = useState<string>(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // NEW SET ERROR METHOD
+  const [isLoading, setIsLoading] = useState(false);
 
   const doLogin = async () => {
+    setIsLoading(true);
     try {
-      const requestBody = JSON.stringify({ username, name });
-      const response = await api.post("/users", requestBody);
-
-      // Get the returned user and update a new object.
+      const requestBody = JSON.stringify({ username, password });
+      const response = await api.post("/api/v1/login", requestBody);
       const user = new User(response.data);
-
-      // Store the token into the local storage.
       localStorage.setItem("token", user.token);
-
-      // Login successfully worked --> navigate to the route /game in the GameRouter
-      navigate("/game");
+      localStorage.setItem("id", user.userId);
+      if (sessionStorage.getItem("teamUUID")) {
+        navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
+      } else {
+        navigate("/teams");
+      }
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
+      setError("Failed to login. Please check your username and password.");
+      // ALSO CONSOLE ERROR FOR THE ERROR: WOULD SHOW IN CONSOLE IF ERROR IS NOT JUST INVALID CREDENTIALS
+      console.error("Something went wrong during the login:", error);
     }
+    setTimeout(() => {
+      setIsLoading(false); // Set loading to false after the delay and navigation
+    }, 500);
   };
 
   return (
-    <BaseContainer>
-      <div className="login container">
-        <div className="login form">
-          <FormField
-            label="Username"
-            value={username}
-            onChange={(un: string) => setUsername(un)}
-          />
-          <FormField label="Name" value={name} onChange={(n) => setName(n)} />
-          <div className="login button-container">
-            <Button
-              disabled={!username || !name}
-              width="100%"
-              onClick={() => doLogin()}
-            >
-              Login
+    <div>
+      <LogRegHeader></LogRegHeader>
+      <BaseContainer>
+        <div className="login center-align">
+          <img className="login logo" src={logo} alt="Logo" />
+          <div className="login container">
+            {sessionStorage.getItem("teamUUID") && (
+              <p>Please Login to join the team</p>
+            )}
+            <div className="login form">
+              <FormField
+                label="Username"
+                value={username}
+                onChange={setUsername}
+              />{" "}
+              <FormField
+                label="Password"
+                value={password}
+                type="password"
+                onChange={setPassword}
+              />
+              <div className="login button-container">
+                <Button
+                  disabled={!username || !password}
+                  width="65%"
+                  onClick={doLogin}
+                >
+                  Login
+                </Button>
+              </div>
+            </div>
+            {error && <p className="login error">{error}</p>}
+
+            <label className="login message">Don&#39;t have an acoount?</label>
+            <Button width="60%" onClick={() => navigate("/register")}>
+              Go to Register
             </Button>
           </div>
         </div>
-      </div>
-    </BaseContainer>
+        {isLoading ? <Spinner /> : ""}
+      </BaseContainer>
+    </div>
   );
 };
 
-/**
- * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
- */
 export default Login;

@@ -1,17 +1,17 @@
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import Game from "../../views/Game";
+import { Route, Routes } from "react-router-dom";
+import TeamsOverview from "../../views/TeamsOverview";
 import PropTypes from "prop-types";
+import Header from "../../views/Header";
+import TeamDashboard from "../../views/TeamDashboard";
 
-const GameRouter = () => {
+const GameRouter = ({ base }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
+      <Header height="100" />
       <Routes>
-        <Route path="" element={<Game />} />
-
-        <Route path="dashboard" element={<Game />} />
-
-        <Route path="*" element={<Navigate to="dashboard" replace />} />
+        <Route path="" element={<TeamsOverview />} />
+        <Route path=":teamId" element={<TeamDashboard />} />
       </Routes>
     </div>
   );

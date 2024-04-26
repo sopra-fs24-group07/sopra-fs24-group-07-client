@@ -1,28 +1,107 @@
-import React from "react";
-import { ReactLogo } from "../ui/ReactLogo";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "../../styles/views/Header.scss";
+import { Button } from "components/ui/Button";
+import { useLocation, useNavigate } from "react-router-dom";
+import ProfileMenu from "../popups/ProfileMenu";
+import Profile from "../popups/Profile";
+import ProfileSettings from "../popups/ProfileSettings";
 
-/**
- * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
- * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
- * They are reusable pieces, and think about each piece in isolation.
- * Functional components have to return always something. However, they don't need a "render()" method.
- * https://react.dev/learn/your-first-component and https://react.dev/learn/passing-props-to-a-component
- * @FunctionalComponent
- */
-const Header = (props) => (
-  <div className="header container" style={{ height: props.height }}>
-    <h1 className="header title">SoPra FS24 rocks with React!</h1>
-    <ReactLogo width="60px" height="60px" />
-  </div>
-);
+const Header = (props) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [isProfileOpen, setProfileOpen] = useState(false);
+  const [isProfileSettingsOpen, setProfileSettingsOpen] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+
+  const goTeamsOverview = () => {
+    navigate("/teams");
+  };
+
+  const openProfileMenu = () => {
+    setProfileMenuOpen(true);
+  };
+
+  const closeProfileMenu = () => {
+    setProfileMenuOpen(false);
+  };
+
+  const openProfile = () => {
+    setProfileOpen(true);
+    closeProfileMenu();
+  };
+
+  const closeProfile = () => {
+    setProfileOpen(false);
+    setConfirmationMessage("");
+  };
+
+  const openProfileSettings = () => {
+    setProfileSettingsOpen(true);
+    closeProfileMenu();
+  };
+
+  const closeProfileSettings = () => {
+    setProfileSettingsOpen(false);
+  };
+
+  const handleProfileOpenAfterSettings = (showMessage) => {
+    setProfileSettingsOpen(false);
+    setProfileOpen(true);
+    if (showMessage) {
+      setConfirmationMessage("Changes have been saved");
+    } else {
+      setConfirmationMessage("");
+    }
+  };
+
+  const handleSettingsOpenAfterProfile = () => {
+    setProfileOpen(false);
+    setProfileSettingsOpen(true);
+  };
+
+  return (
+    <div className="header container" style={{ height: props.height }}>
+      <div className="header button-container">
+        {location.pathname === "/teams" ? (
+          <span>Your Teams</span>
+        ) : (
+          <Button id="back-button" onClick={() => goTeamsOverview()}>
+            {"< Back to Teams"}
+          </Button>
+        )}
+      </div>
+      <h1 className="header title">
+        PRODUCTIVI<span className="header titlelarge">T</span>EAM
+      </h1>
+      <div className="header button-container">
+        <Button onClick={openProfileMenu}>Profile</Button>
+        <ProfileMenu
+          isOpen={isProfileMenuOpen}
+          onClose={closeProfileMenu}
+          onProfileClick={openProfile}
+          onProfileSettingsClick={openProfileSettings}
+        />
+        <Profile
+          isOpen={isProfileOpen}
+          onClose={closeProfile}
+          message={confirmationMessage}
+          onSettingsOpen={handleSettingsOpenAfterProfile}
+        />
+        <ProfileSettings
+          isOpen={isProfileSettingsOpen}
+          onClose={closeProfileSettings}
+          onProfileOpen={handleProfileOpenAfterSettings}
+        />
+      </div>
+    </div>
+  );
+};
 
 Header.propTypes = {
   height: PropTypes.string,
+  currentTeam: PropTypes.string,
 };
 
-/**
- * Don't forget to export your component!
- */
 export default Header;

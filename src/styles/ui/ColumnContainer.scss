@@ -1,0 +1,55 @@
+@import "../theme";
+
+.col {
+  background-color: $accent;
+  width: 100%;
+  max-width: 33%;
+  height: 15em;
+  border-radius: $borderRadius;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 0.3em;
+  box-shadow: $dropShadow;
+}
+
+.colName {
+  width: auto;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  box-shadow: $dropShadow;
+  border-radius: $borderRadius;
+}
+
+.tasksArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  padding: 2px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.createTask {
+  &.container {
+    display: flex;
+  }
+
+  &.input {
+    display: inline-block;
+    border-radius: $borderRadius;
+    width: 175px;
+    height: 35px;
+    background-color: rgb(179, 234, 234);
+  }
+
+  &.button {
+    float: right;
+    height: 35px;
+    width: auto;
+    border-radius: 15px;
+    background-color: $accentDark;
+  }
+}

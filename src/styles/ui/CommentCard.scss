@@ -1,0 +1,57 @@
+@import "../theme";
+
+.comContainer {
+  border-radius: $borderRadius;
+  margin: 5px;
+  padding: 5px;
+  background-color: #ffffff72;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.comAuthor {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 2px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.comDelete {
+  margin-bottom: 2px;
+  margin-right: 3px;
+  margin-top: 3px;
+}
+
+.comDeleteConfirm {
+  margin-right: 20px;
+}
+
+.comHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.comText {
+  font-size: 20px;
+  color: #666666;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.comDate {
+  font-size: 12px;
+  color: #666666;
+  text-align: right;
+}
+
+.error-message {
+  font-size: 15px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
