@@ -82,6 +82,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     }
 
     setErrors(newErrors);
+    setIsLoading(false);
 
     return isValid;
   };
