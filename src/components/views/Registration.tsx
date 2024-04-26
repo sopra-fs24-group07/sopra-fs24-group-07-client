@@ -80,6 +80,11 @@ const Registration = () => {
       isValid = false;
     }
 
+    if (password.length > 100) {
+      errors.password = "Password exceeds the 100 character limit";
+      isValid = false;
+    }
+
     setErrors(errors);
     setTimeout(() => {
       setIsLoading(false); // Set loading to false after the delay and navigation

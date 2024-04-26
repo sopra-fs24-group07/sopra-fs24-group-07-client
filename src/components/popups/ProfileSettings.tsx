@@ -120,6 +120,11 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
       isValid = false;
     }
 
+    if (password.length > 100) {
+      errors.password = "Password exceeds the 100 character limit";
+      isValid = false;
+    }
+
     setErrors(errors);
     setTimeout(() => {}, 500);
 
