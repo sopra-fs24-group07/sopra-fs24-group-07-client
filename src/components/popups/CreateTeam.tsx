@@ -84,7 +84,6 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     return fieldErrors;
   };
 
-
   if (!isOpen) return null;
 
   return (
@@ -109,11 +108,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           error={errors.description}
           isDesc={true}
         />
-        <Button
-          width="100%"
-          className="green-button"
-          onClick={createTeam}
-        >
+        <Button width="100%" className="green-button" onClick={createTeam}>
           Create
         </Button>
         {getAllErrorMessages().map((error, index) => (

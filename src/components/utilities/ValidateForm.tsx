@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 
 export const validateRegistrationForm = ({
-                                           username,
-                                           name,
-                                           password,
-                                           repPassword,
-                                           setErrors,
-                                           setIsLoading
-                                         }) => {
+  username,
+  name,
+  password,
+  repPassword,
+  setErrors,
+  setIsLoading,
+}) => {
   let isValid = true;
   let errors = { username: "", name: "", password: "", repPassword: "" };
 

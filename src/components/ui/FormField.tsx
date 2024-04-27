@@ -2,7 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../../styles/ui/FormField.scss";
 
-export const FormField = ({ label, isDesc= false, placeholder = "Enter here...", type = "text", value, onChange, error, disabled= false }) => (
+export const FormField = ({
+  label,
+  isDesc = false,
+  placeholder = "Enter here...",
+  type = "text",
+  value,
+  onChange,
+  error,
+  disabled = false,
+}) => (
   <div className="formField field">
     <label className="formField label">{label}</label>
     {!isDesc ? (
@@ -24,7 +33,6 @@ export const FormField = ({ label, isDesc= false, placeholder = "Enter here...",
         disabled={disabled}
       />
     )}
-
   </div>
 );
 
@@ -38,4 +46,3 @@ FormField.propTypes = {
   disabled: PropTypes.boolean,
   isDesc: PropTypes.boolean,
 };
-

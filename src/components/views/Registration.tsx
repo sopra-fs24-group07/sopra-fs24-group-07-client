@@ -34,7 +34,7 @@ const Registration = () => {
       password,
       repPassword,
       setErrors,
-      setIsLoading
+      setIsLoading,
     });
 
     if (!isValid) return;
