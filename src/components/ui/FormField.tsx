@@ -16,7 +16,7 @@ export const FormField = ({
     <label className="formField label">{label}</label>
     {!isDesc ? (
       <input
-        className={`formField input`}
+        className={"formField input"}
         placeholder={placeholder}
         type={type}
         value={value}
@@ -25,7 +25,7 @@ export const FormField = ({
       />
     ) : (
       <textarea
-        className={`formField textarea`}
+        className={"formField textarea"}
         placeholder={placeholder}
         type={type}
         value={value}
