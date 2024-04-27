@@ -8,6 +8,7 @@ import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
 import { FormField } from "../ui/FormField";
 import { validateTaskForm } from "../utilities/ValidateForm";
+import ErrorMessages from "../utilities/ErrorMessages";
 
 const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [editMode, setEditMode] = useState(false);
@@ -107,13 +108,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     }
   };
 
-  const getAllErrorMessages = () => {
-    const fieldErrors = Object.values(errors).filter((error) => error);
-    if (generalError) fieldErrors.push(generalError);
-
-    return fieldErrors;
-  };
-
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
@@ -180,11 +174,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
             </Button>
           )}
         </div>
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
-            {error}
-          </div>
-        ))}
+        <ErrorMessages errors={errors} generalError={generalError} />
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

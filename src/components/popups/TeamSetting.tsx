@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FormField } from "../ui/FormField";
 import { Spinner } from "components/ui/Spinner";
 import { validateTeamForm } from "../utilities/ValidateForm";
+import ErrorMessages from "../utilities/ErrorMessages";
 
 const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [editMode, setEditMode] = useState(false);
@@ -148,13 +149,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     }
   };
 
-  const getAllErrorMessages = () => {
-    const fieldErrors = Object.values(errors).filter((error) => error);
-    if (generalError) fieldErrors.push(generalError);
-
-    return fieldErrors;
-  };
-
   const doClose = () => {
     setError("");
     setLeaveError("");
@@ -243,11 +237,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                       Cancel
                     </Button>
                   </div>
-                  {getAllErrorMessages().map((error, index) => (
-                    <div key={index} className="error-message">
-                      {error}
-                    </div>
-                  ))}
+                  <ErrorMessages errors={errors} generalError={generalError} />
                 </div>
               )}
             </div>

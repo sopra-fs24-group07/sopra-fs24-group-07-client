@@ -8,6 +8,7 @@ import ConfirmDelete from "./ConfirmDelete";
 import { Spinner } from "components/ui/Spinner";
 import { FormField } from "../ui/FormField";
 import { validateRegistrationForm } from "../utilities/ValidateForm";
+import ErrorMessages from "../utilities/ErrorMessages";
 
 const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   const [user, setUser] = useState({ id: "", username: "", name: "" });
@@ -141,13 +142,6 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
     setShowConfirmationPopup(false); // Close the confirmation popup
   };
 
-  const getAllErrorMessages = () => {
-    const fieldErrors = Object.values(errors).filter((error) => error);
-    if (generalError) fieldErrors.push(generalError);
-
-    return fieldErrors;
-  };
-
   return (
     <div className="profileMenu-overlay" onClick={closeProfileSettings}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
@@ -199,11 +193,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
           />
         )}
         {error && <div className="error-message">{error}</div>}
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
-            {error}
-          </div>
-        ))}
+        <ErrorMessages errors={errors} generalError={generalError} />
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

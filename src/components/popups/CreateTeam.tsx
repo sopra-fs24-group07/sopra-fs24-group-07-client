@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 import { FormField } from "../ui/FormField";
 import { validateTeamForm } from "../utilities/ValidateForm";
+import ErrorMessages from "../utilities/ErrorMessages";
 
 const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const navigate = useNavigate();
@@ -57,13 +58,6 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     setIsLoading(false);
   };
 
-  const getAllErrorMessages = () => {
-    const fieldErrors = Object.values(errors).filter((error) => error);
-    if (generalError) fieldErrors.push(generalError);
-
-    return fieldErrors;
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -91,11 +85,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
         <Button width="100%" className="green-button" onClick={createTeam}>
           Create
         </Button>
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
-            {error}
-          </div>
-        ))}
+        <ErrorMessages errors={errors} generalError={generalError} />
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

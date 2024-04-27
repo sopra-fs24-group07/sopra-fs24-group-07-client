@@ -10,6 +10,7 @@ import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
 import { FormField } from "../ui/FormField";
 import { validateRegistrationForm } from "../utilities/ValidateForm";
+import ErrorMessages from "../utilities/ErrorMessages";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -63,13 +64,6 @@ const Registration = () => {
     }
   };
 
-  const getAllErrorMessages = () => {
-    const fieldErrors = Object.values(errors).filter((error) => error);
-    if (generalError) fieldErrors.push(generalError);
-
-    return fieldErrors;
-  };
-
   return (
     <div>
       <LogRegHeader></LogRegHeader>
@@ -112,12 +106,8 @@ const Registration = () => {
                   Register
                 </Button>
               </div>
+              <ErrorMessages errors={errors} generalError={generalError} />
             </div>
-            {getAllErrorMessages().map((error, index) => (
-              <div key={index} className="error-message">
-                {error}
-              </div>
-            ))}
             <label className="register message">
               Already haven an account?
             </label>
