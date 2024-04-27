@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "./ConfirmDelete";
 import { Spinner } from "components/ui/Spinner";
 import { FormField } from "../ui/FormField";
+import { validateRegistrationForm } from "../utilities/ValidateForm";
 
 const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   const [user, setUser] = useState({ id: "", username: "", name: "" });
@@ -64,53 +65,18 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
 
   if (!isOpen) return null;
 
-  const validateForm = () => {
-    let isValid = true;
-    let errors = { username: "", name: "", password: "", repPassword: "" };
-
-    if (!username) {
-      errors.username = "Username is required";
-      isValid = false;
-    }
-
-    if (username.length > 100) {
-      errors.username = "Username exceeds the 100 character limit!";
-      isValid = false;
-    }
-
-    if (!name) {
-      errors.name = "Name is required";
-      isValid = false;
-    }
-
-    if (name.length > 100) {
-      errors.name = "Name exceeds the 100 character limit!";
-      isValid = false;
-    }
-
-    if (repPassword !== password) {
-      errors.password = "The passwords do not match";
-      isValid = false;
-    }
-
-    if (!password || password.length < 8) {
-      errors.password = "Password must be at least 8 characters long";
-      isValid = false;
-    }
-
-    if (password.length > 100) {
-      errors.password = "Password exceeds the 100 character limit";
-      isValid = false;
-    }
-
-    setErrors(errors);
-    setTimeout(() => {}, 500);
-
-    return isValid;
-  };
-
   const saveChanges = async () => {
-    if (!validateForm()) return;
+    setIsLoading(true);
+    const isValid = validateRegistrationForm({
+      username,
+      name,
+      password,
+      repPassword,
+      setErrors,
+      setIsLoading
+    });
+
+    if (!isValid) return;
     setIsLoading(true);
     let updatedUser = { ...user, username, name, password };
     let token = localStorage.getItem("token");
@@ -133,12 +99,14 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
         setRepPassword("");
         onProfileOpen(true);
       } catch (error) {
-        console.error("Failed to save changes:", error);
-        setError("Failed to save changes");
+        const errorMessage = error.response
+          ? error.response.data.message
+          : `An unknown error occurred! Contact an administrator: ${error}`;
+        setGeneralError(errorMessage);
+        console.error("Something went wrong during the registration:", error);
       }
     }
     setIsLoading(false);
-    onClose();
   };
 
   const handleDeleteAccount = () => {
@@ -147,6 +115,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
 
   const closeProfileSettings = () => {
     setShowConfirmationPopup(false);
+    setGeneralError("");
     onClose();
   };
 

@@ -5,11 +5,11 @@ import User from "models/User";
 import { Button } from "components/ui/Button";
 import "styles/views/Register.scss";
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
 import { FormField } from "../ui/FormField";
+import { validateRegistrationForm } from "../utilities/ValidateForm";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -26,56 +26,18 @@ const Registration = () => {
   });
   const [generalError, setGeneralError] = useState("");
 
-  const validateForm = () => {
-    let isValid = true;
-    let errors = { username: "", name: "", password: "", repPassword: "" };
-
-    if (!username) {
-      errors.username = "Username is required";
-      isValid = false;
-    }
-
-    if (username.length > 100) {
-      errors.username = "Username exceeds the 100 character limit!";
-      isValid = false;
-    }
-
-    if (!name) {
-      errors.name = "Name is required";
-      isValid = false;
-    }
-
-    if (name.length > 100) {
-      errors.name = "Name exceeds the 100 character limit!";
-      isValid = false;
-    }
-
-    if (repPassword !== password) {
-      errors.password = "The passwords do not match";
-      isValid = false;
-    }
-
-    if (!password || password.length < 8) {
-      errors.password = "Password must be at least 8 characters long";
-      isValid = false;
-    }
-
-    if (password.length > 100) {
-      errors.password = "Password exceeds the 100 character limit";
-      isValid = false;
-    }
-
-    setErrors(errors);
-    setTimeout(() => {
-      setIsLoading(false); // Set loading to false after the delay and navigation
-    }, 500);
-
-    return isValid;
-  };
-
   const doRegister = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    const isValid = validateRegistrationForm({
+      username,
+      name,
+      password,
+      repPassword,
+      setErrors,
+      setIsLoading
+    });
+
+    if (!isValid) return;
 
     try {
       const requestBody = JSON.stringify({ username, name, password });
