@@ -27,7 +27,7 @@ const CreateTask = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  //reset all fiels on closing pop-up
+  //reset all fields on closing pop-up
   const doClose = () => {
     setError("");
     setTitle(null);
