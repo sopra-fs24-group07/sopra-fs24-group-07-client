@@ -5,52 +5,7 @@ import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
-
-const FormField = (props) => {
-  return (
-    <div className="TeamSetting field">
-      <input
-        className="TeamSetting input"
-        placeholder="enter here..."
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={props.disabled}
-      />
-      {props.error && <p className="TeamSetting error">{props.error}</p>}
-    </div>
-  );
-};
-
-const FormFieldLong = (props) => {
-  return (
-    <div className="TeamSetting field">
-      <textarea
-        className="TeamSetting textarea"
-        placeholder="enter here..."
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={props.disabled}
-      />
-      {props.error && <p className="TeamSetting error">{props.error}</p>}
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  error: PropTypes.string,
-  disabled: PropTypes.bool,
-};
-
-FormFieldLong.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  error: PropTypes.string,
-  disabled: PropTypes.bool,
-};
+import { FormField } from "../ui/FormField";
 
 const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [editMode, setEditMode] = useState(false);
@@ -235,16 +190,16 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
             <FormField
               className="TeamSetting input"
               value={teamName}
-              onChange={setTeamName}
+              onChange={(e) => setTeamName(e.target.value)}
               placeholder="Team Name..."
               disabled={!editMode}
               error={errors.name}
             />
             <h3 className="TeamSetting headline">Team Description</h3>
-            <FormFieldLong
+            <FormField
               className="TeamSetting input"
               value={teamDescription}
-              onChange={setTeamDescription}
+              onChange={(e) => setTeamDescription(e.target.value)}
               placeholder="Team Description..."
               disabled={!editMode}
               error={errors.description}

@@ -6,29 +6,7 @@ import "../../styles/popups/ProfileMenu.scss";
 import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "./ConfirmDelete";
 import { Spinner } from "components/ui/Spinner";
-
-const FormField = ({ label, value, onChange, type = "text" }) => (
-  <div className="register field">
-    <label className="register label" htmlFor={label}>
-      {label}
-    </label>
-    <input
-      className="register input"
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  </div>
-);
-
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
+import { FormField } from "../ui/FormField";
 
 const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   const [user, setUser] = useState({ id: "", username: "", name: "" });
@@ -215,20 +193,24 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
             <FormField
               label="Username"
               value={username}
-              onChange={setUsername}
+              onChange={(e) => setUsername(e.target.value)}
             />
-            <FormField label="Name" value={name} onChange={setName} />
+            <FormField
+              label="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
             <FormField
               label="Password"
               type="password"
               value={password}
-              onChange={setPassword}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <FormField
               label="Repeat Password"
               type="password"
               value={repPassword}
-              onChange={setRepPassword}
+              onChange={(e) => setRepPassword(e.target.value)}
             />
             <Button className="green-button" onClick={saveChanges}>
               Save

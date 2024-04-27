@@ -9,27 +9,7 @@ import PropTypes from "prop-types";
 import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
-
-const FormField = ({ label, value, onChange, type = "text", error }) => (
-  <div className="register field">
-    <label className="register label">{label}</label>
-    <input
-      className={`register input ${error ? "input-error" : ""}`}
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={onChange}
-    />
-  </div>
-);
-
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-  error: PropTypes.string,
-};
+import { FormField } from "../ui/FormField";
 
 const Registration = () => {
   const navigate = useNavigate();

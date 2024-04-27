@@ -1,0 +1,28 @@
+@import "../theme";
+
+.formField {
+  &.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &.input {
+    height: 35px;
+    padding-left: 15px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 0.75em;
+    margin-bottom: 10px;
+    background: transparentize(white, 0.85);
+    color: $background;
+  }
+
+  &.label {
+    color: $background;
+    margin-bottom: 10px;
+    text-transform: lowercase;
+    font-weight: 300;
+  }
+
+}

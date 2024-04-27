@@ -5,50 +5,7 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
-
-const FormField = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <input
-        className="inspectTask input"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
-
-const FormFieldLong = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <textarea
-        className="inspectTask textarea"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
-
-FormFieldLong.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
+import { FormField } from "../ui/FormField";
 
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
@@ -157,14 +114,14 @@ const CreateTask = ({ isOpen, onClose }) => {
           className="inspectTask input"
           value={title}
           placeholder="enter title..."
-          onChange={(ti: string) => setTitle(ti)}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <h3 className="inspectTask headline">Description</h3>
-        <FormFieldLong
+        <FormField
           className="inspectTask textarea"
           value={description}
           placeholder="enter description..."
-          onChange={(dc: string) => setDescription(dc)}
+          onChange={(e) => setDescription(e.target.value)}
         />
 
         {error && <p>{error}</p>}

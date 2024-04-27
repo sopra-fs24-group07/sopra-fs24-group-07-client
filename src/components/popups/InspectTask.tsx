@@ -6,54 +6,7 @@ import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
-
-const FormField = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <input
-        className="inspectTask input"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={!props.disabled}
-      />
-    </div>
-  );
-};
-
-const FormFieldLong = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <textarea
-        className="inspectTask textarea"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={!props.disabled}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-};
-
-FormFieldLong.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-};
+import { FormField } from "../ui/FormField";
 
 const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [editMode, setEditMode] = useState(false);
@@ -204,16 +157,16 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           className="inspectTask input"
           value={taskTitle}
           placeholder="enter title..."
-          onChange={(ti: string) => setTaskTitle(ti)}
-          disabled={editMode}
+          onChange={(e) => setTaskTitle(e.target.value)}
+          disabled={!editMode}
         />
         <h3 className="inspectTask headline">Task Description</h3>
-        <FormFieldLong
+        <FormField
           className="inspectTask textarea"
           value={taskDescription}
           placeholder="enter description..."
-          onChange={(dc: string) => setTaskDescription(dc)}
-          disabled={editMode}
+          onChange={(e) => setTaskDescription(e.target.value)}
+          disabled={!editMode}
         />
         {!editMode && (
           <>

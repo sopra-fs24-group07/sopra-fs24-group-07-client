@@ -3,28 +3,7 @@ import { api } from "helpers/api";
 import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
 import "../../styles/popups/ProfileMenu.scss";
-
-const FormField = ({ label, value, onChange, type = "text" }) => (
-  <div className="register field">
-    <label className="register label" htmlFor={label}>
-      {label}
-    </label>
-    <input
-      className="register input"
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  </div>
-);
-
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-};
+import { FormField } from "../ui/FormField";
 
 const ConfirmDelete = ({ onCancel, onConfirm }) => {
   const [username, setUsername] = useState("");
