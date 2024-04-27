@@ -6,6 +6,7 @@ import { Button } from "components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 import { FormField } from "../ui/FormField";
+import { validateTeamForm } from "../utilities/ValidateForm";
 
 const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const navigate = useNavigate();
@@ -18,37 +19,17 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const validateForm = () => {
-    let isValid = true;
-    let newErrors = { name: "", description: "" };
-
-    if (!teamName) {
-      newErrors.name = "Team name is required";
-      isValid = false;
-    } else if (teamName.length > 50) {
-      newErrors.name = "The name exceeds 50 characters";
-      isValid = false;
-    }
-
-    if (!teamDescription) {
-      newErrors.description = "The description is required"; //Since edit is not available
-      isValid = false;
-    }
-
-    if (teamDescription.length > 500) {
-      newErrors.description = "The description exceeds 500 characters";
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    setIsLoading(false);
-
-    return isValid;
-  };
 
   const createTeam = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    const isValid = validateTeamForm({
+      teamName,
+      teamDescription,
+      setErrors,
+      setIsLoading,
+    });
+
+    if (!isValid) return;
 
     try {
       let token = localStorage.getItem("token");

@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormField } from "../ui/FormField";
+import { Spinner } from "components/ui/Spinner";
+import { validateTeamForm } from "../utilities/ValidateForm";
 
 const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [editMode, setEditMode] = useState(false);
@@ -26,33 +28,8 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   });
   const baseURL = window.location.origin;
   const navigate = useNavigate();
-
-  const validateForm = () => {
-    let isValid = true;
-    let newErrors = { name: "", description: "" };
-
-    if (!teamName) {
-      newErrors.name = "Team name is required";
-      isValid = false;
-    } else if (teamName.length > 50) {
-      newErrors.name = "The name exceeds 50 characters";
-      isValid = false;
-    }
-
-    if (!teamDescription) {
-      newErrors.description = "The description is required";
-      isValid = false;
-    }
-
-    if (teamDescription.length > 500) {
-      newErrors.description = "The description exceeds 500 characters";
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-
-    return isValid;
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [generalError, setGeneralError] = useState("");
 
   const fetchUserTeam = async () => {
     try {
@@ -90,7 +67,15 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   };
 
   const editTeam = async () => {
-    if (!validateForm()) return;
+    setIsLoading(true);
+    const isValid = validateTeamForm({
+      teamName,
+      teamDescription,
+      setErrors,
+      setIsLoading,
+    });
+
+    if (!isValid) return;
     try {
       const requestBody = JSON.stringify({
         name: teamName,
@@ -102,11 +87,13 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
         },
       });
       onEdit();
+      setIsLoading(false);
       DeactivateEditMode();
     } catch (error) {
       setError("Something went wrong. Please try again");
       console.error("Error while updating Team", handleError(error));
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -159,6 +146,13 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     } catch (error) {
       setCopied("Failed to copy the UUID");
     }
+  };
+
+  const getAllErrorMessages = () => {
+    const fieldErrors = Object.values(errors).filter((error) => error);
+    if (generalError) fieldErrors.push(generalError);
+
+    return fieldErrors;
   };
 
   const doClose = () => {
@@ -236,6 +230,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
             <p>{error}</p>
             <div>
               {editMode && (
+                <div>
                 <div className="TeamSetting footer">
                   <Button
                     className="green-button"
@@ -248,11 +243,18 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                     Cancel
                   </Button>
                 </div>
+                  {getAllErrorMessages().map((error, index) => (
+                    <div key={index} className="error-message">
+                      {error}
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>
         )}
       </div>
+      {isLoading ? <Spinner /> : ""}
     </div>
   );
 };

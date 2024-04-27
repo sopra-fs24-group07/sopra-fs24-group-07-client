@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 
+
+// VALIDATE REGISTRATION AND EDIT USER PROFILE
 export const validateRegistrationForm = ({
   username,
   name,
@@ -59,6 +61,48 @@ validateRegistrationForm.propTypes = {
   name: PropTypes.string,
   password: PropTypes.string,
   repPassword: PropTypes.string,
+  setErrors: PropTypes.func,
+  setIsLoading: PropTypes.func,
+};
+
+
+//VALIDATE TEAM CREATION AND EDIT
+
+export const validateTeamForm = ({
+                                   teamName,
+                                   teamDescription,
+                                           setErrors,
+                                           setIsLoading,
+                                         }) => {
+  let isValid = true;
+  let errors = { teamName: "", teamDescription: "" };
+  if (!teamName) {
+    errors.teamName = "Team name is required";
+    isValid = false;
+  } else if (teamName.length > 50) {
+    errors.teamName = "The name exceeds 50 characters";
+    isValid = false;
+  }
+
+  if (!teamDescription) {
+    errors.teamDescription = "The description is required"; //Since edit is not available
+    isValid = false;
+  }
+
+  if (teamDescription.length > 500) {
+    errors.teamDescription = "The description exceeds 500 characters";
+    isValid = false;
+  }
+
+  setErrors(errors);
+  setIsLoading(false);
+
+  return isValid;
+};
+
+validateTeamForm.propTypes = {
+  teamName: PropTypes.string,
+  teamDescription: PropTypes.string,
   setErrors: PropTypes.func,
   setIsLoading: PropTypes.func,
 };
