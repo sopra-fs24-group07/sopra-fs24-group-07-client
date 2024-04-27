@@ -14,8 +14,8 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const [errors, setErrors] = useState({
     name: "",
     description: "",
-    general: "",
   });
+  const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
@@ -67,7 +67,6 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       setTimeout(() => {
         setIsLoading(false); // Set loading to false after the delay and navigation
       }, 500);
-      //navigate(`/teams/${response.data.teamId}`);
     } catch (error) {
       console.error("Error creating team:", handleError(error));
       setErrors((prev) => ({
@@ -78,6 +77,14 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     setIsLoading(false);
   };
 
+  const getAllErrorMessages = () => {
+    const fieldErrors = Object.values(errors).filter((error) => error);
+    if (generalError) fieldErrors.push(generalError);
+
+    return fieldErrors;
+  };
+
+
   if (!isOpen) return null;
 
   return (
@@ -85,7 +92,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
         <div className="createTeam header">
           <h2>Create Team</h2>
-          <Button width="20%" className="red-button bts" onClick={onClose}>
+          <Button width="20%" className="red-button" onClick={onClose}>
             Close
           </Button>
         </div>
@@ -100,17 +107,20 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           value={teamDescription}
           onChange={(e) => setTeamDescription(e.target.value)}
           error={errors.description}
+          isDesc={true}
         />
         <Button
           width="100%"
-          className="green-button createTeam cButton"
+          className="green-button"
           onClick={createTeam}
         >
           Create
         </Button>
-        {errors.general && (
-          <div className="error-message">{errors.general}</div>
-        )}
+        {getAllErrorMessages().map((error, index) => (
+          <div key={index} className="error-message">
+            {error}
+          </div>
+        ))}
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

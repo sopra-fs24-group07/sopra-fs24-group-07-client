@@ -188,7 +188,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
           <div>
             <h3 className="TeamSetting headline">Team Name</h3>
             <FormField
-              className="TeamSetting input"
               value={teamName}
               onChange={(e) => setTeamName(e.target.value)}
               placeholder="Team Name..."
@@ -197,12 +196,12 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
             />
             <h3 className="TeamSetting headline">Team Description</h3>
             <FormField
-              className="TeamSetting input"
               value={teamDescription}
               onChange={(e) => setTeamDescription(e.target.value)}
               placeholder="Team Description..."
               disabled={!editMode}
               error={errors.description}
+              isDesc={true}
             />
             {!editMode && (
               <div>

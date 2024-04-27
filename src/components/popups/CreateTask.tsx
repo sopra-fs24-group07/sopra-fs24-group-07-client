@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/popups/InspectTask.scss";
+import "../../styles/ui/FormField.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
@@ -111,17 +112,16 @@ const CreateTask = ({ isOpen, onClose }) => {
         </div>
         <h3 className="inspectTask headline">Title</h3>
         <FormField
-          className="inspectTask input"
           value={title}
           placeholder="enter title..."
           onChange={(e) => setTitle(e.target.value)}
         />
         <h3 className="inspectTask headline">Description</h3>
         <FormField
-          className="inspectTask textarea"
           value={description}
           placeholder="enter description..."
           onChange={(e) => setDescription(e.target.value)}
+          isDesc={true}
         />
 
         {error && <p>{error}</p>}

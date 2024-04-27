@@ -42,33 +42,6 @@
     justify-content: center;
   }
 
-  &.input {
-    height: 35px;
-    padding-left: 15px;
-    margin-left: -4px;
-    border: none;
-    border-radius: 0.75em;
-    margin-bottom: 10px;
-    background: transparentize(white, 0.85);
-    color: $background;
-  }
-
-  &.textarea {
-    height: auto;
-    width: auto;
-    min-height: 200px;
-    max-height: 300px;
-    min-width: 350px;
-    max-width: 300px;
-    padding-left: 15px;
-    margin-left: -4px;
-    border: none;
-    border-radius: 0.75em;
-    margin-bottom: 10px;
-    background: transparentize(white, 0.85);
-    color: $background;
-  }
-
   &.headline {
     margin-top: 10px;
     margin-bottom: 0;
@@ -86,9 +59,4 @@
     align-items: center;
   }
 
-  &.cButton {
-    font-size: 20px;
-    width: auto;
-    height: auto;
-  }
 }

@@ -154,7 +154,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         </div>
         <h3 className="inspectTask headline">Task Title</h3>
         <FormField
-          className="inspectTask input"
+          className="formField input"
           value={taskTitle}
           placeholder="enter title..."
           onChange={(e) => setTaskTitle(e.target.value)}
@@ -162,11 +162,12 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         />
         <h3 className="inspectTask headline">Task Description</h3>
         <FormField
-          className="inspectTask textarea"
+          className="formField textarea"
           value={taskDescription}
           placeholder="enter description..."
           onChange={(e) => setTaskDescription(e.target.value)}
           disabled={!editMode}
+          isDesc={true}
         />
         {!editMode && (
           <>
