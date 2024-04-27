@@ -7,11 +7,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
 import { FormField } from "../ui/FormField";
+import { validateTaskForm } from "../utilities/ValidateForm";
 
 const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [editMode, setEditMode] = useState(false);
-  const [taskTitle, setTaskTitle] = useState(task.title);
-  const [taskDescription, setTaskDescription] = useState(task.description);
+  const [title, setTitle] = useState(task.title);
+  const [description, setDescription] = useState(task.description);
   const { teamId } = useParams();
   const token = localStorage.getItem("token");
   const [error, setError] = useState("");
@@ -24,39 +25,15 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
 
   if (!isOpen) return null;
 
-  const validateForm = () => {
-    let isValid = true;
-    let errors = { title: "", description: "" };
-
-    if (!taskTitle) {
-      errors.title = "Title is required";
-      isValid = false;
-    }
-
-    if (taskTitle && taskTitle.length > 100) {
-      errors.title = "Title exceeds the 100 character limit";
-      isValid = false;
-    }
-
-    if (taskDescription && taskDescription.length > 500) {
-      errors.description = "Description exceeds the 500 character limit";
-      isValid = false;
-    }
-
-    setErrors(errors);
-    setTimeout(() => {}, 500);
-    setIsLoading(false);
-
-    return isValid;
-  };
-
   const ActivateEditMode = () => {
     setEditMode(true);
   };
   const DeactivateEditMode = () => {
-    setTaskTitle(task.title);
-    setTaskDescription(task.description);
+    setTitle(task.title);
+    setDescription(task.description);
     setError("");
+    setErrors("");
+    setGeneralError("");
     setEditMode(false);
   };
 
@@ -67,10 +44,18 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
 
   const EditTask = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    setIsLoading(true);
+    const isValid = validateTaskForm({
+      title,
+      description,
+      setErrors,
+      setIsLoading,
+    });
+    if (!isValid) return;
+
     try {
-      task.title = taskTitle;
-      task.description = taskDescription;
+      task.title = title;
+      task.description = description;
       const requestBody = JSON.stringify(task);
       const response = await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
@@ -155,17 +140,17 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         <h3 className="inspectTask headline">Task Title</h3>
         <FormField
           className="formField input"
-          value={taskTitle}
+          value={title}
           placeholder="enter title..."
-          onChange={(e) => setTaskTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
           disabled={!editMode}
         />
         <h3 className="inspectTask headline">Task Description</h3>
         <FormField
           className="formField textarea"
-          value={taskDescription}
+          value={description}
           placeholder="enter description..."
-          onChange={(e) => setTaskDescription(e.target.value)}
+          onChange={(e) => setDescription(e.target.value)}
           disabled={!editMode}
           isDesc={true}
         />
@@ -181,7 +166,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         <div className="inspectTask header">
           {editMode && (
             <Button
-              disabled={!taskTitle}
+              disabled={!title}
               className="green-button bts"
               onClick={EditTask}
             >

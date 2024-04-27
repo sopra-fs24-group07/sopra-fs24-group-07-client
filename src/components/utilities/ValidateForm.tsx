@@ -67,7 +67,6 @@ validateRegistrationForm.propTypes = {
 
 
 //VALIDATE TEAM CREATION AND EDIT
-
 export const validateTeamForm = ({
                                    teamName,
                                    teamDescription,
@@ -103,6 +102,45 @@ export const validateTeamForm = ({
 validateTeamForm.propTypes = {
   teamName: PropTypes.string,
   teamDescription: PropTypes.string,
+  setErrors: PropTypes.func,
+  setIsLoading: PropTypes.func,
+};
+
+//VALIDATE TASKS
+export const validateTaskForm = ({
+                                   title,
+                                   description,
+                                   setErrors,
+                                   setIsLoading,
+                                 }) => {
+  let isValid = true;
+  let errors = { title: "", description: "" };
+
+  if (!title) {
+    errors.title = "Title is required";
+    isValid = false;
+  }
+
+  if (title && title.length > 100) {
+    errors.title = "Title exceeds the 100 character limit";
+    isValid = false;
+  }
+
+  if (description && description.length > 500) {
+    errors.description = "Description exceeds the 500 character limit";
+    isValid = false;
+  }
+
+  setErrors(errors);
+  setTimeout(() => {}, 500);
+  setIsLoading(false);
+
+  return isValid;
+};
+
+validateTaskForm.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
   setErrors: PropTypes.func,
   setIsLoading: PropTypes.func,
 };

@@ -7,6 +7,7 @@ import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 import { FormField } from "../ui/FormField";
+import { validateTaskForm } from "../utilities/ValidateForm";
 
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
@@ -35,36 +36,17 @@ const CreateTask = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  const validateForm = () => {
-    let isValid = true;
-    let errors = { title: "", description: "" };
-
-    if (!title) {
-      errors.title = "Title is required";
-      isValid = false;
-    }
-
-    if (title && title.length > 100) {
-      errors.title = "Title exceeds the 100 character limit";
-      isValid = false;
-    }
-
-    if (description && description.length > 500) {
-      errors.description = "Description exceeds the 500 character limit";
-      isValid = false;
-    }
-
-    setErrors(errors);
-    setTimeout(() => {}, 500);
-    setIsLoading(false);
-
-    return isValid;
-  };
-
   //try to create a task via api pst call
   const CreateTask = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    const isValid = validateTaskForm({
+      title,
+      description,
+      setErrors,
+      setIsLoading,
+    });
+    if (!isValid) return;
+
     try {
       const requestBody = JSON.stringify({ title, description });
       const response = await api.post(
