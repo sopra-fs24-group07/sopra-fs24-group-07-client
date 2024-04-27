@@ -14,7 +14,6 @@ import VoiceChat from "components/ui/VoiceChat";
 import SessionTaskBoard from "../ui/SessionTaskBoard";
 import Pusher from "pusher-js";
 import MemberCard from "components/ui/MemberCard";
-import SessionHistory from "../popups/SessionHistory";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -32,7 +31,6 @@ const TeamDashboard: React.FC = () => {
   const [checkedTasks, setCheckedTasks] = useState(new Set());
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
-  const [isSessionHistoryOpen, setSessionHistoryOpen] = useState(false);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
@@ -75,15 +73,6 @@ const TeamDashboard: React.FC = () => {
       setIsLeave(false);
     }
   };
-
-  const openSessionHistory = () => {
-    setSessionHistoryOpen(true);
-  };
-
-  const closeSessionHistory = () => {
-    setSessionHistoryOpen(false);
-  };
-
   const fetchTeamMembers = async () => {
     try {
       const response = await api.get(`/api/v1/teams/${teamId}/users`, {
@@ -328,12 +317,6 @@ const TeamDashboard: React.FC = () => {
               >
                 Team Settings
               </Button>
-              <Button
-                className="team-dashboard settingsButton"
-                onClick={openSessionHistory}
-              >
-                Session History
-              </Button>
               <div className="team-dashboard description">{teamDesc}</div>
             </div>
           </TeamDashboardBox>
@@ -370,11 +353,6 @@ const TeamDashboard: React.FC = () => {
           isLeave={isLeave}
           setIsLeave={setIsLeave}
           onEdit={fetchTeamInfo}
-        />
-        <SessionHistory
-          isOpen={isSessionHistoryOpen}
-          onClose={closeSessionHistory}
-          sessionStatus={sessionStatus}
         />
       </div>
     </BaseContainer>
