@@ -19,7 +19,6 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-
   const createTeam = async () => {
     setIsLoading(true);
     const isValid = validateTeamForm({

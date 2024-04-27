@@ -231,18 +231,18 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
             <div>
               {editMode && (
                 <div>
-                <div className="TeamSetting footer">
-                  <Button
-                    className="green-button"
-                    disabled={!teamName || !teamDescription}
-                    onClick={editTeam}
-                  >
-                    Save Changes
-                  </Button>
-                  <Button className="red-button" onClick={DeactivateEditMode}>
-                    Cancel
-                  </Button>
-                </div>
+                  <div className="TeamSetting footer">
+                    <Button
+                      className="green-button"
+                      disabled={!teamName || !teamDescription}
+                      onClick={editTeam}
+                    >
+                      Save Changes
+                    </Button>
+                    <Button className="red-button" onClick={DeactivateEditMode}>
+                      Cancel
+                    </Button>
+                  </div>
                   {getAllErrorMessages().map((error, index) => (
                     <div key={index} className="error-message">
                       {error}

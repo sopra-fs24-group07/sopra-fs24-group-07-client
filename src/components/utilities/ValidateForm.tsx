@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 
-
 // VALIDATE REGISTRATION AND EDIT USER PROFILE
 export const validateRegistrationForm = ({
   username,
@@ -65,14 +64,13 @@ validateRegistrationForm.propTypes = {
   setIsLoading: PropTypes.func,
 };
 
-
 //VALIDATE TEAM CREATION AND EDIT
 export const validateTeamForm = ({
-                                   teamName,
-                                   teamDescription,
-                                           setErrors,
-                                           setIsLoading,
-                                         }) => {
+  teamName,
+  teamDescription,
+  setErrors,
+  setIsLoading,
+}) => {
   let isValid = true;
   let errors = { teamName: "", teamDescription: "" };
   if (!teamName) {
@@ -108,11 +106,11 @@ validateTeamForm.propTypes = {
 
 //VALIDATE TASKS
 export const validateTaskForm = ({
-                                   title,
-                                   description,
-                                   setErrors,
-                                   setIsLoading,
-                                 }) => {
+  title,
+  description,
+  setErrors,
+  setIsLoading,
+}) => {
   let isValid = true;
   let errors = { title: "", description: "" };
 
