@@ -104,6 +104,29 @@ function VoiceChat() {
     //track and publish local audio track
     localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     rtcClient.publish(localAudioTrack);
+
+    SpeakerIndicator();
+  };
+
+  const SpeakerIndicator = async () => {
+    AgoraRTC.setParameter("AUDIO_VOLUME_INDICATION_INTERVAL", 300);
+    rtcClient.enableAudioVolumeIndicator();
+
+    rtcClient.on("volume-indicator", (volumes) => {
+      if (AgoraRTC.getParameter("AUDIO_VOLUME_INDICATION_INTERVAL") !== 200) {
+        AgoraRTC.setParameter("AUDIO_VOLUME_INDICATION_INTERVAL", 200);
+      }
+      volumes.forEach((volume) => {
+        let item = document.querySelector(
+          `.user-rtc-${volume.uid}`
+        ) as HTMLElement;
+        if (volume.level >= 50) {
+          item.style.borderColor = "#AAFF00";
+        } else {
+          item.style.borderColor = "#FFFFFF";
+        }
+      });
+    });
   };
 
   //get the users that are in the channel
