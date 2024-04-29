@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import "../../styles/ui/ColumnContainer.scss";
 import { Button } from "./Button";
 import TaskCard from "./TaskCard";
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { DndContext } from "@dnd-kit/core";
+import { useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import CreateTask from "../popups/CreateTask";
 
@@ -15,6 +14,14 @@ function ColumnContainer(props) {
   const [newTask, setNewTask] = useState(null);
   //set State of Create Task Popup
   const [isCreateTaskOpen, setCreateTaskOpen] = useState(false);
+
+  //dnd
+  const { isOver, setNodeRef } = useDroppable({
+    id: column,
+  });
+  const style = {
+    color: isOver ? "green" : undefined,
+  };
 
   //open the Create Task Popup
   const openCreateTask = () => {
@@ -27,10 +34,10 @@ function ColumnContainer(props) {
   };
 
   return (
-    <div className="col">
+    <div className="col" ref={setNodeRef} style={style}>
       <div className="colName">
         {column === "IN_SESSION" ? "NEXT SESSION" : column}
-      </div>{" "}
+      </div>
       {/*name of the column*/}
       <div className="tasksArea">
         {teamTasks.map((task) => {
@@ -41,7 +48,7 @@ function ColumnContainer(props) {
                 task={task}
                 col={column}
                 sessionStatus={sessionStatus}
-              ></TaskCard>
+              />
             );
         })}
       </div>
@@ -63,9 +70,7 @@ function ColumnContainer(props) {
   );
 }
 
-{
-  /*check prop Types*/
-}
+/*check prop Types*/
 ColumnContainer.propTypes = {
   column: PropTypes.string,
   teamTasks: PropTypes.array,
