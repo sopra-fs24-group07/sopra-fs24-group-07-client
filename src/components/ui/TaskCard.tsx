@@ -37,22 +37,13 @@ function TaskCard(props) {
   };
 
   return (
-    <div
-      className="taskContainer"
-      ref={setNodeRef}
-      style={style}
-    >
+    <div className="taskContainer" ref={setNodeRef} style={style}>
       {/*task title that opens the task details */}
-      <Link
-        onClick={openInspectTask}
-        className= "taskTitle"
-      >
+      <Link onClick={openInspectTask} className="taskTitle">
         {task.title}
       </Link>
 
-      <button className="goRight"
-      {...listeners}
-      {...attributes}>
+      <button className="goRight" {...listeners} {...attributes}>
         O
       </button>
 
