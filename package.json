@@ -3,6 +3,7 @@
   "version": "0.24.0",
   "private": true,
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
     "agora-rtc-sdk-ng": "^4.20.2",
     "agora-rtm-sdk": "^1.5.1",
     "axios": "^1.6.7",
