@@ -17,8 +17,6 @@ function KanbanBoard(props) {
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    console.log(active);
-    console.log(over);
 
     if (active.data.current.status !== over.id) {
       updateTaskStatus(active.data.current, over.id);
@@ -30,7 +28,6 @@ function KanbanBoard(props) {
     try {
       task.status = newColumn;
       const requestBody = JSON.stringify(task);
-      console.log(requestBody);
       const response = await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
         requestBody,

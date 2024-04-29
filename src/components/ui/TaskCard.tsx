@@ -45,14 +45,14 @@ function TaskCard(props) {
       {...attributes}
     >
       {/*task title that opens the task details */}
-      <Link
+      <div
         onClick={openInspectTask}
         className={`taskTitle ${col === "TODO" ? "taskTitle left" : ""} ${
           col === "DONE" ? "right" : ""
         }`}
       >
         {task.title}
-      </Link>
+      </div>
 
       <InspectTask
         isOpen={isInspectTaskOpen}
