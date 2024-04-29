@@ -87,6 +87,7 @@ function VoiceChat() {
   };
 
   const initRTC = async (taskid) => {
+    AgoraRTC.setLogLevel(4);
     rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     //handle user join/leave
