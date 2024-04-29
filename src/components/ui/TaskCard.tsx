@@ -41,18 +41,20 @@ function TaskCard(props) {
       className="taskContainer"
       ref={setNodeRef}
       style={style}
-      {...listeners}
-      {...attributes}
     >
       {/*task title that opens the task details */}
-      <div
+      <Link
         onClick={openInspectTask}
-        className={`taskTitle ${col === "TODO" ? "taskTitle left" : ""} ${
-          col === "DONE" ? "right" : ""
-        }`}
+        className= "taskTitle"
       >
         {task.title}
-      </div>
+      </Link>
+
+      <button className="goRight"
+      {...listeners}
+      {...attributes}>
+        O
+      </button>
 
       <InspectTask
         isOpen={isInspectTaskOpen}
