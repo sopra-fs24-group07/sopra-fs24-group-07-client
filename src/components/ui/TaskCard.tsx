@@ -10,7 +10,7 @@ import { useDraggable } from "@dnd-kit/core";
 
 function TaskCard(props) {
   const token = localStorage.getItem("token");
-  const { task, col, sessionStatus } = props;
+  const { task, col, sessionStatus, dragStyle } = props;
   const { teamId } = useParams();
   const taskId = task.taskId;
   const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);
@@ -37,7 +37,11 @@ function TaskCard(props) {
   };
 
   return (
-    <div className="taskContainer" ref={setNodeRef} style={style}>
+    <div
+      className="taskContainer"
+      ref={setNodeRef}
+      style={{ ...style, ...dragStyle }}
+    >
       {/*task title that opens the task details */}
       <Link onClick={openInspectTask} className="taskTitle">
         {task.title}
@@ -62,6 +66,7 @@ TaskCard.propTypes = {
   task: PropTypes.object,
   col: PropTypes.string,
   sessionStatus: PropTypes.string,
+  dragStyle: PropTypes.object,
 };
 
 export default TaskCard;

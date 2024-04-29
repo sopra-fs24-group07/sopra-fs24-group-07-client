@@ -9,7 +9,7 @@ import CreateTask from "../popups/CreateTask";
 
 function ColumnContainer(props) {
   //get the columns and tasks from props
-  const { column, teamTasks, sessionStatus } = props;
+  const { column, teamTasks, sessionStatus, isDragged } = props;
   //new Task that can be created
   const [newTask, setNewTask] = useState(null);
   //set State of Create Task Popup
@@ -28,6 +28,8 @@ function ColumnContainer(props) {
     setCreateTaskOpen(true);
   };
 
+  let dragStyle = { opacity: "1" };
+
   //close the Create Task Popup
   const closeCreateTask = () => {
     setCreateTaskOpen(false);
@@ -41,15 +43,22 @@ function ColumnContainer(props) {
       {/*name of the column*/}
       <div className="tasksArea">
         {teamTasks.map((task) => {
-          if (task.status === column)
+          if (task.status === column) {
+            if (task.taskId === isDragged) {
+              dragStyle = { opacity: "0" };
+            } else {
+              dragStyle = { opacity: "1" };
+            }
             return (
               <TaskCard
                 key={task.id}
                 task={task}
                 col={column}
                 sessionStatus={sessionStatus}
+                dragStyle={dragStyle}
               />
             );
+          }
         })}
       </div>
       {/*display the createTask button for the To-do coloumn*/}
@@ -75,6 +84,7 @@ ColumnContainer.propTypes = {
   column: PropTypes.string,
   teamTasks: PropTypes.array,
   sessionStatus: PropTypes.string,
+  isDragged: PropTypes.string,
 };
 
 export default ColumnContainer;

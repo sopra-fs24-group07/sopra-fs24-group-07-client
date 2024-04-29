@@ -3,8 +3,10 @@ import { useParams } from "react-router-dom";
 import "../../styles/ui/KanbanBoard.scss";
 import ColumnContainer from "./ColumnContainer";
 import PropTypes from "prop-types";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { api, handleError } from "helpers/api";
+import { Button } from "./Button";
+import TaskCard from "./TaskCard";
 
 function KanbanBoard(props) {
   const token = localStorage.getItem("token");
@@ -15,8 +17,18 @@ function KanbanBoard(props) {
   //get teams tasks from the props
   const { teamTasks, sessionStatus } = props;
 
+  const [activeTask, setActiveTask] = useState(null);
+  const [isDragged, setIsDragged] = useState(null);
+
+  function handleDragStart(event) {
+    setActiveTask(event.active.data.current);
+    setIsDragged(event.active.data.current.taskId);
+  }
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
+    setActiveTask(null);
+    setIsDragged(null);
 
     if (active.data.current.status !== over.id) {
       updateTaskStatus(active.data.current, over.id);
@@ -43,7 +55,7 @@ function KanbanBoard(props) {
   };
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="board">
         <div className="cols">
           {/* map the the Columns and give tasks to ColumnContainer */}
@@ -53,10 +65,20 @@ function KanbanBoard(props) {
               column={col}
               teamTasks={teamTasks}
               sessionStatus={sessionStatus}
+              isDragged={isDragged}
             ></ColumnContainer>
           ))}
         </div>
       </div>
+      <DragOverlay>
+        {activeTask && (
+          <TaskCard
+            task={activeTask}
+            col={activeTask.status}
+            sessionStatus={sessionStatus}
+          />
+        )}
+      </DragOverlay>
     </DndContext>
   );
 }
