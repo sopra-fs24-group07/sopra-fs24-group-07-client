@@ -233,6 +233,7 @@ function VoiceChat() {
           document.getElementById(documentId.roomName).innerHTML = roomName;
           //leave the channel if windows is closed
           window.addEventListener("beforeunload", leaveRoom);
+          window.addEventListener("popstate", leaveRoom);
           //leave the channel if back to teams button is clicked
           document
             .getElementById(documentId.backButton)
@@ -259,24 +260,33 @@ function VoiceChat() {
 
       //also leave via rtm
       leaveRtmChannel();
+      try {
+        //display channels
+        document.getElementById(documentId.form).style.display = "block";
+        //remove channel control buttons
+        document.getElementById(documentId.roomHeader).style.display = "none";
+        document.getElementById(documentId.roomFooter).style.display = "none";
+        //remove the room name
+        document.getElementById(documentId.roomName).innerHTML = "";
+        //empty members
+        document.getElementById(documentId.members).innerHTML = "";
+        //remove eventListener to avoid error on closing component
+        window.removeEventListener("beforeunload", leaveRoom);
+        window.removeEventListener("popstate", leaveRoom);
+        document
+          .getElementById(documentId.backButton)
+          .removeEventListener("click", leaveRoom);
 
-      //display channels
-      document.getElementById(documentId.form).style.display = "block";
-      //remove channel control buttons
-      document.getElementById(documentId.roomHeader).style.display = "none";
-      document.getElementById(documentId.roomFooter).style.display = "none";
-      //remove the room name
-      document.getElementById(documentId.roomName).innerHTML = "";
-      //empty members
-      document.getElementById(documentId.members).innerHTML = "";
-      //remove eventListener to avoid error on closing component
-      window.removeEventListener("beforeunload", leaveRoom);
-      document
-        .getElementById(documentId.backButton)
-        .removeEventListener("click", leaveRoom);
+        document.removeEventListener(documentId.endSession, leaveRoom);
+        document.removeEventListener(documentId.leaveTeam, leaveRoom);
+      } catch (error) {
+        //need to catch the Error of Loading a new page, in that case we dont change any styling
+        window.removeEventListener("beforeunload", leaveRoom);
+        window.removeEventListener("popstate", leaveRoom);
 
-      document.removeEventListener(documentId.endSession, leaveRoom);
-      document.removeEventListener(documentId.leaveTeam, leaveRoom);
+        document.removeEventListener(documentId.endSession, leaveRoom);
+        document.removeEventListener(documentId.leaveTeam, leaveRoom);
+      }
     };
 
     //leave rtm Client
