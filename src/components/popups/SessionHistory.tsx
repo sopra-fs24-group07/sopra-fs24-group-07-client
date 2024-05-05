@@ -23,7 +23,7 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
         });
         const sessionsWithNumbers = response.data.map(
           (session, index, array) => {
-            const startTime = new Date(session.startDateTime + "Z"); // Assuming 'startDateTime' is in UTC without 'Z'
+            const startTime = new Date(session.startDateTime + "Z");
             const formattedStart = `${startTime
               .getDate()
               .toString()
@@ -46,7 +46,7 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
             let endTimeDisplay = "Ongoing";
             let duration = "Ongoing";
             if (session.endDateTime) {
-              const endTime = new Date(session.endDateTime + "Z"); // Assuming 'endDateTime' is in UTC without 'Z'
+              const endTime = new Date(session.endDateTime + "Z");
               endTimeDisplay = `${endTime
                 .getDate()
                 .toString()
