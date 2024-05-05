@@ -49,6 +49,7 @@ function ColumnContainer(props) {
             } else {
               dragStyle = { opacity: "1" };
             }
+
             return (
               <TaskCard
                 key={task.id}
