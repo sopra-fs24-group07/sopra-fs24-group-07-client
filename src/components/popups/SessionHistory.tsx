@@ -22,10 +22,69 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
           headers: { Authorization: `${token}` },
         });
         const sessionsWithNumbers = response.data.map(
-          (session, index, array) => ({
-            ...session,
-            sessionId: array.length - index,
-          })
+          (session, index, array) => {
+            const startTime = new Date(session.startDateTime + "Z"); // Assuming 'startDateTime' is in UTC without 'Z'
+            const formattedStart = `${startTime
+              .getDate()
+              .toString()
+              .padStart(2, "0")}.${(startTime.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}.${startTime
+              .getFullYear()
+              .toString()
+              .slice(-2)}, ${startTime
+              .getHours()
+              .toString()
+              .padStart(2, "0")}:${startTime
+              .getMinutes()
+              .toString()
+              .padStart(2, "0")}:${startTime
+              .getSeconds()
+              .toString()
+              .padStart(2, "0")}`;
+
+            let endTimeDisplay = "Ongoing";
+            let duration = "Ongoing";
+            if (session.endDateTime) {
+              const endTime = new Date(session.endDateTime + "Z"); // Assuming 'endDateTime' is in UTC without 'Z'
+              endTimeDisplay = `${endTime
+                .getDate()
+                .toString()
+                .padStart(2, "0")}.${(endTime.getMonth() + 1)
+                .toString()
+                .padStart(2, "0")}.${endTime
+                .getFullYear()
+                .toString()
+                .slice(-2)}, ${endTime
+                .getHours()
+                .toString()
+                .padStart(2, "0")}:${endTime
+                .getMinutes()
+                .toString()
+                .padStart(2, "0")}:${endTime
+                .getSeconds()
+                .toString()
+                .padStart(2, "0")}`;
+
+              const difference = endTime - startTime;
+              const hours = Math.floor(difference / (1000 * 60 * 60));
+              const minutes = Math.floor(
+                (difference % (1000 * 60 * 60)) / (1000 * 60)
+              );
+              const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+              duration = `${hours.toString().padStart(2, "0")}:${minutes
+                .toString()
+                .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+            }
+
+            return {
+              ...session,
+              sessionId: array.length - index,
+              startDateTime: formattedStart,
+              endDateTime: endTimeDisplay,
+              duration,
+            };
+          }
         );
         setSessions(sessionsWithNumbers);
       } catch (error) {
@@ -72,6 +131,9 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
                     </div>
                     <div>
                       <strong>Goal:</strong> {session.goalMinutes} minutes
+                    </div>
+                    <div>
+                      <strong>Total Time:</strong> {session.duration}
                     </div>
                   </div>
                 </li>
