@@ -17,4 +17,4 @@ Reviewer:
 - \[ \] are there any code smells?
 - \[ \] did pipeline pass?
 - \[ \] is the code well documented?
-- \[ \]tested manually all features and edge cases?
+- \[ \] tested manually all features and edge cases?
