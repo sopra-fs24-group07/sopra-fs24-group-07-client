@@ -95,8 +95,18 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
       isValid = false;
     }
 
+    if (username.length > 100) {
+      errors.username = "Username exceeds the 100 character limit!";
+      isValid = false;
+    }
+
     if (!name) {
       errors.name = "Name is required";
+      isValid = false;
+    }
+
+    if (name.length > 100) {
+      errors.name = "Name exceeds the 100 character limit!";
       isValid = false;
     }
 
@@ -107,6 +117,11 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
 
     if (!password || password.length < 8) {
       errors.password = "Password must be at least 8 characters long";
+      isValid = false;
+    }
+
+    if (password.length > 100) {
+      errors.password = "Password exceeds the 100 character limit";
       isValid = false;
     }
 
