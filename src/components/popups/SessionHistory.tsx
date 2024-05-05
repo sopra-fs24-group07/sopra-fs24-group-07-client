@@ -21,10 +21,12 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
         const response = await api.get(`/api/v1/teams/${teamId}/sessions`, {
           headers: { Authorization: `${token}` },
         });
-        const sessionsWithNumbers = response.data.map((session, index, array) => ({
-          ...session,
-          sessionId: array.length - index
-        }));
+        const sessionsWithNumbers = response.data.map(
+          (session, index, array) => ({
+            ...session,
+            sessionId: array.length - index,
+          })
+        );
         setSessions(sessionsWithNumbers);
       } catch (error) {
         setError("Something went wrong. Please try again");
