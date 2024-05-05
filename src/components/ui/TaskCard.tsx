@@ -21,9 +21,7 @@ function TaskCard(props) {
     data: task,
   });
   const style = transform
-    ? {
-        transform: CSS.Translate.toString(transform),
-      }
+    ? { transform: CSS.Translate.toString(transform) }
     : undefined;
 
   //open the Inspect Task Popup
