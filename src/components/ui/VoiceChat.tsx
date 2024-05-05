@@ -87,6 +87,7 @@ function VoiceChat() {
   };
 
   const initRTC = async (taskid) => {
+    AgoraRTC.setLogLevel(4);
     rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     //handle user join/leave
@@ -103,6 +104,36 @@ function VoiceChat() {
     //track and publish local audio track
     localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     rtcClient.publish(localAudioTrack);
+
+    SpeakerIndicator();
+  };
+
+  const SpeakerIndicator = async () => {
+    //set interval higher to avoid error
+    AgoraRTC.setParameter("AUDIO_VOLUME_INDICATION_INTERVAL", 300);
+    //enable the Indicator for the clinet
+    rtcClient.enableAudioVolumeIndicator();
+
+    //get Values of all members
+    rtcClient.on("volume-indicator", (volumes) => {
+      //set short interval for more accuracy
+      if (AgoraRTC.getParameter("AUDIO_VOLUME_INDICATION_INTERVAL") !== 200) {
+        AgoraRTC.setParameter("AUDIO_VOLUME_INDICATION_INTERVAL", 200);
+      }
+      //for each user decide if they speak or not and set the borderColor
+      volumes.forEach((volume) => {
+        let item = document.querySelector(
+          `.user-rtc-${volume.uid}`
+        ) as HTMLElement;
+        if (item) {
+          if (volume.level >= 50) {
+            item.style.borderColor = "#AAFF00";
+          } else {
+            item.style.borderColor = "#FFFFFF";
+          }
+        }
+      });
+    });
   };
 
   //get the users that are in the channel
