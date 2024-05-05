@@ -19,20 +19,10 @@
 .taskTitle {
   display: inline-block;
   text-decoration: none;
-  width: calc(100% - 46px);
-  margin-left: 23px;
+  margin-left: 5px;
   overflow-wrap: break-word;
   word-wrap: break-word;
-
-  &.left {
-    width: calc(100% - 23px);
-    margin-left: 0%;
-  }
-
-  &.right {
-    margin-left: 23px;
-    width: calc(100% - 23px);
-  }
+  width: calc(100% - 32px);
 }
 
 .goRight,
@@ -40,20 +30,17 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: auto;
+  width: 30px;
   height: 100%;
   font-weight: 800;
   font-size: 16px;
   align-items: center;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: grab;
   background-color: $accent;
   transition: all 0.3s ease;
   box-shadow: $dropShadow;
-  &:hover {
-    transform: translateY(-55%);
-  }
 }
 
 .goRight {

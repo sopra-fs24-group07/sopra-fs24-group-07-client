@@ -3,23 +3,32 @@ import PropTypes from "prop-types";
 import "../../styles/ui/ColumnContainer.scss";
 import { Button } from "./Button";
 import TaskCard from "./TaskCard";
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { DndContext } from "@dnd-kit/core";
+import { useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import CreateTask from "../popups/CreateTask";
 
 function ColumnContainer(props) {
   //get the columns and tasks from props
-  const { column, teamTasks, sessionStatus } = props;
+  const { column, teamTasks, sessionStatus, isDragged } = props;
   //new Task that can be created
   const [newTask, setNewTask] = useState(null);
   //set State of Create Task Popup
   const [isCreateTaskOpen, setCreateTaskOpen] = useState(false);
 
+  //dnd
+  const { isOver, setNodeRef } = useDroppable({
+    id: column,
+  });
+  const style = {
+    color: isOver ? "green" : undefined,
+  };
+
   //open the Create Task Popup
   const openCreateTask = () => {
     setCreateTaskOpen(true);
   };
+
+  let dragStyle = { opacity: "1" };
 
   //close the Create Task Popup
   const closeCreateTask = () => {
@@ -27,22 +36,30 @@ function ColumnContainer(props) {
   };
 
   return (
-    <div className="col">
+    <div className="col" ref={setNodeRef} style={style}>
       <div className="colName">
         {column === "IN_SESSION" ? "NEXT SESSION" : column}
-      </div>{" "}
+      </div>
       {/*name of the column*/}
       <div className="tasksArea">
         {teamTasks.map((task) => {
-          if (task.status === column)
+          if (task.status === column) {
+            if (task.taskId === isDragged) {
+              dragStyle = { opacity: "0" };
+            } else {
+              dragStyle = { opacity: "1" };
+            }
+
             return (
               <TaskCard
                 key={task.id}
                 task={task}
                 col={column}
                 sessionStatus={sessionStatus}
-              ></TaskCard>
+                dragStyle={dragStyle}
+              />
             );
+          }
         })}
       </div>
       {/*display the createTask button for the To-do coloumn*/}
@@ -63,13 +80,12 @@ function ColumnContainer(props) {
   );
 }
 
-{
-  /*check prop Types*/
-}
+/*check prop Types*/
 ColumnContainer.propTypes = {
   column: PropTypes.string,
   teamTasks: PropTypes.array,
   sessionStatus: PropTypes.string,
+  isDragged: PropTypes.string,
 };
 
 export default ColumnContainer;
