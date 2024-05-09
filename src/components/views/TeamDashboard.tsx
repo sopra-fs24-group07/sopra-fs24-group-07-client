@@ -16,6 +16,9 @@ import Pusher from "pusher-js";
 import MemberCard from "components/ui/MemberCard";
 import SessionHistory from "components/popups/SessionHistory";
 
+import IconButton from "../ui/IconButton";
+import { MdHistory, MdSettings } from "react-icons/md";
+
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const [sessionStatus, setSessionStatus] = useState<string>("off");
@@ -326,18 +329,18 @@ const TeamDashboard: React.FC = () => {
             endColumn={5}
           >
             <div className="team-dashboard settingsBox">
-              <Button
-                className="team-dashboard settingsButton"
+              <IconButton
+                className="dash-icon"
+                icon={MdSettings}
                 onClick={openTeamSettings}
-              >
-                Team Settings
-              </Button>
-              <Button
-                className="team-dashboard settingsButton"
+                style={{ scale: "3.5", marginTop: "20px", marginLeft: "60px" }}
+              />
+              <IconButton
+                className="dash-icon"
+                icon={MdHistory}
                 onClick={openSessionHistory}
-              >
-                Session History
-              </Button>
+                style={{ scale: "3.5", marginTop: "20px", marginRight: "60px" }}
+              />
               <div className="team-dashboard description">{teamDesc}</div>
             </div>
           </TeamDashboardBox>

@@ -23,3 +23,10 @@
 .green-icon {
   color: $iconGreen1;
 }
+
+.dash-icon {
+  color: $background;
+  &:hover {
+    color: $accent;
+  }
+}
