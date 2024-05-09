@@ -2,7 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const EmailInput = ({ email, setEmail, emailError, setEmailError }) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  // OWASP recommended regex pattern for email validation
+  const emailRegex = new RegExp(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+  );
 
   const handleEmailChange = (e) => {
     const value = e.target.value;
