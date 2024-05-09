@@ -6,6 +6,9 @@ import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import IconButton from "../ui/IconButton";
+
 const FormField = (props) => {
   return (
     <div className="inspectTask field">
@@ -145,12 +148,13 @@ const CreateTask = ({ isOpen, onClose }) => {
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
         <div className="inspectTask header">
           <h2 className="inspectTask headline">Create Task</h2>
-          <Button
-            className="red-button bts inspectTask headline"
+          <IconButton
+            hoverIcon={IoMdCloseCircle}
+            icon={IoMdCloseCircleOutline}
             onClick={doClose}
-          >
-            Close
-          </Button>
+            className="red-icon"
+            style={{ scale: "2.5", marginRight: "15px" }}
+          />
         </div>
         <h3 className="inspectTask headline">Title</h3>
         <FormField
@@ -170,8 +174,9 @@ const CreateTask = ({ isOpen, onClose }) => {
         {error && <p>{error}</p>}
 
         <Button
-          className="green-button bts"
+          className="green-button bts createTeam cButton"
           disabled={!title}
+          width="100%"
           onClick={() => {
             CreateTask();
           }}
