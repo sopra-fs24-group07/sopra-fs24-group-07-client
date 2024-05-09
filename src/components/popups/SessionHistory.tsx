@@ -141,9 +141,6 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
             </ul>
           </div>
         )}
-        <Button className="green-button" disabled>
-          Stats
-        </Button>
       </div>
     </div>
   );
