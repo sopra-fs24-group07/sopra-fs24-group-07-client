@@ -9,7 +9,7 @@ import BaseContainer from "./BaseContainer";
 import { Button } from "./Button";
 import { Spinner } from "./Spinner";
 import IconButton from "../ui/IconButton";
-import { MdMic, MdMicOff } from "react-icons/md";
+import { MdMic, MdMicOff, MdPhoneDisabled } from "react-icons/md";
 
 function VoiceChat() {
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
@@ -383,12 +383,14 @@ function VoiceChat() {
   return (
     <BaseContainer className="base-container">
       <div id={documentId.roomHeader} className="room-header">
-        <div className="room-header-controls">
-          <h1 className="room-name" id={documentId.roomName}></h1>
-          <Button id={documentId.leaveButton} className="leave-button">
-            Leave
-          </Button>
-        </div>
+        <h1 className="room-name" id={documentId.roomName}></h1>
+        <IconButton
+          id={documentId.leaveButton}
+          icon={MdPhoneDisabled}
+          className="red-icon"
+          style={{ scale: "2", marginRight: "-100%" }}
+        />
+        <div className="room-header-controls"></div>
       </div>
       <form id={documentId.form}>
         <div className="rooms" id={documentId.channels}></div>
