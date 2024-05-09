@@ -66,6 +66,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
           .toString()
           .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
         setRemainingTime(formattedTime);
+        setGoalReached(false);
       }
     };
 
@@ -107,7 +108,10 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
       ) : (
         <div>
           <h2>Team Progress</h2>
-          <p>The team has spent {totalTime} in sessions so far!</p>
+          <p>
+            Your time goal has been reached. Feel free to continue with you
+            work!
+          </p>
         </div>
       )}
     </div>
