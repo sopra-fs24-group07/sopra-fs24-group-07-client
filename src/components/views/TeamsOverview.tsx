@@ -58,7 +58,7 @@ const TeamsOverview = () => {
 
   return (
     <BaseContainer>
-      <h1 className="teams-overview header">{userName}s Teams</h1>
+      <h1 className="teams-overview header">{userName}&#39;s Teams</h1>
       <div className="teams-overview container">
         <div className="teams-overview grid">
           {userTeams.map((team) => (
