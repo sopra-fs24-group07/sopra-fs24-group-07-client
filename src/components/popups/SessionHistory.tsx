@@ -90,7 +90,6 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
           }
         );
         setSessions(sessionsWithNumbers);
-        console.log(sessions);
       } catch (error) {
         setError("Something went wrong. Please try again");
       }
