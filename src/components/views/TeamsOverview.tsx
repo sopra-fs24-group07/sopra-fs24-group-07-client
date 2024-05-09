@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { api, handleError } from "helpers/api";
-import User from "models/User";
 import { useNavigate } from "react-router-dom";
-import { Button } from "components/ui/Button";
-import "styles/views/TeamsOverview.scss";
+import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
+import { Button } from "components/ui/Button";
 import CreateTeam from "../popups/CreateTeam";
+import PropTypes from "prop-types";
+import "styles/views/TeamsOverview.scss";
 
 const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id");
   const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
-  const userId = localStorage.getItem("id"); //todo change this depending on the api endpoint where we get the userId from the user token
-  // dont forget to remove id from storage on logout
-  // const [userId, setUserId] = useState(null); // new user Id set function, requires api call
 
   useEffect(() => {
     const fetchUserTeams = async () => {
@@ -29,8 +26,6 @@ const TeamsOverview = () => {
         console.error("Error fetching user teams:", error);
       }
     };
-
-    fetchUserTeams();
 
     const fetchUserInfo = async () => {
       try {
@@ -45,6 +40,7 @@ const TeamsOverview = () => {
       }
     };
 
+    fetchUserTeams();
     fetchUserInfo();
   }, []);
 
@@ -57,7 +53,7 @@ const TeamsOverview = () => {
   };
 
   const goTeam = (teamId) => {
-    navigate(`/teams/${teamId}`); //change routing to point at created team
+    navigate(`/teams/${teamId}`);
   };
 
   return (
@@ -69,6 +65,7 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
+              title={team.description} // Tooltip added here
               onClick={() => navigate(`/teams/${team.teamId}`)}
             >
               {team.name}
