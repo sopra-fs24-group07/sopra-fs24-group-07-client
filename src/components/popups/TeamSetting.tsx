@@ -192,7 +192,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       if (error.response.status === 401) {
         setLeaveError("You are not authorized to leave the team, sorry!");
       } else if (error.response.status === 404) {
-        setLeaveError("Something went wrong. Try again later");
+        setLeaveError("Something went wrong. Try again later.");
       }
     }
   };
