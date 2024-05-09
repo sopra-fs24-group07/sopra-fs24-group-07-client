@@ -14,9 +14,12 @@
   align-items: center;
   display: none;
   width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .room-footer {
+  flex-direction: column;
   align-items: center;
   display: none;
   width: 100%;
@@ -27,6 +30,8 @@
   font-size: 35px;
   font-weight: bold;
   width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .room-header-controls {
@@ -35,6 +40,8 @@
   align-items: center;
   text-align: center;
   width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .rooms {
@@ -43,6 +50,8 @@
   align-items: center;
   width: 100%;
   text-align: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .members {
@@ -63,6 +72,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: $dropShadow;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
   &:hover {
     transform: translateY(-3px);
