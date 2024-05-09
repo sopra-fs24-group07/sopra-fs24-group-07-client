@@ -90,6 +90,7 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
           }
         );
         setSessions(sessionsWithNumbers);
+        console.log(sessions);
       } catch (error) {
         setError("Something went wrong. Please try again");
       }
@@ -122,7 +123,7 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
           />
         </div>
         {error && <p>{error}</p>}
-        {!error && (
+        {!error && sessions.length !== 0 && (
           <div>
             <ul className="SessionHistory list">
               {sessions.map((session) => (
@@ -146,6 +147,12 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+        {!error && sessions.length === 0 && (
+          <div style={{ marginBottom: "20px" }}>
+            You have not been in any Sessions.
+            <br /> Better start now.
           </div>
         )}
       </div>
