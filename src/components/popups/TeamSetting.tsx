@@ -219,14 +219,18 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     setEmailError("");
     const requestBody = {
       teamUUID: teamUUID,
-      receiverEmail: email
-    }
+      receiverEmail: email,
+    };
     try {
-      await api.post(`/api/v1/teams/${teamId}/invitations`, JSON.stringify(requestBody), {
-        headers: {
-          'Authorization': `${token}`
+      await api.post(
+        `/api/v1/teams/${teamId}/invitations`,
+        JSON.stringify(requestBody),
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
         }
-      });
+      );
 
       setEmail("");
       setEmailError(`The invitation has been sent to ${email} !`);
@@ -283,7 +287,11 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               <div>
                 <div>
                   <h3 className="TeamSetting headline">Team Members</h3>
-                  <EmailInput email={email} setEmail={setEmail} emailError={emailError} />
+                  <EmailInput
+                    email={email}
+                    setEmail={setEmail}
+                    emailError={emailError}
+                  />
                   <Button className="invite-user" onClick={sendInvitationEmail}>
                     Send Invitation Email
                   </Button>
@@ -347,4 +355,3 @@ TeamSettings.propTypes = {
 };
 
 export default TeamSettings;
-
