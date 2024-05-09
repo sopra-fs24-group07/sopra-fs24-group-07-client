@@ -56,6 +56,11 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
     onSettingsOpen();
   };
 
+  const doClose = () => {
+    onClose();
+    message = "";
+  };
+
   if (!isOpen) return null;
 
   return (
