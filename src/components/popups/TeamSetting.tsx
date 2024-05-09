@@ -6,6 +6,17 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import {
+  MdModeEditOutline,
+  MdOutlineModeEdit,
+  MdSave,
+  MdOutlineSave,
+  MdOutlineEditOff,
+  MdEditOff,
+} from "react-icons/md";
+import IconButton from "../ui/IconButton";
+
 const FormField = (props) => {
   return (
     <div className="TeamSetting field">
@@ -220,13 +231,21 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
         <div className="TeamSetting header">
           <h2>Team Settings</h2>
           {!editMode && (
-            <Button className="green-button" onClick={ActivateEditMode}>
-              Edit Team
-            </Button>
+            <IconButton
+              hoverIcon={MdModeEditOutline}
+              icon={MdOutlineModeEdit}
+              onClick={ActivateEditMode}
+              className="green-icon"
+              style={{ scale: "2.3", marginRight: "10px" }}
+            />
           )}
-          <Button className="red-button" onClick={doClose}>
-            Close
-          </Button>
+          <IconButton
+            hoverIcon={IoMdCloseCircle}
+            icon={IoMdCloseCircleOutline}
+            onClick={doClose}
+            className="red-icon"
+            style={{ scale: "2.5", marginRight: "10px" }}
+          />
         </div>
         {error && <p>{error}</p>}
         {!error && (
@@ -283,16 +302,27 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
             <div>
               {editMode && (
                 <div className="TeamSetting footer">
-                  <Button
-                    className="green-button"
-                    disabled={!teamName || !teamDescription}
+                  <IconButton
+                    hoverIcon={MdSave}
+                    icon={MdOutlineSave}
                     onClick={editTeam}
-                  >
-                    Save Changes
-                  </Button>
-                  <Button className="red-button" onClick={DeactivateEditMode}>
-                    Cancel
-                  </Button>
+                    className="green-icon"
+                    style={{
+                      scale: "2.5",
+                      marginLeft: "10px",
+                    }}
+                  />
+
+                  <IconButton
+                    hoverIcon={MdEditOff}
+                    icon={MdOutlineEditOff}
+                    onClick={DeactivateEditMode}
+                    className="red-icon"
+                    style={{
+                      scale: "2.3",
+                      marginRight: "10px",
+                    }}
+                  />
                 </div>
               )}
             </div>
