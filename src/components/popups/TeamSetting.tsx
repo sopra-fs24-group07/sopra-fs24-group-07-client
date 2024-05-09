@@ -235,30 +235,24 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
 
         return;
       }
-      switch (error.response.status) {
-        case 400:
-          setEmailError(
-            "Invalid email format. Please check the email address and try again."
-          );
-          break;
-        case 401:
-          setEmailError(
-            "You are not authorized to send invitations for this team."
-          );
-          break;
-        case 404:
-          setEmailError(
-            "Team not found. Please check the team details and try again."
-          );
-          break;
-        case 503:
-          setEmailError(
-            "Unable to send email at this time. Mail service is unavailable."
-          );
-          break;
-        default:
-          setEmailError("An unexpected error occurred. Please try again.");
-          break;
+      if (error.response.status === 400) {
+        setEmailError(
+          "Invalid email format. Please check the email address and try again."
+        );
+      } else if (error.response.status === 401) {
+        setEmailError(
+          "You are not authorized to send invitations for this team."
+        );
+      } else if (error.response.status === 404) {
+        setEmailError(
+          "Team not found. Please check the team details and try again."
+        );
+      } else if (error.response.status === 503) {
+        setEmailError(
+          "Unable to send email at this time. Mail service is unavailable."
+        );
+      } else {
+        setEmailError("An unexpected error occurred. Please try again.");
       }
     }
   };
