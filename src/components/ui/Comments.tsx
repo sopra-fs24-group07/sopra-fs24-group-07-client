@@ -8,8 +8,11 @@ import CommentCard from "./CommentCard";
 import Pusher from "pusher-js";
 import ConfirmCommentDelete from "components/popups/ConfirmCommentDelete";
 
-import { BsSendFill, BsSend } from "react-icons/bs";
-
+import {
+  BiCommentDetail,
+  BiSolidCommentAdd,
+  BiCommentAdd,
+} from "react-icons/bi";
 import IconButton from "../ui/IconButton";
 
 const FormField = ({ value, onChange, error }) => {
@@ -132,15 +135,15 @@ const Comments = (props) => {
         <div className="in-line">
           <FormField value={comment} onChange={setComment} error={error} />
           <IconButton
-            hoverIcon={BsSendFill}
-            icon={BsSend}
+            hoverIcon={BiSolidCommentAdd}
+            icon={BiCommentDetail}
             onClick={createComment}
             className="green-icon"
             style={{
-              scale: "1.7",
+              scale: "2",
               marginBottom: "10px",
-              marginLeft: "10px",
-              marginRight: "5px",
+              marginLeft: "20px",
+              marginRight: "10px",
             }}
           />
         </div>
