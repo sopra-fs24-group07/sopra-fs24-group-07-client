@@ -210,12 +210,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   };
 
   const sendInvitationEmail = async () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError("Invalid email format");
-
-      return;
-    }
 
     setEmailError("");
     const requestBody = {
@@ -238,6 +232,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     } catch (error) {
       console.error("Failed to send email:", handleError(error));
       setEmailError("Could not send email");
+      setEmail("");
     }
   };
 
@@ -292,6 +287,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                     email={email}
                     setEmail={setEmail}
                     emailError={emailError}
+                    setEmailError={setEmailError}
                   />
                   <Button className="invite-user" onClick={sendInvitationEmail}>
                     Send Invitation Email
