@@ -213,6 +213,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setEmailError("Invalid email format");
+
       return;
     }
 
