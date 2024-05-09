@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import IconButton from "../ui/IconButton";
+
 const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
   const [teamName, setTeamName] = useState();
   const { teamId } = useParams();
@@ -110,9 +113,13 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
       >
         <div className="SessionHistory header">
           <h2 className="SessionHistory headline">Team Sessions</h2>
-          <Button className="red-button" onClick={doClose}>
-            Close
-          </Button>
+          <IconButton
+            hoverIcon={IoMdCloseCircle}
+            icon={IoMdCloseCircleOutline}
+            onClick={doClose}
+            className="red-icon"
+            style={{ scale: "2.2", marginRight: "10px", marginTop: "5px" }}
+          />
         </div>
         {error && <p>{error}</p>}
         {!error && (
