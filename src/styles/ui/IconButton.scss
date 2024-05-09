@@ -1,0 +1,32 @@
+@import "../theme";
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-1px);
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.red-icon {
+  color: $iconRed1;
+}
+
+.green-icon {
+  color: $iconGreen1;
+}
+
+.dash-icon {
+  color: $background;
+  &:hover {
+    color: $accent;
+  }
+}

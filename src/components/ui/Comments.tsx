@@ -8,6 +8,13 @@ import CommentCard from "./CommentCard";
 import Pusher from "pusher-js";
 import ConfirmCommentDelete from "components/popups/ConfirmCommentDelete";
 
+import {
+  BiCommentDetail,
+  BiSolidCommentAdd,
+  BiCommentAdd,
+} from "react-icons/bi";
+import IconButton from "../ui/IconButton";
+
 const FormField = ({ value, onChange, error }) => {
   return (
     <input
@@ -42,6 +49,11 @@ const Comments = (props) => {
 
     if (comment.length > 500) {
       setError("The comment exceeds 500 characters");
+      isValid = false;
+    }
+
+    if (comment.length < 1) {
+      setError("Please write a comment first");
       isValid = false;
     }
 
@@ -122,13 +134,18 @@ const Comments = (props) => {
       {!deleteOpen && (
         <div className="in-line">
           <FormField value={comment} onChange={setComment} error={error} />
-          <Button
-            disabled={!comment}
-            className={"green-button submit"}
+          <IconButton
+            hoverIcon={BiSolidCommentAdd}
+            icon={BiCommentDetail}
             onClick={createComment}
-          >
-            Submit
-          </Button>
+            className="green-icon"
+            style={{
+              scale: "2",
+              marginBottom: "10px",
+              marginLeft: "20px",
+              marginRight: "10px",
+            }}
+          />
         </div>
       )}
       {error && <div className="error-message">{error}</div>}

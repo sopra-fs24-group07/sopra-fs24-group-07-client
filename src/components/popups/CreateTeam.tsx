@@ -6,6 +6,9 @@ import { Button } from "components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import IconButton from "../ui/IconButton";
+
 const FormField = ({ value, onChange, error }) => {
   return (
     <div className="createTeam field">
@@ -126,9 +129,13 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
         <div className="createTeam header">
           <h2>Create Team</h2>
-          <Button width="20%" className="red-button bts" onClick={onClose}>
-            Close
-          </Button>
+          <IconButton
+            hoverIcon={IoMdCloseCircle}
+            icon={IoMdCloseCircleOutline}
+            onClick={onClose}
+            className="red-icon"
+            style={{ scale: "2.5", marginTop: "-5px" }}
+          />
         </div>
         <h3 className="createTeam headline">Name</h3>
         <FormField

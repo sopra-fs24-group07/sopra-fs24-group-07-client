@@ -45,6 +45,11 @@ const Registration = () => {
     repPassword: "",
   });
   const [generalError, setGeneralError] = useState("");
+  const [secret, setSecret] = useState(0);
+
+  const incSecret = () => {
+    setSecret(secret + 1);
+  };
 
   const validateForm = () => {
     let isValid = true;
@@ -133,7 +138,26 @@ const Registration = () => {
       <LogRegHeader></LogRegHeader>
       <BaseContainer>
         <div className="register center-align">
-          <img className="register logo" src={logo} alt="Logo" />
+          {secret >= 5 && (
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/DLzxrzFCyOs?autoplay=1&mute=1"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          )}
+          {secret < 5 && (
+            <img
+              className="register logo"
+              src={logo}
+              alt="Logo"
+              onClick={incSecret}
+            />
+          )}
           <div className="register container">
             {sessionStorage.getItem("teamUUID") && (
               <p>Please Register to join the team</p>

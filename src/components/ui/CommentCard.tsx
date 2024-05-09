@@ -4,6 +4,9 @@ import "../../styles/ui/CommentCard.scss";
 import { useParams } from "react-router-dom";
 import { Button } from "./Button";
 
+import { MdDeleteOutline, MdDelete } from "react-icons/md";
+import IconButton from "../ui/IconButton";
+
 function CommentCard(props) {
   const { comment, doDelete, isFake } = props;
 
@@ -26,12 +29,13 @@ function CommentCard(props) {
       <div className="comHeader">
         <div className="comAuthor">{comment.authorName}</div>
         {!isFake && (
-          <Button
-            className="red-button comDelete"
+          <IconButton
+            hoverIcon={MdDelete}
+            icon={MdDeleteOutline}
             onClick={() => doDelete(comment)}
-          >
-            DELETE
-          </Button>
+            className="red-icon"
+            style={{ scale: "1.7", marginTop: "2px", marginRight: "10px" }}
+          />
         )}
       </div>
       <div className="comText">{comment.text}</div>

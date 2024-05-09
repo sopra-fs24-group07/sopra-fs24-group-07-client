@@ -7,6 +7,19 @@ import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "./ConfirmDelete";
 import { Spinner } from "components/ui/Spinner";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import {
+  MdModeEditOutline,
+  MdOutlineModeEdit,
+  MdSave,
+  MdOutlineSave,
+  MdDeleteOutline,
+  MdDelete,
+  MdOutlineEditOff,
+  MdEditOff,
+} from "react-icons/md";
+import IconButton from "../ui/IconButton";
+
 const FormField = ({ label, value, onChange, type = "text" }) => (
   <div className="register field">
     <label className="register label" htmlFor={label}>
@@ -205,10 +218,24 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
     <div className="profileMenu-overlay" onClick={closeProfileSettings}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
         <div className="profileMenu-header">
-          <h2>Settings</h2>
-          <Button className="red-button" onClick={closeProfileSettings}>
-            Close
-          </Button>
+          <h2>User Settings</h2>
+          {!showConfirmationPopup && (
+            <IconButton
+              hoverIcon={MdEditOff}
+              icon={MdOutlineEditOff}
+              onClick={openProfileOnClose}
+              className="red-icon"
+              style={{ scale: "1.8", marginRight: "10px", marginLeft: "30px" }}
+            />
+          )}
+
+          <IconButton
+            hoverIcon={IoMdCloseCircle}
+            icon={IoMdCloseCircleOutline}
+            onClick={closeProfileSettings}
+            className="red-icon"
+            style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
+          />
         </div>
         {!showConfirmationPopup && (
           <div>
@@ -230,15 +257,23 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
               value={repPassword}
               onChange={setRepPassword}
             />
-            <Button className="green-button" onClick={saveChanges}>
-              Save
-            </Button>
-            <Button className="red-button" onClick={openProfileOnClose}>
-              Cancel
-            </Button>
-            <Button className="red-button" onClick={handleDeleteAccount}>
-              Delete Account
-            </Button>
+            <div className="profileMenu-header">
+              <IconButton
+                hoverIcon={MdSave}
+                icon={MdOutlineSave}
+                onClick={saveChanges}
+                className="green-icon"
+                style={{ scale: "2", marginLeft: "10px" }}
+              />
+
+              <IconButton
+                hoverIcon={MdDelete}
+                icon={MdDeleteOutline}
+                onClick={handleDeleteAccount}
+                className="red-icon"
+                style={{ scale: "2", marginRight: "10px" }}
+              />
+            </div>
           </div>
         )}
         {showConfirmationPopup && (

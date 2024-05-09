@@ -8,6 +8,8 @@ import AgoraRTM from "agora-rtm-sdk"; //RTM for Channels, Users, etc.
 import BaseContainer from "./BaseContainer";
 import { Button } from "./Button";
 import { Spinner } from "./Spinner";
+import IconButton from "../ui/IconButton";
+import { MdMic, MdMicOff, MdPhoneDisabled } from "react-icons/md";
 
 function VoiceChat() {
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
@@ -34,12 +36,14 @@ function VoiceChat() {
     members: "members",
     roomHeader: "room-header",
     roomFooter: "room-footer",
+    roomFooterMuted: "room-footer-muted",
     roomName: "room-name",
     backButton: "back-button",
     endSession: "endSession",
     form: "from",
     leaveButton: "leave-button",
     muteButton: "mute-button",
+    unMuteButton: "unMute-button",
     channels: "channels",
     leaveTeam: "leave-team",
   };
@@ -128,7 +132,7 @@ function VoiceChat() {
         if (item) {
           if (volume.level >= 50) {
             item.style.borderColor = "#AAFF00";
-          } else {
+          } else if (item.style.borderColor !== "rgb(255, 0, 0)") {
             item.style.borderColor = "#FFFFFF";
           }
         }
@@ -201,7 +205,6 @@ function VoiceChat() {
   setIds();
   const [tasks, setTasks] = useState([]);
   let micMuted = false;
-  let [buttonText, setButtonText] = useState("Mute");
 
   useEffect(() => {
     const fetchUserTasks = async () => {
@@ -297,6 +300,8 @@ function VoiceChat() {
         //remove channel control buttons
         document.getElementById(documentId.roomHeader).style.display = "none";
         document.getElementById(documentId.roomFooter).style.display = "none";
+        document.getElementById(documentId.roomFooterMuted).style.display =
+          "none";
         //remove the room name
         document.getElementById(documentId.roomName).innerHTML = "";
         //empty members
@@ -328,19 +333,37 @@ function VoiceChat() {
 
     const toggleMic = async () => {
       micMuted = !micMuted;
-      setButtonText(micMuted ? "Unmute" : "Mute");
       localAudioTrack.setMuted(micMuted);
+      if (micMuted) {
+        document.getElementById(documentId.roomFooter).style.display = "none";
+        document.getElementById(documentId.roomFooterMuted).style.display =
+          "flex";
+        let item = document.querySelector(`.user-rtc-${rtmUID}`) as HTMLElement;
+        if (item) {
+          item.style.borderColor = "#FF0000";
+        }
+      } else {
+        document.getElementById(documentId.roomFooter).style.display = "flex";
+        document.getElementById(documentId.roomFooterMuted).style.display =
+          "none";
+        let item = document.querySelector(`.user-rtc-${rtmUID}`) as HTMLElement;
+        if (item) {
+          item.style.borderColor = "#FFFFFF";
+        }
+      }
     };
 
     //just shortcuts
     const ChannelList = document.getElementById(documentId.form);
     const leaveButton = document.getElementById(documentId.leaveButton);
     const muteButton = document.getElementById(documentId.muteButton);
+    const unMuteButton = document.getElementById(documentId.unMuteButton);
 
     //add EventListener
     ChannelList.addEventListener("submit", enterRoom);
     leaveButton.addEventListener("click", leaveRoom);
     muteButton.addEventListener("click", toggleMic);
+    unMuteButton.addEventListener("click", toggleMic);
   }, [teamId]);
 
   useEffect(() => {
@@ -360,12 +383,14 @@ function VoiceChat() {
   return (
     <BaseContainer className="base-container">
       <div id={documentId.roomHeader} className="room-header">
-        <div className="room-header-controls">
-          <h1 className="room-name" id={documentId.roomName}></h1>
-          <Button id={documentId.leaveButton} className="leave-button">
-            Leave
-          </Button>
-        </div>
+        <h1 className="room-name" id={documentId.roomName}></h1>
+        <IconButton
+          id={documentId.leaveButton}
+          icon={MdPhoneDisabled}
+          className="red-icon"
+          style={{ scale: "2", marginRight: "-100%" }}
+        />
+        <div className="room-header-controls"></div>
       </div>
       <form id={documentId.form}>
         <div className="rooms" id={documentId.channels}></div>
@@ -375,9 +400,21 @@ function VoiceChat() {
       </form>
       <div className="members" id={documentId.members}></div>
       <div id={documentId.roomFooter} className="room-footer">
-        <Button className="mute-button" id={documentId.muteButton}>
-          {buttonText}
-        </Button>
+        <IconButton
+          icon={MdMic}
+          id={documentId.muteButton}
+          className="green-icon"
+          style={{ scale: "2.5", marginRight: "10px", marginTop: "15px" }}
+        />
+      </div>
+      <div id={documentId.roomFooterMuted} className="room-footer">
+        <div></div>
+        <IconButton
+          icon={MdMicOff}
+          id={documentId.unMuteButton}
+          className="red-icon"
+          style={{ scale: "2.5", marginRight: "10px", marginTop: "15px" }}
+        />
       </div>
       {isLoading && <Spinner />}
     </BaseContainer>

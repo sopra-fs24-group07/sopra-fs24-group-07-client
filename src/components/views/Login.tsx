@@ -41,6 +41,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // NEW SET ERROR METHOD
   const [isLoading, setIsLoading] = useState(false);
+  const [secret, setSecret] = useState(0);
+
+  const incSecret = () => {
+    setSecret(secret + 1);
+  };
 
   const doLogin = async () => {
     setIsLoading(true);
@@ -71,7 +76,26 @@ const Login = () => {
       <LogRegHeader></LogRegHeader>
       <BaseContainer>
         <div className="login center-align">
-          <img className="login logo" src={logo} alt="Logo" />
+          {secret >= 5 && (
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/DLzxrzFCyOs?autoplay=1&mute=1"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          )}
+          {secret < 5 && (
+            <img
+              className="login logo"
+              src={logo}
+              alt="Logo"
+              onClick={incSecret}
+            />
+          )}
           <div className="login container">
             {sessionStorage.getItem("teamUUID") && (
               <p>Please Login to join the team</p>
