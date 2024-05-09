@@ -91,8 +91,8 @@ const CreateTask = ({ isOpen, onClose }) => {
       isValid = false;
     }
 
-    if (description && description.length > 500) {
-      errors.description = "Description exceeds the 500 character limit";
+    if (description && description.length > 1000) {
+      errors.description = "Description exceeds the 1000 character limit";
       isValid = false;
     }
 

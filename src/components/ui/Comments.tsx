@@ -40,8 +40,8 @@ const Comments = (props) => {
   const validateForm = () => {
     let isValid = true;
 
-    if (comment.length > 500) {
-      setError("The comment exceeds 500 characters");
+    if (comment.length > 1000) {
+      setError("The comment exceeds 1000 characters");
       isValid = false;
     }
 

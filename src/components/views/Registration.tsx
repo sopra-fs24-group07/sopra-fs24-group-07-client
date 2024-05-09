@@ -55,8 +55,8 @@ const Registration = () => {
       isValid = false;
     }
 
-    if (username.length > 100) {
-      errors.username = "Username exceeds the 100 character limit!";
+    if (username.length > 30) {
+      errors.username = "Username exceeds the 30 character limit!";
       isValid = false;
     }
 
@@ -65,8 +65,8 @@ const Registration = () => {
       isValid = false;
     }
 
-    if (name.length > 100) {
-      errors.name = "Name exceeds the 100 character limit!";
+    if (name.length > 50) {
+      errors.name = "Name exceeds the 50 character limit!";
       isValid = false;
     }
 
@@ -80,8 +80,8 @@ const Registration = () => {
       isValid = false;
     }
 
-    if (password.length > 100) {
-      errors.password = "Password exceeds the 100 character limit";
+    if (password.length > 50) {
+      errors.password = "Password exceeds the 50 character limit";
       isValid = false;
     }
 
