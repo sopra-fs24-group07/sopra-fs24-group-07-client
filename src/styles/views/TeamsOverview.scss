@@ -35,7 +35,8 @@
     width: 100%;
 
     .team {
-      height: 100px;
+      min-height: 100px;
+      height: auto;
       width: auto;
       padding: 10px 0;
       font-size: 100%;
@@ -44,7 +45,8 @@
     }
 
     .create {
-      height: 100px;
+      min-height: 100px;
+      height: auto;
       width: auto;
       padding: 10px 0;
       font-size: 100%;
