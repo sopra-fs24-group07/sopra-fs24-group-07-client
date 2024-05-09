@@ -62,21 +62,23 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
         <FormField
           label="Username"
           type="text"
-          placeholder="Username"
           value={username}
           onChange={(newValue) => setUsername(newValue)}
         />
         <FormField
           label="Password"
           type="password"
-          placeholder="Password"
           value={password}
           onChange={(newValue) => setPassword(newValue)}
         />
-        <Button className="green-button" onClick={handleLoginAndDelete}>
-          Confirm
-        </Button>
-        <Button onClick={onCancel}>Cancel</Button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button className="green-button bts" onClick={handleLoginAndDelete}>
+            Confirm
+          </Button>
+          <Button className="red-button bts" onClick={onCancel}>
+            Cancel
+          </Button>
+        </div>
         {error && <div className="error-message">{error}</div>}
       </div>
     </div>

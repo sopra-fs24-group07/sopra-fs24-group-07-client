@@ -5,6 +5,10 @@ import { Button } from "components/ui/Button";
 import { User } from "types";
 import "../../styles/popups/ProfileMenu.scss";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import { MdModeEditOutline, MdOutlineModeEdit } from "react-icons/md";
+import IconButton from "../ui/IconButton";
+
 const Player = ({ user }) => (
   <div className="profile container">
     <div className="profile attribute">username: {user.username}</div>
@@ -52,6 +56,11 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
     onSettingsOpen();
   };
 
+  const doClose = () => {
+    onClose();
+    message = "";
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -59,15 +68,25 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
         <div className="profileMenu-header">
           <h2>Profile</h2>
-          <Button className="red-button" onClick={onClose}>
-            Close
-          </Button>
+          <IconButton
+            hoverIcon={IoMdCloseCircle}
+            icon={IoMdCloseCircleOutline}
+            onClick={onClose}
+            className="red-icon"
+            style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
+          />
         </div>
         {message && <div className="confirmation-message">{message}</div>}
         {user && <Player user={user} />}
-        <Button className="green-button" onClick={openSettings}>
-          Edit
-        </Button>
+        <div className="profileMenu-header">
+          <IconButton
+            hoverIcon={MdModeEditOutline}
+            icon={MdOutlineModeEdit}
+            onClick={openSettings}
+            className="green-icon"
+            style={{ scale: "1.8", marginTop: "15px", marginLeft: "10px" }}
+          />
+        </div>
         {error && <div className="error-message">{error}</div>}
       </div>
     </div>

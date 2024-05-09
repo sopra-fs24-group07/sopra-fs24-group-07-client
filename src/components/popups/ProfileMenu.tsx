@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate } from "react-router-dom";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import IconButton from "../ui/IconButton";
+
 const ProfileMenu = ({
   isOpen,
   onClose,
@@ -24,14 +27,19 @@ const ProfileMenu = ({
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
         <div className="profileMenu-header">
           <h2>Menu</h2>
-          <Button className="red-button" onClick={onClose}>
-            Close
-          </Button>
+          <IconButton
+            hoverIcon={IoMdCloseCircle}
+            icon={IoMdCloseCircleOutline}
+            onClick={onClose}
+            className="red-icon"
+            style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
+          />
         </div>
         <div className="profileMenu-actions">
-          <Button onClick={onProfileClick}>Profile</Button>
-          <Button onClick={onProfileSettingsClick}>Settings</Button>
-          <Button className="red-button" onClick={doLogout}>
+          <Button width="100%" className="bts" onClick={onProfileClick}>
+            Profile
+          </Button>
+          <Button width="100%" className="red-button bts" onClick={doLogout}>
             Logout
           </Button>
         </div>

@@ -18,6 +18,7 @@
   &.content {
     background-color: $accentDark;
     padding: 20px;
+    padding-top: 5px;
     border-radius: 8px;
     box-shadow: $dropShadow;
   }
@@ -26,7 +27,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-right: 10px;
   }
 
   &.label {

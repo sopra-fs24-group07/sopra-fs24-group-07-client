@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import IconButton from "../ui/IconButton";
+
 const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
   const [teamName, setTeamName] = useState();
   const { teamId } = useParams();
@@ -110,12 +113,16 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
       >
         <div className="SessionHistory header">
           <h2 className="SessionHistory headline">Team Sessions</h2>
-          <Button className="red-button" onClick={doClose}>
-            Close
-          </Button>
+          <IconButton
+            hoverIcon={IoMdCloseCircle}
+            icon={IoMdCloseCircleOutline}
+            onClick={doClose}
+            className="red-icon"
+            style={{ scale: "2.2", marginRight: "10px", marginTop: "5px" }}
+          />
         </div>
         {error && <p>{error}</p>}
-        {!error && (
+        {!error && sessions.length !== 0 && (
           <div>
             <ul className="SessionHistory list">
               {sessions.map((session) => (
@@ -141,9 +148,12 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
             </ul>
           </div>
         )}
-        <Button className="green-button" disabled>
-          Stats
-        </Button>
+        {!error && sessions.length === 0 && (
+          <div style={{ marginBottom: "20px" }}>
+            You have not been in any Sessions.
+            <br /> Better start now.
+          </div>
+        )}
       </div>
     </div>
   );

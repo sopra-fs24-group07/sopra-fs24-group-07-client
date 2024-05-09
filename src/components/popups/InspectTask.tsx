@@ -7,6 +7,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
 
+import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import {
+  MdModeEditOutline,
+  MdOutlineModeEdit,
+  MdSave,
+  MdOutlineSave,
+  MdDeleteOutline,
+  MdDelete,
+  MdOutlineEditOff,
+  MdEditOff,
+} from "react-icons/md";
+import IconButton from "../ui/IconButton";
+
 const FormField = (props) => {
   return (
     <div className="inspectTask field">
@@ -181,22 +194,34 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
         <div className="inspectTask header">
           {!editMode && (
-            <Button className="red-button bts" onClick={doClose}>
-              Close
-            </Button>
+            <IconButton
+              hoverIcon={IoMdCloseCircle}
+              icon={IoMdCloseCircleOutline}
+              onClick={doClose}
+              className="red-icon"
+              style={{ scale: "2.5", marginLeft: "10px", marginTop: "5px" }}
+            />
           )}
           {editMode && (
-            <Button className="red-button bts" onClick={DeactivateEditMode}>
-              Cancel
-            </Button>
+            <>
+              <div></div>
+              <IconButton
+                hoverIcon={MdEditOff}
+                icon={MdOutlineEditOff}
+                onClick={DeactivateEditMode}
+                className="red-icon"
+                style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
+              />
+            </>
           )}
           {!editMode && !inSession && (
-            <Button
-              className="green-button inspectTask edit bts"
+            <IconButton
+              hoverIcon={MdModeEditOutline}
+              icon={MdOutlineModeEdit}
               onClick={ActivateEditMode}
-            >
-              Edit
-            </Button>
+              className="green-icon"
+              style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
+            />
           )}
         </div>
         <h3 className="inspectTask headline">Task Title</h3>
@@ -221,31 +246,35 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
             <Comments taskId={task.taskId} />
           </>
         )}
-
-        {error && <p>{error}</p>}
-
-        <div className="inspectTask header">
-          {editMode && (
-            <Button
-              disabled={!taskTitle}
-              className="green-button bts"
-              onClick={EditTask}
-            >
-              Save
-            </Button>
-          )}
-
-          {editMode && (
-            <Button className="red-button bts" onClick={DeleteTask}>
-              Delete
-            </Button>
-          )}
-        </div>
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="error-message">
             {error}
           </div>
         ))}
+
+        {error && <p>{error}</p>}
+
+        <div className="inspectTask header">
+          {editMode && (
+            <IconButton
+              hoverIcon={MdSave}
+              icon={MdOutlineSave}
+              onClick={EditTask}
+              className="green-icon"
+              style={{ scale: "2.5", marginLeft: "10px", marginTop: "10px" }}
+            />
+          )}
+
+          {editMode && (
+            <IconButton
+              hoverIcon={MdDelete}
+              icon={MdDeleteOutline}
+              onClick={DeleteTask}
+              className="red-icon"
+              style={{ scale: "2.5", marginTop: "10px", marginRight: "10px" }}
+            />
+          )}
+        </div>
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

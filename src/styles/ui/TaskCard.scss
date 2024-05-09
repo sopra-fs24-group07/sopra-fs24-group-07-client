@@ -22,31 +22,22 @@
   margin-left: 5px;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  width: calc(100% - 32px);
+  width: calc(100% - 33px);
 }
 
-.goRight,
-.goLeft {
+.dragHandle {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   width: 30px;
   height: 100%;
-  font-weight: 800;
-  font-size: 16px;
   align-items: center;
   border: none;
   border-radius: 8px;
   cursor: grab;
-  background-color: $accent;
-  transition: all 0.3s ease;
-  box-shadow: $dropShadow;
-}
-
-.goRight {
-  right: 0; /* Align the right button to the right */
-}
-
-.goLeft {
-  left: 0; /* Align the left button to the left */
+  background: linear-gradient(
+    to left,
+    rgba(205, 236, 249, 1) 10%,
+    rgba(205, 236, 249, 0)
+  );
+  color: black;
+  right: 0;
 }
