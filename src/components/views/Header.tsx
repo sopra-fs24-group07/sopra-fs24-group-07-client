@@ -7,6 +7,9 @@ import ProfileMenu from "../popups/ProfileMenu";
 import Profile from "../popups/Profile";
 import ProfileSettings from "../popups/ProfileSettings";
 
+import IconButton from "../ui/IconButton";
+import { MdPerson, MdPersonOutline } from "react-icons/md";
+
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -76,7 +79,12 @@ const Header = (props) => {
         PRODUCTIVI<span className="header titlelarge">T</span>EAM
       </h1>
       <div className="header button-container">
-        <Button onClick={openProfileMenu}>Profile</Button>
+        <IconButton
+          hoverIcon={MdPerson}
+          icon={MdPersonOutline}
+          onClick={openProfileMenu}
+          style={{ scale: "3.5", marginRight: "25px" }}
+        />
         <ProfileMenu
           isOpen={isProfileMenuOpen}
           onClose={closeProfileMenu}
