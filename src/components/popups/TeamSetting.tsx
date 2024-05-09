@@ -5,6 +5,7 @@ import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
+import EmailInput from "components/ui/EmailInput";
 
 const FormField = (props) => {
   return (
@@ -71,6 +72,8 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   });
   const baseURL = window.location.origin;
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   const validateForm = () => {
     let isValid = true;
@@ -206,6 +209,33 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     }
   };
 
+  const sendInvitationEmail = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email format");
+      return;
+    }
+
+    setEmailError("");
+    const requestBody = {
+      teamUUID: teamUUID,
+      receiverEmail: email
+    }
+    try {
+      await api.post(`/api/v1/teams/${teamId}/invitations`, JSON.stringify(requestBody), {
+        headers: {
+          'Authorization': `${token}`
+        }
+      });
+
+      setEmail("");
+      setEmailError(`The invitation has been sent to ${email} !`);
+    } catch (error) {
+      console.error("Failed to send email:", handleError(error));
+      setEmailError("Could not send email");
+    }
+  };
+
   const doClose = () => {
     setError("");
     setLeaveError("");
@@ -253,8 +283,12 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               <div>
                 <div>
                   <h3 className="TeamSetting headline">Team Members</h3>
+                  <EmailInput email={email} setEmail={setEmail} emailError={emailError} />
+                  <Button className="invite-user" onClick={sendInvitationEmail}>
+                    Send Invitation Email
+                  </Button>
                   <Button className="invite-user" onClick={CopyInvitationLink}>
-                    Invite User
+                    Copy Invite Link
                   </Button>
                   {copied && (
                     <div>
@@ -313,3 +347,4 @@ TeamSettings.propTypes = {
 };
 
 export default TeamSettings;
+
