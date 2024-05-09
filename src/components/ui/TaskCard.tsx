@@ -8,6 +8,9 @@ import { Link, useParams } from "react-router-dom";
 import InspectTask from "components/popups/InspectTask";
 import { useDraggable } from "@dnd-kit/core";
 
+import IconButton from "../ui/IconButton";
+import { MdOutlineDragIndicator, MdDragIndicator } from "react-icons/md";
+
 function TaskCard(props) {
   const token = localStorage.getItem("token");
   const { task, col, sessionStatus, dragStyle } = props;
@@ -45,9 +48,14 @@ function TaskCard(props) {
         {task.title}
       </Link>
 
-      <button className="goRight" {...listeners} {...attributes}>
-        O
-      </button>
+      <IconButton
+        {...listeners}
+        {...attributes}
+        className="dragHandle"
+        hoverIcon={MdDragIndicator}
+        icon={MdOutlineDragIndicator}
+        style={{ scale: "1.0", marginRight: "-4px" }}
+      />
 
       <InspectTask
         isOpen={isInspectTaskOpen}
