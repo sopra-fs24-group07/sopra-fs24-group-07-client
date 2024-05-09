@@ -210,7 +210,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   };
 
   const sendInvitationEmail = async () => {
-
     setEmailError("");
     const requestBody = {
       teamUUID: teamUUID,
@@ -233,21 +232,29 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       console.error("Failed to send email:", handleError(error));
       if (!error.response) {
         setEmailError("Failed to send email: No server response.");
+
         return;
       }
-
       switch (error.response.status) {
         case 400:
-          setEmailError("Invalid email format. Please check the email address and try again.");
+          setEmailError(
+            "Invalid email format. Please check the email address and try again."
+          );
           break;
         case 401:
-          setEmailError("You are not authorized to send invitations for this team.");
+          setEmailError(
+            "You are not authorized to send invitations for this team."
+          );
           break;
         case 404:
-          setEmailError("Team not found. Please check the team details and try again.");
+          setEmailError(
+            "Team not found. Please check the team details and try again."
+          );
           break;
         case 503:
-          setEmailError("Unable to send email at this time. Mail service is unavailable.");
+          setEmailError(
+            "Unable to send email at this time. Mail service is unavailable."
+          );
           break;
         default:
           setEmailError("An unexpected error occurred. Please try again.");

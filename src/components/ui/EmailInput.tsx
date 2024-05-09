@@ -8,9 +8,9 @@ const EmailInput = ({ email, setEmail, emailError, setEmailError }) => {
     const value = e.target.value;
     setEmail(value);
     if (!emailRegex.test(value)) {
-      setEmailError('Please enter a valid email address.');
+      setEmailError("Please enter a valid email address.");
     } else {
-      setEmailError('');
+      setEmailError("");
     }
   };
 
