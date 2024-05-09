@@ -30,7 +30,6 @@ const ProfileMenu = ({
         </div>
         <div className="profileMenu-actions">
           <Button onClick={onProfileClick}>Profile</Button>
-          <Button onClick={onProfileSettingsClick}>Settings</Button>
           <Button className="red-button" onClick={doLogout}>
             Logout
           </Button>
