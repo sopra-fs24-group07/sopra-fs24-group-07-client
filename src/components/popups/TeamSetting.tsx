@@ -249,7 +249,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
         );
       } else if (error.response.status === 503) {
         setEmailError(
-          "Unable to send email at this time. Mail service is unavailable."
+          "Unable to send email at this time. Mail service is unavailable or the email address is not available."
         );
       } else {
         setEmailError("An unexpected error occurred. Please try again.");
