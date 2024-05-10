@@ -117,7 +117,7 @@ const Comments = (props) => {
     <div className="wrapper">
       {!deleteOpen && (
         <div className="in-line">
-          <FormField label={"Comment"} value={comment} onChange={setComment} error={error} />
+          <FormField label={"Comments"} value={comment} onChange={setComment} error={error} />
           <IconButton
             hoverIcon={BiSolidCommentAdd}
             icon={BiCommentDetail}

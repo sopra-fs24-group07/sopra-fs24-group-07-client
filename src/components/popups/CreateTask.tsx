@@ -9,6 +9,7 @@ import { Spinner } from "components/ui/Spinner";
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
 import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 
 
@@ -105,16 +106,7 @@ const CreateTask = ({ isOpen, onClose }) => {
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
-        <div className="inspectTask header">
-          <h2 className="inspectTask headline">Create Task</h2>
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={doClose}
-            className="red-icon"
-            style={{ scale: "2.5", marginRight: "15px" }}
-          />
-        </div>
+        <PopupHeader onClose={onClose} title="Create Task" />
         <FormField
           className="inspectTask input"
           label={"Title"}

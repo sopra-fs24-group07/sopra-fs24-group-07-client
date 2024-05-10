@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
   const [teamName, setTeamName] = useState();
@@ -111,16 +112,7 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
         className="SessionHistory content"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="SessionHistory header">
-          <h2 className="SessionHistory headline">Team Sessions</h2>
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={doClose}
-            className="red-icon"
-            style={{ scale: "2.2", marginRight: "10px", marginTop: "5px" }}
-          />
-        </div>
+        <PopupHeader onClose={onClose} title="Team Sessions" />
         {error && <p>{error}</p>}
         {!error && sessions.length !== 0 && (
           <div>

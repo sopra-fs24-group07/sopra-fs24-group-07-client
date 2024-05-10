@@ -8,6 +8,7 @@ import "../../styles/popups/ProfileMenu.scss";
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import { MdModeEditOutline, MdOutlineModeEdit } from "react-icons/md";
 import IconButton from "../ui/IconButton";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const Player = ({ user }) => (
   <div className="profile container">
@@ -66,18 +67,10 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
   return (
     <div className="profileMenu-overlay" onClick={onClose}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
-        <div className="profileMenu-header">
-          <h2>Profile</h2>
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={onClose}
-            className="red-icon"
-            style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
-          />
-        </div>
+        <PopupHeader onClose={onClose} title="Profile" />
         {message && <div className="confirmation-message">{message}</div>}
         {user && <Player user={user} />}
+
         <div className="profileMenu-header">
           <IconButton
             hoverIcon={MdModeEditOutline}

@@ -20,6 +20,7 @@ import {
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
 import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 
 const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
@@ -196,26 +197,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   return (
     <div className="profileMenu-overlay" onClick={closeProfileSettings}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
-        <div className="profileMenu-header">
-          <h2>User Settings</h2>
-          {!showConfirmationPopup && (
-            <IconButton
-              hoverIcon={MdEditOff}
-              icon={MdOutlineEditOff}
-              onClick={openProfileOnClose}
-              className="red-icon"
-              style={{ scale: "1.8", marginRight: "10px", marginLeft: "30px" }}
-            />
-          )}
-
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={closeProfileSettings}
-            className="red-icon"
-            style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
-          />
-        </div>
+        <PopupHeader onClose={onClose} title="Profile Settings"></PopupHeader>
         {!showConfirmationPopup && (
           <div>
             <FormField
@@ -242,7 +224,14 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
                 icon={MdOutlineSave}
                 onClick={saveChanges}
                 className="green-icon"
-                style={{ scale: "2", marginLeft: "10px" }}
+                style={{ scale: "2", marginLeft: "10px"}}
+              />
+              <IconButton
+                hoverIcon={MdEditOff}
+                icon={MdOutlineEditOff}
+                onClick={openProfileOnClose}
+                className="red-icon"
+                style={{ scale: "2" }}
               />
 
               <IconButton

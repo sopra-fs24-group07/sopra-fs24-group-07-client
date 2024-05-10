@@ -9,6 +9,7 @@ import { Spinner } from "components/ui/Spinner";
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
 import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const navigate = useNavigate();
@@ -86,16 +87,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   return (
     <div className="createTeam overlay" onClick={onClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <div className="createTeam header">
-          <h2>Create Team</h2>
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={onClose}
-            className="red-icon"
-            style={{ scale: "2.5", marginTop: "-5px" }}
-          />
-        </div>
+        <PopupHeader onClose={onClose} title="Create Team" />
         <FormField
           value={teamName}
           onChange={setTeamName}

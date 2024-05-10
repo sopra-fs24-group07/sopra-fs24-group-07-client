@@ -24,6 +24,9 @@
 
 .wrapper {
   width: 100%;
+  background-color: $accent;
+  border-radius: $borderRadius;
+  padding: 10px;
 }
 
 .in-line {
