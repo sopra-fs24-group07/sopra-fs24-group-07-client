@@ -8,6 +8,7 @@ import { Spinner } from "components/ui/Spinner";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
+import { MdAutoFixHigh, MdAutoFixNormal } from "react-icons/md";
 
 const FormField = ({ value, onChange, error }) => {
   return (
@@ -185,13 +186,18 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           onChange={setTeamDescription}
           error={errors.description}
         />
-        <Button
-          width="100%"
-          className="green-button"
+        <IconButton
+          hoverIcon={MdAutoFixHigh}
+          icon={MdAutoFixNormal}
           onClick={generateAIDescription}
-        >
-          AI generate
-        </Button>
+          className="yellow-icon"
+          style={{
+            scale: "2.3",
+            marginRight: "10px",
+            margin: "1em",
+            alignSelf: "flex-end",
+          }}
+        />
         <Button
           width="100%"
           className="green-button createTeam cButton"

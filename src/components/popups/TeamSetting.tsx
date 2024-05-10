@@ -5,6 +5,7 @@ import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
+import { Spinner } from "components/ui/Spinner";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import {
@@ -13,7 +14,7 @@ import {
   MdSave,
   MdOutlineSave,
   MdOutlineEditOff,
-  MdEditOff,
+  MdEditOff, MdAutoFixNormal, MdAutoFixHigh, MdAutoFixOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
 
@@ -82,6 +83,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   });
   const baseURL = window.location.origin;
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     let isValid = true;
@@ -217,6 +219,35 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     }
   };
 
+  const generateAIDescription = async () => {
+    setIsLoading(true);
+    if (!teamName) {
+      let newErrors = { name: "" };
+      console.log("No teamname was given", teamName);
+      newErrors.name = "Team name is required";
+      setErrors(newErrors);
+      setIsLoading(false);
+
+      return;
+    };
+    try {
+      let token = localStorage.getItem("token");
+      const requestBody = JSON.stringify({
+        prompt: teamName
+      });
+      const response = await api.post("/api/v1/ai/gpt-3.5-turbo-instruct", teamName, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      });
+      setTeamDescription(response.data);
+    } catch (error) {
+      console.error("Error generating description:", handleError(error));
+    }
+    setIsLoading(false);
+  };
+
   const doClose = () => {
     setError("");
     setLeaveError("");
@@ -312,6 +343,16 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                       marginLeft: "10px",
                     }}
                   />
+                  <IconButton
+                    hoverIcon={MdAutoFixHigh}
+                    icon={MdAutoFixNormal}
+                    onClick={generateAIDescription}
+                    className="yellow-icon"
+                    style={{
+                      scale: "2.3",
+                      marginRight: "10px",
+                    }}
+                  />
 
                   <IconButton
                     hoverIcon={MdEditOff}
@@ -329,6 +370,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
           </div>
         )}
       </div>
+      {isLoading ? <Spinner /> : ""}
     </div>
   );
 };
