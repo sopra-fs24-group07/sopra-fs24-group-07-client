@@ -118,6 +118,7 @@ const CreateTask = ({ isOpen, onClose }) => {
           className="inspectTask textarea"
           label={"Description"}
           value={description}
+          textArea={true}
           placeholder="enter description..."
           onChange={(dc: string) => setDescription(dc)}
         />

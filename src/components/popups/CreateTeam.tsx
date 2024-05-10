@@ -99,6 +99,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           onChange={setTeamDescription}
           error={errors.description}
           label={"Description"}
+          textArea={true}
         />
         <Button
           width="100%"

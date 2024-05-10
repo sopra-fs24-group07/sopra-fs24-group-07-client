@@ -222,6 +222,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               placeholder="Team Description..."
               disabled={!editMode}
               error={errors.description}
+              textArea={true}
             />
             {!editMode && (
               <div>

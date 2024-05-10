@@ -10,15 +10,31 @@
     margin-bottom: 5px;
   }
 
-  input, textarea {
+  input {
     padding: 10px;
-    font-size: 1em;
+    font-size: 1.2em;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background: $accent;
+    min-width: 15em;
 
     &:focus {
       outline: none;
-      border-color: #6c63ff; // Change this to your theme color
+      border-color: #6c63ff;
+    }
+  }
+
+  textarea {
+    padding: 10px;
+    font-size: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: $accent;
+    min-height: 12em;
+
+    &:focus {
+      outline: none;
+      border-color: #6c63ff;
     }
   }
 

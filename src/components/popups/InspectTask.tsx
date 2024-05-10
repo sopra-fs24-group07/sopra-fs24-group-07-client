@@ -162,6 +162,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
           disabled={editMode}
+          textArea={true}
         />
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="error-message">
