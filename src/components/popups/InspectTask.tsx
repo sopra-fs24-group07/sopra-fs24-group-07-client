@@ -98,8 +98,8 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
       isValid = false;
     }
 
-    if (taskDescription && taskDescription.length > 500) {
-      errors.description = "Description exceeds the 500 character limit";
+    if (taskDescription && taskDescription.length > 1000) {
+      errors.description = "Description exceeds the 1000 character limit";
       isValid = false;
     }
 

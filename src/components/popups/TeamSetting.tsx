@@ -93,8 +93,8 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     if (!teamName) {
       newErrors.name = "Team name is required";
       isValid = false;
-    } else if (teamName.length > 50) {
-      newErrors.name = "The name exceeds 50 characters";
+    } else if (teamName.length > 100) {
+      newErrors.name = "The name exceeds 100 characters";
       isValid = false;
     }
 
@@ -103,8 +103,8 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       isValid = false;
     }
 
-    if (teamDescription.length > 500) {
-      newErrors.description = "The description exceeds 500 characters";
+    if (teamDescription.length > 1000) {
+      newErrors.description = "The description exceeds 1000 characters";
       isValid = false;
     }
 
@@ -206,7 +206,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       if (error.response.status === 401) {
         setLeaveError("You are not authorized to leave the team, sorry!");
       } else if (error.response.status === 404) {
-        setLeaveError("Something went wrong. Try again later");
+        setLeaveError("Something went wrong. Try again later.");
       }
     }
   };
