@@ -5,6 +5,7 @@ import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
+import EmailInput from "components/ui/EmailInput";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import {
@@ -82,6 +83,8 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   });
   const baseURL = window.location.origin;
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   const validateForm = () => {
     let isValid = true;
@@ -217,11 +220,61 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     }
   };
 
+  const sendInvitationEmail = async () => {
+    setEmailError("");
+    const requestBody = {
+      teamUUID: teamUUID,
+      receiverEmail: email,
+    };
+    try {
+      await api.post(
+        `/api/v1/teams/${teamId}/invitations`,
+        JSON.stringify(requestBody),
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      setEmail("");
+      setEmailError(`The invitation has been sent to ${email} !`);
+    } catch (error) {
+      console.error("Failed to send email:", handleError(error));
+      if (!error.response) {
+        setEmailError("Failed to send email: No server response.");
+
+        return;
+      }
+      if (error.response.status === 400) {
+        setEmailError(
+          "Invalid email format. Please check the email address and try again."
+        );
+      } else if (error.response.status === 401) {
+        setEmailError(
+          "You are not authorized to send invitations for this team."
+        );
+      } else if (error.response.status === 404) {
+        setEmailError(
+          "Team not found. Please check the team details and try again."
+        );
+      } else if (error.response.status === 503) {
+        setEmailError(
+          "Unable to send email at this time. Mail service is unavailable or the email address is not available."
+        );
+      } else {
+        setEmailError("An unexpected error occurred. Please try again.");
+      }
+    }
+  };
+
   const doClose = () => {
     setError("");
     setLeaveError("");
     setCopied("");
     DeactivateEditMode();
+    setEmail("");
+    setEmailError("");
     onClose();
   };
 
@@ -272,8 +325,17 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               <div>
                 <div>
                   <h3 className="TeamSetting headline">Team Members</h3>
+                  <EmailInput
+                    email={email}
+                    setEmail={setEmail}
+                    emailError={emailError}
+                    setEmailError={setEmailError}
+                  />
+                  <Button className="invite-user" onClick={sendInvitationEmail}>
+                    Send Invitation Email
+                  </Button>
                   <Button className="invite-user" onClick={CopyInvitationLink}>
-                    Invite User
+                    Copy Invite Link
                   </Button>
                   {copied && (
                     <div>
