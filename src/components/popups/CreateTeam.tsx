@@ -122,17 +122,53 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     setIsLoading(false);
   };
 
+  const generateAIDescription = async () => {
+    setIsLoading(true);
+    if (!teamName) {
+      let newErrors = { name: "" };
+      console.log("No teamname was given", teamName);
+      newErrors.name = "Team name is required";
+      setErrors(newErrors);
+      setIsLoading(false);
+
+      return;
+    };
+    try {
+      let token = localStorage.getItem("token");
+      const requestBody = JSON.stringify({
+        prompt: teamName
+      });
+      const response = await api.post("/api/v1/ai/gpt-3.5-turbo-instruct", teamName, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      });
+      setTeamDescription(response.data);
+    } catch (error) {
+      console.error("Error generating description:", handleError(error));
+    }
+    setIsLoading(false);
+  };
+
   if (!isOpen) return null;
 
+  const setOnClose = () => {
+    setTeamName("");
+    setTeamDescription("");
+    setErrors({ name: "", description: "", general: "" });
+    onClose();
+  }
+
   return (
-    <div className="createTeam overlay" onClick={onClose}>
+    <div className="createTeam overlay" onClick={setOnClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
         <div className="createTeam header">
           <h2>Create Team</h2>
           <IconButton
             hoverIcon={IoMdCloseCircle}
             icon={IoMdCloseCircleOutline}
-            onClick={onClose}
+            onClick={setOnClose}
             className="red-icon"
             style={{ scale: "2.5", marginTop: "-5px" }}
           />
@@ -149,6 +185,13 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           onChange={setTeamDescription}
           error={errors.description}
         />
+        <Button
+          width="100%"
+          className="green-button"
+          onClick={generateAIDescription}
+        >
+          AI generate
+        </Button>
         <Button
           width="100%"
           className="green-button createTeam cButton"
