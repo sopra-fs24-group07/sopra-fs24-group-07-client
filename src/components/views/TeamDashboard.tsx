@@ -331,14 +331,14 @@ const TeamDashboard: React.FC = () => {
             <div className="team-dashboard settingsBox">
               <IconButton
                 className="dash-icon"
-                icon={MdSettings}
-                onClick={openTeamSettings}
+                icon={MdHistory}
+                onClick={openSessionHistory}
                 style={{ scale: "3.5", marginTop: "20px", marginLeft: "60px" }}
               />
               <IconButton
                 className="dash-icon"
-                icon={MdHistory}
-                onClick={openSessionHistory}
+                icon={MdSettings}
+                onClick={openTeamSettings}
                 style={{ scale: "3.5", marginTop: "20px", marginRight: "60px" }}
               />
               <div className="team-dashboard description">{teamDesc}</div>
