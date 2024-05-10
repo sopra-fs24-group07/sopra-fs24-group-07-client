@@ -22,7 +22,6 @@ import IconButton from "../ui/IconButton";
 import FormField from "../ui/FormField";
 import { PopupHeader } from "../ui/PopupHeader";
 
-
 const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   const [user, setUser] = useState({ id: "", username: "", name: "" });
   const [error, setError] = useState(null);
@@ -224,7 +223,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
                 icon={MdOutlineSave}
                 onClick={saveChanges}
                 className="green-icon"
-                style={{ scale: "2", marginLeft: "10px"}}
+                style={{ scale: "2", marginLeft: "10px" }}
               />
               <IconButton
                 hoverIcon={MdEditOff}

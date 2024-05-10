@@ -173,7 +173,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         {error && <p>{error}</p>}
 
         {editMode && (
-        <div className="inspectTask header">
+          <div className="inspectTask header">
             <IconButton
               hoverIcon={MdSave}
               icon={MdOutlineSave}
@@ -195,9 +195,8 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               className="red-icon"
               style={{ scale: "2.5", marginTop: "10px", marginRight: "10px" }}
             />
-
-        </div>
-      )}
+          </div>
+        )}
         {!editMode && !inSession && (
           <IconButton
             hoverIcon={MdModeEditOutline}
@@ -207,9 +206,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
             style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
           />
         )}
-        {!editMode && (
-            <Comments taskId={task.taskId} />
-        )}
+        {!editMode && <Comments taskId={task.taskId} />}
       </div>
 
       {isLoading ? <Spinner /> : ""}

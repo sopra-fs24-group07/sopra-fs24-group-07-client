@@ -2,7 +2,13 @@ import React from "react";
 import "styles/ui/FormField.scss";
 import PropTypes from "prop-types";
 
-const FormField = ({ label, value, onChange, type = "text", textArea = false}) => (
+const FormField = ({
+  label,
+  value,
+  onChange,
+  type = "text",
+  textArea = false,
+}) => (
   <div className="form-field">
     <label className="form-field label" htmlFor={label}>
       {label}
@@ -13,7 +19,7 @@ const FormField = ({ label, value, onChange, type = "text", textArea = false}) =
         placeholder="Enter here..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        id={label.replace(/\s+/g, '-').toLowerCase()}
+        id={label.replace(/\s+/g, "-").toLowerCase()}
       />
     ) : (
       <input
@@ -22,7 +28,7 @@ const FormField = ({ label, value, onChange, type = "text", textArea = false}) =
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        id={label.replace(/\s+/g, '-').toLowerCase()}
+        id={label.replace(/\s+/g, "-").toLowerCase()}
       />
     )}
   </div>

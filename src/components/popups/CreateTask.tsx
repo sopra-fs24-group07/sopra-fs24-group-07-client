@@ -11,8 +11,6 @@ import IconButton from "../ui/IconButton";
 import FormField from "../ui/FormField";
 import { PopupHeader } from "../ui/PopupHeader";
 
-
-
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
   const token = localStorage.getItem("token");

@@ -11,7 +11,6 @@ import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
 import FormField from "../ui/FormField";
 
-
 const Registration = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -149,11 +148,7 @@ const Registration = () => {
                 value={username}
                 onChange={setUsername}
               />
-              <FormField
-                label="Name"
-                value={name}
-                onChange={setName}
-              />
+              <FormField label="Name" value={name} onChange={setName} />
               <FormField
                 label="Password"
                 value={password}

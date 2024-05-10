@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import IconButton from "./IconButton";
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 
-export const PopupHeader = ({ onClose, title}) => (
+export const PopupHeader = ({ onClose, title }) => (
   <div className="profileMenu-header">
     <h2>{title}</h2>
     <IconButton
@@ -20,4 +20,3 @@ PopupHeader.propTypes = {
   onClose: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
-

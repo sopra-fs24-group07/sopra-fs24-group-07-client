@@ -16,7 +16,6 @@ import {
 import IconButton from "../ui/IconButton";
 import FormField from "./FormField";
 
-
 const Comments = (props) => {
   const { teamId } = useParams();
   const { taskId } = props;
@@ -117,7 +116,12 @@ const Comments = (props) => {
     <div className="wrapper">
       {!deleteOpen && (
         <div className="in-line">
-          <FormField label={"Comments"} value={comment} onChange={setComment} error={error} />
+          <FormField
+            label={"Comments"}
+            value={comment}
+            onChange={setComment}
+            error={error}
+          />
           <IconButton
             hoverIcon={BiSolidCommentAdd}
             icon={BiCommentDetail}
