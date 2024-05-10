@@ -233,7 +233,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
             hoverIcon={IoMdCloseCircle}
             icon={IoMdCloseCircleOutline}
             onClick={closeProfileSettings}
-            className="red-icon"
+            className="blue-icon"
             style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
           />
         </div>

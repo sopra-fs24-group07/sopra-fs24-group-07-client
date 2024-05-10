@@ -117,7 +117,7 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
             hoverIcon={IoMdCloseCircle}
             icon={IoMdCloseCircleOutline}
             onClick={doClose}
-            className="red-icon"
+            className="blue-icon"
             style={{ scale: "2.2", marginRight: "10px", marginTop: "5px" }}
           />
         </div>

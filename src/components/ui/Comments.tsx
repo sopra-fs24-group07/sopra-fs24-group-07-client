@@ -138,7 +138,7 @@ const Comments = (props) => {
             hoverIcon={BiSolidCommentAdd}
             icon={BiCommentDetail}
             onClick={createComment}
-            className="green-icon"
+            className="blue-icon"
             style={{
               scale: "2",
               marginBottom: "10px",

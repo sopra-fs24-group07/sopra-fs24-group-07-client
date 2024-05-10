@@ -133,7 +133,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
             hoverIcon={IoMdCloseCircle}
             icon={IoMdCloseCircleOutline}
             onClick={onClose}
-            className="red-icon"
+            className="blue-icon"
             style={{ scale: "2.5", marginTop: "-5px" }}
           />
         </div>

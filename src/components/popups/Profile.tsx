@@ -72,7 +72,7 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
             hoverIcon={IoMdCloseCircle}
             icon={IoMdCloseCircleOutline}
             onClick={onClose}
-            className="red-icon"
+            className="blue-icon"
             style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
           />
         </div>
@@ -83,7 +83,7 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
             hoverIcon={MdModeEditOutline}
             icon={MdOutlineModeEdit}
             onClick={openSettings}
-            className="green-icon"
+            className="blue-icon"
             style={{ scale: "1.8", marginTop: "15px", marginLeft: "10px" }}
           />
         </div>

@@ -198,7 +198,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               hoverIcon={IoMdCloseCircle}
               icon={IoMdCloseCircleOutline}
               onClick={doClose}
-              className="red-icon"
+              className="blue-icon"
               style={{ scale: "2.5", marginLeft: "10px", marginTop: "5px" }}
             />
           )}
@@ -219,7 +219,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               hoverIcon={MdModeEditOutline}
               icon={MdOutlineModeEdit}
               onClick={ActivateEditMode}
-              className="green-icon"
+              className="blue-icon"
               style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
             />
           )}

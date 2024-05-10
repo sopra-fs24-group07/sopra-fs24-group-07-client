@@ -152,7 +152,7 @@ const CreateTask = ({ isOpen, onClose }) => {
             hoverIcon={IoMdCloseCircle}
             icon={IoMdCloseCircleOutline}
             onClick={doClose}
-            className="red-icon"
+            className="blue-icon"
             style={{ scale: "2.5", marginRight: "15px" }}
           />
         </div>

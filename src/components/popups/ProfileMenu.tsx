@@ -31,7 +31,7 @@ const ProfileMenu = ({
             hoverIcon={IoMdCloseCircle}
             icon={IoMdCloseCircleOutline}
             onClick={onClose}
-            className="red-icon"
+            className="blue-icon"
             style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
           />
         </div>
