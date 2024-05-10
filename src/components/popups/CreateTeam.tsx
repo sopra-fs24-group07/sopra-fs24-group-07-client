@@ -8,48 +8,7 @@ import { Spinner } from "components/ui/Spinner";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
-
-const FormField = ({ value, onChange, error }) => {
-  return (
-    <div className="createTeam field">
-      <input
-        className="createTeam input"
-        type="text"
-        placeholder="enter here.."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-      {error && <p className="error-message">{error}</p>}
-    </div>
-  );
-};
-
-const FormFieldLong = ({ value, onChange, error }) => {
-  return (
-    <div className="createTeam field">
-      <textarea
-        className="createTeam textarea"
-        type="text"
-        placeholder="enter here.."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-      {error && <p className="error-message">{error}</p>}
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
-};
-
-FormFieldLong.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
-};
+import FormField from "../ui/FormField";
 
 const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const navigate = useNavigate();
@@ -137,17 +96,17 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
             style={{ scale: "2.5", marginTop: "-5px" }}
           />
         </div>
-        <h3 className="createTeam headline">Name</h3>
         <FormField
           value={teamName}
           onChange={setTeamName}
           error={errors.name}
+          label={"Name"}
         />
-        <h3 className="createTeam headline">Description</h3>
-        <FormFieldLong
+        <FormField
           value={teamDescription}
           onChange={setTeamDescription}
           error={errors.description}
+          label={"Description"}
         />
         <Button
           width="100%"

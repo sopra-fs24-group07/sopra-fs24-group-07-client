@@ -19,29 +19,8 @@ import {
   MdEditOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
+import FormField from "../ui/FormField";
 
-const FormField = ({ label, value, onChange, type = "text" }) => (
-  <div className="register field">
-    <label className="register label" htmlFor={label}>
-      {label}
-    </label>
-    <input
-      className="register input"
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  </div>
-);
-
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
 
 const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   const [user, setUser] = useState({ id: "", username: "", name: "" });

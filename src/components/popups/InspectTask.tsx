@@ -19,54 +19,7 @@ import {
   MdEditOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
-
-const FormField = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <input
-        className="inspectTask input"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={!props.disabled}
-      />
-    </div>
-  );
-};
-
-const FormFieldLong = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <textarea
-        className="inspectTask textarea"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={!props.disabled}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-};
-
-FormFieldLong.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-};
+import FormField from "../ui/FormField";
 
 const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [editMode, setEditMode] = useState(false);
@@ -224,17 +177,17 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
             />
           )}
         </div>
-        <h3 className="inspectTask headline">Task Title</h3>
         <FormField
           className="inspectTask input"
+          label={"Task Title"}
           value={taskTitle}
           placeholder="enter title..."
           onChange={(ti: string) => setTaskTitle(ti)}
           disabled={editMode}
         />
-        <h3 className="inspectTask headline">Task Description</h3>
-        <FormFieldLong
+        <FormField
           className="inspectTask textarea"
+          label={"Task Description"}
           value={taskDescription}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
@@ -242,7 +195,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         />
         {!editMode && (
           <>
-            <h3 className="inspectTask headline">Comments</h3>
             <Comments taskId={task.taskId} />
           </>
         )}

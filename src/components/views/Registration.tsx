@@ -9,27 +9,8 @@ import PropTypes from "prop-types";
 import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
+import FormField from "../ui/FormField";
 
-const FormField = ({ label, value, onChange, type = "text", error }) => (
-  <div className="register field">
-    <label className="register label">{label}</label>
-    <input
-      className={`register input ${error ? "input-error" : ""}`}
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={onChange}
-    />
-  </div>
-);
-
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-  error: PropTypes.string,
-};
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -166,24 +147,24 @@ const Registration = () => {
               <FormField
                 label="Username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={setUsername}
               />
               <FormField
                 label="Name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={setName}
               />
               <FormField
                 label="Password"
                 value={password}
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={setPassword}
               />
               <FormField
                 label="Repeat Password"
                 value={repPassword}
                 type="password"
-                onChange={(e) => setRepPassword(e.target.value)}
+                onChange={setRepPassword}
               />
               <div className="register button-container">
                 <Button
