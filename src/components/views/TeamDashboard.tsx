@@ -15,9 +15,10 @@ import SessionTaskBoard from "../ui/SessionTaskBoard";
 import Pusher from "pusher-js";
 import MemberCard from "components/ui/MemberCard";
 import SessionHistory from "components/popups/SessionHistory";
+import TeamMembers from "../popups/TeamMembers";
 
 import IconButton from "../ui/IconButton";
-import { MdHistory, MdSettings } from "react-icons/md";
+import { MdHistory, MdSettings, MdPeople } from "react-icons/md";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -32,6 +33,7 @@ const TeamDashboard: React.FC = () => {
   const token = localStorage.getItem("token") || "";
   const userId = localStorage.getItem("id");
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
+  const [isTeamMembersOpen, setTeamMembersOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
@@ -77,6 +79,14 @@ const TeamDashboard: React.FC = () => {
       navigate("/teams");
       setIsLeave(false);
     }
+  };
+
+  const openTeamMembers = () => {
+    setTeamMembersOpen(true);
+  };
+
+  const closeTeamMembers = () => {
+    setTeamMembersOpen(false);
   };
 
   const openSessionHistory = () => {
@@ -332,6 +342,11 @@ const TeamDashboard: React.FC = () => {
               <div className="team-dashboard dash-buttons">
                 <IconButton
                   className="dash-icon"
+                  icon={MdPeople}
+                  onClick={openTeamMembers}
+                />
+                <IconButton
+                  className="dash-icon"
                   icon={MdHistory}
                   onClick={openSessionHistory}
                 />
@@ -374,6 +389,13 @@ const TeamDashboard: React.FC = () => {
         <TeamSettings
           isOpen={isTeamSettingsOpen}
           onClose={closeTeamSettings}
+          isLeave={isLeave}
+          setIsLeave={setIsLeave}
+          onEdit={fetchTeamInfo}
+        />
+        <TeamMembers
+          isOpen={isTeamMembersOpen}
+          onClose={closeTeamMembers}
           isLeave={isLeave}
           setIsLeave={setIsLeave}
           onEdit={fetchTeamInfo}

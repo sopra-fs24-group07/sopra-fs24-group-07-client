@@ -151,19 +151,20 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           error={errors.description}
           label={"Description"}
           textArea={true}
-        />
-        <IconButton
-          hoverIcon={MdAutoFixHigh}
-          icon={MdAutoFixNormal}
-          onClick={generateAIDescription}
-          className="yellow-icon"
-          style={{
-            scale: "2.3",
-            marginRight: "10px",
-            margin: "1em",
-            alignSelf: "flex-end",
-          }}
-        />
+        >
+          <IconButton
+            hoverIcon={MdAutoFixHigh}
+            icon={MdAutoFixNormal}
+            onClick={generateAIDescription}
+            className="yellow-icon"
+            style={{
+              scale: "2",
+              marginRight: "10px",
+              margin: "1em",
+              alignSelf: "flex-end",
+            }}
+          />
+        </FormField>
         <Button
           width="100%"
           className="green-button createTeam cButton"

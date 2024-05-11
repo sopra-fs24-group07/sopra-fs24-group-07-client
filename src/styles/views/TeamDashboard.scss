@@ -68,7 +68,7 @@
     border: 2px solid $background;
     box-shadow: 4px 4px $background;
     display: flex;
-    width: 5em;
+    width: 7em;
     height: 2.5em;
     padding: 20px;
     justify-content: space-between;
@@ -91,6 +91,7 @@
     padding-left: 1em;
     padding-right: 0.4em; /* Adjust padding as needed */
     box-sizing: border-box;
+    font-size: 20px;
   }
 
   &.settingsButton {
