@@ -91,7 +91,12 @@ const Header = (props) => {
       <h1 className="header title" onClick={onTitleClick}>
         PRODUCTIVI<span className="header titlelarge">T</span>EAM
       </h1>
-      {showEasterEgg && <EasterEggPopup isOpen={showEasterEgg}  onClose={() => setShowEasterEgg(false)} />}
+      {showEasterEgg && (
+        <EasterEggPopup
+          isOpen={showEasterEgg}
+          onClose={() => setShowEasterEgg(false)}
+        />
+      )}
       <div className="header button-container">
         <IconButton
           hoverIcon={MdPerson}

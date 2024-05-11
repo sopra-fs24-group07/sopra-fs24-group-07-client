@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import '../../styles/popups/EasterEggPopup.scss';
-import { Button } from '../ui/Button';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import "../../styles/popups/EasterEggPopup.scss";
+import { Button } from "../ui/Button";
 import logo from "../../assets/logo.png";
 
 const generateAsciiGrid = (names) => {
@@ -17,7 +17,7 @@ const generateAsciiGrid = (names) => {
   }
 
   // Randomly place names within the grid
-  names.forEach(name => {
+  names.forEach((name) => {
     const x = Math.floor(Math.random() * gridHeight);
     const y = Math.floor(Math.random() * gridWidth);
     grid[x][y] = name;
@@ -27,10 +27,10 @@ const generateAsciiGrid = (names) => {
 };
 
 const nameLinks = {
-  "Alihan": "https://youtube.com",
-  "Basil": "https://instagram.com/basilfurrer",
-  "Sven": "https://github.com",
-  "Timon": "https://formula1.com"
+  Alihan: "https://youtube.com",
+  Basil: "https://instagram.com/basilfurrer",
+  Sven: "https://github.com",
+  Timon: "https://formula1.com",
 };
 
 const EasterEggPopup = ({ isOpen, onClose }) => {
@@ -46,19 +46,38 @@ const EasterEggPopup = ({ isOpen, onClose }) => {
 
   return (
     <div className="easter-egg-popup overlay" onClick={onClose}>
-      <div className="easter-egg-popup content" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="easter-egg-popup content"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="easter-egg-popup header">
           <h2>You have found us!</h2>
-          <Button className="red-button" onClick={onClose}>Close</Button>
+          <Button className="red-button" onClick={onClose}>
+            Close
+          </Button>
         </div>
         <img src={logo} alt="Logo" className="easter-egg-popup logo" />
         {grid.map((row, i) => (
           <div key={i} className="grid-row">
             {row.map((cell, j) => (
-              <span key={j} className={["Alihan", "Basil", "Sven", "Timon"].includes(cell) ? "name" : "char"}>
+              <span
+                key={j}
+                className={
+                  ["Alihan", "Basil", "Sven", "Timon"].includes(cell)
+                    ? "name"
+                    : "char"
+                }
+              >
                 {["Alihan", "Basil", "Sven", "Timon"].includes(cell) ? (
-                  <Button className="name-button" onClick={() => window.open(nameLinks[cell], "_blank")}>{cell}</Button>
-                ) : cell}
+                  <Button
+                    className="name-button"
+                    onClick={() => window.open(nameLinks[cell], "_blank")}
+                  >
+                    {cell}
+                  </Button>
+                ) : (
+                  cell
+                )}
               </span>
             ))}
           </div>
