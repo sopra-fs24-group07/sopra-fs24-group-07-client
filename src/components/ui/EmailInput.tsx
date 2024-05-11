@@ -26,7 +26,6 @@ const EmailInput = ({ email, setEmail, error, setError }) => {
         value={email}
         onChange={handleEmailChange}
       />
-      {error && <p className="TeamSetting error">{error}</p>}
     </div>
   );
 };

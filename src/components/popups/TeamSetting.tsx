@@ -33,20 +33,22 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const { teamId } = useParams();
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
-  const [error, setError] = useState("");
-  const [leaveError, setLeaveError] = useState("");
   const [errors, setErrors] = useState({
     name: "",
     description: "",
+    email: "",
+    form: "",
+    leaveTeam: "",
   });
   const baseURL = window.location.origin;
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const { notify } = useNotification();
+  const [generalError, setGeneralError] = useState("");
 
   const validateForm = () => {
     let isValid = true;
-    let newErrors = { name: "", description: "" };
+    let newErrors = { ...errors, name: "", description: "" };
 
     if (!teamName) {
       newErrors.name = "Team name is required";
@@ -59,15 +61,12 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     if (!teamDescription) {
       newErrors.description = "The description is required";
       isValid = false;
-    }
-
-    if (teamDescription.length > 1000) {
+    } else if (teamDescription.length > 1000) {
       newErrors.description = "The description exceeds 1000 characters";
       isValid = false;
     }
 
     setErrors(newErrors);
-
     return isValid;
   };
 
@@ -84,7 +83,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       setTeamUUID(foundTeam.teamUUID);
       setInviteURL(`${baseURL}/invitation/${foundTeam.teamUUID}`);
     } catch (error) {
-      setError("Something went wrong. Please try again");
+      setErrors({ ...errors, form: "Something went wrong. Please try again" });
       console.error("Something went wrong on:", handleError(error));
     }
   };
@@ -98,9 +97,9 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       });
       setTeamMembers(response.data);
     } catch (error) {
-      setError("Something went wrong. Please try again");
+      setErrors({ ...errors, form: "Something went wrong. Please try again" });
       if (error.response.status === 401) {
-        setLeaveError("You are not authorized to do this");
+        setErrors({ ...errors, leaveTeam: "You are not authorized to do this" });
       }
       console.error(handleError(error));
     }
@@ -109,6 +108,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const editTeam = async () => {
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
+      console.log(errors.form);
       return;
     }
     try {
@@ -125,7 +125,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       DeactivateEditMode();
       notify("success", "Team updated successfully!");
     } catch (error) {
-      setError("Something went wrong. Please try again");
+      setErrors({ ...errors, form: "Something went wrong. Please try again" });
       notify("error", "Failed to update team. Please try again.");
       console.error("Error while updating Team", handleError(error));
     }
@@ -141,8 +141,10 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const ActivateEditMode = () => {
     setEditMode(true);
   };
+
   const DeactivateEditMode = () => {
     setErrors({
+      ...errors,
       name: "",
       description: "",
     });
@@ -165,13 +167,13 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       navigate("/teams");
       notify("success", "You have left the team successfully!");
     } catch (error) {
-      setLeaveError("Failed to leave team");
+      setErrors({ ...errors, leaveTeam: "Failed to leave team" });
       notify("error", "Failed to leave team. Please try again.");
       console.error("Failed to leave team:", handleError(error));
       if (error.response.status === 401) {
-        setLeaveError("You are not authorized to leave the team, sorry!");
+        setErrors({ ...errors, leaveTeam: "You are not authorized to leave the team, sorry!" });
       } else if (error.response.status === 404) {
-        setLeaveError("Something went wrong. Try again later.");
+        setErrors({ ...errors, leaveTeam: "Something went wrong. Try again later." });
       }
     }
   };
@@ -188,7 +190,12 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   };
 
   const sendInvitationEmail = async () => {
-    setError("");
+    setErrors({ ...errors, email: "" }); // Clear previous email errors
+    if (email.length === 0 || !email.includes("@")) {
+      setErrors({ ...errors, email: "Invalid email format." });
+      return;
+    }
+
     const requestBody = {
       teamUUID: teamUUID,
       receiverEmail: email,
@@ -203,157 +210,158 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
           },
         }
       );
-
       setEmail("");
-      setError(`The invitation has been sent to ${email} !`);
       notify("success", "Invitation email sent successfully!");
     } catch (error) {
       console.error("Failed to send email:", handleError(error));
       notify("error", "Failed to send email. Please try again.");
       if (!error.response) {
-        setError("Failed to send email: No server response.");
-
-        return;
-      }
-      if (error.response.status === 400) {
-        setError(
-          "Invalid email format. Please check the email address and try again."
-        );
+        setErrors({ ...errors, email: "Failed to send email: No server response." });
+      } else if (error.response.status === 400) {
+        setErrors({ ...errors, email: "Invalid email format. Please check the email address and try again." });
       } else if (error.response.status === 401) {
-        setError("You are not authorized to send invitations for this team.");
+        setErrors({ ...errors, email: "You are not authorized to send invitations for this team." });
       } else if (error.response.status === 404) {
-        setError(
-          "Team not found. Please check the team details and try again."
-        );
+        setErrors({ ...errors, email: "Team not found. Please check the team details and try again." });
       } else if (error.response.status === 503) {
-        setError(
-          "Unable to send email at this time. Mail service is unavailable or the email address is not available."
-        );
+        setErrors({ ...errors, email: "Unable to send email at this time. Mail service is unavailable or the email address is not available." });
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        setErrors({ ...errors, email: "An unexpected error occurred. Please try again." });
       }
     }
   };
 
   const doClose = () => {
-    setError("");
-    setLeaveError("");
+    setErrors({
+      name: "",
+      description: "",
+      email: "",
+      form: "",
+      leaveTeam: "",
+    });
     setCopied("");
-    DeactivateEditMode();
     setEmail("");
+    DeactivateEditMode();
+    setGeneralError("");
     onClose();
+  };
+
+  const getAllErrorMessages = () => {
+    const fieldErrors = Object.values(errors).filter((error) => error);
+    if (generalError) fieldErrors.push(generalError);
+
+    return fieldErrors;
   };
 
   return (
     <div className="TeamSetting overlay" onClick={doClose}>
       <div className="TeamSetting content" onClick={(e) => e.stopPropagation()}>
-        <PopupHeader
-          onClose={onClose}
-          title={editMode ? "Edit Team" : "Your Team"}
-        />
-        {error && <p>{error}</p>}
-        {!error && (
-          <div>
-            <FormField
-              className="TeamSetting input"
-              label={"Team Name"}
-              value={teamName}
-              onChange={setTeamName}
-              placeholder="Team Name..."
-              disabled={!editMode}
-              error={errors.name}
-            >
-              {!editMode && (
-                <IconButton
-                  hoverIcon={MdModeEditOutline}
-                  icon={MdOutlineModeEdit}
-                  onClick={ActivateEditMode}
-                  className="green-icon"
-                  style={{ scale: "2.3", marginRight: "10px" }}
-                />
-              )}
-              {editMode && (
-                <IconButton
-                  hoverIcon={MdEditOff}
-                  icon={MdOutlineEditOff}
-                  onClick={DeactivateEditMode}
-                  className="red-icon"
-                  style={{
-                    scale: "2.3",
-                    marginRight: "10px",
-                  }}
-                />
-              )}
-
-            </FormField>
-            <FormField
-              className="TeamSetting input"
-              label={"Team Description"}
-              value={teamDescription}
-              onChange={setTeamDescription}
-              placeholder="Team Description..."
-              disabled={!editMode}
-              error={errors.description}
-              textArea={true}
-            />
+        <PopupHeader onClose={doClose} title={editMode ? "Edit Team" : "Your Team"} />
+        {errors.form && <p className="error-message">{errors.form}</p>}
+        <div>
+          <FormField
+            className="TeamSetting input"
+            label={"Team Name"}
+            value={teamName}
+            onChange={setTeamName}
+            placeholder="Team Name..."
+            disabled={!editMode}
+            error={errors.name}
+          >
             {!editMode && (
-              <div>
-                <div>
-                  <h3 className="TeamSetting headline">Team Members</h3>
-                  <EmailInput
-                    email={email}
-                    setEmail={setEmail}
-                    error={error}
-                    setError={setError}
-                  />
-                  <Button className="invite-user" onClick={sendInvitationEmail}>
-                    Send Invitation Email
-                  </Button>
-                  <Button className="invite-user" onClick={CopyInvitationLink}>
-                    Copy Invite Link
-                  </Button>
-                  {copied && (
-                    <div>
-                      <input className="TeamSetting input" value={inviteURL} />
-                      <br />
-                      <div className="TeamSetting copied">{copied}</div>
-                    </div>
-                  )}
-                  <ul className="TeamSetting list">
-                    {teamMembers.map((member) => (
-                      <li className="TeamSetting listItem" key={member.id}>
-                        {member.username} ({member.name})
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <Button onClick={LeaveTeam} className="leave-team">
-                  Leave Team
-                </Button>
-                {leaveError && (
-                  <div className="TeamSetting error">{leaveError}</div>
-                )}
-              </div>
+              <IconButton
+                hoverIcon={MdModeEditOutline}
+                icon={MdOutlineModeEdit}
+                onClick={ActivateEditMode}
+                className="green-icon"
+                style={{ scale: "2.3", marginRight: "10px" }}
+              />
             )}
-            <p>{error}</p>
+            {editMode && (
+              <IconButton
+                hoverIcon={MdEditOff}
+                icon={MdOutlineEditOff}
+                onClick={DeactivateEditMode}
+                className="red-icon"
+                style={{ scale: "2.3", marginRight: "10px" }}
+              />
+            )}
+          </FormField>
+          <FormField
+            className="TeamSetting input"
+            label={"Team Description"}
+            value={teamDescription}
+            onChange={setTeamDescription}
+            placeholder="Team Description..."
+            disabled={!editMode}
+            error={errors.description}
+            textArea={true}
+          />
+          <div>
+            {getAllErrorMessages().map((error, index) => (
+              <div key={index} className="TeamSetting error">
+                {error}
+              </div>
+            ))}
+          </div>
+          {!editMode && (
             <div>
-              {editMode && (
-                <div className="TeamSetting footer">
-                  <IconButton
-                    hoverIcon={MdSave}
-                    icon={MdOutlineSave}
-                    onClick={editTeam}
-                    className="green-icon"
-                    style={{
-                      scale: "2.5",
-                      marginLeft: "10px",
-                    }}
-                  />
+              <div className="TeamSetting members">
+                <h3 className="TeamSetting headline">Invite Member</h3>
+                <EmailInput
+                  label={"Email"}
+                  email={email}
+                  setEmail={setEmail}
+                  error={errors.email}
+                  setError={(emailError) => setErrors({ ...errors, email: emailError })}
+                />
+                <div className="button-container">
+                <Button className="invite-user" onClick={sendInvitationEmail}>
+                  Send as Email
+                </Button>
+                <Button className="invite-user" onClick={CopyInvitationLink}>
+                  Copy Link
+                </Button>
                 </div>
+                {copied && (
+                  <div>
+                    <input className="TeamSetting input" value={inviteURL} />
+                    <br />
+                    <div className="TeamSetting copied">{copied}</div>
+                  </div>
+                )}
+                <h3 className="TeamSetting headline">Team Members</h3>
+                <ul className="TeamSetting list">
+                  {teamMembers.map((member) => (
+                    <li className="TeamSetting listItem" key={member.id}>
+                      {member.username} ({member.name})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <Button onClick={LeaveTeam} className="leave-team">
+                Leave Team
+              </Button>
+              {errors.leaveTeam && (
+                <div className="error-message">{errors.leaveTeam}</div>
               )}
             </div>
-          </div>
-        )}
+          )}
+          {editMode && (
+            <div className="TeamSetting footer">
+              <IconButton
+                hoverIcon={MdSave}
+                icon={MdOutlineSave}
+                onClick={editTeam}
+                className="green-icon"
+                style={{
+                  scale: "2.5",
+                  marginLeft: "10px",
+                }}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -363,9 +371,8 @@ TeamSettings.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
-  task: PropTypes.object.isRequired,
   setIsLeave: PropTypes.func,
-  isLeave: PropTypes.boolean,
+  isLeave: PropTypes.bool,
 };
 
 export default TeamSettings;

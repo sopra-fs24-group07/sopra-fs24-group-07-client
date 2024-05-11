@@ -3,13 +3,25 @@
 .TeamSetting {
   &.error {
     width: 100%;
-    max-width: 20em;
-    margin-top: 0px;
+    margin-bottom: 2em;
     font-size: 10px;
-    text-align: center;
     color: red;
     padding: 5px;
     word-wrap: break-word;
+    text-align: left;
+    max-width: 10%;
+    white-space: nowrap;
+  }
+
+
+  &.members {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: $accent;
+    border-radius: $borderRadius;
+    padding: 1em;
+    margin-bottom: 1em;
   }
 
   &.copied {
@@ -74,11 +86,12 @@
     height: 35px;
     padding-left: 15px;
     margin-left: -4px;
-    border: none;
-    border-radius: 0.75em;
+    border-radius: $borderRadius;
     margin-bottom: 10px;
-    background: transparentize(white, 0.85);
-    color: $background;
+    background-color: $accent;
+    border: 2px solid $background;
+    box-shadow: 4px 4px $background;
+    min-width: 18em;
   }
 
   &.textarea {
@@ -155,4 +168,13 @@
   font-weight: 700;
   text-transform: uppercase;
   font-size: medium;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
 }

@@ -21,7 +21,7 @@
     font-size: 1.2em;
     border: 0; //switch to 1px solid #ccc;
     border-radius: $borderRadius;
-    background: #b0e2f5; //switch to $accent
+    background: $accent;
     min-width: 15em;
     border: 2px solid $background;
     box-shadow: 4px 4px $background;
@@ -36,7 +36,7 @@
     padding: 10px;
     font-size: 1.2em;
     border-radius: $borderRadius;
-    background: #b0e2f5; //switch to $accent
+    background: $accent;
     min-height: 6em;
     max-width: 100%;
     max-height: 100%;
