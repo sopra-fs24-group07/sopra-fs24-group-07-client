@@ -7,7 +7,6 @@ import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import EmailInput from "components/ui/EmailInput";
 
-import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import {
   MdModeEditOutline,
   MdOutlineModeEdit,
@@ -147,6 +146,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       ...errors,
       name: "",
       description: "",
+      email: "",
     });
     fetchUserTeam();
     setEditMode(false);
@@ -190,9 +190,9 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   };
 
   const sendInvitationEmail = async () => {
-    setErrors({ ...errors, email: "" }); // Clear previous email errors
+    setErrors({ ...errors, email: "" });
     if (email.length === 0 || !email.includes("@")) {
-      setErrors({ ...errors, email: "Invalid email format." });
+      setErrors({ ...errors, email: "Please enter a valid email address." });
       return;
     }
 
@@ -212,6 +212,13 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       );
       setEmail("");
       notify("success", "Invitation email sent successfully!");
+      setErrors({
+        name: "",
+        description: "",
+        email: "",
+        form: "",
+        leaveTeam: "",
+      });
     } catch (error) {
       console.error("Failed to send email:", handleError(error));
       notify("error", "Failed to send email. Please try again.");
@@ -231,6 +238,14 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     }
   };
 
+  const getAllErrorMessages = () => {
+    const fieldErrors = Object.values(errors).filter((error) => error);
+    if (generalError) fieldErrors.push(generalError);
+
+    return fieldErrors;
+  };
+
+
   const doClose = () => {
     setErrors({
       name: "",
@@ -241,16 +256,9 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     });
     setCopied("");
     setEmail("");
-    DeactivateEditMode();
     setGeneralError("");
+    DeactivateEditMode();
     onClose();
-  };
-
-  const getAllErrorMessages = () => {
-    const fieldErrors = Object.values(errors).filter((error) => error);
-    if (generalError) fieldErrors.push(generalError);
-
-    return fieldErrors;
   };
 
   return (
