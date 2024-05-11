@@ -41,6 +41,35 @@
       font-size: 100%;
       overflow-wrap: break-word;
       word-wrap: break-word;
+
+      &:hover::after {
+        content: attr(title);
+        position: absolute;
+        bottom: -4em;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        z-index: 1;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: $background;
+        color: white;
+        font-size: 14px;
+        display: block;
+      }
+
+      &:hover::before {
+        position: absolute;
+        content: "";
+        height: 8px;
+        width: 8px;
+        background: $background;
+        bottom: -1.45em;
+        scale: 150%;
+        left: 50%;
+        transform: translate(-50%) rotate(45deg);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
     }
 
     .create {

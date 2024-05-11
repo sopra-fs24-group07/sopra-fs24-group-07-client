@@ -163,6 +163,7 @@ const Registration = () => {
               />
               <div className="register button-container">
                 <Button
+                  className="login-button"
                   disabled={!username || !name || !password || !repPassword}
                   width="50%"
                   onClick={doRegister}
@@ -179,7 +180,7 @@ const Registration = () => {
             <label className="register message">
               Already haven an account?
             </label>
-            <Button width="60%" onClick={() => navigate("/login")}>
+            <Button className="login-button" width="60%" onClick={() => navigate("/login")}>
               Go to Login
             </Button>
           </div>

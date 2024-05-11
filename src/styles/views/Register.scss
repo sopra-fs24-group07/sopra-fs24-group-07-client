@@ -24,7 +24,9 @@
     transition:
       opacity 0.5s ease,
       transform 0.5s ease;
-    box-shadow: $dropShadow;
+    border: 2px solid $background;
+    box-shadow: 4px 4px $background;
+
   }
   &.field {
     display: flex;

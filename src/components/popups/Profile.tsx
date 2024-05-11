@@ -9,6 +9,7 @@ import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import { MdModeEditOutline, MdOutlineModeEdit } from "react-icons/md";
 import IconButton from "../ui/IconButton";
 import { PopupHeader } from "../ui/PopupHeader";
+import FormField from "../ui/FormField";
 
 const Player = ({ user }) => (
   <div className="profile container">
@@ -68,8 +69,25 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
     <div className="profileMenu-overlay" onClick={onClose}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
         <PopupHeader onClose={onClose} title="Profile" />
+        {user && (
+          <div>
+          <FormField
+            label="Name"
+            type="text"
+            value={user.name}
+            onChange={user.name}
+            disabled={true}
+          />
+          <FormField
+          label="Username"
+          type="text"
+          value={user.username}
+        onChange={user.username}
+          disabled={true}
+      />
+          </div>
+        )}
         {message && <div className="confirmation-message">{message}</div>}
-        {user && <Player user={user} />}
 
         <div className="profileMenu-header">
           <IconButton

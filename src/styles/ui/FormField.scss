@@ -23,6 +23,8 @@
     border-radius: $borderRadius;
     background: #b0e2f5; //switch to $accent
     min-width: 15em;
+    border: 2px solid $background;
+    box-shadow: 4px 4px $background;
 
     &:focus {
       outline: none;
@@ -33,7 +35,6 @@
   textarea {
     padding: 10px;
     font-size: 1.2em;
-    border: 0; //switch to 1px solid #ccc;
     border-radius: $borderRadius;
     background: #b0e2f5; //switch to $accent
     min-height: 6em;
@@ -42,6 +43,8 @@
     width: 25em;
     resize: none;
     color: black;
+    border: 2px solid $background;
+    box-shadow: 4px 4px $background;
 
     &:focus {
       outline: none;
