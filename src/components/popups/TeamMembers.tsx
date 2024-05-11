@@ -98,6 +98,7 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     try {
       await navigator.clipboard.writeText(inviteURL);
       setCopied("Copied to clipboard!");
+      setErrors({ ...errors, email: "" });
       notify("success", "Invitation link copied to clipboard!");
     } catch (error) {
       notify("error", "Failed to copy the correct invitation link!");
