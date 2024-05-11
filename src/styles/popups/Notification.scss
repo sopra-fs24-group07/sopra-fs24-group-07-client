@@ -1,0 +1,31 @@
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s;
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .notification-icon {
+    margin-right: 10px;
+  }
+
+  .close-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+  }
+}

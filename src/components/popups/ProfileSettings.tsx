@@ -6,6 +6,7 @@ import "../../styles/popups/ProfileMenu.scss";
 import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "./ConfirmDelete";
 import { Spinner } from "components/ui/Spinner";
+import { useNotification } from './NotificationContext';
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import {
@@ -60,6 +61,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   const [generalError, setGeneralError] = useState("");
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   useEffect(() => {
     async function fetchUser() {
@@ -161,6 +163,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
         });
 
         console.log("Saving changes:", response);
+        notify("OK", "The changes have been saved!");
         setUser(updatedUser);
         setUsername(updatedUser.username);
         setName(updatedUser.name);
