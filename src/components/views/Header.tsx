@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ProfileMenu from "../popups/ProfileMenu";
 import Profile from "../popups/Profile";
 import ProfileSettings from "../popups/ProfileSettings";
+import EasterEggPopup from "../popups/EasterEggPopup"; // A new component you'll need to create
 
 import IconButton from "../ui/IconButton";
 import { MdPerson, MdPersonOutline } from "react-icons/md";
@@ -17,6 +18,8 @@ const Header = (props) => {
   const [isProfileOpen, setProfileOpen] = useState(false);
   const [isProfileSettingsOpen, setProfileSettingsOpen] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
+  const [titleClickCount, setTitleClickCount] = useState(0);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
 
   const goTeamsOverview = () => {
     navigate("/teams");
@@ -64,6 +67,16 @@ const Header = (props) => {
     setProfileSettingsOpen(true);
   };
 
+  const onTitleClick = () => {
+    const newCount = titleClickCount + 1;
+    if (newCount >= 5) {
+      setShowEasterEgg(true);
+      setTitleClickCount(0); // Reset count after showing the easter egg
+    } else {
+      setTitleClickCount(newCount);
+    }
+  };
+
   return (
     <div className="header container" style={{ height: props.height }}>
       <div className="header button-container">
@@ -75,9 +88,10 @@ const Header = (props) => {
           </Button>
         )}
       </div>
-      <h1 className="header title">
+      <h1 className="header title" onClick={onTitleClick}>
         PRODUCTIVI<span className="header titlelarge">T</span>EAM
       </h1>
+      {showEasterEgg && <EasterEggPopup isOpen={showEasterEgg}  onClose={() => setShowEasterEgg(false)} />}
       <div className="header button-container">
         <IconButton
           hoverIcon={MdPerson}

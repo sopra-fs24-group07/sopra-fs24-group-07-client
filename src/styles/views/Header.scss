@@ -3,8 +3,8 @@
 .header {
   &.container {
     display: flex;
-    justify-content: space-between; /* Align buttons to the left and right */
-    align-items: center; /* Center the title vertically */
+    justify-content: space-between;
+    align-items: center;
     height: 5em;
     background-color: $accentDark;
   }
@@ -12,7 +12,8 @@
   &.title {
     font-weight: bold;
     color: $background;
-    text-align: center; /* Center the title horizontally */
+    text-align: center;
+    user-select: none;
   }
 
   &.titlelarge {
