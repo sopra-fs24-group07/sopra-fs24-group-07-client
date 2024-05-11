@@ -3,18 +3,15 @@ import PropTypes from "prop-types";
 import "../../styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import { useLocation, useNavigate } from "react-router-dom";
-import ProfileMenu from "../popups/ProfileMenu";
 import Profile from "../popups/Profile";
 import ProfileSettings from "../popups/ProfileSettings";
-import EasterEggPopup from "../popups/EasterEggPopup"; // A new component you'll need to create
-
+import EasterEggPopup from "../popups/EasterEggPopup";
 import IconButton from "../ui/IconButton";
 import { MdPerson, MdPersonOutline } from "react-icons/md";
 
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
   const [isProfileOpen, setProfileOpen] = useState(false);
   const [isProfileSettingsOpen, setProfileSettingsOpen] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
@@ -25,17 +22,8 @@ const Header = (props) => {
     navigate("/teams");
   };
 
-  const openProfileMenu = () => {
-    setProfileMenuOpen(true);
-  };
-
-  const closeProfileMenu = () => {
-    setProfileMenuOpen(false);
-  };
-
   const openProfile = () => {
     setProfileOpen(true);
-    closeProfileMenu();
   };
 
   const closeProfile = () => {
@@ -45,7 +33,6 @@ const Header = (props) => {
 
   const openProfileSettings = () => {
     setProfileSettingsOpen(true);
-    closeProfileMenu();
   };
 
   const closeProfileSettings = () => {
@@ -101,14 +88,9 @@ const Header = (props) => {
         <IconButton
           hoverIcon={MdPerson}
           icon={MdPersonOutline}
-          onClick={openProfileMenu}
+          title={"Menu"}
+          onClick={openProfile}
           style={{ scale: "3.5", marginRight: "25px" }}
-        />
-        <ProfileMenu
-          isOpen={isProfileMenuOpen}
-          onClose={closeProfileMenu}
-          onProfileClick={openProfile}
-          onProfileSettingsClick={openProfileSettings}
         />
         <Profile
           isOpen={isProfileOpen}

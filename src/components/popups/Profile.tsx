@@ -10,6 +10,7 @@ import { MdModeEditOutline, MdOutlineModeEdit } from "react-icons/md";
 import IconButton from "../ui/IconButton";
 import { PopupHeader } from "../ui/PopupHeader";
 import FormField from "../ui/FormField";
+import { useNavigate } from "react-router-dom";
 
 const Player = ({ user }) => (
   <div className="profile container">
@@ -25,6 +26,13 @@ Player.propTypes = {
 const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+  const doLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("id"); // todo depending on our implementation of the get userId from user token call we need to change this
+    navigate("/start");
+  };
 
   useEffect(() => {
     async function fetchUser() {
@@ -72,32 +80,40 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
         {user && (
           <div>
             <FormField
+              label="Username"
+              type="text"
+              value={user.username}
+              onChange={user.username}
+              disabled={true}
+            >
+              <IconButton
+                hoverIcon={MdModeEditOutline}
+                icon={MdOutlineModeEdit}
+                onClick={openSettings}
+                title={"Edit Profile"}
+                className="green-icon"
+                style={{
+                  scale: "1.8",
+                  marginLeft: "10px",
+                  marginBottom: "10px",
+                }}
+              />
+            </FormField>
+            <FormField
               label="Name"
               type="text"
               value={user.name}
               onChange={user.name}
               disabled={true}
             />
-            <FormField
-              label="Username"
-              type="text"
-              value={user.username}
-              onChange={user.username}
-              disabled={true}
-            />
+            <Button width="30%" className="red-button bts" onClick={doLogout}>
+              Logout
+            </Button>
           </div>
         )}
         {message && <div className="confirmation-message">{message}</div>}
 
-        <div className="profileMenu-header">
-          <IconButton
-            hoverIcon={MdModeEditOutline}
-            icon={MdOutlineModeEdit}
-            onClick={openSettings}
-            className="green-icon"
-            style={{ scale: "1.8", marginTop: "15px", marginLeft: "10px" }}
-          />
-        </div>
+        <div className="profileMenu-header"></div>
         {error && <div className="error-message">{error}</div>}
       </div>
     </div>

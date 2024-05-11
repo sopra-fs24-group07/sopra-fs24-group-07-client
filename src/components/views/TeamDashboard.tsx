@@ -343,16 +343,19 @@ const TeamDashboard: React.FC = () => {
                 <IconButton
                   className="dash-icon"
                   icon={MdPeople}
+                  title={"Team Members"}
                   onClick={openTeamMembers}
                 />
                 <IconButton
                   className="dash-icon"
                   icon={MdHistory}
+                  title={"Session History"}
                   onClick={openSessionHistory}
                 />
                 <IconButton
                   className="dash-icon"
                   icon={MdSettings}
+                  title={"Team Settings"}
                   onClick={openTeamSettings}
                 />
               </div>

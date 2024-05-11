@@ -199,14 +199,19 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   return (
     <div className="profileMenu-overlay" onClick={closeProfileSettings}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
-        <PopupHeader onClose={onClose} title="Profile Settings"></PopupHeader>
+        <PopupHeader onClose={onClose} title="Edit Profile"></PopupHeader>
         {!showConfirmationPopup && (
           <div>
-            <FormField
-              label="Username"
-              value={username}
-              onChange={setUsername}
-            />
+            <FormField label="Username" value={username} onChange={setUsername}>
+              <IconButton
+                hoverIcon={MdEditOff}
+                icon={MdOutlineEditOff}
+                onClick={openProfileOnClose}
+                title={"Quit Editing"}
+                className="red-icon"
+                style={{ scale: "2" }}
+              />
+            </FormField>
             <FormField label="Name" value={name} onChange={setName} />
             <FormField
               label="Password"
@@ -225,21 +230,15 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
                 hoverIcon={MdSave}
                 icon={MdOutlineSave}
                 onClick={saveChanges}
+                title={"Save Changes"}
                 className="green-icon"
                 style={{ scale: "2", marginLeft: "10px" }}
               />
               <IconButton
-                hoverIcon={MdEditOff}
-                icon={MdOutlineEditOff}
-                onClick={openProfileOnClose}
-                className="red-icon"
-                style={{ scale: "2" }}
-              />
-
-              <IconButton
                 hoverIcon={MdDelete}
                 icon={MdDeleteOutline}
                 onClick={handleDeleteAccount}
+                title={"Delete Account"}
                 className="red-icon"
                 style={{ scale: "2", marginRight: "10px" }}
               />
