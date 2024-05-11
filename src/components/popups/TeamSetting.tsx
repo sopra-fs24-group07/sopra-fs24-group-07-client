@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import EmailInput from "components/ui/EmailInput";
+import { Spinner } from "components/ui/Spinner";
 
 import {
   MdModeEditOutline,
@@ -14,6 +15,9 @@ import {
   MdOutlineSave,
   MdOutlineEditOff,
   MdEditOff,
+  MdAutoFixNormal,
+  MdAutoFixHigh,
+  MdAutoFixOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
 import { useNotification } from "./NotificationContext";
@@ -44,6 +48,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [email, setEmail] = useState("");
   const { notify } = useNotification();
   const [generalError, setGeneralError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     let isValid = true;
@@ -284,6 +289,39 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     return fieldErrors;
   };
 
+  const generateAIDescription = async () => {
+    setIsLoading(true);
+    if (!teamName) {
+      let newErrors = { name: "" };
+      console.log("No teamname was given", teamName);
+      newErrors.name = "Team name is required";
+      setErrors(newErrors);
+      setIsLoading(false);
+
+      return;
+    }
+    try {
+      let token = localStorage.getItem("token");
+      const requestBody = JSON.stringify({
+        prompt: teamName,
+      });
+      const response = await api.post(
+        "/api/v1/ai/gpt-3.5-turbo-instruct",
+        teamName,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setTeamDescription(response.data);
+    } catch (error) {
+      console.error("Error generating description:", handleError(error));
+    }
+    setIsLoading(false);
+  };
+
   const doClose = () => {
     setErrors({
       name: "",
@@ -345,7 +383,20 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
             disabled={!editMode}
             error={errors.description}
             textArea={true}
-          />
+          >
+            {editMode && (
+              <IconButton
+                hoverIcon={MdAutoFixHigh}
+                icon={MdAutoFixNormal}
+                onClick={generateAIDescription}
+                className="yellow-icon"
+                style={{
+                  scale: "2.3",
+                  marginRight: "10px",
+                }}
+              />
+            )}
+          </FormField>
           <div>
             {getAllErrorMessages().map((error, index) => (
               <div key={index} className="TeamSetting error">
@@ -414,6 +465,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
           )}
         </div>
       </div>
+      {isLoading ? <Spinner /> : ""}
     </div>
   );
 };

@@ -9,8 +9,11 @@ import { useNotification } from "./NotificationContext";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
+
 import FormField from "../ui/FormField";
 import { PopupHeader } from "../ui/PopupHeader";
+
+import { MdAutoFixHigh, MdAutoFixNormal } from "react-icons/md";
 
 const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const navigate = useNavigate();
@@ -90,10 +93,50 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     setIsLoading(false);
   };
 
+  const generateAIDescription = async () => {
+    setIsLoading(true);
+    if (!teamName) {
+      let newErrors = { name: "" };
+      console.log("No teamname was given", teamName);
+      newErrors.name = "Team name is required";
+      setErrors(newErrors);
+      setIsLoading(false);
+
+      return;
+    }
+    try {
+      let token = localStorage.getItem("token");
+      const requestBody = JSON.stringify({
+        prompt: teamName,
+      });
+      const response = await api.post(
+        "/api/v1/ai/gpt-3.5-turbo-instruct",
+        teamName,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setTeamDescription(response.data);
+    } catch (error) {
+      console.error("Error generating description:", handleError(error));
+    }
+    setIsLoading(false);
+  };
+
   if (!isOpen) return null;
 
+  const setOnClose = () => {
+    setTeamName("");
+    setTeamDescription("");
+    setErrors({ name: "", description: "", general: "" });
+    onClose();
+  };
+
   return (
-    <div className="createTeam overlay" onClick={onClose}>
+    <div className="createTeam overlay" onClick={setOnClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
         <PopupHeader onClose={onClose} title="Create Team" />
         <FormField
@@ -108,6 +151,18 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           error={errors.description}
           label={"Description"}
           textArea={true}
+        />
+        <IconButton
+          hoverIcon={MdAutoFixHigh}
+          icon={MdAutoFixNormal}
+          onClick={generateAIDescription}
+          className="yellow-icon"
+          style={{
+            scale: "2.3",
+            marginRight: "10px",
+            margin: "1em",
+            alignSelf: "flex-end",
+          }}
         />
         <Button
           width="100%"
