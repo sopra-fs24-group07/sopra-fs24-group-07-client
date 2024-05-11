@@ -142,6 +142,13 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
 
   const ActivateEditMode = () => {
     setEditMode(true);
+    setErrors({
+      name: "",
+      description: "",
+      email: "",
+      form: "",
+      leaveTeam: "",
+    });
   };
 
   const DeactivateEditMode = () => {
