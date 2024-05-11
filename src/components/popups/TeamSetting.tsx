@@ -20,6 +20,7 @@ import IconButton from "../ui/IconButton";
 import { useNotification } from "./NotificationContext";
 
 import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [editMode, setEditMode] = useState(false);
@@ -246,25 +247,10 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   return (
     <div className="TeamSetting overlay" onClick={doClose}>
       <div className="TeamSetting content" onClick={(e) => e.stopPropagation()}>
-        <div className="TeamSetting header">
-          <h2>Team Settings</h2>
-          {!editMode && (
-            <IconButton
-              hoverIcon={MdModeEditOutline}
-              icon={MdOutlineModeEdit}
-              onClick={ActivateEditMode}
-              className="green-icon"
-              style={{ scale: "2.3", marginRight: "10px" }}
-            />
-          )}
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={doClose}
-            className="red-icon"
-            style={{ scale: "2.5", marginRight: "10px" }}
-          />
-        </div>
+        <PopupHeader
+          onClose={onClose}
+          title={editMode ? "Edit Team" : "Your Team"}
+        />
         {error && <p>{error}</p>}
         {!error && (
           <div>
@@ -276,7 +262,30 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               placeholder="Team Name..."
               disabled={!editMode}
               error={errors.name}
-            />
+            >
+              {!editMode && (
+                <IconButton
+                  hoverIcon={MdModeEditOutline}
+                  icon={MdOutlineModeEdit}
+                  onClick={ActivateEditMode}
+                  className="green-icon"
+                  style={{ scale: "2.3", marginRight: "10px" }}
+                />
+              )}
+              {editMode && (
+                <IconButton
+                  hoverIcon={MdEditOff}
+                  icon={MdOutlineEditOff}
+                  onClick={DeactivateEditMode}
+                  className="red-icon"
+                  style={{
+                    scale: "2.3",
+                    marginRight: "10px",
+                  }}
+                />
+              )}
+
+            </FormField>
             <FormField
               className="TeamSetting input"
               label={"Team Description"}
@@ -338,17 +347,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                     style={{
                       scale: "2.5",
                       marginLeft: "10px",
-                    }}
-                  />
-
-                  <IconButton
-                    hoverIcon={MdEditOff}
-                    icon={MdOutlineEditOff}
-                    onClick={DeactivateEditMode}
-                    className="red-icon"
-                    style={{
-                      scale: "2.3",
-                      marginRight: "10px",
                     }}
                   />
                 </div>
