@@ -6,7 +6,7 @@ import "../../styles/popups/ProfileMenu.scss";
 import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "./ConfirmDelete";
 import { Spinner } from "components/ui/Spinner";
-import { useNotification } from './NotificationContext';
+import { useNotification } from "./NotificationContext";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import {

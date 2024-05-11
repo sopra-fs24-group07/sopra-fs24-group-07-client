@@ -8,7 +8,7 @@ import { Spinner } from "components/ui/Spinner";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
-import { useNotification } from '../popups/NotificationContext';
+import { useNotification } from "../popups/NotificationContext";
 
 const FormField = (props) => {
   return (
@@ -114,7 +114,7 @@ const CreateTask = ({ isOpen, onClose }) => {
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
       return;
-    };
+    }
 
     try {
       const requestBody = JSON.stringify({ title, description });

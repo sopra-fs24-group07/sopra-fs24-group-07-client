@@ -10,7 +10,6 @@ import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
 
-
 //NEW FORMFIELD: WITHOUT CODE REPETITION
 const FormField = ({ label, value, onChange, type = "text" }) => (
   <div className="register field">

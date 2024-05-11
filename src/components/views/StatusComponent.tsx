@@ -5,7 +5,7 @@ import { api } from "helpers/api";
 import PropTypes from "prop-types";
 import "styles/views/TeamDashboard.scss";
 import "styles/views/StatusComponent.scss";
-import { useNotification } from '../popups/NotificationContext';
+import { useNotification } from "../popups/NotificationContext";
 
 interface StatusComponentProps {
   sessionStatus: string;

@@ -19,7 +19,7 @@ import {
   MdEditOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
-import { useNotification} from "./NotificationContext";
+import { useNotification } from "./NotificationContext";
 
 const FormField = (props) => {
   return (
@@ -132,7 +132,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
       return;
-    };
+    }
     try {
       task.title = taskTitle;
       task.description = taskDescription;

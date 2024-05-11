@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
-import { useNotification } from './NotificationContext';
+import { useNotification } from "./NotificationContext";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
@@ -95,9 +95,9 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const createTeam = async () => {
     setIsLoading(true);
     if (!validateForm()) {
-      notify("error", "Some inputs are invalid!")
+      notify("error", "Some inputs are invalid!");
       return;
-    };
+    }
 
     try {
       let token = localStorage.getItem("token");

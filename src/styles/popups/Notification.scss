@@ -15,7 +15,9 @@
   background-color: $accent;
   border-radius: $borderRadius;
   padding: 10px;
-  transition: opacity 0.3s, top 0.3s ease-in-out;
+  transition:
+    opacity 0.3s,
+    top 0.3s ease-in-out;
   border: 2px solid $background;
   box-shadow: 4px 4px $background;
   margin-bottom: 1em; /* spacing between notifications */
@@ -25,7 +27,8 @@
   margin-right: 10px;
 }
 
-.close-btn, .link-btn {
+.close-btn,
+.link-btn {
   margin-left: auto;
   padding: 5px 10px;
   cursor: pointer;

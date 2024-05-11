@@ -10,11 +10,11 @@ const GameRouter = ({ base }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <NotificationProvider>
-      <Header height="100" />
-      <Routes>
-        <Route path="" element={<TeamsOverview />} />
-        <Route path=":teamId" element={<TeamDashboard />} />
-      </Routes>
+        <Header height="100" />
+        <Routes>
+          <Route path="" element={<TeamsOverview />} />
+          <Route path=":teamId" element={<TeamDashboard />} />
+        </Routes>
       </NotificationProvider>
     </div>
   );

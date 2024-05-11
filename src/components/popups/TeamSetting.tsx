@@ -153,7 +153,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
       return;
-    };
+    }
     try {
       const requestBody = JSON.stringify({
         name: teamName,
@@ -263,9 +263,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
           "Invalid email format. Please check the email address and try again."
         );
       } else if (error.response.status === 401) {
-        setError(
-          "You are not authorized to send invitations for this team."
-        );
+        setError("You are not authorized to send invitations for this team.");
       } else if (error.response.status === 404) {
         setError(
           "Team not found. Please check the team details and try again."

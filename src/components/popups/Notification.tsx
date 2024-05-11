@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/Button";
 import IconButton from "../ui/IconButton";
-import { IoMdCloseCircle, IoMdCloseCircleOutline, IoMdCheckmarkCircleOutline, IoMdLock, IoMdAlert } from "react-icons/io";
+import {
+  IoMdCloseCircle,
+  IoMdCloseCircleOutline,
+  IoMdCheckmarkCircleOutline,
+  IoMdLock,
+  IoMdAlert,
+} from "react-icons/io";
 import "../../styles/popups/Notification.scss";
 
 const icons = {
   success: <IoMdCheckmarkCircleOutline className="success" />,
   lock: <IoMdLock className="lock" />,
-  error: <IoMdAlert className="error" />
+  error: <IoMdAlert className="error" />,
 };
 
 interface NotificationProps {
@@ -19,7 +25,13 @@ interface NotificationProps {
   link?: string;
 }
 
-const Notification: React.FC<NotificationProps> = ({ iconName, message, link="", show, onClose }) => {
+const Notification: React.FC<NotificationProps> = ({
+  iconName,
+  message,
+  link = "",
+  show,
+  onClose,
+}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +49,7 @@ const Notification: React.FC<NotificationProps> = ({ iconName, message, link="",
   const handleLinkClick = () => {
     navigate(link);
     onClose();
-  }
+  };
 
   return (
     <div className="notification">
@@ -51,7 +63,9 @@ const Notification: React.FC<NotificationProps> = ({ iconName, message, link="",
         style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
       />
       {link && (
-        <Button className="link-btn" onClick={() => handleLinkClick()}>Go</Button>
+        <Button className="link-btn" onClick={() => handleLinkClick()}>
+          Go
+        </Button>
       )}
     </div>
   );
