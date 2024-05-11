@@ -28,4 +28,11 @@
     margin-left: 1em;
     margin-right: 1em;
   }
+
+  &.disabled-button {
+    cursor: default;
+    &:hover {
+      transform: none;
+    }
+  }
 }

@@ -3,11 +3,7 @@ import "../../styles/popups/SessionHistory.scss";
 import "../../styles/popups/InspectTask.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
-import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
-import IconButton from "../ui/IconButton";
 import { PopupHeader } from "../ui/PopupHeader";
 
 const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
@@ -142,8 +138,8 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
         )}
         {!error && sessions.length === 0 && (
           <div style={{ marginBottom: "20px" }}>
-            You have not been in any Sessions.
-            <br /> Better start now.
+            This team has no sessions yet.
+            <br /> Better get started!
           </div>
         )}
       </div>

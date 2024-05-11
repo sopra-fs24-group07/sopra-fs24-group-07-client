@@ -3,11 +3,13 @@ import { Button } from "components/ui/Button";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
 import CommentCard from "components/ui/CommentCard";
+import { useNotification } from "../popups/NotificationContext";
 
 const ConfirmCommentDelete = (props) => {
   const { comment, teamId, taskId, doClose } = props;
   const [deleteError, setDeleteError] = useState();
   const token = localStorage.getItem("token");
+  const { notify } = useNotification();
 
   const deleteComment = async () => {
     try {
@@ -19,9 +21,11 @@ const ConfirmCommentDelete = (props) => {
           },
         }
       );
+      notify("success", "The comment has been deleted!");
     } catch (error) {
       console.error("Error deleting comment", handleError(error));
-      setDeleteError("Could not delete the comment");
+      notify("error", "Could not delete the comment! Try again.");
+      setDeleteError("Could not delete the comment.");
     }
   };
 

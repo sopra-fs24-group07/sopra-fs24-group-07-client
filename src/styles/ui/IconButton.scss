@@ -33,8 +33,9 @@
 }
 
 .dash-icon {
+  scale: 150%;
   color: $background;
   &:hover {
-    color: $accent;
+    color: $accentDark;
   }
 }

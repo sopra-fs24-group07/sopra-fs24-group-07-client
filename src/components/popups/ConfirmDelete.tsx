@@ -4,11 +4,13 @@ import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
 import "../../styles/popups/ProfileMenu.scss";
 import FormField from "../ui/FormField";
+import { useNotification } from "../popups/NotificationContext";
 
 const ConfirmDelete = ({ onCancel, onConfirm }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { notify } = useNotification();
 
   const handleLoginAndDelete = async () => {
     try {
@@ -19,8 +21,10 @@ const ConfirmDelete = ({ onCancel, onConfirm }) => {
       } else {
         setError("Invalid credentials.");
       }
+      notify("success", "Account has been deleted!");
     } catch (err) {
       setError("Deletion failed. Please try again.");
+      notify("error", "Could not delete the account! Try again.");
       console.error("Error during account deletion:", err);
     }
   };

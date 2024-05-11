@@ -6,9 +6,15 @@ import { Link } from "react-router-dom";
 import InspectTask from "components/popups/InspectTask";
 
 const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
-  if (!teamTasks) {
-    return <p>No tasks currently in session!</p>;
+  if (!teamTasks || teamTasks.length === 0) {
+    return (
+      <div className="session-taskboard">
+        <h3>Session Tasks</h3>
+        <p>No tasks currently in session!</p>
+      </div>
+    );
   }
+
   const token = localStorage.getItem("token");
   const [inspectTask, setInspectTask] = useState(null);
   const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);

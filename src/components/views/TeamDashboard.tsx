@@ -329,18 +329,18 @@ const TeamDashboard: React.FC = () => {
             endColumn={5}
           >
             <div className="team-dashboard settingsBox">
-              <IconButton
-                className="dash-icon"
-                icon={MdSettings}
-                onClick={openTeamSettings}
-                style={{ scale: "3.5", marginTop: "20px", marginLeft: "60px" }}
-              />
-              <IconButton
-                className="dash-icon"
-                icon={MdHistory}
-                onClick={openSessionHistory}
-                style={{ scale: "3.5", marginTop: "20px", marginRight: "60px" }}
-              />
+              <div className="team-dashboard dash-buttons">
+                <IconButton
+                  className="dash-icon"
+                  icon={MdHistory}
+                  onClick={openSessionHistory}
+                />
+                <IconButton
+                  className="dash-icon"
+                  icon={MdSettings}
+                  onClick={openTeamSettings}
+                />
+              </div>
               <div className="team-dashboard description">{teamDesc}</div>
             </div>
           </TeamDashboardBox>
