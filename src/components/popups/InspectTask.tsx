@@ -19,6 +19,7 @@ import {
   MdEditOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
+import { useNotification} from "./NotificationContext";
 
 const FormField = (props) => {
   return (
@@ -81,6 +82,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   });
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   if (!isOpen) return null;
 
@@ -127,7 +129,10 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
 
   const EditTask = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      notify("error", "Some inputs are invalid!");
+      return;
+    };
     try {
       task.title = taskTitle;
       task.description = taskDescription;
@@ -142,9 +147,11 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         }
       );
       DeactivateEditMode();
+      notify("success", "Task edited successfully!");
     } catch (error) {
       //new error handling
       setError("Failed to edit the Task");
+      notify("error", "Failed to edit the Task. Please try again.");
       if (error.response.status === 401) {
         setError("You are not authorized to edit this Task");
       } else if (error.response.status === 404) {

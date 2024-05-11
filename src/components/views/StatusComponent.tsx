@@ -5,6 +5,7 @@ import { api } from "helpers/api";
 import PropTypes from "prop-types";
 import "styles/views/TeamDashboard.scss";
 import "styles/views/StatusComponent.scss";
+import { useNotification } from '../popups/NotificationContext';
 
 interface StatusComponentProps {
   sessionStatus: string;
@@ -48,6 +49,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
 }) => {
   const [error, setError] = useState<string>("");
   const { teamId } = useParams<{ teamId: string }>();
+  const { notify } = useNotification();
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -123,7 +125,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
       const token = localStorage.getItem("token");
       if (!token) {
         setError("Authentication token is missing");
-
+        notify("error", "Authentication token is missing");
         return;
       }
 
@@ -147,6 +149,9 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
       const formattedTime = minutesToTime(response.data.goalMinutes || 30);
       if (status === "on") {
         setGoalMinutes(formattedTime);
+        notify("success", "You have successfully started a session!");
+      } else {
+        notify("success", "You have successfully stopped the session!");
       }
       setError("");
     } catch (error) {

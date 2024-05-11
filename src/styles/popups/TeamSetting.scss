@@ -3,8 +3,13 @@
 .TeamSetting {
   &.error {
     width: 100%;
+    max-width: 20em;
     margin-top: 0px;
-    font-size: 15px;
+    font-size: 10px;
+    text-align: center;
+    color: red;
+    padding: 5px;
+    word-wrap: break-word;
   }
 
   &.copied {

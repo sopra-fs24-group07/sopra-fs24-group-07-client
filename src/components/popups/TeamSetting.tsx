@@ -17,6 +17,7 @@ import {
   MdEditOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
+import { useNotification } from "./NotificationContext";
 
 const FormField = (props) => {
   return (
@@ -84,7 +85,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const baseURL = window.location.origin;
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const { notify } = useNotification();
 
   const validateForm = () => {
     let isValid = true;
@@ -149,7 +150,10 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   };
 
   const editTeam = async () => {
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      notify("error", "Some inputs are invalid!");
+      return;
+    };
     try {
       const requestBody = JSON.stringify({
         name: teamName,
@@ -162,8 +166,10 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       });
       onEdit();
       DeactivateEditMode();
+      notify("success", "Team updated successfully!");
     } catch (error) {
       setError("Something went wrong. Please try again");
+      notify("error", "Failed to update team. Please try again.");
       console.error("Error while updating Team", handleError(error));
     }
   };
@@ -200,8 +206,10 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       document.dispatchEvent(new CustomEvent("leave-team"));
       setIsLeave(true);
       navigate("/teams");
+      notify("success", "You have left the team successfully!");
     } catch (error) {
       setLeaveError("Failed to leave team");
+      notify("error", "Failed to leave team. Please try again.");
       console.error("Failed to leave team:", handleError(error));
       if (error.response.status === 401) {
         setLeaveError("You are not authorized to leave the team, sorry!");
@@ -215,13 +223,15 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     try {
       await navigator.clipboard.writeText(inviteURL);
       setCopied("Copied to clipboard!");
+      notify("success", "Invitation link copied to clipboard!");
     } catch (error) {
+      notify("error", "Failed to copy the correct invitation link!");
       setCopied("Failed to copy the UUID");
     }
   };
 
   const sendInvitationEmail = async () => {
-    setEmailError("");
+    setError("");
     const requestBody = {
       teamUUID: teamUUID,
       receiverEmail: email,
@@ -238,32 +248,34 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       );
 
       setEmail("");
-      setEmailError(`The invitation has been sent to ${email} !`);
+      setError(`The invitation has been sent to ${email} !`);
+      notify("success", "Invitation email sent successfully!");
     } catch (error) {
       console.error("Failed to send email:", handleError(error));
+      notify("error", "Failed to send email. Please try again.");
       if (!error.response) {
-        setEmailError("Failed to send email: No server response.");
+        setError("Failed to send email: No server response.");
 
         return;
       }
       if (error.response.status === 400) {
-        setEmailError(
+        setError(
           "Invalid email format. Please check the email address and try again."
         );
       } else if (error.response.status === 401) {
-        setEmailError(
+        setError(
           "You are not authorized to send invitations for this team."
         );
       } else if (error.response.status === 404) {
-        setEmailError(
+        setError(
           "Team not found. Please check the team details and try again."
         );
       } else if (error.response.status === 503) {
-        setEmailError(
+        setError(
           "Unable to send email at this time. Mail service is unavailable or the email address is not available."
         );
       } else {
-        setEmailError("An unexpected error occurred. Please try again.");
+        setError("An unexpected error occurred. Please try again.");
       }
     }
   };
@@ -274,7 +286,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     setCopied("");
     DeactivateEditMode();
     setEmail("");
-    setEmailError("");
     onClose();
   };
 
@@ -328,8 +339,8 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                   <EmailInput
                     email={email}
                     setEmail={setEmail}
-                    emailError={emailError}
-                    setEmailError={setEmailError}
+                    error={error}
+                    setError={setError}
                   />
                   <Button className="invite-user" onClick={sendInvitationEmail}>
                     Send Invitation Email

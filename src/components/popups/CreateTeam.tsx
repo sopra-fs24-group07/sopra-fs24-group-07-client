@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
+import { useNotification } from './NotificationContext';
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
@@ -61,6 +62,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     general: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   const validateForm = () => {
     let isValid = true;
@@ -92,7 +94,10 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
 
   const createTeam = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      notify("error", "Some inputs are invalid!")
+      return;
+    };
 
     try {
       let token = localStorage.getItem("token");
@@ -111,9 +116,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       setTimeout(() => {
         setIsLoading(false); // Set loading to false after the delay and navigation
       }, 500);
+      notify("success", "Team created successfully!");
       //navigate(`/teams/${response.data.teamId}`);
     } catch (error) {
       console.error("Error creating team:", handleError(error));
+      notify("error", "Failed to create team. Please try again.");
       setErrors((prev) => ({
         ...prev,
         general: "Failed to create team. Please try again.",

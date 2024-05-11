@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const EmailInput = ({ email, setEmail, emailError, setEmailError }) => {
+const EmailInput = ({ email, setEmail, error, setError }) => {
   // OWASP recommended regex pattern for email validation
   const emailRegex = new RegExp(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
@@ -11,9 +11,9 @@ const EmailInput = ({ email, setEmail, emailError, setEmailError }) => {
     const value = e.target.value;
     setEmail(value);
     if (!emailRegex.test(value)) {
-      setEmailError("Please enter a valid email address.");
+      setError("Please enter a valid email address.");
     } else {
-      setEmailError("");
+      setError("");
     }
   };
 
@@ -26,7 +26,7 @@ const EmailInput = ({ email, setEmail, emailError, setEmailError }) => {
         value={email}
         onChange={handleEmailChange}
       />
-      {emailError && <p className="TeamSetting error">{emailError}</p>}
+      {error && <p className="TeamSetting error">{error}</p>}
     </div>
   );
 };
@@ -34,8 +34,8 @@ const EmailInput = ({ email, setEmail, emailError, setEmailError }) => {
 EmailInput.propTypes = {
   email: PropTypes.string,
   setEmail: PropTypes.func,
-  emailError: PropTypes.string,
-  setEmailError: PropTypes.func,
+  error: PropTypes.string,
+  setError: PropTypes.func,
 };
 
 export default EmailInput;

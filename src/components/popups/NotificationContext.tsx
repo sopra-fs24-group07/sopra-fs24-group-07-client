@@ -36,7 +36,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     setNotifications(prev => [...prev, newNotification]);
     setTimeout(() => {
       setNotifications(prev => prev.filter(n => n.id !== newNotification.id));
-    }, 100000); // 10 seconds
+    }, 20000); // 20 seconds
   }, []);
 
   return (

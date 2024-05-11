@@ -8,6 +8,7 @@ import { Spinner } from "components/ui/Spinner";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
+import { useNotification } from '../popups/NotificationContext';
 
 const FormField = (props) => {
   return (
@@ -69,6 +70,7 @@ const CreateTask = ({ isOpen, onClose }) => {
   });
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   if (!isOpen) return null;
 
@@ -109,7 +111,11 @@ const CreateTask = ({ isOpen, onClose }) => {
   //try to create a task via api pst call
   const CreateTask = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      notify("error", "Some inputs are invalid!");
+      return;
+    };
+
     try {
       const requestBody = JSON.stringify({ title, description });
       const response = await api.post(
@@ -123,9 +129,11 @@ const CreateTask = ({ isOpen, onClose }) => {
       );
       //reset input fields after submitting
       doClose();
+      notify("success", "Task created successfully!");
     } catch (error) {
       //new error handling with status codes
       setError("Failed to create the Task");
+      notify("error", "Failed to create the Task. Please try again.");
       if (error.response.status === 401) {
         setError("You are not authorized to create a Task");
       } else if (error.response.status === 400) {
