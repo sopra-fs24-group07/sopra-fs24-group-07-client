@@ -71,7 +71,7 @@ const TeamsOverview = () => {
               {team.name}
             </Button>
           ))}
-          <Button className="team create" onClick={openCreateTeam} title="Create a new team!">
+          <Button className="team green-button" onClick={openCreateTeam} title="Create a new team!">
             Create Team
           </Button>
           <CreateTeam
