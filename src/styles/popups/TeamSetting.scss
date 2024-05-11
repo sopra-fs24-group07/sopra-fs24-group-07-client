@@ -2,17 +2,18 @@
 
 .TeamSetting {
   &.error {
-    width: 100%;
-    margin-bottom: 2em;
+    width: 50%;
+    max-width: none;
     font-size: 10px;
     color: red;
     padding: 5px;
     word-wrap: break-word;
-    text-align: left;
-    max-width: 10%;
-    white-space: nowrap;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 2em;
+    display: flex;
+    align-items: center;
   }
-
 
   &.members {
     display: flex;
@@ -43,12 +44,15 @@
   }
 
   &.content {
+    width: 100%;
+    margin: 0 auto;
     max-width: 420px;
     background-color: $accentDark;
     padding: 20px;
     border-radius: 8px;
     box-shadow: $dropShadow;
     font-size: larger;
+    position: relative;
   }
 
   &.header {
@@ -171,10 +175,10 @@
 }
 
 .button-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    align-items: center;
-    margin-top: 10px;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
 }

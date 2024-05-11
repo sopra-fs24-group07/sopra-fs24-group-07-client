@@ -6,12 +6,10 @@ import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 
-
 import { useNotification } from "../popups/NotificationContext";
 
 import FormField from "../ui/FormField";
 import { PopupHeader } from "../ui/PopupHeader";
-
 
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();

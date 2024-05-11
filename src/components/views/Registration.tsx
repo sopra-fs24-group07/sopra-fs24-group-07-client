@@ -180,7 +180,11 @@ const Registration = () => {
             <label className="register message">
               Already haven an account?
             </label>
-            <Button className="login-button" width="60%" onClick={() => navigate("/login")}>
+            <Button
+              className="login-button"
+              width="60%"
+              onClick={() => navigate("/login")}
+            >
               Go to Login
             </Button>
           </div>

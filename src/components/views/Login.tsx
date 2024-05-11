@@ -102,7 +102,11 @@ const Login = () => {
             {error && <p className="login error">{error}</p>}
 
             <label className="login message">Don&#39;t have an acoount?</label>
-            <Button className="login-button" width="60%" onClick={() => navigate("/register")}>
+            <Button
+              className="login-button"
+              width="60%"
+              onClick={() => navigate("/register")}
+            >
               Go to Register
             </Button>
           </div>

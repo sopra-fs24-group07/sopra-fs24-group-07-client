@@ -71,20 +71,20 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
         <PopupHeader onClose={onClose} title="Profile" />
         {user && (
           <div>
-          <FormField
-            label="Name"
-            type="text"
-            value={user.name}
-            onChange={user.name}
-            disabled={true}
-          />
-          <FormField
-          label="Username"
-          type="text"
-          value={user.username}
-        onChange={user.username}
-          disabled={true}
-      />
+            <FormField
+              label="Name"
+              type="text"
+              value={user.name}
+              onChange={user.name}
+              disabled={true}
+            />
+            <FormField
+              label="Username"
+              type="text"
+              value={user.username}
+              onChange={user.username}
+              disabled={true}
+            />
           </div>
         )}
         {message && <div className="confirmation-message">{message}</div>}

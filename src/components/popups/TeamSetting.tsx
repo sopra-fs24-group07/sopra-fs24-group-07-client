@@ -98,7 +98,10 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     } catch (error) {
       setErrors({ ...errors, form: "Something went wrong. Please try again" });
       if (error.response.status === 401) {
-        setErrors({ ...errors, leaveTeam: "You are not authorized to do this" });
+        setErrors({
+          ...errors,
+          leaveTeam: "You are not authorized to do this",
+        });
       }
       console.error(handleError(error));
     }
@@ -171,9 +174,15 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       notify("error", "Failed to leave team. Please try again.");
       console.error("Failed to leave team:", handleError(error));
       if (error.response.status === 401) {
-        setErrors({ ...errors, leaveTeam: "You are not authorized to leave the team, sorry!" });
+        setErrors({
+          ...errors,
+          leaveTeam: "You are not authorized to leave the team, sorry!",
+        });
       } else if (error.response.status === 404) {
-        setErrors({ ...errors, leaveTeam: "Something went wrong. Try again later." });
+        setErrors({
+          ...errors,
+          leaveTeam: "Something went wrong. Try again later.",
+        });
       }
     }
   };
@@ -223,17 +232,37 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       console.error("Failed to send email:", handleError(error));
       notify("error", "Failed to send email. Please try again.");
       if (!error.response) {
-        setErrors({ ...errors, email: "Failed to send email: No server response." });
+        setErrors({
+          ...errors,
+          email: "Failed to send email: No server response.",
+        });
       } else if (error.response.status === 400) {
-        setErrors({ ...errors, email: "Invalid email format. Please check the email address and try again." });
+        setErrors({
+          ...errors,
+          email:
+            "Invalid email format. Please check the email address and try again.",
+        });
       } else if (error.response.status === 401) {
-        setErrors({ ...errors, email: "You are not authorized to send invitations for this team." });
+        setErrors({
+          ...errors,
+          email: "You are not authorized to send invitations for this team.",
+        });
       } else if (error.response.status === 404) {
-        setErrors({ ...errors, email: "Team not found. Please check the team details and try again." });
+        setErrors({
+          ...errors,
+          email: "Team not found. Please check the team details and try again.",
+        });
       } else if (error.response.status === 503) {
-        setErrors({ ...errors, email: "Unable to send email at this time. Mail service is unavailable or the email address is not available." });
+        setErrors({
+          ...errors,
+          email:
+            "Unable to send email at this time. Mail service is unavailable or the email address is not available.",
+        });
       } else {
-        setErrors({ ...errors, email: "An unexpected error occurred. Please try again." });
+        setErrors({
+          ...errors,
+          email: "An unexpected error occurred. Please try again.",
+        });
       }
     }
   };
@@ -244,7 +273,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
 
     return fieldErrors;
   };
-
 
   const doClose = () => {
     setErrors({
@@ -264,7 +292,10 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   return (
     <div className="TeamSetting overlay" onClick={doClose}>
       <div className="TeamSetting content" onClick={(e) => e.stopPropagation()}>
-        <PopupHeader onClose={doClose} title={editMode ? "Edit Team" : "Your Team"} />
+        <PopupHeader
+          onClose={doClose}
+          title={editMode ? "Edit Team" : "Your Team"}
+        />
         {errors.form && <p className="error-message">{errors.form}</p>}
         <div>
           <FormField
@@ -321,15 +352,17 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                   email={email}
                   setEmail={setEmail}
                   error={errors.email}
-                  setError={(emailError) => setErrors({ ...errors, email: emailError })}
+                  setError={(emailError) =>
+                    setErrors({ ...errors, email: emailError })
+                  }
                 />
                 <div className="button-container">
-                <Button className="invite-user" onClick={sendInvitationEmail}>
-                  Send as Email
-                </Button>
-                <Button className="invite-user" onClick={CopyInvitationLink}>
-                  Copy Link
-                </Button>
+                  <Button className="invite-user" onClick={sendInvitationEmail}>
+                    Send as Email
+                  </Button>
+                  <Button className="invite-user" onClick={CopyInvitationLink}>
+                    Copy Link
+                  </Button>
                 </div>
                 {copied && (
                   <div>
