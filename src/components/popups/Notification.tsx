@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import "../../styles/popups/Notification.scss";
-import IconButton from "../ui/IconButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/Button";
+import IconButton from "../ui/IconButton";
+import { IoMdCloseCircle, IoMdCloseCircleOutline, IoMdCheckmarkCircleOutline, IoMdLock, IoMdAlert } from "react-icons/io";
+import "../../styles/popups/Notification.scss";
+
+const icons = {
+  success: <IoMdCheckmarkCircleOutline className="success" />,
+  lock: <IoMdLock className="lock" />,
+  error: <IoMdAlert className="error" />
+};
 
 interface NotificationProps {
-  icon: JSX.Element;
+  iconName: string;
   message: string;
   show: boolean;
   onClose: () => void;
   link?: string;
 }
 
-const Notification: React.FC<NotificationProps> = ({ icon, message, link="", show, onClose }) => {
+const Notification: React.FC<NotificationProps> = ({ iconName, message, link="", show, onClose }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,9 +41,15 @@ const Notification: React.FC<NotificationProps> = ({ icon, message, link="", sho
 
   return (
     <div className="notification">
-      <div className="notification-icon">{icon}</div>
+      <div className="notification-icon">{icons[iconName]}</div>
       <div className="notification-message">{message}</div>
-      <Button className="red-button" onClick={onClose}>X</Button>
+      <IconButton
+        hoverIcon={IoMdCloseCircle}
+        icon={IoMdCloseCircleOutline}
+        onClick={onClose}
+        className="grey-icon"
+        style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
+      />
       {link && (
         <Button className="link-btn" onClick={() => handleLinkClick()}>Go</Button>
       )}
