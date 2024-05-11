@@ -8,7 +8,7 @@ const FormField = ({
   onChange,
   type = "text",
   textArea = false,
-  disabled
+  disabled,
 }) => (
   <div className="form-field">
     <label className="form-field label" htmlFor={label}>
