@@ -163,7 +163,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
         });
 
         console.log("Saving changes:", response);
-        notify("OK", "The changes have been saved!");
+        notify("OK", "The changes have been saved!", "/teams");
         setUser(updatedUser);
         setUsername(updatedUser.username);
         setName(updatedUser.name);

@@ -1,3 +1,5 @@
+@import "../theme";
+
 .notification {
   position: fixed;
   top: 20px;
@@ -12,20 +14,20 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s;
 
-  &.hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-
   .notification-icon {
     margin-right: 10px;
   }
 
-  .close-btn {
+  .close-btn, .link-btn {
     margin-left: auto;
-    background: none;
-    border: none;
+    padding: 5px 10px;
     cursor: pointer;
-    color: #666;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    &:hover {
+      background-color: #0056b3;
+    }
   }
 }

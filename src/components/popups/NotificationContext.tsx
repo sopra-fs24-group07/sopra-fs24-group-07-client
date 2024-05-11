@@ -1,13 +1,14 @@
-import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import Notification from './Notification';
 
 interface NotificationData {
   icon: JSX.Element;
   message: string;
+  link?: string;
 }
 
 interface NotificationContextType {
-  notify: (icon: JSX.Element, message: string) => void;
+  notify: (icon: JSX.Element, message: string, link?: string) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -21,16 +22,15 @@ export const useNotification = () => {
 export const NotificationProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   const [notification, setNotification] = useState<NotificationData | null>(null);
 
-  const notify = useCallback((icon: JSX.Element, message: string) => {
-    setNotification({ icon, message });
-    console.log("XXXXX");
-    setTimeout(() => setNotification(null), 10000); // Automatically clear notification after 10 seconds
+  const notify = useCallback((icon: JSX.Element, message: string, link?: string) => {
+    setNotification({ icon, message, link });
+    setTimeout(() => setNotification(null), 10000);
   }, []);
 
   return (
     <NotificationContext.Provider value={{ notify }}>
       {children}
-      {notification && <Notification icon={notification.icon} message={notification.message} show={!!notification} onClose={() => setNotification(null)} />}
+      {notification && <Notification icon={notification.icon} message={notification.message} show={!!notification} onClose={() => setNotification(null)} link={notification.link} />}
     </NotificationContext.Provider>
   );
 };
