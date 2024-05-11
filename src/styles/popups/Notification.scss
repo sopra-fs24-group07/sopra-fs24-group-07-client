@@ -7,12 +7,12 @@
   z-index: 10000;
   display: flex;
   align-items: center;
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: $accent;
   border-radius: 5px;
   padding: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s;
+  border: 2px solid $background;
+  box-shadow: 4px 4px $background;
 
   .notification-icon {
     margin-right: 10px;
