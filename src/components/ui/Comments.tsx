@@ -14,24 +14,7 @@ import {
   BiCommentAdd,
 } from "react-icons/bi";
 import IconButton from "../ui/IconButton";
-
-const FormField = ({ value, onChange, error }) => {
-  return (
-    <input
-      className="input"
-      type="text"
-      placeholder="enter comment.."
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  );
-};
-
-FormField.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
-};
+import FormField from "./FormField";
 
 const Comments = (props) => {
   const { teamId } = useParams();
@@ -133,7 +116,12 @@ const Comments = (props) => {
     <div className="wrapper">
       {!deleteOpen && (
         <div className="in-line">
-          <FormField value={comment} onChange={setComment} error={error} />
+          <FormField
+            label={"Comments"}
+            value={comment}
+            onChange={setComment}
+            error={error}
+          />
           <IconButton
             hoverIcon={BiSolidCommentAdd}
             icon={BiCommentDetail}

@@ -19,51 +19,7 @@ import {
 import IconButton from "../ui/IconButton";
 import { useNotification } from "./NotificationContext";
 
-const FormField = (props) => {
-  return (
-    <div className="TeamSetting field">
-      <input
-        className="TeamSetting input"
-        placeholder="enter here..."
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={props.disabled}
-      />
-      {props.error && <p className="TeamSetting error">{props.error}</p>}
-    </div>
-  );
-};
-
-const FormFieldLong = (props) => {
-  return (
-    <div className="TeamSetting field">
-      <textarea
-        className="TeamSetting textarea"
-        placeholder="enter here..."
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={props.disabled}
-      />
-      {props.error && <p className="TeamSetting error">{props.error}</p>}
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  error: PropTypes.string,
-  disabled: PropTypes.bool,
-};
-
-FormFieldLong.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  error: PropTypes.string,
-  disabled: PropTypes.bool,
-};
+import FormField from "../ui/FormField";
 
 const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [editMode, setEditMode] = useState(false);
@@ -312,23 +268,24 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
         {error && <p>{error}</p>}
         {!error && (
           <div>
-            <h3 className="TeamSetting headline">Team Name</h3>
             <FormField
               className="TeamSetting input"
+              label={"Team Name"}
               value={teamName}
               onChange={setTeamName}
               placeholder="Team Name..."
               disabled={!editMode}
               error={errors.name}
             />
-            <h3 className="TeamSetting headline">Team Description</h3>
-            <FormFieldLong
+            <FormField
               className="TeamSetting input"
+              label={"Team Description"}
               value={teamDescription}
               onChange={setTeamDescription}
               placeholder="Team Description..."
               disabled={!editMode}
               error={errors.description}
+              textArea={true}
             />
             {!editMode && (
               <div>

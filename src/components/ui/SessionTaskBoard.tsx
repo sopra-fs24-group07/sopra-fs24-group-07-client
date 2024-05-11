@@ -54,6 +54,7 @@ const SessionTaskBoard = ({ teamId, teamTasks, sessionStatus }) => {
             style={{ listStyleType: "none", display: "flex" }}
           >
             <input
+              className="team-task-checkbox"
               style={{ cursor: "pointer" }}
               type="checkbox"
               checked={task.status === "IN_SESSION_DONE"}

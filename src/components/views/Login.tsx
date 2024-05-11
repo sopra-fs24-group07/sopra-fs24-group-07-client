@@ -9,31 +9,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
-
-//NEW FORMFIELD: WITHOUT CODE REPETITION
-const FormField = ({ label, value, onChange, type = "text" }) => (
-  <div className="register field">
-    <label className="register label" htmlFor={label}>
-      {label}
-    </label>
-    <input
-      className="register input"
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      id={label}
-    />
-  </div>
-);
-
-// SEE NEW TYPE "type"
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-};
+import FormField from "../ui/FormField";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -117,6 +93,7 @@ const Login = () => {
                   disabled={!username || !password}
                   width="65%"
                   onClick={doLogin}
+                  className="login-button"
                 >
                   Login
                 </Button>
@@ -125,7 +102,7 @@ const Login = () => {
             {error && <p className="login error">{error}</p>}
 
             <label className="login message">Don&#39;t have an acoount?</label>
-            <Button width="60%" onClick={() => navigate("/register")}>
+            <Button className="login-button" width="60%" onClick={() => navigate("/register")}>
               Go to Register
             </Button>
           </div>

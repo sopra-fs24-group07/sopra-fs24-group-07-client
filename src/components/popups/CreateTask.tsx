@@ -6,53 +6,12 @@ import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 
-import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
-import IconButton from "../ui/IconButton";
+
 import { useNotification } from "../popups/NotificationContext";
 
-const FormField = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <input
-        className="inspectTask input"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
+import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
-const FormFieldLong = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <textarea
-        className="inspectTask textarea"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
-
-FormFieldLong.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
 
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
@@ -154,27 +113,19 @@ const CreateTask = ({ isOpen, onClose }) => {
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
-        <div className="inspectTask header">
-          <h2 className="inspectTask headline">Create Task</h2>
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={doClose}
-            className="red-icon"
-            style={{ scale: "2.5", marginRight: "15px" }}
-          />
-        </div>
-        <h3 className="inspectTask headline">Title</h3>
+        <PopupHeader onClose={onClose} title="Create Task" />
         <FormField
           className="inspectTask input"
+          label={"Title"}
           value={title}
           placeholder="enter title..."
           onChange={(ti: string) => setTitle(ti)}
         />
-        <h3 className="inspectTask headline">Description</h3>
-        <FormFieldLong
+        <FormField
           className="inspectTask textarea"
+          label={"Description"}
           value={description}
+          textArea={true}
           placeholder="enter description..."
           onChange={(dc: string) => setDescription(dc)}
         />

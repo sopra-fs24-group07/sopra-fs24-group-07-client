@@ -66,8 +66,8 @@ function ColumnContainer(props) {
       {column === "TODO" && sessionStatus === "off" && (
         <div className="createTask container">
           <Button
+            className="green-button"
             width="100%"
-            className="createTask button"
             onClick={openCreateTask}
           >
             {/*open the create Task pop-up on click*/}

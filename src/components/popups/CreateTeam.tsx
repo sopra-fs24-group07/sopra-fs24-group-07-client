@@ -9,48 +9,8 @@ import { useNotification } from "./NotificationContext";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
-
-const FormField = ({ value, onChange, error }) => {
-  return (
-    <div className="createTeam field">
-      <input
-        className="createTeam input"
-        type="text"
-        placeholder="enter here.."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-      {error && <p className="error-message">{error}</p>}
-    </div>
-  );
-};
-
-const FormFieldLong = ({ value, onChange, error }) => {
-  return (
-    <div className="createTeam field">
-      <textarea
-        className="createTeam textarea"
-        type="text"
-        placeholder="enter here.."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-      {error && <p className="error-message">{error}</p>}
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
-};
-
-FormFieldLong.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
-};
+import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const navigate = useNavigate();
@@ -134,27 +94,19 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   return (
     <div className="createTeam overlay" onClick={onClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <div className="createTeam header">
-          <h2>Create Team</h2>
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={onClose}
-            className="red-icon"
-            style={{ scale: "2.5", marginTop: "-5px" }}
-          />
-        </div>
-        <h3 className="createTeam headline">Name</h3>
+        <PopupHeader onClose={onClose} title="Create Team" />
         <FormField
           value={teamName}
           onChange={setTeamName}
           error={errors.name}
+          label={"Name"}
         />
-        <h3 className="createTeam headline">Description</h3>
-        <FormFieldLong
+        <FormField
           value={teamDescription}
           onChange={setTeamDescription}
           error={errors.description}
+          label={"Description"}
+          textArea={true}
         />
         <Button
           width="100%"
