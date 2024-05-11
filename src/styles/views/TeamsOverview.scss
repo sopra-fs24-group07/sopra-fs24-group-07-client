@@ -69,7 +69,7 @@
       &:hover::after {
         content: attr(title);
         position: absolute;
-        bottom: -4em;
+        top: 120%;
         left: 50%;
         transform: translateX(-50%);
         white-space: nowrap;
@@ -80,6 +80,10 @@
         color: white;
         font-size: 14px;
         display: block;
+        max-width: 300px;
+        white-space: normal;
+        word-wrap: anywhere;
+        overflow-wrap: break-word;
       }
 
       &:hover::before {

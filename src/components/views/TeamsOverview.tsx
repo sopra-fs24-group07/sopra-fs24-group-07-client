@@ -65,7 +65,7 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
-              title={team.description}
+              title={team.description} //this should not be wider than double the button width, with word break
               onClick={() => navigate(`/teams/${team.teamId}`)}
             >
               {team.name}
