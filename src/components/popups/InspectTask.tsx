@@ -157,15 +157,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           placeholder="enter title..."
           onChange={(ti: string) => setTaskTitle(ti)}
           disabled={!editMode}
-        />
-        <FormField
-          className="inspectTask textarea"
-          label={"Task Description"}
-          value={taskDescription}
-          placeholder="enter description..."
-          onChange={(dc: string) => setTaskDescription(dc)}
-          disabled={!editMode}
-          textArea={true}
         >
           {!editMode && (
             <IconButton
@@ -186,6 +177,15 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
             />
           )}
         </FormField>
+        <FormField
+          className="inspectTask textarea"
+          label={"Task Description"}
+          value={taskDescription}
+          placeholder="enter description..."
+          onChange={(dc: string) => setTaskDescription(dc)}
+          disabled={!editMode}
+          textArea={true}
+        />
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="error-message">
             {error}
