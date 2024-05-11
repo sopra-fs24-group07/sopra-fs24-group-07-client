@@ -126,6 +126,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
       if (!token) {
         setError("Authentication token is missing");
         notify("error", "Authentication token is missing");
+
         return;
       }
 

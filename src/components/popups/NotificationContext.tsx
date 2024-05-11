@@ -24,6 +24,7 @@ export const useNotification = () => {
       "useNotification must be used within a NotificationProvider"
     );
   }
+
   return context;
 };
 

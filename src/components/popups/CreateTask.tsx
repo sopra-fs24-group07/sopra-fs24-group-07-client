@@ -70,6 +70,7 @@ const CreateTask = ({ isOpen, onClose }) => {
     setIsLoading(true);
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
+
       return;
     }
 

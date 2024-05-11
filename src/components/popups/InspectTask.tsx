@@ -87,6 +87,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     setIsLoading(true);
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
+
       return;
     }
     try {

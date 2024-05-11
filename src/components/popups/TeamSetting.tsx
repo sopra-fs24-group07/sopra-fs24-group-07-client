@@ -66,6 +66,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     }
 
     setErrors(newErrors);
+
     return isValid;
   };
 
@@ -111,6 +112,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
       console.log(errors.form);
+
       return;
     }
     try {
@@ -209,6 +211,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     setErrors({ ...errors, email: "" });
     if (email.length === 0 || !email.includes("@")) {
       setErrors({ ...errors, email: "Please enter a valid email address." });
+
       return;
     }
 
