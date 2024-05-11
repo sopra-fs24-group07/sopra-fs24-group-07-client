@@ -49,7 +49,6 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-
   const fetchUserTeam = async () => {
     try {
       const response = await api.get(`/api/v1/users/${userId}/teams`, {
@@ -88,17 +87,12 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     }
   };
 
-
-
   useEffect(() => {
     fetchUserTeam();
     fetchTeamMembers();
   }, []);
 
   if (!isOpen) return null;
-
-
-
 
   const CopyInvitationLink = async () => {
     try {
@@ -188,8 +182,6 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     return fieldErrors;
   };
 
-
-
   const doClose = () => {
     setErrors({
       name: "",
@@ -207,10 +199,7 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   return (
     <div className="TeamSetting overlay" onClick={doClose}>
       <div className="TeamSetting content" onClick={(e) => e.stopPropagation()}>
-        <PopupHeader
-          onClose={doClose}
-          title={"Your Team"}
-        />
+        <PopupHeader onClose={doClose} title={"Your Team"} />
         {errors.form && <p className="error-message">{errors.form}</p>}
         <div>
           <div>
@@ -220,45 +209,45 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               </div>
             ))}
           </div>
-            <div>
-              <div className="TeamSetting members">
-                <h3 className="TeamSetting headline">Invite Member</h3>
-                <EmailInput
-                  label={"Email"}
-                  email={email}
-                  setEmail={setEmail}
-                  error={errors.email}
-                  setError={(emailError) =>
-                    setErrors({ ...errors, email: emailError })
-                  }
-                />
-                <div className="button-container">
-                  <Button className="invite-user" onClick={sendInvitationEmail}>
-                    Send as Email
-                  </Button>
-                  <Button className="invite-user" onClick={CopyInvitationLink}>
-                    Copy Link
-                  </Button>
-                </div>
-                {copied && (
-                  <div>
-                    <input className="TeamSetting input" value={inviteURL} />
-                    <br />
-                    <div className="TeamSetting copied">{copied}</div>
-                  </div>
-                )}
+          <div>
+            <div className="TeamSetting members">
+              <h3 className="TeamSetting headline">Invite Member</h3>
+              <EmailInput
+                label={"Email"}
+                email={email}
+                setEmail={setEmail}
+                error={errors.email}
+                setError={(emailError) =>
+                  setErrors({ ...errors, email: emailError })
+                }
+              />
+              <div className="button-container">
+                <Button className="invite-user" onClick={sendInvitationEmail}>
+                  Send as Email
+                </Button>
+                <Button className="invite-user" onClick={CopyInvitationLink}>
+                  Copy Link
+                </Button>
               </div>
-              <div className="TeamSetting members">
-                <h3 className="TeamSetting headline">Team Members</h3>
-                <ul className="TeamSetting list">
-                  {teamMembers.map((member) => (
-                    <li className="TeamSetting listItem" key={member.id}>
-                      {member.username} ({member.name})
-                    </li>
-                  ))}
-                </ul>
+              {copied && (
+                <div>
+                  <input className="TeamSetting input" value={inviteURL} />
+                  <br />
+                  <div className="TeamSetting copied">{copied}</div>
+                </div>
+              )}
             </div>
-        </div>
+            <div className="TeamSetting members">
+              <h3 className="TeamSetting headline">Team Members</h3>
+              <ul className="TeamSetting list">
+                {teamMembers.map((member) => (
+                  <li className="TeamSetting listItem" key={member.id}>
+                    {member.username} ({member.name})
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       {isLoading ? <Spinner /> : ""}
