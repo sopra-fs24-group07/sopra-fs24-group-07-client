@@ -36,7 +36,10 @@
     border: 0; //switch to 1px solid #ccc;
     border-radius: $borderRadius;
     background: #b0e2f5; //switch to $accent
-    min-height: 12em;
+    min-height: 6em;
+    max-width: 100%;
+    max-height: 100%;
+    width: 25em;
     resize: none;
     color: black;
 
