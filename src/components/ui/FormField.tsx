@@ -9,11 +9,15 @@ const FormField = ({
   type = "text",
   textArea = false,
   disabled,
+  children
 }) => (
   <div className="form-field">
+    <div className="form-field-header">
     <label className="form-field label" htmlFor={label}>
       {label}
     </label>
+    {children}
+      </div>
     {textArea ? (
       <textarea
         className="form-field textarea"
@@ -44,6 +48,7 @@ FormField.propTypes = {
   type: PropTypes.string,
   textArea: PropTypes.bool,
   disabled: PropTypes.bool,
+  children: PropTypes.node
 };
 
 export default FormField;

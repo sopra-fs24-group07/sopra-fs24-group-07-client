@@ -10,12 +10,18 @@
     margin-bottom: 5px;
   }
 
+  .form-field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   input {
     padding: 10px;
     font-size: 1.2em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: $accent;
+    border: 0; //switch to 1px solid #ccc;
+    border-radius: $borderRadius;
+    background: #b0e2f5; //switch to $accent
     min-width: 15em;
 
     &:focus {
@@ -27,9 +33,9 @@
   textarea {
     padding: 10px;
     font-size: 1.2em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: $accent;
+    border: 0; //switch to 1px solid #ccc;
+    border-radius: $borderRadius;
+    background: #b0e2f5; //switch to $accent
     min-height: 12em;
     resize: none;
     color: black;

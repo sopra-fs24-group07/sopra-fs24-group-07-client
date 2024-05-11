@@ -166,7 +166,27 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           onChange={(dc: string) => setTaskDescription(dc)}
           disabled={!editMode}
           textArea={true}
-        />
+        >
+          {!editMode && (
+            <IconButton
+              hoverIcon={MdModeEditOutline}
+              icon={MdOutlineModeEdit}
+              onClick={ActivateEditMode}
+              className="green-icon"
+              style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
+            />
+          )}
+          {editMode && !inSession && (
+            <IconButton
+              hoverIcon={MdEditOff}
+              icon={MdOutlineEditOff}
+              onClick={DeactivateEditMode}
+              className="red-icon"
+              style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
+            />
+          )}
+
+          </FormField>
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="error-message">
             {error}
@@ -185,13 +205,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               style={{ scale: "2.5", marginLeft: "10px", marginTop: "10px" }}
             />
             <IconButton
-              hoverIcon={MdEditOff}
-              icon={MdOutlineEditOff}
-              onClick={DeactivateEditMode}
-              className="red-icon"
-              style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
-            />
-            <IconButton
               hoverIcon={MdDelete}
               icon={MdDeleteOutline}
               onClick={DeleteTask}
@@ -199,15 +212,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               style={{ scale: "2.5", marginTop: "10px", marginRight: "10px" }}
             />
           </div>
-        )}
-        {!editMode && !inSession && (
-          <IconButton
-            hoverIcon={MdModeEditOutline}
-            icon={MdOutlineModeEdit}
-            onClick={ActivateEditMode}
-            className="green-icon"
-            style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
-          />
         )}
         {!editMode && <Comments taskId={task.taskId} />}
       </div>
