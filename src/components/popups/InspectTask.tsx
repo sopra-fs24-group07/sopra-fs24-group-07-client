@@ -146,7 +146,10 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
-        <PopupHeader onClose={onClose} title={editMode ? "Edit Task" : "Task Details"} />
+        <PopupHeader
+          onClose={onClose}
+          title={editMode ? "Edit Task" : "Task Details"}
+        />
         <FormField
           className="inspectTask input"
           label={"Task Title"}
