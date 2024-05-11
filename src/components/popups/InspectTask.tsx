@@ -185,8 +185,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
             />
           )}
-
-          </FormField>
+        </FormField>
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="error-message">
             {error}
