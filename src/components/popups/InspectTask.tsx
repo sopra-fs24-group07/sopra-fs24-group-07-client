@@ -153,7 +153,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           value={taskTitle}
           placeholder="enter title..."
           onChange={(ti: string) => setTaskTitle(ti)}
-          disabled={editMode}
+          disabled={!editMode}
         />
         <FormField
           className="inspectTask textarea"
@@ -161,7 +161,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           value={taskDescription}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
-          disabled={editMode}
+          disabled={!editMode}
           textArea={true}
         />
         {getAllErrorMessages().map((error, index) => (

@@ -8,6 +8,7 @@ const FormField = ({
   onChange,
   type = "text",
   textArea = false,
+  disabled
 }) => (
   <div className="form-field">
     <label className="form-field label" htmlFor={label}>
@@ -20,6 +21,7 @@ const FormField = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         id={label.replace(/\s+/g, "-").toLowerCase()}
+        disabled={disabled}
       />
     ) : (
       <input
@@ -29,6 +31,7 @@ const FormField = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         id={label.replace(/\s+/g, "-").toLowerCase()}
+        disabled={disabled}
       />
     )}
   </div>
@@ -40,6 +43,7 @@ FormField.propTypes = {
   onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
   textArea: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 export default FormField;
