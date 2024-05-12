@@ -131,11 +131,11 @@ const CreateTask = ({ isOpen, onClose }) => {
 
         {error && <p>{error}</p>}
         <div>
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="inspectTask error">
-            {error}
-          </div>
-        ))}
+          {getAllErrorMessages().map((error, index) => (
+            <div key={index} className="inspectTask error">
+              {error}
+            </div>
+          ))}
         </div>
 
         <Button

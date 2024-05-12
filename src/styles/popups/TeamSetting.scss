@@ -27,10 +27,11 @@
 
   &.error {
     color: red;
-    padding: 5px;
-    margin-bottom: 0.5em;
+    margin-bottom: 2em;
     display: flex;
     align-items: center;
+    font-size: 10px;
+    padding-left: 9.5em;
   }
 
   &.members {
