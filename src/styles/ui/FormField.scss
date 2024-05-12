@@ -24,7 +24,7 @@
     background: $accent;
     min-width: 15em;
     border: 2px solid $background;
-    box-shadow: 4px 4px $background;
+    box-shadow: 2px 2px $background;
 
     &:focus {
       outline: none;
@@ -49,7 +49,7 @@
     resize: none;
     color: black;
     border: 2px solid $background;
-    box-shadow: 4px 4px $background;
+    box-shadow: 2px 2px $background;
 
     &:focus {
       outline: none;
@@ -70,7 +70,7 @@
     resize: none;
     color: black;
     border: 2px solid $background;
-    box-shadow: 4px 4px $background;
+    box-shadow: 2px 2px $background;
 
     &:focus {
       outline: none;
