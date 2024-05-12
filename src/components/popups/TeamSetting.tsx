@@ -257,7 +257,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                 hoverIcon={MdModeEditOutline}
                 icon={MdOutlineModeEdit}
                 onClick={ActivateEditMode}
-                className="green-icon"
+                className="blue-icon"
                 style={{
                   scale: "2",
                   marginRight: "10px",
