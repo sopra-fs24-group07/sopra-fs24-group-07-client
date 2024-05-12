@@ -2,7 +2,7 @@
 
 .notification-container {
   position: fixed;
-  top: 1em;
+  top: 1em; //set to 5em if you want the notification to appear below the navbar
   right: 1em;
   z-index: 10000;
   display: flex;
@@ -20,7 +20,7 @@
     top 0.3s ease-in-out;
   border: 2px solid $background;
   box-shadow: 4px 4px $background;
-  margin-bottom: 1em; /* spacing between notifications */
+  margin-bottom: 1em;
 }
 
 .notification-icon {
@@ -46,7 +46,7 @@
   color: green;
 }
 .error {
-  scale: 200%;
+  scale: 100%;
   color: red;
 }
 .lock {

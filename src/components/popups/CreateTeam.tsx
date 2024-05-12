@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 import { useNotification } from "./NotificationContext";
 
-import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import IconButton from "../ui/IconButton";
 
 import FormField from "../ui/FormField";
@@ -26,6 +25,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const { notify } = useNotification();
+  const [generalError, setGeneralError] = useState("");
 
   const validateForm = () => {
     let isValid = true;
@@ -135,6 +135,14 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     onClose();
   };
 
+  const getAllErrorMessages = () => {
+    const fieldErrors = Object.values(errors).filter((error) => error);
+    if (generalError) fieldErrors.push(generalError);
+
+    return fieldErrors;
+  };
+
+
   return (
     <div className="createTeam overlay" onClick={setOnClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
@@ -165,6 +173,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
             }}
           />
         </FormField>
+        {getAllErrorMessages().map((error, index) => (
+          <div key={index} className="createTeam error">
+            {error}
+          </div>
+        ))}
         <Button
           width="100%"
           className="green-button createTeam cButton"
@@ -172,9 +185,6 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
         >
           Create
         </Button>
-        {errors.general && (
-          <div className="error-message">{errors.general}</div>
-        )}
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

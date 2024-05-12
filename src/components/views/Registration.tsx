@@ -171,12 +171,12 @@ const Registration = () => {
                   Register
                 </Button>
               </div>
+              {getAllErrorMessages().map((error, index) => (
+                <div key={index} className="register error">
+                  {error}
+                </div>
+              ))}
             </div>
-            {getAllErrorMessages().map((error, index) => (
-              <div key={index} className="error-message">
-                {error}
-              </div>
-            ))}
             <label className="register message">
               Already haven an account?
             </label>

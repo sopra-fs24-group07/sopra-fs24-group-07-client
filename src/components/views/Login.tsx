@@ -49,7 +49,7 @@ const Login = () => {
 
   return (
     <div>
-      <LogRegHeader></LogRegHeader>
+      <LogRegHeader/>
       <BaseContainer>
         <div className="login center-align">
           {secret >= 5 && (
@@ -88,6 +88,8 @@ const Login = () => {
                 type="password"
                 onChange={setPassword}
               />
+              {error && <p className="login error">{error}</p>}
+              {!error && <p className="login error"></p>}
               <div className="login button-container">
                 <Button
                   disabled={!username || !password}
@@ -99,7 +101,6 @@ const Login = () => {
                 </Button>
               </div>
             </div>
-            {error && <p className="login error">{error}</p>}
 
             <label className="login message">Don&#39;t have an acoount?</label>
             <Button

@@ -209,7 +209,11 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
                 onClick={openProfileOnClose}
                 title={"Quit Editing"}
                 className="red-icon"
-                style={{ scale: "2" }}
+                style={{
+                  scale: "1.8",
+                  marginLeft: "10px",
+                  marginBottom: "10px",
+                }}
               />
             </FormField>
             <FormField label="Name" value={name} onChange={setName} />

@@ -247,7 +247,7 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               <ul className="TeamSetting list">
                 {teamMembers.map((member) => (
                   <li className="TeamSetting listItem" key={member.id}>
-                    {member.username} ({member.name})
+                    {member.username}, ({member.name})
                   </li>
                 ))}
               </ul>

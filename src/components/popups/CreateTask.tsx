@@ -130,6 +130,11 @@ const CreateTask = ({ isOpen, onClose }) => {
         />
 
         {error && <p>{error}</p>}
+        {getAllErrorMessages().map((error, index) => (
+          <div key={index} className="inspectTask error">
+            {error}
+          </div>
+        ))}
 
         <Button
           className="green-button bts createTeam cButton"
@@ -141,11 +146,6 @@ const CreateTask = ({ isOpen, onClose }) => {
         >
           Create
         </Button>
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
-            {error}
-          </div>
-        ))}
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>
