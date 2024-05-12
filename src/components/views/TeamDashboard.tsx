@@ -123,7 +123,7 @@ const TeamDashboard: React.FC = () => {
   const fetchTeamTasks = async () => {
     try {
       const response = await api.get(
-        `/api/v1/teams/${teamId}/tasks?status=TODO,IN_SESSION,DONE, IN_SESSION_DONE`,
+        `/api/v1/teams/${teamId}/tasks?status=TODO,IN_SESSION,DONE,IN_SESSION_DONE`,
         {
           headers: {
             Authorization: `${token}`,
