@@ -209,15 +209,15 @@ function VoiceChat() {
   useEffect(() => {
     const fetchUserTasks = async () => {
       try {
-        const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
-          headers: {
-            Authorization: `${userToken}`,
-          },
-        });
-        let inSessionTasks = response.data.filter(
-          (task) => task.status === "IN_SESSION"
+        const response = await api.get(
+          `/api/v1/teams/${teamId}/tasks?status=IN_SESSION`,
+          {
+            headers: {
+              Authorization: `${userToken}`,
+            },
+          }
         );
-        setTasks([{ title: "main", taskId: "XX" }, ...inSessionTasks]);
+        setTasks([{ title: "main", taskId: "XX" }, ...response.data]);
       } catch (error) {
         setErrorGetTasks(
           "Error while creating channels. Please try again later"

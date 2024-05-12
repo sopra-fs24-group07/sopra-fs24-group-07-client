@@ -30,7 +30,7 @@ function KanbanBoard(props) {
     setActiveTask(null);
     setIsDragged(null);
 
-    if (active.data.current.status !== over.id) {
+    if (over && active.data.current.status !== over.id) {
       updateTaskStatus(active.data.current, over.id);
     }
   };

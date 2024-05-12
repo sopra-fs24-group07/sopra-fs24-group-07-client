@@ -106,13 +106,12 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
               onChange={user.name}
               disabled={true}
             />
-            <Button width="30%" className="red-button bts" onClick={doLogout}>
-              Logout
-            </Button>
           </div>
         )}
+        <Button width="30%" className="red-button bts" onClick={doLogout}>
+          Logout
+        </Button>
         {message && <div className="confirmation-message">{message}</div>}
-
         <div className="profileMenu-header"></div>
         {error && <div className="error-message">{error}</div>}
       </div>

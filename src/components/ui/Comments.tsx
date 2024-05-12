@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/ui/Comments.scss";
-import { Button } from "./Button";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { api, handleError } from "helpers/api";
@@ -123,6 +122,7 @@ const Comments = (props) => {
               value={comment}
               onChange={setComment}
               error={error}
+              com={true}
             />
             <IconButton
               hoverIcon={BiSolidCommentAdd}

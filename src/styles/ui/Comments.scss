@@ -31,8 +31,9 @@
 .in-line {
   width: 100%;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
 }
+
 .submit {
   width: 15%;
   margin-bottom: 10px;
