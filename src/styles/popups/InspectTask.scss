@@ -55,22 +55,6 @@
     color: $background;
   }
 
-  &.textarea {
-    width: auto;
-    min-width: 630px;
-    max-width: 620px;
-    height: auto;
-    min-height: 200px;
-    max-height: 300px;
-    padding-left: 15px;
-    margin-left: -4px;
-    border: none;
-    border-radius: 0.75em;
-    margin-bottom: 10px;
-    background: transparentize(white, 0.85);
-    color: $background;
-  }
-
   &.headline {
     margin-top: 10px;
     margin-bottom: 0;

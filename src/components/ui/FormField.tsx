@@ -10,23 +10,38 @@ const FormField = ({
   textArea = false,
   disabled,
   children,
+  taS = false,
 }) => (
   <div className="form-field">
     <div className="form-field-header">
-      <label className="form-field label" htmlFor={label}>
+      <label
+        className="form-field-label"
+        htmlFor={label.replace(/\s+/g, "-").toLowerCase()}
+      >
         {label}
       </label>
       {children}
     </div>
     {textArea ? (
-      <textarea
-        className="form-field textarea"
-        placeholder="Enter here..."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        id={label.replace(/\s+/g, "-").toLowerCase()}
-        disabled={disabled}
-      />
+      taS ? (
+        <textarea
+          className="form-field textarea small"
+          placeholder="Enter here..."
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          id={label.replace(/\s+/g, "-").toLowerCase()}
+          disabled={disabled}
+        />
+      ) : (
+        <textarea
+          className="form-field textarea"
+          placeholder="Enter here..."
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          id={label.replace(/\s+/g, "-").toLowerCase()}
+          disabled={disabled}
+        />
+      )
     ) : (
       <input
         className="form-field input"
@@ -47,6 +62,7 @@ FormField.propTypes = {
   onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
   textArea: PropTypes.bool,
+  taS: PropTypes.bool,
   disabled: PropTypes.bool,
   children: PropTypes.node,
 };

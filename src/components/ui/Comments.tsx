@@ -115,25 +115,28 @@ const Comments = (props) => {
   return (
     <div className="wrapper">
       {!deleteOpen && (
-        <div className="in-line">
-          <FormField
-            label={"Comments"}
-            value={comment}
-            onChange={setComment}
-            error={error}
-          />
-          <IconButton
-            hoverIcon={BiSolidCommentAdd}
-            icon={BiCommentDetail}
-            onClick={createComment}
-            className="green-icon"
-            style={{
-              scale: "2",
-              marginBottom: "10px",
-              marginLeft: "20px",
-              marginRight: "10px",
-            }}
-          />
+        <div>
+          <h3>Comments</h3>
+          <div className="in-line">
+            <FormField
+              label={""}
+              value={comment}
+              onChange={setComment}
+              error={error}
+            />
+            <IconButton
+              hoverIcon={BiSolidCommentAdd}
+              icon={BiCommentDetail}
+              onClick={createComment}
+              className="green-icon"
+              style={{
+                scale: "2",
+                marginBottom: "10px",
+                marginLeft: "20px",
+                marginRight: "10px",
+              }}
+            />
+          </div>
         </div>
       )}
       {error && <div className="error-message">{error}</div>}

@@ -42,7 +42,7 @@ const ConfirmCommentDelete = (props) => {
     <div>
       <div>You are about to delete this comment</div>
       <CommentCard comment={comment} isFake={true}></CommentCard>
-      <div>This action cannot be reverted</div>
+      <div className="delete-text">This action cannot be reverted</div>
       <Button className="green-button comDeleteConfirm" onClick={onConfirm}>
         Confirm Deletion
       </Button>

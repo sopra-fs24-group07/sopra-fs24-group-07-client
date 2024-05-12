@@ -161,7 +161,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           title={editMode ? "Edit Task" : "Task Details"}
         />
         <FormField
-          className="inspectTask input"
           label={"Task Title"}
           value={taskTitle}
           placeholder="enter title..."
@@ -188,13 +187,13 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           )}
         </FormField>
         <FormField
-          className="inspectTask textarea"
           label={"Task Description"}
           value={taskDescription}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
           disabled={!editMode}
           textArea={true}
+          taS={true}
         />
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="error-message">
