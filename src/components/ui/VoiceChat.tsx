@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../styles/ui/VoiceChat.scss";
 import { useParams } from "react-router-dom";
 import { api, handleError } from "helpers/api";
+import { useNotification } from "../popups/NotificationContext";
 
 import AgoraRTC from "agora-rtc-sdk-ng"; //RTC for voice transmitting
 import AgoraRTM from "agora-rtm-sdk"; //RTM for Channels, Users, etc.
@@ -19,6 +20,8 @@ function VoiceChat() {
   const [errorUserName, setErrorUserName] = useState("");
   const [errorGetTasks, setErrorGetTasks] = useState("");
   const [errorGeneral, setErrorGeneral] = useState("");
+
+  const { notify } = useNotification();
 
   //IDs for identification, which we will use the userId for
   let rtcUID;
@@ -68,27 +71,29 @@ function VoiceChat() {
 
   const initRTM = async (name, taskid) => {
     //init rtm client with app ID
-    rtmClient = AgoraRTM.createInstance(APP_ID);
-    await rtmClient.login({ uid: rtmUID, token: TOKEN });
+    if (rtcToken) {
+      rtmClient = AgoraRTM.createInstance(APP_ID);
+      await rtmClient.login({ uid: rtmUID, token: TOKEN });
 
-    //add user to local attribute
-    rtmClient.addOrUpdateLocalUserAttributes({
-      name: name,
-      userRtcUid: rtcUID.toString(),
-    });
+      //add user to local attribute
+      rtmClient.addOrUpdateLocalUserAttributes({
+        name: name,
+        userRtcUid: rtcUID.toString(),
+      });
 
-    //create the channel with roomName, teamId and them join
-    channel = rtmClient.createChannel(
-      taskid.toString() + roomName + teamId.toString()
-    );
-    await channel.join();
+      //create the channel with roomName, teamId and them join
+      channel = rtmClient.createChannel(
+        taskid.toString() + roomName + teamId.toString()
+      );
+      await channel.join();
 
-    // get the members that are in a channel
-    getChannelMembers();
+      // get the members that are in a channel
+      getChannelMembers();
 
-    //what happens if a user joins/leaves
-    channel.on("MemberJoined", handleMemberJoined);
-    channel.on("MemberLeft", handleMemberLeft);
+      //what happens if a user joins/leaves
+      channel.on("MemberJoined", handleMemberJoined);
+      channel.on("MemberLeft", handleMemberLeft);
+    }
   };
 
   const initRTC = async (taskid) => {
@@ -108,26 +113,27 @@ function VoiceChat() {
       });
       rtcToken = response.data.token;
     } catch (error) {
-      setErrorGetTasks("Error");
+      notify("error", "Could not join Channel. Please try again later");
       console.error(`Error with token: ${handleError(error)}`);
     }
+    if (rtcToken) {
+      //handle user join/leave
+      rtcClient.on("user-published", handleUserPublished);
+      rtcClient.on("user-left", handleUserLeft);
 
-    //handle user join/leave
-    rtcClient.on("user-published", handleUserPublished);
-    rtcClient.on("user-left", handleUserLeft);
+      await rtcClient.join(
+        APP_ID,
+        taskid.toString() + roomName + teamId.toString(),
+        rtcToken,
+        rtcUID
+      );
 
-    await rtcClient.join(
-      APP_ID,
-      taskid.toString() + roomName + teamId.toString(),
-      rtcToken,
-      rtcUID
-    );
+      //track and publish local audio track
+      localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+      rtcClient.publish(localAudioTrack);
 
-    //track and publish local audio track
-    localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-    rtcClient.publish(localAudioTrack);
-
-    SpeakerIndicator();
+      SpeakerIndicator();
+    }
   };
 
   const SpeakerIndicator = async () => {
@@ -274,25 +280,31 @@ function VoiceChat() {
         try {
           //initalize rtc and rtm with the userName
           await initRTC(taskid);
-          await initRTM(userName, taskid);
 
-          //hide the channels
-          ChannelList.style.display = "none";
-          //show the voice room controls
-          document.getElementById(documentId.roomHeader).style.display = "flex";
-          document.getElementById(documentId.roomFooter).style.display = "flex";
-          //display the room-name
-          document.getElementById(documentId.roomName).innerHTML = roomName;
-          //leave the channel if windows is closed
-          window.addEventListener("beforeunload", leaveRoom);
-          window.addEventListener("popstate", leaveRoom);
-          //leave the channel if back to teams button is clicked
-          document
-            .getElementById(documentId.backButton)
-            .addEventListener("click", leaveRoom);
+          if (rtcToken) {
+            await initRTM(userName, taskid);
+            //hide the channels
+            ChannelList.style.display = "none";
+            //show the voice room controls
+            document.getElementById(documentId.roomHeader).style.display =
+              "flex";
+            document.getElementById(documentId.roomFooter).style.display =
+              "flex";
+            //display the room-name
+            document.getElementById(documentId.roomName).innerHTML = roomName;
+            //leave the channel if windows is closed
+            window.addEventListener("beforeunload", leaveRoom);
+            window.addEventListener("popstate", leaveRoom);
+            //leave the channel if back to teams button is clicked
+            document
+              .getElementById(documentId.backButton)
+              .addEventListener("click", leaveRoom);
 
-          document.addEventListener(documentId.endSession, leaveRoom);
-          document.addEventListener(documentId.leaveTeam, leaveRoom);
+            document.addEventListener(documentId.endSession, leaveRoom);
+            document.addEventListener(documentId.leaveTeam, leaveRoom);
+
+            rtcToken = null;
+          }
         } catch (error) {
           setErrorGeneral(
             "An unexpected error occured. Please try to logout and login again"
