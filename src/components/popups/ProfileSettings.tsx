@@ -211,7 +211,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
                 className="red-icon"
                 style={{
                   scale: "1.8",
-                  marginLeft: "10px",
+                  marginRight: "10px",
                   marginBottom: "10px",
                 }}
               />

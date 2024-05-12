@@ -91,10 +91,10 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
                 icon={MdOutlineModeEdit}
                 onClick={openSettings}
                 title={"Edit Profile"}
-                className="green-icon"
+                className="blue-icon"
                 style={{
                   scale: "1.8",
-                  marginLeft: "10px",
+                  marginRight: "10px",
                   marginBottom: "10px",
                 }}
               />

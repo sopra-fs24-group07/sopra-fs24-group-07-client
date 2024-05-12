@@ -118,7 +118,7 @@ const Comments = (props) => {
           <h3>Comments</h3>
           <div className="in-line">
             <FormField
-              label={""}
+              label={"Add comment"}
               value={comment}
               onChange={setComment}
               error={error}
@@ -130,9 +130,7 @@ const Comments = (props) => {
               onClick={createComment}
               className="green-icon"
               style={{
-                scale: "2",
-                marginBottom: "10px",
-                marginLeft: "20px",
+                scale: "2.2",
                 marginRight: "10px",
               }}
             />
