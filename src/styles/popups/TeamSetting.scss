@@ -95,12 +95,13 @@
   text-transform: uppercase;
   font-size: medium;
   height: 35px;
-  border: none;
   border-radius: $borderRadius;
   cursor: pointer;
   color: $background;
   background-color: $paletteGreen;
   transition: all 0.3s ease;
+  border: 2px solid $background;
+  box-shadow: 4px 4px $background;
 
   &:hover {
     transform: translateY(-4px);
