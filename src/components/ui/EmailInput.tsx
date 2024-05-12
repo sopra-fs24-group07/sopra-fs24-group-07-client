@@ -18,7 +18,7 @@ const EmailInput = ({ email, setEmail, error, setError }) => {
   };
 
   return (
-    <div className="TeamSetting field">
+    <div className="TeamSetting">
       <input
         type="text"
         className="TeamSetting input"

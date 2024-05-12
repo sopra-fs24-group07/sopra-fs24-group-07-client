@@ -4,8 +4,10 @@
   z-index: 1000;
 
   &.error {
+    font-size: 10px;
     color: red;
     margin-bottom: 1em;
+    padding-left: 12em;
   }
   &.container {
     position: fixed;
