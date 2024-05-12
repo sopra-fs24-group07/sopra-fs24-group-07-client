@@ -224,21 +224,23 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               />
               <div className="button-container">
                 <Button
-                  className="invite-user"
+                  className="invite-user green-button"
                   onClick={sendInvitationEmail}
                   title={"Email address will not be saved"}
                 >
                   Send as Email
                 </Button>
-                <Button className="invite-user" onClick={CopyInvitationLink}>
+                <Button
+                  className="invite-user green-button"
+                  onClick={CopyInvitationLink}
+                >
                   Copy Link
                 </Button>
               </div>
               {copied && (
                 <div>
-                  <input className="TeamSetting input" value={inviteURL} />
-                  <br />
                   <div className="TeamSetting copied">{copied}</div>
+                  <input className="TeamSetting input" value={inviteURL} />
                 </div>
               )}
             </div>

@@ -19,7 +19,7 @@
     max-width: 420px;
     background-color: $accentDark;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: $borderRadius;
     box-shadow: $dropShadow;
     position: relative;
     font-size: larger;
@@ -68,11 +68,11 @@
 
   &.input,
   &.textarea {
-    width: 17.5em;
+    width: 150%;
     background-color: $accent;
     border: 2px solid $background;
-    box-shadow: 4px 4px $background;
-    margin: 10px;
+    box-shadow: 2px 2px $background;
+    border-radius: $borderRadius;
   }
 
   &.copied {
@@ -84,8 +84,8 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 10px;
-  width: 100%;
+  margin-bottom: 10px;
+  width: 99%;
 }
 
 .invite-user,
@@ -101,7 +101,11 @@
   background-color: $paletteRed;
   transition: all 0.3s ease;
   border: 2px solid $background;
-  box-shadow: 4px 4px $background;
+  box-shadow: 2px 2px $background;
+
+  &.green-button {
+    background-color: $paletteGreen;
+  }
 
   &:hover {
     transform: translateY(-4px);
