@@ -118,7 +118,7 @@ const Comments = (props) => {
           <h3>Comments</h3>
           <div className="in-line">
             <FormField
-              label={"New Comment"}
+              label={"Add comment"}
               value={comment}
               onChange={setComment}
               error={error}
