@@ -122,6 +122,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       setTeamDescription(response.data);
     } catch (error) {
       console.error("Error generating description:", handleError(error));
+      notify("error", "Failed to generate description. Please try again.");
+      setErrors((prev) => ({
+        ...prev,
+        general: "Failed to create team. Please try again.",
+      }));
     }
     setIsLoading(false);
   };

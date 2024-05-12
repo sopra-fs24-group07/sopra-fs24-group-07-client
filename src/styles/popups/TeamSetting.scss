@@ -19,7 +19,7 @@
     max-width: 420px;
     background-color: $accentDark;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: $borderRadius;
     box-shadow: $dropShadow;
     position: relative;
     font-size: larger;
@@ -27,10 +27,11 @@
 
   &.error {
     color: red;
-    padding: 5px;
-    margin-bottom: 0.5em;
+    margin-bottom: 2em;
     display: flex;
     align-items: center;
+    font-size: 10px;
+    padding-left: 9.5em;
   }
 
   &.members {
@@ -41,6 +42,10 @@
     border-radius: $borderRadius;
     padding: 1em;
     margin-bottom: 1em;
+
+    .TeamSetting {
+      width: 100%;
+    }
   }
 
   &.list {
@@ -68,15 +73,10 @@
 
   &.input,
   &.textarea {
-    width: 17.5em;
     background-color: $accent;
     border: 2px solid $background;
-    box-shadow: 4px 4px $background;
-    margin: 10px;
-  }
-
-  &.copied {
-    font-size: 0.8em;
+    box-shadow: 2px 2px $background;
+    border-radius: $borderRadius;
   }
 }
 
@@ -84,8 +84,8 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 10px;
-  width: 100%;
+  margin-bottom: 10px;
+  width: 99%;
 }
 
 .invite-user,
@@ -101,7 +101,11 @@
   background-color: $paletteRed;
   transition: all 0.3s ease;
   border: 2px solid $background;
-  box-shadow: 4px 4px $background;
+  box-shadow: 2px 2px $background;
+
+  &.green-button {
+    background-color: $paletteGreen;
+  }
 
   &:hover {
     transform: translateY(-4px);
