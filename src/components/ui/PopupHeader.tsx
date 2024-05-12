@@ -10,8 +10,8 @@ export const PopupHeader = ({ onClose, title }) => (
       hoverIcon={IoMdCloseCircle}
       icon={IoMdCloseCircleOutline}
       onClick={onClose}
-      className="red-icon"
-      style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
+      className="blue-icon"
+      style={{ scale: "2.3", marginRight: "10px" }}
     />
   </div>
 );

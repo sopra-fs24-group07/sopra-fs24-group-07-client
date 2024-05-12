@@ -56,4 +56,3 @@ ProfileMenu.propTypes = {
 };
 
 export default ProfileMenu;
-
