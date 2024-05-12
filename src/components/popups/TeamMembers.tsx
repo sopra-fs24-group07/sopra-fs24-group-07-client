@@ -239,7 +239,6 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
               </div>
               {copied && (
                 <div>
-                  <div className="TeamSetting copied">{copied}</div>
                   <input className="TeamSetting input" value={inviteURL} />
                 </div>
               )}
