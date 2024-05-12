@@ -161,6 +161,11 @@ const Registration = () => {
                 type="password"
                 onChange={setRepPassword}
               />
+              {getAllErrorMessages().map((error, index) => (
+                <div key={index} className="register error">
+                  {error}
+                </div>
+              ))}
               <div className="register button-container">
                 <Button
                   className="login-button"
@@ -171,11 +176,6 @@ const Registration = () => {
                   Register
                 </Button>
               </div>
-              {getAllErrorMessages().map((error, index) => (
-                <div key={index} className="register error">
-                  {error}
-                </div>
-              ))}
             </div>
             <label className="register message">
               Already haven an account?
