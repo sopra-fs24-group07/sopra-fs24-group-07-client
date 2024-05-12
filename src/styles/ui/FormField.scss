@@ -28,7 +28,11 @@
 
     &:focus {
       outline: none;
-      border-color: #6c63ff;
+      border-color: $background;
+    }
+
+    &.com {
+      width: 150%;
     }
   }
 
@@ -49,7 +53,7 @@
 
     &:focus {
       outline: none;
-      border-color: #6c63ff;
+      border-color: $background;
     }
   }
 
@@ -70,7 +74,7 @@
 
     &:focus {
       outline: none;
-      border-color: #6c63ff;
+      border-color: $background;
     }
 
     &.small {

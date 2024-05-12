@@ -11,6 +11,7 @@ const FormField = ({
   disabled,
   children,
   taS = false,
+  com = false,
 }) => (
   <div className="form-field">
     <div className="form-field-header">
@@ -42,6 +43,16 @@ const FormField = ({
           disabled={disabled}
         />
       )
+    ) : com ? (
+      <input
+        className="form-field input com"
+        placeholder="Enter here..."
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        id={label.replace(/\s+/g, "-").toLowerCase()}
+        disabled={disabled}
+      />
     ) : (
       <input
         className="form-field input"
@@ -63,6 +74,7 @@ FormField.propTypes = {
   type: PropTypes.string,
   textArea: PropTypes.bool,
   taS: PropTypes.bool,
+  com: PropTypes.bool,
   disabled: PropTypes.bool,
   children: PropTypes.node,
 };
