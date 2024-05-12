@@ -84,7 +84,7 @@ const Header = (props) => {
           onClose={() => setShowEasterEgg(false)}
         />
       )}
-      <div className="header button-container">
+      <div className="header profile-container">
         <IconButton
           hoverIcon={MdPerson}
           icon={MdPersonOutline}

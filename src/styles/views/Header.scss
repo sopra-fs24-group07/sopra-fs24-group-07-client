@@ -7,6 +7,8 @@
     align-items: center;
     height: 5em;
     background-color: $accentDark;
+    padding-left: 2em;
+    padding-right: 2em;
   }
 
   &.title {
@@ -14,6 +16,7 @@
     color: $background;
     text-align: center;
     user-select: none;
+    flex-grow: 1;
   }
 
   &.titlelarge {
@@ -22,17 +25,15 @@
     color: $background;
   }
 
-  &.button-container {
+  &.left {
     display: flex;
-    justify-content: center;
-    margin-left: 1em;
-    margin-right: 1em;
+    align-items: center;
+    justify-content: flex-start;
   }
 
-  &.disabled-button {
-    cursor: default;
-    &:hover {
-      transform: none;
-    }
+  &.right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
