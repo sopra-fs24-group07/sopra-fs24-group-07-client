@@ -14,6 +14,7 @@ import { MdMic, MdMicOff, MdPhoneDisabled } from "react-icons/md";
 function VoiceChat() {
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
   const TOKEN = null;
+  let rtcToken = null;
 
   const [errorUserName, setErrorUserName] = useState("");
   const [errorGetTasks, setErrorGetTasks] = useState("");
@@ -94,6 +95,23 @@ function VoiceChat() {
     AgoraRTC.setLogLevel(4);
     rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
+    try {
+      const requestBody = JSON.stringify({
+        userId: userId,
+        teamId: teamId,
+        channelName: taskid.toString() + roomName + teamId.toString(),
+      });
+      const response = await api.post(`/api/v1/agora/getToken`, requestBody, {
+        headers: {
+          Authorization: `${userToken}`,
+        },
+      });
+      rtcToken = response.data.token;
+    } catch (error) {
+      setErrorGetTasks("Error");
+      console.error(`Error with token: ${handleError(error)}`);
+    }
+
     //handle user join/leave
     rtcClient.on("user-published", handleUserPublished);
     rtcClient.on("user-left", handleUserLeft);
@@ -101,7 +119,7 @@ function VoiceChat() {
     await rtcClient.join(
       APP_ID,
       taskid.toString() + roomName + teamId.toString(),
-      TOKEN,
+      rtcToken,
       rtcUID
     );
 
