@@ -57,8 +57,21 @@
 
   &.settingsBox {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 2em;
     width: 100%;
+  }
+
+  &.dash-buttons {
+    background-color: $accent;
+    border-radius: $borderRadius;
+    border: 2px solid $background;
+    box-shadow: 2px 2px $background;
+    display: flex;
+    width: 7em;
+    height: 2.5em;
+    padding: 20px;
+    justify-content: space-between;
   }
 
   &.statusBox {
@@ -78,6 +91,7 @@
     padding-left: 1em;
     padding-right: 0.4em; /* Adjust padding as needed */
     box-sizing: border-box;
+    font-size: 20px;
   }
 
   &.settingsButton {

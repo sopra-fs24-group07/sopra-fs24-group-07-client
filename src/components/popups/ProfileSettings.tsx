@@ -6,6 +6,7 @@ import "../../styles/popups/ProfileMenu.scss";
 import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "./ConfirmDelete";
 import { Spinner } from "components/ui/Spinner";
+import { useNotification } from "./NotificationContext";
 
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import {
@@ -19,29 +20,8 @@ import {
   MdEditOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
-
-const FormField = ({ label, value, onChange, type = "text" }) => (
-  <div className="register field">
-    <label className="register label" htmlFor={label}>
-      {label}
-    </label>
-    <input
-      className="register input"
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  </div>
-);
-
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
+import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   const [user, setUser] = useState({ id: "", username: "", name: "" });
@@ -60,6 +40,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   const [generalError, setGeneralError] = useState("");
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   useEffect(() => {
     async function fetchUser() {
@@ -161,6 +142,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
         });
 
         console.log("Saving changes:", response);
+        notify("success", "The changes have been saved!");
         setUser(updatedUser);
         setUsername(updatedUser.username);
         setName(updatedUser.name);
@@ -217,33 +199,23 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
   return (
     <div className="profileMenu-overlay" onClick={closeProfileSettings}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
-        <div className="profileMenu-header">
-          <h2>User Settings</h2>
-          {!showConfirmationPopup && (
-            <IconButton
-              hoverIcon={MdEditOff}
-              icon={MdOutlineEditOff}
-              onClick={openProfileOnClose}
-              className="red-icon"
-              style={{ scale: "1.8", marginRight: "10px", marginLeft: "30px" }}
-            />
-          )}
-
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={closeProfileSettings}
-            className="red-icon"
-            style={{ scale: "1.8", marginLeft: "20px", marginRight: "5px" }}
-          />
-        </div>
+        <PopupHeader onClose={onClose} title="Edit Profile"></PopupHeader>
         {!showConfirmationPopup && (
           <div>
-            <FormField
-              label="Username"
-              value={username}
-              onChange={setUsername}
-            />
+            <FormField label="Username" value={username} onChange={setUsername}>
+              <IconButton
+                hoverIcon={MdEditOff}
+                icon={MdOutlineEditOff}
+                onClick={openProfileOnClose}
+                title={"Quit Editing"}
+                className="red-icon"
+                style={{
+                  scale: "1.8",
+                  marginLeft: "10px",
+                  marginBottom: "10px",
+                }}
+              />
+            </FormField>
             <FormField label="Name" value={name} onChange={setName} />
             <FormField
               label="Password"
@@ -257,19 +229,26 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
               value={repPassword}
               onChange={setRepPassword}
             />
+            {error && <div className="error-message">{error}</div>}
+            {getAllErrorMessages().map((error, index) => (
+              <div key={index} className="error-message">
+                {error}
+              </div>
+            ))}
             <div className="profileMenu-header">
               <IconButton
                 hoverIcon={MdSave}
                 icon={MdOutlineSave}
                 onClick={saveChanges}
+                title={"Save Changes"}
                 className="green-icon"
                 style={{ scale: "2", marginLeft: "10px" }}
               />
-
               <IconButton
                 hoverIcon={MdDelete}
                 icon={MdDeleteOutline}
                 onClick={handleDeleteAccount}
+                title={"Delete Account"}
                 className="red-icon"
                 style={{ scale: "2", marginRight: "10px" }}
               />
@@ -282,12 +261,6 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
             onConfirm={confirmDeleteAccount}
           />
         )}
-        {error && <div className="error-message">{error}</div>}
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
-            {error}
-          </div>
-        ))}
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

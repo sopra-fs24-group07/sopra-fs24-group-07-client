@@ -65,13 +65,17 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
-              title={team.description} // Tooltip added here
+              title={team.description}
               onClick={() => navigate(`/teams/${team.teamId}`)}
             >
               {team.name}
             </Button>
           ))}
-          <Button className="team create" onClick={openCreateTeam}>
+          <Button
+            className="team green-button"
+            onClick={openCreateTeam}
+            title="Create a new team!"
+          >
             Create Team
           </Button>
           <CreateTeam

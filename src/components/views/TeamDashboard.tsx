@@ -15,9 +15,10 @@ import SessionTaskBoard from "../ui/SessionTaskBoard";
 import Pusher from "pusher-js";
 import MemberCard from "components/ui/MemberCard";
 import SessionHistory from "components/popups/SessionHistory";
+import TeamMembers from "../popups/TeamMembers";
 
 import IconButton from "../ui/IconButton";
-import { MdHistory, MdSettings } from "react-icons/md";
+import { MdHistory, MdSettings, MdPeople } from "react-icons/md";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -32,6 +33,7 @@ const TeamDashboard: React.FC = () => {
   const token = localStorage.getItem("token") || "";
   const userId = localStorage.getItem("id");
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
+  const [isTeamMembersOpen, setTeamMembersOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
@@ -77,6 +79,14 @@ const TeamDashboard: React.FC = () => {
       navigate("/teams");
       setIsLeave(false);
     }
+  };
+
+  const openTeamMembers = () => {
+    setTeamMembersOpen(true);
+  };
+
+  const closeTeamMembers = () => {
+    setTeamMembersOpen(false);
   };
 
   const openSessionHistory = () => {
@@ -332,18 +342,26 @@ const TeamDashboard: React.FC = () => {
             endColumn={5}
           >
             <div className="team-dashboard settingsBox">
-              <IconButton
-                className="dash-icon"
-                icon={MdSettings}
-                onClick={openTeamSettings}
-                style={{ scale: "3.5", marginTop: "20px", marginLeft: "60px" }}
-              />
-              <IconButton
-                className="dash-icon"
-                icon={MdHistory}
-                onClick={openSessionHistory}
-                style={{ scale: "3.5", marginTop: "20px", marginRight: "60px" }}
-              />
+              <div className="team-dashboard dash-buttons">
+                <IconButton
+                  className="dash-icon"
+                  icon={MdPeople}
+                  title={"Team Members"}
+                  onClick={openTeamMembers}
+                />
+                <IconButton
+                  className="dash-icon"
+                  icon={MdHistory}
+                  title={"Session History"}
+                  onClick={openSessionHistory}
+                />
+                <IconButton
+                  className="dash-icon"
+                  icon={MdSettings}
+                  title={"Team Settings"}
+                  onClick={openTeamSettings}
+                />
+              </div>
               <div className="team-dashboard description">{teamDesc}</div>
             </div>
           </TeamDashboardBox>
@@ -377,6 +395,13 @@ const TeamDashboard: React.FC = () => {
         <TeamSettings
           isOpen={isTeamSettingsOpen}
           onClose={closeTeamSettings}
+          isLeave={isLeave}
+          setIsLeave={setIsLeave}
+          onEdit={fetchTeamInfo}
+        />
+        <TeamMembers
+          isOpen={isTeamMembersOpen}
+          onClose={closeTeamMembers}
           isLeave={isLeave}
           setIsLeave={setIsLeave}
           onEdit={fetchTeamInfo}

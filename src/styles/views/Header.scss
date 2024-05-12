@@ -3,16 +3,24 @@
 .header {
   &.container {
     display: flex;
-    justify-content: space-between; /* Align buttons to the left and right */
-    align-items: center; /* Center the title vertically */
+    justify-content: center;
+    align-items: center;
     height: 5em;
     background-color: $accentDark;
+    padding-left: 2em;
+    padding-right: 2em;
   }
 
   &.title {
+    position: absolute;
+    flex: 0;
     font-weight: bold;
     color: $background;
-    text-align: center; /* Center the title horizontally */
+    text-align: center;
+    user-select: none;
+    flex-grow: 1;
+    padding: 0 1em;
+    white-space: nowrap;
   }
 
   &.titlelarge {
@@ -21,10 +29,18 @@
     color: $background;
   }
 
-  &.button-container {
+  &.left {
+    flex: 1 1 50%;
+    flex-grow: 1;
     display: flex;
-    justify-content: center;
-    margin-left: 1em;
-    margin-right: 1em;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &.right {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 }

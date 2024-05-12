@@ -20,53 +20,10 @@ import {
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
 
-const FormField = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <input
-        className="inspectTask input"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={!props.disabled}
-      />
-    </div>
-  );
-};
+import { useNotification } from "./NotificationContext";
 
-const FormFieldLong = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <textarea
-        className="inspectTask textarea"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={!props.disabled}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-};
-
-FormFieldLong.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-};
+import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [editMode, setEditMode] = useState(false);
@@ -81,6 +38,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   });
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   if (!isOpen) return null;
 
@@ -127,7 +85,11 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
 
   const EditTask = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      notify("error", "Some inputs are invalid!");
+
+      return;
+    }
     try {
       task.title = taskTitle;
       task.description = taskDescription;
@@ -142,9 +104,11 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         }
       );
       DeactivateEditMode();
+      notify("success", "Task edited successfully!");
     } catch (error) {
       //new error handling
       setError("Failed to edit the Task");
+      notify("error", "Failed to edit the Task. Please try again.");
       if (error.response.status === 401) {
         setError("You are not authorized to edit this Task");
       } else if (error.response.status === 404) {
@@ -192,60 +156,50 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
-        <div className="inspectTask header">
+        <PopupHeader
+          onClose={onClose}
+          title={editMode ? "Edit Task" : "Task Details"}
+        />
+        <FormField
+          label={"Task Title"}
+          value={taskTitle}
+          placeholder="enter title..."
+          onChange={(ti: string) => setTaskTitle(ti)}
+          disabled={!editMode}
+        >
           {!editMode && (
-            <IconButton
-              hoverIcon={IoMdCloseCircle}
-              icon={IoMdCloseCircleOutline}
-              onClick={doClose}
-              className="red-icon"
-              style={{ scale: "2.5", marginLeft: "10px", marginTop: "5px" }}
-            />
-          )}
-          {editMode && (
-            <>
-              <div></div>
-              <IconButton
-                hoverIcon={MdEditOff}
-                icon={MdOutlineEditOff}
-                onClick={DeactivateEditMode}
-                className="red-icon"
-                style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
-              />
-            </>
-          )}
-          {!editMode && !inSession && (
             <IconButton
               hoverIcon={MdModeEditOutline}
               icon={MdOutlineModeEdit}
               onClick={ActivateEditMode}
               className="green-icon"
-              style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
+              style={{
+                scale: "2",
+                marginRight: "10px",
+                marginTop: "5px",
+                marginBottom: "10px",
+              }}
             />
           )}
-        </div>
-        <h3 className="inspectTask headline">Task Title</h3>
+          {editMode && !inSession && (
+            <IconButton
+              hoverIcon={MdEditOff}
+              icon={MdOutlineEditOff}
+              onClick={DeactivateEditMode}
+              className="red-icon"
+              style={{ scale: "2", marginRight: "10px", marginTop: "5px" }}
+            />
+          )}
+        </FormField>
         <FormField
-          className="inspectTask input"
-          value={taskTitle}
-          placeholder="enter title..."
-          onChange={(ti: string) => setTaskTitle(ti)}
-          disabled={editMode}
-        />
-        <h3 className="inspectTask headline">Task Description</h3>
-        <FormFieldLong
-          className="inspectTask textarea"
+          label={"Task Description"}
           value={taskDescription}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
-          disabled={editMode}
+          disabled={!editMode}
+          textArea={true}
+          taS={true}
         />
-        {!editMode && (
-          <>
-            <h3 className="inspectTask headline">Comments</h3>
-            <Comments taskId={task.taskId} />
-          </>
-        )}
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="error-message">
             {error}
@@ -254,8 +208,8 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
 
         {error && <p>{error}</p>}
 
-        <div className="inspectTask header">
-          {editMode && (
+        {editMode && (
+          <div className="inspectTask header">
             <IconButton
               hoverIcon={MdSave}
               icon={MdOutlineSave}
@@ -263,9 +217,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               className="green-icon"
               style={{ scale: "2.5", marginLeft: "10px", marginTop: "10px" }}
             />
-          )}
-
-          {editMode && (
             <IconButton
               hoverIcon={MdDelete}
               icon={MdDeleteOutline}
@@ -273,9 +224,11 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               className="red-icon"
               style={{ scale: "2.5", marginTop: "10px", marginRight: "10px" }}
             />
-          )}
-        </div>
+          </div>
+        )}
+        {!editMode && <Comments taskId={task.taskId} />}
       </div>
+
       {isLoading ? <Spinner /> : ""}
     </div>
   );

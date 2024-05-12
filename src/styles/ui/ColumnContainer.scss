@@ -19,6 +19,8 @@
   word-wrap: break-word;
   box-shadow: $dropShadow;
   border-radius: $borderRadius;
+  border: 2px solid $background;
+  box-shadow: 2px 2px $background;
 }
 
 .tasksArea {

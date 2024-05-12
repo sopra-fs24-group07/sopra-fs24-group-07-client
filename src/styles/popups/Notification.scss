@@ -1,0 +1,55 @@
+@import "../theme";
+
+.notification-container {
+  position: fixed;
+  top: 1em; //set to 5em if you want the notification to appear below the navbar
+  right: 1em;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.notification {
+  display: flex;
+  background-color: $accent;
+  border-radius: $borderRadius;
+  padding: 10px;
+  transition:
+    opacity 0.3s,
+    top 0.3s ease-in-out;
+  border: 2px solid $background;
+  box-shadow: 4px 4px $background;
+  margin-bottom: 1em;
+}
+
+.notification-icon {
+  margin-right: 10px;
+}
+
+.close-btn,
+.link-btn {
+  margin-left: auto;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.success {
+  scale: 200%;
+  color: green;
+}
+.error {
+  scale: 100%;
+  color: red;
+}
+.lock {
+  scale: 200%;
+  color: yellow;
+}
