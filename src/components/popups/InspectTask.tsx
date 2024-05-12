@@ -200,7 +200,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           taS={true}
         />
         {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
+          <div key={index} className="inspectTask error">
             {error}
           </div>
         ))}
