@@ -173,7 +173,12 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               icon={MdOutlineModeEdit}
               onClick={ActivateEditMode}
               className="green-icon"
-              style={{ scale: "2", marginRight: "10px", marginTop: "5px", marginBottom: "10px" }}
+              style={{
+                scale: "2",
+                marginRight: "10px",
+                marginTop: "5px",
+                marginBottom: "10px",
+              }}
             />
           )}
           {editMode && !inSession && (

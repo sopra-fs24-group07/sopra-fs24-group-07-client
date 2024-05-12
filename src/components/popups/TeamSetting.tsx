@@ -258,7 +258,11 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                 icon={MdOutlineModeEdit}
                 onClick={ActivateEditMode}
                 className="green-icon"
-                style={{ scale: "2", marginRight: "10px", marginBottom: "10px"}}
+                style={{
+                  scale: "2",
+                  marginRight: "10px",
+                  marginBottom: "10px",
+                }}
               />
             )}
             {editMode && (
@@ -267,7 +271,11 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                 icon={MdOutlineEditOff}
                 onClick={DeactivateEditMode}
                 className="red-icon"
-                style={{ scale: "2", marginRight: "10px", marginBottom: "10px"}}
+                style={{
+                  scale: "2",
+                  marginRight: "10px",
+                  marginBottom: "10px",
+                }}
               />
             )}
           </FormField>
@@ -287,7 +295,11 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                 icon={MdAutoFixNormal}
                 onClick={generateAIDescription}
                 className="yellow-icon"
-                style={{ scale: "2", marginRight: "10px", marginBottom: "10px"}}
+                style={{
+                  scale: "2",
+                  marginRight: "10px",
+                  marginBottom: "10px",
+                }}
               />
             )}
           </FormField>

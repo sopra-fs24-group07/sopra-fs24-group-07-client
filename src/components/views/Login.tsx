@@ -49,7 +49,7 @@ const Login = () => {
 
   return (
     <div>
-      <LogRegHeader/>
+      <LogRegHeader />
       <BaseContainer>
         <div className="login center-align">
           {secret >= 5 && (

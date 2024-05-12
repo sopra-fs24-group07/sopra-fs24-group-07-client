@@ -142,7 +142,6 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     return fieldErrors;
   };
 
-
   return (
     <div className="createTeam overlay" onClick={setOnClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>

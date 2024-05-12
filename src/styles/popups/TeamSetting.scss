@@ -66,7 +66,8 @@
     margin-bottom: 10px;
   }
 
-  &.input, &.textarea {
+  &.input,
+  &.textarea {
     width: 17.5em;
     background-color: $accent;
     border: 2px solid $background;
@@ -87,7 +88,8 @@
   width: 100%;
 }
 
-.invite-user, .leave-team {
+.invite-user,
+.leave-team {
   width: 100%;
   font-weight: 700;
   text-transform: uppercase;
