@@ -41,6 +41,10 @@
     border-radius: $borderRadius;
     padding: 1em;
     margin-bottom: 1em;
+
+    .TeamSetting {
+      width: 100%;
+    }
   }
 
   &.list {
@@ -68,15 +72,10 @@
 
   &.input,
   &.textarea {
-    width: 150%;
     background-color: $accent;
     border: 2px solid $background;
     box-shadow: 2px 2px $background;
     border-radius: $borderRadius;
-  }
-
-  &.copied {
-    font-size: 0.8em;
   }
 }
 

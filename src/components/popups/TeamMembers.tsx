@@ -238,9 +238,7 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                 </Button>
               </div>
               {copied && (
-                <div>
-                  <input className="TeamSetting input" value={inviteURL} />
-                </div>
+                <input className="TeamSetting input" value={inviteURL} />
               )}
             </div>
             <div className="TeamSetting members">
