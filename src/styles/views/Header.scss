@@ -3,7 +3,7 @@
 .header {
   &.container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     height: 5em;
     background-color: $accentDark;
@@ -12,11 +12,15 @@
   }
 
   &.title {
+    position: absolute;
+    flex: 0;
     font-weight: bold;
     color: $background;
     text-align: center;
     user-select: none;
     flex-grow: 1;
+    padding: 0 1em;
+    white-space: nowrap;
   }
 
   &.titlelarge {
@@ -26,12 +30,15 @@
   }
 
   &.left {
+    flex: 1 1 50%;
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: flex-start;
   }
 
   &.right {
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: flex-end;
