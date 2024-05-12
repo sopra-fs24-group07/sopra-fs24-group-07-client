@@ -173,7 +173,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               icon={MdOutlineModeEdit}
               onClick={ActivateEditMode}
               className="green-icon"
-              style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
+              style={{ scale: "2", marginRight: "10px", marginTop: "5px", marginBottom: "10px" }}
             />
           )}
           {editMode && !inSession && (
@@ -182,7 +182,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
               icon={MdOutlineEditOff}
               onClick={DeactivateEditMode}
               className="red-icon"
-              style={{ scale: "2.5", marginRight: "10px", marginTop: "5px" }}
+              style={{ scale: "2", marginRight: "10px", marginTop: "5px" }}
             />
           )}
         </FormField>
