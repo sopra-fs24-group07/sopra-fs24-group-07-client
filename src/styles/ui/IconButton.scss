@@ -20,8 +20,16 @@
   color: $iconRed1;
 }
 
+.grey-icon {
+  color: $iconGrey1;
+}
+
 .green-icon {
   color: $iconGreen1;
+}
+
+.yellow-icon {
+  color: $iconYellow1;
 }
 
 .blue-icon {
@@ -29,8 +37,9 @@
 }
 
 .dash-icon {
+  scale: 150%;
   color: $background;
   &:hover {
-    color: $accent;
+    color: $accentDark;
   }
 }

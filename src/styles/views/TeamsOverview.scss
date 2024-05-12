@@ -25,7 +25,7 @@
 
   &.header {
     text-align: center;
-    margin-bottom: -2em;
+    margin-bottom: -0.75em;
   }
   &.grid {
     display: grid;
@@ -35,16 +35,75 @@
     width: 100%;
 
     .team {
-      height: 100px;
+      min-height: 100px;
+      height: auto;
       width: auto;
       padding: 10px 0;
       font-size: 100%;
       overflow-wrap: break-word;
       word-wrap: break-word;
+
+      &.green-button {
+        &:hover {
+          transform: translateY(-4px);
+        }
+        &:disabled {
+          cursor: default;
+          opacity: 0.4;
+          &:hover {
+            transform: none;
+          }
+        }
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+        border-radius: $borderRadius;
+        cursor: pointer;
+        opacity: 1;
+        color: $background;
+        background-color: $paletteGreen;
+        transition: all 0.3s ease;
+        border: 2px solid $background;
+        box-shadow: 4px 4px $background;
+      }
+      &:hover::after {
+        content: attr(title);
+        position: absolute;
+        top: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        z-index: 1;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: $background;
+        color: white;
+        font-size: 14px;
+        display: block;
+        max-width: 300px;
+        min-width: 10em;
+        white-space: normal;
+        word-wrap: anywhere;
+        overflow-wrap: break-word;
+      }
+
+      &:hover::before {
+        position: absolute;
+        content: "";
+        height: 8px;
+        width: 8px;
+        background: $background;
+        bottom: -1.45em;
+        scale: 150%;
+        left: 50%;
+        transform: translate(-50%) rotate(45deg);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
     }
 
     .create {
-      height: 100px;
+      min-height: 100px;
+      height: auto;
       width: auto;
       padding: 10px 0;
       font-size: 100%;

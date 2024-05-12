@@ -6,52 +6,10 @@ import { Button } from "components/ui/Button";
 import { useParams } from "react-router-dom";
 import { Spinner } from "components/ui/Spinner";
 
-import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
-import IconButton from "../ui/IconButton";
+import { useNotification } from "../popups/NotificationContext";
 
-const FormField = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <input
-        className="inspectTask input"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
-
-const FormFieldLong = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <textarea
-        className="inspectTask textarea"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
-
-FormFieldLong.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-};
+import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const CreateTask = ({ isOpen, onClose }) => {
   const { teamId } = useParams();
@@ -69,6 +27,7 @@ const CreateTask = ({ isOpen, onClose }) => {
   });
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   if (!isOpen) return null;
 
@@ -94,8 +53,8 @@ const CreateTask = ({ isOpen, onClose }) => {
       isValid = false;
     }
 
-    if (description && description.length > 500) {
-      errors.description = "Description exceeds the 500 character limit";
+    if (description && description.length > 1000) {
+      errors.description = "Description exceeds the 1000 character limit";
       isValid = false;
     }
 
@@ -109,7 +68,12 @@ const CreateTask = ({ isOpen, onClose }) => {
   //try to create a task via api pst call
   const CreateTask = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      notify("error", "Some inputs are invalid!");
+
+      return;
+    }
+
     try {
       const requestBody = JSON.stringify({ title, description });
       const response = await api.post(
@@ -123,9 +87,11 @@ const CreateTask = ({ isOpen, onClose }) => {
       );
       //reset input fields after submitting
       doClose();
+      notify("success", "Task created successfully!");
     } catch (error) {
       //new error handling with status codes
       setError("Failed to create the Task");
+      notify("error", "Failed to create the Task. Please try again.");
       if (error.response.status === 401) {
         setError("You are not authorized to create a Task");
       } else if (error.response.status === 400) {
@@ -146,32 +112,29 @@ const CreateTask = ({ isOpen, onClose }) => {
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
-        <div className="inspectTask header">
-          <h2 className="inspectTask headline">Create Task</h2>
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={doClose}
-            className="blue-icon"
-            style={{ scale: "2.5", marginRight: "15px" }}
-          />
-        </div>
-        <h3 className="inspectTask headline">Title</h3>
+        <PopupHeader onClose={onClose} title="Create Task" />
         <FormField
           className="inspectTask input"
+          label={"Title"}
           value={title}
           placeholder="enter title..."
           onChange={(ti: string) => setTitle(ti)}
         />
-        <h3 className="inspectTask headline">Description</h3>
-        <FormFieldLong
+        <FormField
           className="inspectTask textarea"
+          label={"Description"}
           value={description}
+          textArea={true}
           placeholder="enter description..."
           onChange={(dc: string) => setDescription(dc)}
         />
 
         {error && <p>{error}</p>}
+        {getAllErrorMessages().map((error, index) => (
+          <div key={index} className="inspectTask error">
+            {error}
+          </div>
+        ))}
 
         <Button
           className="green-button bts createTeam cButton"
@@ -183,11 +146,6 @@ const CreateTask = ({ isOpen, onClose }) => {
         >
           Create
         </Button>
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
-            {error}
-          </div>
-        ))}
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

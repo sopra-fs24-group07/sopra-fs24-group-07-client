@@ -15,7 +15,7 @@
 
 .profileMenu-content {
   margin-top: 5.5em;
-  margin-right: 1em;
+  margin-right: 3em;
   background-color: $accentDark;
   padding: 20px;
   padding-top: 0px;
@@ -49,6 +49,10 @@
   &.attribute {
     font-size: 1rem;
     color: $background;
+    padding: 5px;
+    border-radius: $borderRadius;
+    border: 2px solid $background;
+    box-shadow: 4px 4px $background;
   }
 }
 

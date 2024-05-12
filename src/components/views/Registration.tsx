@@ -9,27 +9,7 @@ import PropTypes from "prop-types";
 import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
-
-const FormField = ({ label, value, onChange, type = "text", error }) => (
-  <div className="register field">
-    <label className="register label">{label}</label>
-    <input
-      className={`register input ${error ? "input-error" : ""}`}
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={onChange}
-    />
-  </div>
-);
-
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-  error: PropTypes.string,
-};
+import FormField from "../ui/FormField";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -60,8 +40,8 @@ const Registration = () => {
       isValid = false;
     }
 
-    if (username.length > 100) {
-      errors.username = "Username exceeds the 100 character limit!";
+    if (username.length > 30) {
+      errors.username = "Username exceeds the 30 character limit!";
       isValid = false;
     }
 
@@ -70,8 +50,8 @@ const Registration = () => {
       isValid = false;
     }
 
-    if (name.length > 100) {
-      errors.name = "Name exceeds the 100 character limit!";
+    if (name.length > 50) {
+      errors.name = "Name exceeds the 50 character limit!";
       isValid = false;
     }
 
@@ -85,8 +65,8 @@ const Registration = () => {
       isValid = false;
     }
 
-    if (password.length > 100) {
-      errors.password = "Password exceeds the 100 character limit";
+    if (password.length > 50) {
+      errors.password = "Password exceeds the 50 character limit";
       isValid = false;
     }
 
@@ -166,27 +146,24 @@ const Registration = () => {
               <FormField
                 label="Username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={setUsername}
               />
-              <FormField
-                label="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+              <FormField label="Name" value={name} onChange={setName} />
               <FormField
                 label="Password"
                 value={password}
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={setPassword}
               />
               <FormField
                 label="Repeat Password"
                 value={repPassword}
                 type="password"
-                onChange={(e) => setRepPassword(e.target.value)}
+                onChange={setRepPassword}
               />
               <div className="register button-container">
                 <Button
+                  className="login-button"
                   disabled={!username || !name || !password || !repPassword}
                   width="50%"
                   onClick={doRegister}
@@ -194,16 +171,20 @@ const Registration = () => {
                   Register
                 </Button>
               </div>
+              {getAllErrorMessages().map((error, index) => (
+                <div key={index} className="register error">
+                  {error}
+                </div>
+              ))}
             </div>
-            {getAllErrorMessages().map((error, index) => (
-              <div key={index} className="error-message">
-                {error}
-              </div>
-            ))}
             <label className="register message">
               Already haven an account?
             </label>
-            <Button width="60%" onClick={() => navigate("/login")}>
+            <Button
+              className="login-button"
+              width="60%"
+              onClick={() => navigate("/login")}
+            >
               Go to Login
             </Button>
           </div>

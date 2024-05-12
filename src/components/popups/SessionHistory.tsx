@@ -3,11 +3,8 @@ import "../../styles/popups/SessionHistory.scss";
 import "../../styles/popups/InspectTask.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
-import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
-import IconButton from "../ui/IconButton";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
   const [teamName, setTeamName] = useState();
@@ -111,16 +108,7 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
         className="SessionHistory content"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="SessionHistory header">
-          <h2 className="SessionHistory headline">Team Sessions</h2>
-          <IconButton
-            hoverIcon={IoMdCloseCircle}
-            icon={IoMdCloseCircleOutline}
-            onClick={doClose}
-            className="blue-icon"
-            style={{ scale: "2.2", marginRight: "10px", marginTop: "5px" }}
-          />
-        </div>
+        <PopupHeader onClose={onClose} title="Team Sessions" />
         {error && <p>{error}</p>}
         {!error && sessions.length !== 0 && (
           <div>
@@ -150,8 +138,8 @@ const SessionHistory = ({ isOpen, onClose, sessionStatus }) => {
         )}
         {!error && sessions.length === 0 && (
           <div style={{ marginBottom: "20px" }}>
-            You have not been in any Sessions.
-            <br /> Better start now.
+            This team has no sessions yet.
+            <br /> Better get started!
           </div>
         )}
       </div>

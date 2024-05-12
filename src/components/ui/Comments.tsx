@@ -14,24 +14,7 @@ import {
   BiCommentAdd,
 } from "react-icons/bi";
 import IconButton from "../ui/IconButton";
-
-const FormField = ({ value, onChange, error }) => {
-  return (
-    <input
-      className="input"
-      type="text"
-      placeholder="enter comment.."
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  );
-};
-
-FormField.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
-};
+import FormField from "./FormField";
 
 const Comments = (props) => {
   const { teamId } = useParams();
@@ -47,8 +30,8 @@ const Comments = (props) => {
   const validateForm = () => {
     let isValid = true;
 
-    if (comment.length > 500) {
-      setError("The comment exceeds 500 characters");
+    if (comment.length > 1000) {
+      setError("The comment exceeds 1000 characters");
       isValid = false;
     }
 
@@ -132,20 +115,28 @@ const Comments = (props) => {
   return (
     <div className="wrapper">
       {!deleteOpen && (
-        <div className="in-line">
-          <FormField value={comment} onChange={setComment} error={error} />
-          <IconButton
-            hoverIcon={BiSolidCommentAdd}
-            icon={BiCommentDetail}
-            onClick={createComment}
-            className="blue-icon"
-            style={{
-              scale: "2",
-              marginBottom: "10px",
-              marginLeft: "20px",
-              marginRight: "10px",
-            }}
-          />
+        <div>
+          <h3>Comments</h3>
+          <div className="in-line">
+            <FormField
+              label={""}
+              value={comment}
+              onChange={setComment}
+              error={error}
+            />
+            <IconButton
+              hoverIcon={BiSolidCommentAdd}
+              icon={BiCommentDetail}
+              onClick={createComment}
+              className="green-icon"
+              style={{
+                scale: "2",
+                marginBottom: "10px",
+                marginLeft: "20px",
+                marginRight: "10px",
+              }}
+            />
+          </div>
         </div>
       )}
       {error && <div className="error-message">{error}</div>}

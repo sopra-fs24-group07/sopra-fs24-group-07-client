@@ -1,6 +1,12 @@
 @import "../theme";
 
 .register {
+  &.error {
+    color: red;
+    height: 1em;
+    margin-bottom: 1em;
+  }
+
   &.container {
     min-height: 300px;
     margin-left: 4em;
@@ -10,12 +16,13 @@
   }
   &.form {
     display: flex;
-    min-width: 450px;
+    min-width: 500px;
     flex-direction: column;
     justify-content: center;
     width: auto;
     max-width: none;
-    height: 30em;
+    min-height: 30em;
+    height: auto;
     font-size: 16px;
     font-weight: 300;
     padding: 35px;
@@ -24,7 +31,8 @@
     transition:
       opacity 0.5s ease,
       transform 0.5s ease;
-    box-shadow: $dropShadow;
+    border: 2px solid $background;
+    box-shadow: 4px 4px $background;
   }
   &.field {
     display: flex;
@@ -50,7 +58,7 @@
   &.button-container {
     display: flex;
     justify-content: center;
-    margin-top: 2em;
+    margin-top: 0;
   }
 
   &.message {
