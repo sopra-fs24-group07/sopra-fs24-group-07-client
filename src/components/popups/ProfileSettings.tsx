@@ -225,6 +225,12 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
               value={repPassword}
               onChange={setRepPassword}
             />
+            {error && <div className="error-message">{error}</div>}
+            {getAllErrorMessages().map((error, index) => (
+              <div key={index} className="error-message">
+                {error}
+              </div>
+            ))}
             <div className="profileMenu-header">
               <IconButton
                 hoverIcon={MdSave}
@@ -251,12 +257,6 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
             onConfirm={confirmDeleteAccount}
           />
         )}
-        {error && <div className="error-message">{error}</div>}
-        {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
-            {error}
-          </div>
-        ))}
       </div>
       {isLoading ? <Spinner /> : ""}
     </div>

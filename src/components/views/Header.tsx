@@ -68,7 +68,7 @@ const Header = (props) => {
     <div className="header container" style={{ height: props.height }}>
       <div className="header button-container">
         {location.pathname === "/teams" ? (
-          <Button className="header disabled-button">Your Teams</Button> //this button should not react to hover
+          <h3>Your Teams</h3>
         ) : (
           <Button id="back-button" onClick={() => goTeamsOverview()}>
             {"< Back to Teams"}

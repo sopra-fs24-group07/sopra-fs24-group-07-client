@@ -223,7 +223,7 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                 }
               />
               <div className="button-container">
-                <Button className="invite-user" onClick={sendInvitationEmail}>
+                <Button className="invite-user" onClick={sendInvitationEmail} title={"Email address will not be saved"}>
                   Send as Email
                 </Button>
                 <Button className="invite-user" onClick={CopyInvitationLink}>
