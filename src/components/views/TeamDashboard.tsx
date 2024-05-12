@@ -112,11 +112,14 @@ const TeamDashboard: React.FC = () => {
 
   const fetchTeamTasks = async () => {
     try {
-      const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const response = await api.get(
+        `/api/v1/teams/${teamId}/tasks?status=TODO,IN_SESSION,DONE`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
       setTeamTasks(response.data);
     } catch (error) {
       console.error(`Error fetching team's tasks: ${handleError(error)}`);
