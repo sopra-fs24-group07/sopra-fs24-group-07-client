@@ -81,7 +81,7 @@ function VoiceChat() {
           Authorization: `${userToken}`,
         },
       });
-      rtcToken = response.data.token;
+      rtcToken = response.data.rtcToken;
     } catch (error) {
       notify("error", "Could not join Channel. Please try again later");
       console.error(`Error with token: ${handleError(error)}`);
