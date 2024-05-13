@@ -16,6 +16,7 @@ function VoiceChat() {
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
   const TOKEN = null;
   let rtcToken = null;
+  let rtmToken = null;
 
   const [errorUserName, setErrorUserName] = useState("");
   const [errorGetTasks, setErrorGetTasks] = useState("");
@@ -69,7 +70,7 @@ function VoiceChat() {
   //to display the Spinner
   const [isLoading, setIsLoading] = useState(false);
 
-  const getRtcToken = async (taskid) => {
+  const getTokens = async (taskid) => {
     try {
       const requestBody = JSON.stringify({
         userId: userId,
@@ -82,18 +83,17 @@ function VoiceChat() {
         },
       });
       rtcToken = response.data.rtcToken;
+      rtmToken = response.data.rtmToken;
     } catch (error) {
       notify("error", "Could not join Channel. Please try again later");
       console.error(`Error with token: ${handleError(error)}`);
     }
   };
 
-  const getRtmToken = async () => {};
-
   const initRTM = async (name, taskid) => {
     //init rtm client with app ID
     rtmClient = AgoraRTM.createInstance(APP_ID);
-    await rtmClient.login({ uid: rtmUID, token: TOKEN });
+    await rtmClient.login({ uid: rtmUID, token: rtmToken });
 
     //add user to local attribute
     rtmClient.addOrUpdateLocalUserAttributes({
@@ -277,8 +277,8 @@ function VoiceChat() {
         console.error(`Error fetching user info: ${handleError(error)}`);
       }
       if (userName) {
-        await getRtcToken(taskid);
-        if (rtcToken) {
+        await getTokens(taskid);
+        if (rtcToken && rtmToken) {
           setIsLoading(true);
           try {
             //initalize rtc and rtm with the userName
