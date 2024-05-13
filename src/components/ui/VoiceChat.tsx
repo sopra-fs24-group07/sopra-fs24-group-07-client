@@ -14,7 +14,8 @@ import { MdMic, MdMicOff, MdPhoneDisabled } from "react-icons/md";
 
 function VoiceChat() {
   const APP_ID = "a55e8c2816d34eda92942fa9e808e843";
-  const TOKEN = null;
+
+  //Tokens for Security
   let rtcToken = null;
   let rtmToken = null;
 
@@ -22,6 +23,7 @@ function VoiceChat() {
   const [errorGetTasks, setErrorGetTasks] = useState("");
   const [errorGeneral, setErrorGeneral] = useState("");
 
+  //new Notify Component
   const { notify } = useNotification();
 
   //IDs for identification, which we will use the userId for
@@ -29,7 +31,7 @@ function VoiceChat() {
   let rtmUID;
   let userId;
 
-  //set as different IDs for each use-ase
+  //set as different IDs for each use-case
   const setIds = async () => {
     rtcUID = parseInt(localStorage.getItem("id"));
     rtmUID = localStorage.getItem("id");
@@ -70,6 +72,7 @@ function VoiceChat() {
   //to display the Spinner
   const [isLoading, setIsLoading] = useState(false);
 
+  //API call to get both tokens when user tries to join a channel
   const getTokens = async (taskid) => {
     try {
       const requestBody = JSON.stringify({
@@ -82,9 +85,12 @@ function VoiceChat() {
           Authorization: `${userToken}`,
         },
       });
+      //save the response data
+
       rtcToken = response.data.rtcToken;
       rtmToken = response.data.rtmToken;
     } catch (error) {
+      //Error via new notification component
       notify("error", "Could not join Channel. Please try again later");
       console.error(`Error with token: ${handleError(error)}`);
     }
@@ -93,6 +99,7 @@ function VoiceChat() {
   const initRTM = async (name, taskid) => {
     //init rtm client with app ID
     rtmClient = AgoraRTM.createInstance(APP_ID);
+    //login with rtmToken
     await rtmClient.login({ uid: rtmUID, token: rtmToken });
 
     //add user to local attribute
@@ -115,6 +122,7 @@ function VoiceChat() {
     channel.on("MemberLeft", handleMemberLeft);
   };
 
+  //init RTC Client for voice
   const initRTC = async (taskid) => {
     AgoraRTC.setLogLevel(4);
     rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
@@ -123,6 +131,7 @@ function VoiceChat() {
     rtcClient.on("user-published", handleUserPublished);
     rtcClient.on("user-left", handleUserLeft);
 
+    //join with secure Token
     await rtcClient.join(
       APP_ID,
       taskid.toString() + roomName + teamId.toString(),
@@ -134,6 +143,7 @@ function VoiceChat() {
     localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     rtcClient.publish(localAudioTrack);
 
+    //activate Active Speaker Indicator
     SpeakerIndicator();
   };
 
@@ -158,6 +168,7 @@ function VoiceChat() {
           if (volume.level >= 50) {
             item.style.borderColor = "#AAFF00";
           } else if (item.style.borderColor !== "rgb(255, 0, 0)") {
+            //only style if I'm not muted
             item.style.borderColor = "#FFFFFF";
           }
         }
@@ -234,6 +245,7 @@ function VoiceChat() {
   useEffect(() => {
     const fetchUserTasks = async () => {
       try {
+        //fetch only the In_session Tasks for the VoiceChat with query
         const response = await api.get(
           `/api/v1/teams/${teamId}/tasks?status=IN_SESSION`,
           {
@@ -242,6 +254,7 @@ function VoiceChat() {
             },
           }
         );
+        //set the Tasks and the main Chat
         setTasks([{ title: "main", taskId: "XX" }, ...response.data]);
       } catch (error) {
         setErrorGetTasks(
@@ -253,6 +266,7 @@ function VoiceChat() {
 
     fetchUserTasks();
 
+    //fetch Tasks again if a Task is finished from the Session Task Board (or reactivated)
     document.addEventListener("checkBoxChange", fetchUserTasks);
 
     const enterRoom = async (e) => {
@@ -277,15 +291,20 @@ function VoiceChat() {
         console.error(`Error fetching user info: ${handleError(error)}`);
       }
       if (userName) {
+        //try to get the Tokens, which will throw an error itself if not successful
         await getTokens(taskid);
+
+        //if we did not get the Tokens successful, nothing else should happen
         if (rtcToken && rtmToken) {
           setIsLoading(true);
           try {
             //initalize rtc and rtm with the userName
             await initRTC(taskid);
             await initRTM(userName, taskid);
+
             //hide the channels
             ChannelList.style.display = "none";
+
             //show the voice room controls
             document.getElementById(documentId.roomHeader).style.display =
               "flex";
@@ -301,6 +320,7 @@ function VoiceChat() {
               .getElementById(documentId.backButton)
               .addEventListener("click", leaveRoom);
 
+            //leave the Voicechat if the session ends or if the user leaves the Team
             document.addEventListener(documentId.endSession, leaveRoom);
             document.addEventListener(documentId.leaveTeam, leaveRoom);
           } catch (error) {
@@ -325,6 +345,7 @@ function VoiceChat() {
 
       //also leave via rtm
       leaveRtmChannel();
+
       try {
         //display channels
         document.getElementById(documentId.form).style.display = "block";
