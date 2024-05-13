@@ -311,6 +311,7 @@ function VoiceChat() {
           setIsLoading(false);
         }
         rtcToken = null;
+        rtmToken = null;
       }
     };
 
