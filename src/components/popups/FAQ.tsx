@@ -7,6 +7,7 @@ import { PopupHeader } from "../ui/PopupHeader";
 import FormField from "../ui/FormField";
 import { useNavigate } from "react-router-dom";
 import { BiCommentDetail, BiSolidCommentAdd } from "react-icons/bi";
+import { Button } from "../ui/Button";
 
 const FAQ = ({ isOpen, onClose }) => {
   const [user, setUser] = useState(null);
@@ -39,6 +40,10 @@ const FAQ = ({ isOpen, onClose }) => {
     return faqList.filter(faq => matchedKeywords.some(keyword => faq.question.toLowerCase().includes(keyword)));
   }
 
+  const showAll = () => {
+    setAnswer(faqList.map(faq => `${faq.question} - ${faq.answer}`).join("\n"));
+    setError("");
+  }
 
   const sendQuestion = () => {
     if (!question || question.length < 1 || question === "") {
@@ -94,6 +99,7 @@ const FAQ = ({ isOpen, onClose }) => {
                 marginBottom: "10px",
               }}
             />
+            <Button className="green-button" onClick={showAll}>Show all FAQ</Button>
           </div>
         {answer}
         {error}
