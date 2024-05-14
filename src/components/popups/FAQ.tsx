@@ -15,17 +15,15 @@ const FAQ = ({ isOpen, onClose }) => {
   const [faqs, setFaqs] = useState([]);
 
   const faqList = [
-    { question: "What is your return policy?", answer: "Our return policy allows returns within 30 days of purchase with a receipt.", link: "/teams" },
-    { question: "How can I contact customer service?", answer: "You can contact customer service via email at support@example.com or call us at 123-456-7890." },
-    { question: "Do you offer international shipping?", answer: "Yes, we offer international shipping to most countries. Additional fees may apply." },
-    { question: "How much do I pay for shipping?", answer: "The prices for shipping depend on the country you are from." },
-    { question: "How do I track my order?", answer: "You can track your order using the tracking link sent to your email after the order is shipped." },
-    { question: "What payment methods do you accept?", answer: "We accept Visa, MasterCard, American Express, Discover, and PayPal." },
-    { question: "Can I change or cancel my order?", answer: "Orders can be changed or canceled within 24 hours of placing them. Please contact customer service." },
-    { question: "Do you offer gift cards?", answer: "Yes, we offer gift cards in various denominations. They can be purchased online or in-store." },
-    { question: "What are your store hours?", answer: "Our store hours are Monday to Friday, 9 AM to 6 PM, and Saturday, 10 AM to 4 PM." },
-    { question: "How do I reset my password?", answer: "To reset your password, click on 'Forgot Password' at the login page and follow the instructions." },
-    { question: "Do you have a loyalty program?", answer: "Yes, we have a loyalty program that rewards points for every purchase. Points can be redeemed for discounts." },
+    { question: "Where can I find my teams?", answer: "You can see all your teams on you overview page.", link: "/teams" },
+    { question: "Where can I edit my profile?", answer: "You can see and edit your profile when clicking the profile icon in the top right." },
+    { question: "How do I change my password?", answer: "To change your password, click on the profile icon in the top right and enter the edit mode." },
+    { question: "How many teams can I create?", answer: "There is currently no limit to the number of teams per user." },
+    { question: "What happens if I delete my account?", answer: "Your account and all your data will be erased from our system. There is no way to recover it." },
+    { question: "I accidentally left my team.", answer: "Ask a team member to invite you again or contact an administrator." },
+    { question: "How can I contact an administrator?", answer: "Talk to them at university or email productiviteam.soprafs24@gmail.com." },
+    { question: "I accidentally deleted a task.", answer: "Ask an administrator, most of the time they can recover it." },
+    { question: "Which stock should I invest next?", answer: "Visit our investment guide:", externalLink: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/A_curious_Welsh_Mountain_sheep_%28Ovis_aries%29.jpg/1920px-A_curious_Welsh_Mountain_sheep_%28Ovis_aries%29.jpg" },
   ];
 
   const keywords = ["return policy", "contact", "shipping", "track order", "payment methods", "change order", "gift cards", "store hours", "password", "loyalty program"];
@@ -45,8 +43,8 @@ const FAQ = ({ isOpen, onClose }) => {
 
   const sendQuestion = () => {
     if (!question || question.length < 1 || question === "") {
-      setError("Please write a question first");
-      setAnswer("");
+      setError("Please enter your question or keyword.");
+      setFaqs([]);
       return;
     }
 
@@ -104,6 +102,7 @@ const FAQ = ({ isOpen, onClose }) => {
             question={faq.question}
             answer={faq.answer}
             link={faq.link}
+            externalLink={faq.externalLink}
             onClose={doClose}
           />
         ))}

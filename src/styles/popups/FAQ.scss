@@ -1,12 +1,13 @@
 @import "../theme";
 
 .faq {
-
+  width: 70em;
   &.error {
-    font-size: 1px;
+    font-size: 10px;
     color: red;
     margin-bottom: 1em;
-    padding-left: 12em;
+    margin-top: 1em;
+    padding-left: 18em;
   }
 }
 
@@ -47,6 +48,7 @@
 }
 
 .faq-content {
+  width: 70em;
   margin-top: 5.5em;
   margin-right: 3em;
   background-color: $accentDark;
