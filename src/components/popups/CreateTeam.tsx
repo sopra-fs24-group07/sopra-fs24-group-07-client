@@ -125,7 +125,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       notify("error", "Failed to generate description. Please try again.");
       setErrors((prev) => ({
         ...prev,
-        general: "Failed to create team. Please try again.",
+        general: "Failed to generate AI description. Please try again.",
       }));
     }
     setIsLoading(false);
