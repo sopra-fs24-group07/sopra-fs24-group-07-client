@@ -10,6 +10,22 @@
   }
 }
 
+.faq-entity {
+  display: flex;
+  background-color: $accent;
+  border-radius: $borderRadius;
+  padding: 10px;
+  transition:
+          opacity 0.3s,
+          top 0.3s ease-in-out;
+  border: 2px solid $background;
+  box-shadow: 2px 2px $background;
+  margin-bottom: 1em;
+  &.container {
+    margin-top: 1em;
+  }
+}
+
 .faq-overlay {
   position: fixed;
   top: 0px;

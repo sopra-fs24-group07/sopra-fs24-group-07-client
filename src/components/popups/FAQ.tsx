@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { api } from "helpers/api";
 import "../../styles/popups/FAQ.scss";
 import IconButton from "../ui/IconButton";
 import { PopupHeader } from "../ui/PopupHeader";
@@ -8,16 +7,15 @@ import FormField from "../ui/FormField";
 import { useNavigate } from "react-router-dom";
 import { BiCommentDetail, BiSolidCommentAdd } from "react-icons/bi";
 import { Button } from "../ui/Button";
+import FAQEntity from "./FAQEntity";
 
 const FAQ = ({ isOpen, onClose }) => {
-  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
-  const navigate = useNavigate();
+  const [faqs, setFaqs] = useState([]);
 
   const faqList = [
-    { question: "What is your return policy?", answer: "Our return policy allows returns within 30 days of purchase with a receipt." },
+    { question: "What is your return policy?", answer: "Our return policy allows returns within 30 days of purchase with a receipt.", link: "/teams" },
     { question: "How can I contact customer service?", answer: "You can contact customer service via email at support@example.com or call us at 123-456-7890." },
     { question: "Do you offer international shipping?", answer: "Yes, we offer international shipping to most countries. Additional fees may apply." },
     { question: "How much do I pay for shipping?", answer: "The prices for shipping depend on the country you are from." },
@@ -41,7 +39,7 @@ const FAQ = ({ isOpen, onClose }) => {
   }
 
   const showAll = () => {
-    setAnswer(faqList.map(faq => `${faq.question} - ${faq.answer}`).join("\n"));
+    setFaqs(faqList);
     setError("");
   }
 
@@ -53,21 +51,20 @@ const FAQ = ({ isOpen, onClose }) => {
     }
 
     const matchedKeywords = findKeyword(question);
-    const faqs = findFAQ(matchedKeywords);
+    const results = findFAQ(matchedKeywords);
 
-    if (faqs.length > 0) {
-      setAnswer(faqs.map(faq => `${faq.question} - ${faq.answer}`).join("\n"));
+    if (results.length > 0) {
+      setFaqs(results);
       setError("");
     } else {
-      setAnswer("No matching FAQ found.");
+      setFaqs([]);
       setError("");
     }
     setQuestion("");
   }
 
-
   const doClose = () => {
-    setAnswer("");
+    setFaqs([]);
     setQuestion("");
     setError("");
     onClose();
@@ -79,30 +76,37 @@ const FAQ = ({ isOpen, onClose }) => {
     <div className="faq-overlay" onClick={doClose}>
       <div className="faq-content" onClick={(e) => e.stopPropagation()}>
         <PopupHeader onClose={doClose} title="FAQ" />
-          <div>
-            <FormField
-              label="Ask a question:"
-              type="text"
-              value={question}
-              onChange={setQuestion}
-            >
-            </FormField>
-            <IconButton
-              hoverIcon={BiSolidCommentAdd}
-              icon={BiCommentDetail}
-              onClick={sendQuestion}
-              title={"Submit"}
-              className="green-icon"
-              style={{
-                scale: "1.8",
-                marginRight: "10px",
-                marginBottom: "10px",
-              }}
-            />
-            <Button className="green-button" onClick={showAll}>Show all FAQ</Button>
-          </div>
-        {answer}
-        {error}
+        <div>
+          <FormField
+            label="Ask a question:"
+            type="text"
+            value={question}
+            onChange={setQuestion}
+          />
+          <IconButton
+            hoverIcon={BiSolidCommentAdd}
+            icon={BiCommentDetail}
+            onClick={sendQuestion}
+            title={"Submit"}
+            className="green-icon"
+            style={{
+              scale: "1.8",
+              marginRight: "10px",
+              marginBottom: "10px",
+            }}
+          />
+          <Button className="green-button" onClick={showAll}>Show all FAQ</Button>
+        </div>
+        {faqs.map((faq, index) => (
+          <FAQEntity
+            key={index}
+            className="notification popup"
+            question={faq.question}
+            answer={faq.answer}
+            link={faq.link}
+            onClose={doClose}
+          />
+        ))}
         {error && <div className="faq error">{error}</div>}
       </div>
     </div>
