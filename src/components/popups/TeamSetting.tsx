@@ -204,7 +204,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       });
       const response = await api.post(
         "/api/v1/ai/gpt-3.5-turbo-instruct",
-        teamName,
+        requestBody,
         {
           headers: {
             "Content-Type": "application/json",
@@ -212,7 +212,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
           },
         }
       );
-      setTeamDescription(response.data);
+      setTeamDescription(response.data.answer);
     } catch (error) {
       console.error("Error generating description:", handleError(error));
       notify("error", "Failed to generate description. Please try again.");
