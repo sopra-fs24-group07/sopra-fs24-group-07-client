@@ -15,20 +15,51 @@ const FAQ = ({ isOpen, onClose }) => {
   const [answer, setAnswer] = useState("");
   const navigate = useNavigate();
 
+  const faqList = [
+    { question: "What is your return policy?", answer: "Our return policy allows returns within 30 days of purchase with a receipt." },
+    { question: "How can I contact customer service?", answer: "You can contact customer service via email at support@example.com or call us at 123-456-7890." },
+    { question: "Do you offer international shipping?", answer: "Yes, we offer international shipping to most countries. Additional fees may apply." },
+    { question: "How much do I pay for shipping?", answer: "The prices for shipping depend on the country you are from." },
+    { question: "How do I track my order?", answer: "You can track your order using the tracking link sent to your email after the order is shipped." },
+    { question: "What payment methods do you accept?", answer: "We accept Visa, MasterCard, American Express, Discover, and PayPal." },
+    { question: "Can I change or cancel my order?", answer: "Orders can be changed or canceled within 24 hours of placing them. Please contact customer service." },
+    { question: "Do you offer gift cards?", answer: "Yes, we offer gift cards in various denominations. They can be purchased online or in-store." },
+    { question: "What are your store hours?", answer: "Our store hours are Monday to Friday, 9 AM to 6 PM, and Saturday, 10 AM to 4 PM." },
+    { question: "How do I reset my password?", answer: "To reset your password, click on 'Forgot Password' at the login page and follow the instructions." },
+    { question: "Do you have a loyalty program?", answer: "Yes, we have a loyalty program that rewards points for every purchase. Points can be redeemed for discounts." },
+  ];
 
-  useEffect(() => {
-  }, [isOpen]);
+  const keywords = ["return policy", "contact", "shipping", "track order", "payment methods", "change order", "gift cards", "store hours", "password", "loyalty program"];
+
+  const findKeyword = (question) => {
+    return keywords.filter(keyword => question.toLowerCase().includes(keyword));
+  }
+
+  const findFAQ = (matchedKeywords) => {
+    return faqList.filter(faq => matchedKeywords.some(keyword => faq.question.toLowerCase().includes(keyword)));
+  }
+
 
   const sendQuestion = () => {
     if (!question || question.length < 1 || question === "") {
-      setAnswer("");
       setError("Please write a question first");
+      setAnswer("");
       return;
     }
-    setAnswer("This is the answer to the question "+ question);
-    setError("");
+
+    const matchedKeywords = findKeyword(question);
+    const faqs = findFAQ(matchedKeywords);
+
+    if (faqs.length > 0) {
+      setAnswer(faqs.map(faq => `${faq.question} - ${faq.answer}`).join("\n"));
+      setError("");
+    } else {
+      setAnswer("No matching FAQ found.");
+      setError("");
+    }
     setQuestion("");
   }
+
 
   const doClose = () => {
     setAnswer("");
