@@ -7,13 +7,15 @@ import Profile from "../popups/Profile";
 import ProfileSettings from "../popups/ProfileSettings";
 import EasterEggPopup from "../popups/EasterEggPopup";
 import IconButton from "../ui/IconButton";
-import { MdPerson, MdPersonOutline } from "react-icons/md";
+import { MdOutlineQuestionAnswer, MdOutlineQuestionMark, MdPerson, MdPersonOutline } from "react-icons/md";
+import FAQ from "../popups/FAQ";
 
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isProfileOpen, setProfileOpen] = useState(false);
   const [isProfileSettingsOpen, setProfileSettingsOpen] = useState(false);
+  const [isFAQOpen, setFAQOpen] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const [titleClickCount, setTitleClickCount] = useState(0);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
@@ -30,6 +32,14 @@ const Header = (props) => {
     setProfileOpen(false);
     setConfirmationMessage("");
   };
+
+  const openFAQ = () => {
+    setFAQOpen(true);
+  }
+
+  const closeFAQ = () => {
+    setFAQOpen(false);
+  }
 
   const openProfileSettings = () => {
     setProfileSettingsOpen(true);
@@ -85,13 +95,22 @@ const Header = (props) => {
         />
       )}
       <div className="header profile-container">
-        <IconButton
-          hoverIcon={MdPerson}
-          icon={MdPersonOutline}
-          title={"Menu"}
-          onClick={openProfile}
-          style={{ scale: "3.5", marginRight: "25px" }}
-        />
+        <div className="header button-container">
+          <IconButton
+            hoverIcon={MdOutlineQuestionMark}
+            icon={MdOutlineQuestionMark}
+            title={"FAQ"}
+            onClick={openFAQ}
+            style={{ scale: "3", marginRight: "25px" }}
+          />
+          <IconButton
+            hoverIcon={MdPerson}
+            icon={MdPersonOutline}
+            title={"Profile"}
+            onClick={openProfile}
+            style={{ scale: "3.5", marginRight: "25px" }}
+          />
+        </div>
         <Profile
           isOpen={isProfileOpen}
           onClose={closeProfile}
@@ -102,6 +121,10 @@ const Header = (props) => {
           isOpen={isProfileSettingsOpen}
           onClose={closeProfileSettings}
           onProfileOpen={handleProfileOpenAfterSettings}
+        />
+        <FAQ
+          isOpen={isFAQOpen}
+          onClose={closeFAQ}
         />
       </div>
     </div>
