@@ -200,7 +200,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     try {
       let token = localStorage.getItem("token");
       const requestBody = JSON.stringify({
-        prompt: teamName,
+        promptParameter: teamName,
       });
       const response = await api.post(
         "/api/v1/ai/gpt-3.5-turbo-instruct",
