@@ -44,18 +44,14 @@ function TaskCard(props) {
       style={{ ...style, ...dragStyle }}
     >
       {/*task title that opens the task details */}
-      <div
-        onClick={openInspectTask}
-        className="taskTitle"
-        {...listeners}
-        {...attributes}
-      >
+      <div className="taskTitle" {...listeners} {...attributes}>
         {task.title}
       </div>
 
       <IconButton
         {...listeners}
         {...attributes}
+        onClick={openInspectTask}
         className="dragHandle"
         hoverIcon={MdDragIndicator}
         icon={MdOutlineDragIndicator}
