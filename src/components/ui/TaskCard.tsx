@@ -50,7 +50,7 @@ function TaskCard(props) {
 
       <IconButton
         onClick={openInspectTask}
-        className="dragHandle"
+        className="inspectButton"
         hoverIcon={IoMdEye}
         icon={IoMdEye}
         style={{ scale: "1.0" }}
