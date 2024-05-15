@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "components/ui/Button";
 import { useLocation } from "react-router-dom";
+import "styles/popups/Tutorial.scss";
 
 const TutorialPopup = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -12,23 +13,20 @@ const TutorialPopup = ({ isOpen, onClose }) => {
 
   if (overviewTutorial) {
     return (
-      <div className="popup">
-        <div className="popup-content">
+        <div className="tutorial content">
           <h2>Tutorial</h2>
           <p>Welcome to the team overview tutorial!</p>
           <Button onClick={onClose}>Close</Button>
         </div>
-      </div>
     );
   } else if (dashboardTutorial) {
     return (
-      <div className="popup">
-        <div className="popup-content">
+        <div className="tutorial content">
           <h2>Tutorial</h2>
           <p>Welcome to the team dashboard tutorial!</p>
           <Button onClick={onClose}>Close</Button>
         </div>
-      </div>
+    
     );
   }
 };

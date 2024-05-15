@@ -107,8 +107,8 @@ const TeamsOverview = () => {
           >
             DEV
             </Button>
-          <TutorialPopup isOpen={showTutorial} onClose={() => setShowTutorial(false)} />
-        </div>
+            <TutorialPopup isOpen={showTutorial} onClose={() => setShowTutorial(false)} />
+            </div>
       </div>
     </BaseContainer>
   );

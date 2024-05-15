@@ -1,6 +1,9 @@
 @import "../theme";
 
 .tutorial {
+    z-index: 1000;
+    position: absolute;
+
   &.container {
     position: fixed;
     top: 0;
@@ -14,13 +17,14 @@
   }
 
   &.content {
-    background-color: $accentDark;
+    background-color: red;
     padding: 20px;
     border-radius: 8px;
     box-shadow: $dropShadow;
     max-width: 80%;
     text-align: center;
   }
+
 
   &.button {
     margin-top: 20px;
