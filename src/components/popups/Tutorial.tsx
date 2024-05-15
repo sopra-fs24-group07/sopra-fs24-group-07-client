@@ -11,24 +11,24 @@ const TutorialPopup = ({ isOpen, onClose }) => {
   const dashboardTutorial = location.pathname.includes("/teams/") && location.pathname.split("/").length === 3;
   const overviewTutorial = location.pathname === "/teams";
 
-  if (overviewTutorial) {
     return (
+        
         <div className="tutorial content">
-          <h2>Tutorial</h2>
-          <p>Welcome to the team overview tutorial!</p>
-          <Button onClick={onClose}>Close</Button>
+            <p>Welcome to the tutorial!</p>
+        {overviewTutorial ? (
+            <div>
+            <h1>Team Overview Tutorial</h1>
+            </div>
+        ) : (
+            <div>
+            <h1>Team Dashboard Tutorial</h1>
+            <h3>Kanbanboard</h3>
+            <p>Text copz paste</p>
+            </div>
+        )}
+          <Button onClick={onClose}>Got it!</Button>  
         </div>
     );
-  } else if (dashboardTutorial) {
-    return (
-        <div className="tutorial content">
-          <h2>Tutorial</h2>
-          <p>Welcome to the team dashboard tutorial!</p>
-          <Button onClick={onClose}>Close</Button>
-        </div>
-    
-    );
-  }
 };
 
 TutorialPopup.propTypes = {
