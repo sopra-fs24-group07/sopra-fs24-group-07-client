@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
@@ -16,10 +16,10 @@ import Pusher from "pusher-js";
 import MemberCard from "components/ui/MemberCard";
 import SessionHistory from "components/popups/SessionHistory";
 import TeamMembers from "../popups/TeamMembers";
+import TutorialPopup from "../popups/Tutorial";
 
 import IconButton from "../ui/IconButton";
 import { MdHistory, MdSettings, MdPeople } from "react-icons/md";
-import Tutorial from "components/popups/Tutorial";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -39,7 +39,15 @@ const TeamDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
   const [isSessionHistoryOpen, setSessionHistoryOpen] = useState(false);
-const [isTutorialOpen, setTutorialOpen] = useState(false);
+  const location = useLocation();
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showTutorial") === "true") {
+      setShowTutorial(true); // Assuming `setShowTutorial` sets state to show the tutorial popup
+    }
+  }, [location]);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
@@ -98,11 +106,6 @@ const [isTutorialOpen, setTutorialOpen] = useState(false);
   const closeSessionHistory = () => {
     setSessionHistoryOpen(false);
   };
-
-  const openTutorial = () => {
-    localStorage.getItem("isNewUser") === "true"
-  };
-
 
   const fetchTeamMembers = async () => {
     try {
@@ -350,7 +353,6 @@ const [isTutorialOpen, setTutorialOpen] = useState(false);
           >
             <div className="team-dashboard settingsBox">
               <div className="team-dashboard dash-buttons">
-              <Button onClick={() => set(true)}>tut</Button>
                 <IconButton
                   className="dash-icon"
                   icon={MdPeople}
@@ -400,6 +402,7 @@ const [isTutorialOpen, setTutorialOpen] = useState(false);
             )}
           </TeamDashboardBox>
         </div>
+        <TutorialPopup isOpen={showTutorial} onClose={() => setShowTutorial(false)} />
         <TeamSettings
           isOpen={isTeamSettingsOpen}
           onClose={closeTeamSettings}
@@ -419,7 +422,6 @@ const [isTutorialOpen, setTutorialOpen] = useState(false);
           onClose={closeSessionHistory}
           sessionStatus={sessionStatus}
         />
-        <Tutorial />
       </div>
     </BaseContainer>
   );

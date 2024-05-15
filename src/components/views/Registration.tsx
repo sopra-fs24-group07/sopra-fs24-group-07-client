@@ -92,13 +92,10 @@ const Registration = () => {
       const user = new User(responseAuth.data);
       localStorage.setItem("token", user.token);
       localStorage.setItem("id", regResponse.data.userId); //TESTING
-      
       if (sessionStorage.getItem("teamUUID")) {
         navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
       } else {
-
-        // hier kommt parameter wie zb "first time"
-        navigate("/teams");
+        navigate("/teams?showTutorial=true");
       }
     } catch (error) {
       const errorMessage = error.response

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import { Button } from "components/ui/Button";
 import CreateTeam from "../popups/CreateTeam";
 import PropTypes from "prop-types";
 import "styles/views/TeamsOverview.scss";
+import TutorialPopup from "../popups/Tutorial";
 
 const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
@@ -14,6 +15,15 @@ const TeamsOverview = () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
   const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
+  const location = useLocation();
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showTutorial") === "true") {
+      setShowTutorial(true); // Assuming `setShowTutorial` sets state to show the tutorial popup
+    }
+  }, [location]);
 
   useEffect(() => {
     const fetchUserTeams = async () => {
@@ -53,8 +63,16 @@ const TeamsOverview = () => {
   };
 
   const goTeam = (teamId) => {
-    navigate(`/teams/${teamId}`);
+    if (showTutorial) {
+      navigate(`/teams/${teamId}?showTutorial=true`);
+    } else {
+      navigate(`/teams/${teamId}`);
+    }
   };
+
+  const clickDev = () => {
+    navigate(`/teams?showTutorial=true`);
+  }
 
   return (
     <BaseContainer>
@@ -83,6 +101,13 @@ const TeamsOverview = () => {
             onClose={closeCreateTeam}
             onCreateTeamClick={goTeam}
           />
+          <Button
+            className="team"
+            onClick={clickDev}
+          >
+            DEV
+            </Button>
+          <TutorialPopup isOpen={showTutorial} onClose={() => setShowTutorial(false)} />
         </div>
       </div>
     </BaseContainer>
