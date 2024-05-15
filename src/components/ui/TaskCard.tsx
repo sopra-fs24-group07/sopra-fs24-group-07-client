@@ -44,9 +44,14 @@ function TaskCard(props) {
       style={{ ...style, ...dragStyle }}
     >
       {/*task title that opens the task details */}
-      <Link onClick={openInspectTask} className="taskTitle">
+      <div
+        onClick={openInspectTask}
+        className="taskTitle"
+        {...listeners}
+        {...attributes}
+      >
         {task.title}
-      </Link>
+      </div>
 
       <IconButton
         {...listeners}
