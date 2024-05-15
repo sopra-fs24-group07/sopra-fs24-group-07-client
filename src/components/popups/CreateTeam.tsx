@@ -40,7 +40,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     }
 
     if (!teamDescription) {
-      newErrors.description = "The description is required"; //Since edit is not available
+      newErrors.description = "The description is required";
       isValid = false;
     }
 
@@ -107,11 +107,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     try {
       let token = localStorage.getItem("token");
       const requestBody = JSON.stringify({
-        prompt: teamName,
+        promptParameter: teamName,
       });
       const response = await api.post(
         "/api/v1/ai/gpt-3.5-turbo-instruct",
-        teamName,
+        requestBody,
         {
           headers: {
             "Content-Type": "application/json",
@@ -119,13 +119,13 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
           },
         }
       );
-      setTeamDescription(response.data);
+      setTeamDescription(response.data.answer);
     } catch (error) {
       console.error("Error generating description:", handleError(error));
       notify("error", "Failed to generate description. Please try again.");
       setErrors((prev) => ({
         ...prev,
-        general: "Failed to create team. Please try again.",
+        general: "Failed to generate AI description. Please try again.",
       }));
     }
     setIsLoading(false);
@@ -150,7 +150,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   return (
     <div className="createTeam overlay" onClick={setOnClose}>
       <div className="createTeam content" onClick={(e) => e.stopPropagation()}>
-        <PopupHeader onClose={onClose} title="Create Team" />
+        <PopupHeader onClose={setOnClose} title="Create Team" />
         <FormField
           value={teamName}
           onChange={setTeamName}
