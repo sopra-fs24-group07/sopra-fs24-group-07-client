@@ -1,0 +1,59 @@
+@import "../theme";
+
+.faq {
+  width: 70em;
+  &.error {
+    font-size: 10px;
+    color: red;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    padding-left: 18em;
+  }
+}
+
+.faq-entity {
+  display: flex;
+  background-color: $accent;
+  border-radius: $borderRadius;
+  padding: 10px;
+  transition:
+          opacity 0.3s,
+          top 0.3s ease-in-out;
+  border: 2px solid $background;
+  box-shadow: 2px 2px $background;
+  margin-bottom: 1em;
+  &.container {
+    margin-top: 1em;
+  }
+}
+
+.faq-overlay {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  z-index: 9999;
+}
+
+.faq-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0px;
+}
+
+.faq-content {
+  width: 70em;
+  margin-top: 5.5em;
+  margin-right: 3em;
+  background-color: $accentDark;
+  padding: 20px;
+  padding-top: 0px;
+  border-radius: $borderRadius;
+  box-shadow: $dropShadow;
+}
