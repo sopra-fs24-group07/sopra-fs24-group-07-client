@@ -36,7 +36,7 @@ const FAQEntity: React.FC<NotificationProps> = ({
 
   return (
     <div className="faq-entity container">
-      <div>{question} <span>&nbsp;</span>{answer}</div>
+      <div><div className="question">{question}</div> <span>&nbsp;</span>{answer}</div>
       {link && (
         <div>
           <span>&nbsp;</span>
