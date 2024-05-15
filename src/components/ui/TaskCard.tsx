@@ -9,7 +9,7 @@ import InspectTask from "components/popups/InspectTask";
 import { useDraggable } from "@dnd-kit/core";
 
 import IconButton from "../ui/IconButton";
-import { MdOutlineDragIndicator, MdDragIndicator } from "react-icons/md";
+import { IoMdEye } from "react-icons/io";
 
 function TaskCard(props) {
   const token = localStorage.getItem("token");
@@ -49,13 +49,11 @@ function TaskCard(props) {
       </div>
 
       <IconButton
-        {...listeners}
-        {...attributes}
         onClick={openInspectTask}
         className="dragHandle"
-        hoverIcon={MdDragIndicator}
-        icon={MdOutlineDragIndicator}
-        style={{ scale: "1.0", marginRight: "-4px" }}
+        hoverIcon={IoMdEye}
+        icon={IoMdEye}
+        style={{ scale: "1.0" }}
       />
 
       <InspectTask
