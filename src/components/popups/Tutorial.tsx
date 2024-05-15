@@ -36,6 +36,11 @@ const Tutorial = () => {
           main features in the navigation bar on the left. You can create teams,
           join teams, and manage your tasks within those teams.
 
+          Click on the "Create Team" button to create your first team! After setting a 
+          team name, you can either write your own description, or click on the orange 
+          wand button to automatically generate a team description.
+
+
         
 
         </p>
