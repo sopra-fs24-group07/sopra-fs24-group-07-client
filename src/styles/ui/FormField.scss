@@ -22,10 +22,9 @@
     width: 100%;
   }
 
-  .input {
+  &.input {
     padding: 10px;
     font-size: 1.2em;
-    border: 1px solid #ccc;
     border-radius: $borderRadius;
     background: $accent;
     min-width: 15em;
@@ -40,7 +39,7 @@
     }
 
     &.com {
-      width: 100%;
+      width: 23em;
     }
   }
 
@@ -70,7 +69,6 @@
   }
 
   .form-field-icon {
-    margin-left: 10px;
     margin-left: 10px;
   }
 

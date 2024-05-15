@@ -47,7 +47,7 @@ const FormField = ({
         )
       ) : com ? (
         <input
-          className="form-field input"
+          className="form-field input com"
           placeholder="Enter here..."
           type={type}
           value={value}
