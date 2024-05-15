@@ -115,7 +115,6 @@ const TeamDashboard: React.FC = () => {
       setUserData(response.data);
     } catch (error) {
       console.error(`Error fetching team's users: ${handleError(error)}`);
-      notify("error", "You are not allowed to do this!");
       navigate("/teams");
     }
   };
@@ -132,6 +131,8 @@ const TeamDashboard: React.FC = () => {
       );
       setTeamTasks(response.data);
     } catch (error) {
+      notify("error", "You are not allowed to do this!");
+      navigate("/teams");
       console.error(`Error fetching team's tasks: ${handleError(error)}`);
     }
   };
