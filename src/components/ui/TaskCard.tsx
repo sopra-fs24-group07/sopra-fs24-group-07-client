@@ -9,11 +9,7 @@ import InspectTask from "components/popups/InspectTask";
 import { useDraggable } from "@dnd-kit/core";
 
 import IconButton from "../ui/IconButton";
-import { IoMdEye } from "react-icons/io";
-import { BsEye, BsEyeFill } from "react-icons/bs";
-import { FaRegEye } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { SlOptionsVertical } from "react-icons/sl";
+import { IoMdOpen } from "react-icons/io";
 
 function TaskCard(props) {
   const token = localStorage.getItem("token");
@@ -52,13 +48,12 @@ function TaskCard(props) {
         <div className="taskTitle" {...listeners} {...attributes}>
           {task.title}
         </div>
-
         <IconButton
           onClick={openInspectTask}
-          className="inspectButton"
-          hoverIcon={IoMdEye}
-          icon={IoMdEye}
-          style={{ scale: "1.0" }}
+          classNameButton="inspectButton"
+          className="inspectIcon"
+          hoverIcon={IoMdOpen}
+          icon={IoMdOpen}
         />
       </div>
       <InspectTask

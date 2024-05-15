@@ -29,7 +29,7 @@
 
 .inspectButton {
   position: absolute;
-  width: 30px;
+  width: 35px;
   height: 100%;
   align-items: center;
   border: none;
@@ -42,4 +42,9 @@
   );
   color: black;
   right: 0;
+}
+
+.inspectIcon {
+  scale: 1.25;
+  margin-right: -8px;
 }
