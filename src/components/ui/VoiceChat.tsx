@@ -80,7 +80,7 @@ function VoiceChat() {
         teamId: teamId,
         channelName: taskid.toString() + roomName + teamId.toString(),
       });
-      const response = await api.post(`/api/v1/agora/getToken`, requestBody, {
+      const response = await api.post("/api/v1/agora/getToken", requestBody, {
         headers: {
           Authorization: `${userToken}`,
         },
