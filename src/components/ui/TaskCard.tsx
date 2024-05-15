@@ -10,6 +10,10 @@ import { useDraggable } from "@dnd-kit/core";
 
 import IconButton from "../ui/IconButton";
 import { IoMdEye } from "react-icons/io";
+import { BsEye, BsEyeFill } from "react-icons/bs";
+import { FaRegEye } from "react-icons/fa";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { SlOptionsVertical } from "react-icons/sl";
 
 function TaskCard(props) {
   const token = localStorage.getItem("token");
@@ -38,31 +42,32 @@ function TaskCard(props) {
   };
 
   return (
-    <div
-      className="taskContainer"
-      ref={setNodeRef}
-      style={{ ...style, ...dragStyle }}
-    >
-      {/*task title that opens the task details */}
-      <div className="taskTitle" {...listeners} {...attributes}>
-        {task.title}
+    <>
+      <div
+        className="taskContainer"
+        ref={setNodeRef}
+        style={{ ...style, ...dragStyle }}
+      >
+        {/*task title that opens the task details */}
+        <div className="taskTitle" {...listeners} {...attributes}>
+          {task.title}
+        </div>
+
+        <IconButton
+          onClick={openInspectTask}
+          className="inspectButton"
+          hoverIcon={IoMdEye}
+          icon={IoMdEye}
+          style={{ scale: "1.0" }}
+        />
       </div>
-
-      <IconButton
-        onClick={openInspectTask}
-        className="inspectButton"
-        hoverIcon={IoMdEye}
-        icon={IoMdEye}
-        style={{ scale: "1.0" }}
-      />
-
       <InspectTask
         isOpen={isInspectTaskOpen}
         onClose={closeInspectTask}
         task={task}
         inSession={false}
       />
-    </div>
+    </>
   );
 }
 
