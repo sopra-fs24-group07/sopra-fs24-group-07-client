@@ -4,9 +4,10 @@
 
 import React, { useState } from "react";
 import { Button } from "components/ui/Button";
-import "styles/views/Tutorial.scss";
+import "styles/popups/Tutorial.scss";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { isNullishCoalesce } from "typescript";
 
 const Tutorial = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Tutorial = () => {
   
     const closeTutorial = () => {
       setTutorialOpen(false);
-      localStorage.setItem("isNewUser", "false"); // Update localStorage value after tutorial has been displayed
+      localStorage.setItem("isNewUser", null); // Update localStorage value after tutorial has been displayed
     };
 
   const goToTeamsOverview = () => {
@@ -24,14 +25,19 @@ const Tutorial = () => {
     navigate("/teams");
   };
 
+  if (localStorage.getItem("isNewUser")) {
+
   return isTutorialOpen ? (
     <div className="tutorial container">
       <div className="tutorial content">
         <h1>Welcome to Our App!</h1>
         <p>
-          This is a quick tutorial to help you get started. You'll find all the
+          This is a quick tutorial to help you get started. Youll find all the
           main features in the navigation bar on the left. You can create teams,
           join teams, and manage your tasks within those teams.
+
+        
+
         </p>
         <Button className="tutorial-button" onClick={closeTutorial}>
           Got it!

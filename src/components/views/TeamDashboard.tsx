@@ -19,6 +19,7 @@ import TeamMembers from "../popups/TeamMembers";
 
 import IconButton from "../ui/IconButton";
 import { MdHistory, MdSettings, MdPeople } from "react-icons/md";
+import Tutorial from "components/popups/Tutorial";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -38,6 +39,7 @@ const TeamDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
   const [isSessionHistoryOpen, setSessionHistoryOpen] = useState(false);
+const [isTutorialOpen, setTutorialOpen] = useState(false);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
@@ -96,6 +98,11 @@ const TeamDashboard: React.FC = () => {
   const closeSessionHistory = () => {
     setSessionHistoryOpen(false);
   };
+
+  const openTutorial = () => {
+    localStorage.getItem("isNewUser") === "true"
+  };
+
 
   const fetchTeamMembers = async () => {
     try {
@@ -343,6 +350,7 @@ const TeamDashboard: React.FC = () => {
           >
             <div className="team-dashboard settingsBox">
               <div className="team-dashboard dash-buttons">
+              <Button onClick={() => set(true)}>tut</Button>
                 <IconButton
                   className="dash-icon"
                   icon={MdPeople}
@@ -411,6 +419,7 @@ const TeamDashboard: React.FC = () => {
           onClose={closeSessionHistory}
           sessionStatus={sessionStatus}
         />
+        <Tutorial />
       </div>
     </BaseContainer>
   );
