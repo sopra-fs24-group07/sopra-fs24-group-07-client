@@ -1,6 +1,7 @@
 @import "../theme";
 
 .primary-button {
+  position: relative;
   &:hover {
     transform: translateY(-4px);
   }
@@ -107,4 +108,20 @@
   transition: all 0.3s ease;
   border: 2px solid $background;
   box-shadow: 2px 2px $background;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  &.green {
+    background-color: green;
+  }
+  &.red {
+    background-color: red;
+  }
 }
