@@ -92,9 +92,12 @@ const Registration = () => {
       const user = new User(responseAuth.data);
       localStorage.setItem("token", user.token);
       localStorage.setItem("id", regResponse.data.userId); //TESTING
+      localStorage.setItem("isNewUser", "true"); // Set a new value in localStorage to indicate this is a new user
       if (sessionStorage.getItem("teamUUID")) {
         navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
       } else {
+
+        // hier kommt parameter wie zb "first time"
         navigate("/teams");
       }
     } catch (error) {
