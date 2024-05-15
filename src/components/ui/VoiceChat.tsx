@@ -422,7 +422,7 @@ function VoiceChat() {
     const initChannels = async () => {
       document.getElementById(documentId.channels).innerHTML = "";
       tasks.map((breakoutRoom) => {
-        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom.title}" data-taskid="${breakoutRoom.taskId}" />`;
+        let newChannel = `<input title="Click to join the channel" class="channel" name="roomname" type="submit" value="${breakoutRoom.title}" data-taskid="${breakoutRoom.taskId}" />`;
         document
           .getElementById(documentId.channels)
           .insertAdjacentHTML("beforeend", newChannel);
