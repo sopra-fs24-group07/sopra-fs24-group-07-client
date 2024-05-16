@@ -18,7 +18,7 @@ const TutorialPopup = ({ isOpen, onClose }) => {
       <p>Welcome to the tutorial!</p>
       {overviewTutorial ? (
         <div>
-          <h1>Team Overview Tutorial</h1>
+          <h1>Overview Tutorial</h1>
           <h3>Create Team</h3>
           <p>
             Click on the Create Team button to create your first team! After
@@ -29,7 +29,7 @@ const TutorialPopup = ({ isOpen, onClose }) => {
         </div>
       ) : (
         <div>
-          <h1>Team Dashboard Tutorial</h1>
+          <h1>Dashboard Tutorial</h1>
           <h3>Kanban Board</h3>
           <p>
             A Kanban board is a visual project management tool that helps to

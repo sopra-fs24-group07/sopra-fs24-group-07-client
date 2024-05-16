@@ -106,6 +106,7 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
           Logout
         </Button>
         <Button
+          className="blue-button bts"
           width="30%"
           onClick={() => navigate("/teams?showTutorial=true")}
         >
