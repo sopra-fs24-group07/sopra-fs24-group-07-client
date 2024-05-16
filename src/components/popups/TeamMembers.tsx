@@ -24,6 +24,7 @@ import { useNotification } from "./NotificationContext";
 
 import FormField from "../ui/FormField";
 import { PopupHeader } from "../ui/PopupHeader";
+import Pusher from "pusher-js";
 
 const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [teamName, setTeamName] = useState();
@@ -48,6 +49,25 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const { notify } = useNotification();
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
+      cluster: "eu",
+      forceTLS: true,
+    });
+
+    const channel = pusher.subscribe(`team-${teamId}`);
+
+    channel.bind("team-update", () => {
+      console.log("TEAM UPDATED!");
+      fetchTeamMembers();
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [teamId]);
 
   const fetchUserTeam = async () => {
     try {
@@ -90,7 +110,7 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   useEffect(() => {
     fetchUserTeam();
     fetchTeamMembers();
-  }, []);
+  }, [teamId, token]);
 
   if (!isOpen) return null;
 

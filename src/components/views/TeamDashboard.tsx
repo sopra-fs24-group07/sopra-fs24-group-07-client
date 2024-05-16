@@ -48,7 +48,6 @@ const TeamDashboard: React.FC = () => {
       setShowTutorial(true); // Assuming `setShowTutorial` sets state to show the tutorial popup
     }
   }, [location]);
-
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
       cluster: "eu",
@@ -123,10 +122,7 @@ const TeamDashboard: React.FC = () => {
       setUserData(response.data);
     } catch (error) {
       console.error(`Error fetching team's users: ${handleError(error)}`);
-      if (error.response.status === 401) {
-        //user is not in Team, redirect to Overview
-        navigate("/teams");
-      }
+      navigate("/teams");
     }
   };
 
@@ -142,6 +138,8 @@ const TeamDashboard: React.FC = () => {
       );
       setTeamTasks(response.data);
     } catch (error) {
+      notify("error", "You are not allowed to do this!");
+      navigate("/teams");
       console.error(`Error fetching team's tasks: ${handleError(error)}`);
     }
   };
