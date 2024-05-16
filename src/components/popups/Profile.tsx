@@ -4,7 +4,6 @@ import { api } from "helpers/api";
 import { Button } from "components/ui/Button";
 import { User } from "types";
 import "../../styles/popups/ProfileMenu.scss";
-
 import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import { MdModeEditOutline, MdOutlineModeEdit } from "react-icons/md";
 import IconButton from "../ui/IconButton";
@@ -26,28 +25,25 @@ Player.propTypes = {
 const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-
   const navigate = useNavigate();
+
   const doLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("id"); // todo depending on our implementation of the get userId from user token call we need to change this
+    localStorage.removeItem("id");
     navigate("/start");
   };
 
   useEffect(() => {
     async function fetchUser() {
       if (!isOpen) return;
-
       let token = localStorage.getItem("token");
       let userId = localStorage.getItem("id");
-
       try {
         const response = await api.get(`/api/v1/users/${userId}`, {
           headers: {
             Authorization: `${token}`,
           },
         });
-
         setUser({
           id: response.data.userId,
           username: response.data.username,
@@ -58,7 +54,6 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
         setError("Failed to fetch user data");
       }
     }
-
     fetchUser();
   }, [isOpen]);
 
@@ -72,7 +67,6 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
   };
 
   if (!isOpen) return null;
-
   return (
     <div className="profileMenu-overlay" onClick={onClose}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
@@ -110,6 +104,12 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
         )}
         <Button width="30%" className="red-button bts" onClick={doLogout}>
           Logout
+        </Button>
+        <Button
+          width="30%"
+          onClick={() => navigate("/teams?showTutorial=true")}
+        >
+          Tutorial
         </Button>
         {message && <div className="confirmation-message">{message}</div>}
         <div className="profileMenu-header"></div>
