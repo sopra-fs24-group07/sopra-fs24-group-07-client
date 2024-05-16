@@ -13,10 +13,9 @@ import { MdOutlineDragIndicator, MdDragIndicator } from "react-icons/md";
 
 function TaskCard(props) {
   const token = localStorage.getItem("token");
-  const { task, col, sessionStatus, dragStyle } = props;
+  const { task, col, sessionStatus, dragStyle, openInspectTask } = props;
   const { teamId } = useParams();
   const taskId = task.taskId;
-  const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);
 
   //dnd
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -27,16 +26,6 @@ function TaskCard(props) {
     ? { transform: CSS.Translate.toString(transform) }
     : undefined;
 
-  //open the Inspect Task Popup
-  const openInspectTask = () => {
-    setInspectTaskOpen(true);
-  };
-
-  //close the Inspect Task Popup
-  const closeInspectTask = () => {
-    setInspectTaskOpen(false);
-  };
-
   return (
     <div
       className="taskContainer"
@@ -44,7 +33,7 @@ function TaskCard(props) {
       style={{ ...style, ...dragStyle }}
     >
       {/*task title that opens the task details */}
-      <Link onClick={openInspectTask} className="taskTitle">
+      <Link onClick={() => openInspectTask(task)} className="taskTitle">
         {task.title}
       </Link>
 
@@ -56,13 +45,6 @@ function TaskCard(props) {
         icon={MdOutlineDragIndicator}
         style={{ scale: "1.0", marginRight: "-4px" }}
       />
-
-      <InspectTask
-        isOpen={isInspectTaskOpen}
-        onClose={closeInspectTask}
-        task={task}
-        inSession={false}
-      />
     </div>
   );
 }
@@ -73,6 +55,7 @@ TaskCard.propTypes = {
   col: PropTypes.string,
   sessionStatus: PropTypes.string,
   dragStyle: PropTypes.object,
+  openInspectTask: PropTypes.function,
 };
 
 export default TaskCard;
