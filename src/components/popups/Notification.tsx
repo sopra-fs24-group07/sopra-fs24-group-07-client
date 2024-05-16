@@ -33,11 +33,13 @@ const Notification: React.FC<NotificationProps> = ({
   onClose,
 }) => {
   const navigate = useNavigate();
+  const [animateOut, setAnimateOut] = useState(false)
 
   useEffect(() => {
     if (show) {
       const timer = setTimeout(() => {
-        onClose();
+        setAnimateOut(true);
+        setTimeout(onClose, 500);
       }, 20000);
 
       return () => clearTimeout(timer);
@@ -51,8 +53,13 @@ const Notification: React.FC<NotificationProps> = ({
     onClose();
   };
 
+  const handleClose = () => {
+    setAnimateOut(true);
+    setTimeout(onClose, 500);
+  };
+
   return (
-    <div className="notification">
+    <div className={`notification ${animateOut ? "slide-out" : "slide-in"}`}>
       <div className="notification-icon">{icons[iconName]}</div>
       <div className="notification-message">{message}</div>
       <IconButton
