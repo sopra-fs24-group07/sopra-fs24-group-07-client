@@ -38,7 +38,7 @@ const FAQEntity: React.FC<NotificationProps> = ({
     <div className="faq-entity container">
       <div><div className="question">{question}</div> <span>&nbsp;</span>{answer}</div>
       {link && (
-        <div>
+        <div className="button-container">
           <span>&nbsp;</span>
           <Button className="green-button" onClick={handleLinkClick}>
             Go
@@ -47,7 +47,7 @@ const FAQEntity: React.FC<NotificationProps> = ({
       )
       }
       {externalLink && (
-        <div>
+        <div className="button-container">
           <span>&nbsp;</span>
           <Button className="green-button" onClick={handleExternalLinkClick}>
             Go

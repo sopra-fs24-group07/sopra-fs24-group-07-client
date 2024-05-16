@@ -64,4 +64,10 @@
   box-shadow: $dropShadow;
   display: flex;
   flex-direction: column;
+
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
 }
