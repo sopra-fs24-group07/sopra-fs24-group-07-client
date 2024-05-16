@@ -53,26 +53,26 @@ const TutorialPopup = ({ isOpen, onClose }) => {
           <h3>Session Start</h3>
           <p>
             You can set a time goal and start the group session by clicking on
-            the button underneath the time goal. The tasks that has been dragged
-            to Next Session in the Kanban board will be automatically migrated
-            to the session taskboard.
+            the button underneath the time goal. The tasks that have been
+            dragged to Next Session in the Kanban board will be automatically
+            migrated to the session task board.
           </p>
           <h3>Voice Chat</h3>
           <p>
-            You can join the VoiceChat by clicking on one of the channels. You
-            will always have a main channels, and all the other channels are the
-            breakout rooms of the active tasks. You can always mute yourself by
-            clicking on the mute button.
+            You can join a VoiceChat by clicking on one of the channels during a
+            session. You will always have a main channel, and all the other
+            channels are the breakout rooms for the active tasks. You can mute
+            yourself by clicking on the microphone button.
           </p>
           <h3>Sessions History</h3>
           <p>
-            Click on the Session History Button to get a list of your session
-            stats.
+            Click on the Session History Button to get a list of your teams past
+            sessions.
           </p>
           <h3>Comments</h3>
           <p>
-            By clicking on the task inside the Kanban board, you can add
-            comments for the specific task.
+            By clicking on the symbol next to a task inside the Kanban board,
+            you can see details or add comments for the selected task.
           </p>
         </div>
       )}
