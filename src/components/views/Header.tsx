@@ -7,7 +7,8 @@ import Profile from "../popups/Profile";
 import ProfileSettings from "../popups/ProfileSettings";
 import EasterEggPopup from "../popups/EasterEggPopup";
 import IconButton from "../ui/IconButton";
-import { MdPerson, MdPersonOutline } from "react-icons/md";
+import { MdPerson, MdPersonOutline, MdOutlineQuestionMark } from "react-icons/md";
+import FAQ from "../popups/FAQ";
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Header = (props) => {
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const [titleClickCount, setTitleClickCount] = useState(0);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [isFAQOpen, setFAQOpen] = useState(false);
 
   const goTeamsOverview = () => {
     navigate("/teams");
@@ -29,6 +31,14 @@ const Header = (props) => {
   const closeProfile = () => {
     setProfileOpen(false);
     setConfirmationMessage("");
+  };
+
+  const openFAQ = () => {
+    setFAQOpen(true);
+  };
+
+  const closeFAQ = () => {
+    setFAQOpen(false);
   };
 
   const openProfileSettings = () => {
@@ -66,7 +76,7 @@ const Header = (props) => {
 
   return (
     <div className="header container" style={{ height: props.height }}>
-      <div className="header button-container">
+      <div className="header left">
         {location.pathname === "/teams" ? (
           <h3>Your Teams</h3>
         ) : (
@@ -84,7 +94,14 @@ const Header = (props) => {
           onClose={() => setShowEasterEgg(false)}
         />
       )}
-      <div className="header profile-container">
+      <div className="header right">
+        <IconButton
+          hoverIcon={MdOutlineQuestionMark}
+          icon={MdOutlineQuestionMark}
+          title={"FAQ"}
+          onClick={openFAQ}
+          style={{ scale: "3", marginRight: "25px" }}
+        />
         <IconButton
           hoverIcon={MdPerson}
           icon={MdPersonOutline}
@@ -103,6 +120,7 @@ const Header = (props) => {
           onClose={closeProfileSettings}
           onProfileOpen={handleProfileOpenAfterSettings}
         />
+        <FAQ isOpen={isFAQOpen} onClose={closeFAQ} />
       </div>
     </div>
   );
