@@ -24,9 +24,12 @@ const TeamsOverview = () => {
 
         const teamsWithStatus = await Promise.all(
           teams.map(async (team) => {
-            const sessionResponse = await api.get(`/api/v1/teams/${team.teamId}/sessions`, {
-              headers: { Authorization: `${token}` },
-            });
+            const sessionResponse = await api.get(
+              `/api/v1/teams/${team.teamId}/sessions`,
+              {
+                headers: { Authorization: `${token}` },
+              }
+            );
 
             const lastSession = sessionResponse.data.slice(0)[0];
             console.log("lastSession", lastSession);
@@ -100,4 +103,3 @@ const TeamsOverview = () => {
 };
 
 export default TeamsOverview;
-

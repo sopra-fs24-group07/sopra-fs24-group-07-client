@@ -9,7 +9,11 @@ export const Button = (props) => (
     className={`primary-button ${props.className}`}
   >
     {props.inSession !== undefined && (
-      <div className={`status-indicator ${props.inSession === "inSession" ? "green" : "red"}`} />
+      <div
+        className={`status-indicator ${
+          props.inSession === "inSession" ? "green" : "red"
+        }`}
+      />
     )}
     {props.children}
   </button>
@@ -24,4 +28,3 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   inSession: PropTypes.string,
 };
-
