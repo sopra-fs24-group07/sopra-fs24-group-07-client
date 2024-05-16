@@ -24,6 +24,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [editMode, setEditMode] = useState(false);
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDescription, setTaskDescription] = useState(task.description);
+  const [taskStatus, setTaskStatus] = useState(task.status);
   const { teamId } = useParams();
   const token = localStorage.getItem("token");
   const [error, setError] = useState("");
@@ -37,6 +38,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   useEffect(() => {
     setTaskTitle(task.title);
     setTaskDescription(task.description);
+    setTaskStatus(task.status);
   }, [task]);
 
   const validateForm = () => {
@@ -198,6 +200,10 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           textArea={true}
           taS={true}
         />
+        <div className="inspectTask status">
+          Current Status:{" "}
+          <b>{taskStatus === "IN_SESSION" ? "NEXT SESSION" : taskStatus}</b>
+        </div>
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="inspectTask error">
             {error}
