@@ -67,6 +67,7 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
   };
 
   if (!isOpen) return null;
+
   return (
     <div className="profileMenu-overlay" onClick={onClose}>
       <div className="profileMenu-content" onClick={(e) => e.stopPropagation()}>
