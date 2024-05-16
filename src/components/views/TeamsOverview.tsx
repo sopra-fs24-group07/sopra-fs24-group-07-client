@@ -17,11 +17,13 @@ const TeamsOverview = () => {
   const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
   const location = useLocation();
   const [showTutorial, setShowTutorial] = useState(false);
+  const [firstTime, setFirstTime] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("showTutorial") === "true") {
       setShowTutorial(true); // Assuming `setShowTutorial` sets state to show the tutorial popup
+      setFirstTime(true);
     }
   }, [location]);
 
@@ -62,9 +64,11 @@ const TeamsOverview = () => {
     setCreateTeamOpen(false);
   };
 
+
   const goTeam = (teamId) => {
-    if (showTutorial) {
+    if (firstTime) {
       navigate(`/teams/${teamId}?showTutorial=true`);
+      setFirstTime(false);
     } else {
       navigate(`/teams/${teamId}`);
     }
