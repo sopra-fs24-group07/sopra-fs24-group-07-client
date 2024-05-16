@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
-import Pusher from "pusher-js";
 import {
   MdModeEditOutline,
   MdOutlineModeEdit,
@@ -32,36 +31,13 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     title: "",
     description: "",
   });
-  const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { notify } = useNotification();
-  const [currentTask, setCurrentTask] = useState(task);
 
   useEffect(() => {
-    setCurrentTask(task);
+    setTaskTitle(task.title);
+    setTaskDescription(task.description);
   }, [task]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
-      cluster: "eu",
-      forceTLS: true,
-    });
-
-    const channel = pusher.subscribe(`task-${task.taskId}`);
-    channel.bind("task-update", (updatedTask) => {
-      setCurrentTask(updatedTask);
-      if (updatedTask.status === "DELETED") {
-        onClose();
-      }
-    });
-
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [isOpen, task.taskId, onClose]);
 
   const validateForm = () => {
     let isValid = true;
@@ -100,6 +76,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   };
 
   const doClose = (e) => {
+    DeactivateEditMode();
     e.stopPropagation();
     onClose();
   };
@@ -168,7 +145,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
 
   const getAllErrorMessages = () => {
     const fieldErrors = Object.values(errors).filter((error) => error);
-    if (generalError) fieldErrors.push(generalError);
 
     return fieldErrors;
   };
@@ -184,7 +160,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         />
         <FormField
           label={"Task Title"}
-          value={editMode ? taskTitle : currentTask.title}
+          value={taskTitle}
           placeholder="enter title..."
           onChange={(ti: string) => setTaskTitle(ti)}
           disabled={!editMode}
@@ -214,7 +190,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         </FormField>
         <FormField
           label={"Task Description"}
-          value={editMode ? taskDescription : currentTask.description}
+          value={taskDescription}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
           disabled={!editMode}

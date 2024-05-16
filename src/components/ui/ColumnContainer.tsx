@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "../../styles/ui/ColumnContainer.scss";
 import { Button } from "./Button";
@@ -22,6 +22,15 @@ function ColumnContainer(props) {
     setOpenTask(task);
     setInspectTaskOpen(true);
   };
+
+  useEffect(() => {
+    if (openTask) {
+      const foundTask = teamTasks.find(
+        (task) => task.taskId === openTask.taskId
+      );
+      setOpenTask(foundTask);
+    }
+  }, [teamTasks]);
 
   //close the Inspect Task Popup
   const closeInspectTask = () => {
