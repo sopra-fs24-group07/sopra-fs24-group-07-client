@@ -7,7 +7,11 @@ import Profile from "../popups/Profile";
 import ProfileSettings from "../popups/ProfileSettings";
 import EasterEggPopup from "../popups/EasterEggPopup";
 import IconButton from "../ui/IconButton";
-import { MdPerson, MdPersonOutline, MdOutlineQuestionMark } from "react-icons/md";
+import {
+  MdPerson,
+  MdPersonOutline,
+  MdOutlineQuestionMark,
+} from "react-icons/md";
 import FAQ from "../popups/FAQ";
 
 const Header = (props) => {
