@@ -38,12 +38,14 @@ const FAQ = ({ isOpen, onClose }) => {
     if (!question || question.length < 1 || question === "") {
       setError("Please enter your question or keyword.");
       setFaqs([]);
+
       return;
     }
 
     if (question.length > 100) {
       setError("Your question exceeds the 100 character limit.");
       setFaqs([]);
+
       return;
     }
 
