@@ -15,19 +15,24 @@ const FAQ = ({ isOpen, onClose }) => {
   const [question, setQuestion] = useState("");
   const [faqs, setFaqs] = useState([]);
 
-
   const findKeyword = (question) => {
-    return keywords.filter(keyword => question.toLowerCase().includes(keyword));
-  }
+    return keywords.filter((keyword) =>
+      question.toLowerCase().includes(keyword)
+    );
+  };
 
   const findFAQ = (matchedKeywords) => {
-    return faqList.filter(faq => matchedKeywords.some(keyword => faq.question.toLowerCase().includes(keyword)));
-  }
+    return faqList.filter((faq) =>
+      matchedKeywords.some((keyword) =>
+        faq.question.toLowerCase().includes(keyword)
+      )
+    );
+  };
 
   const showAll = () => {
     setFaqs(faqList);
     setError("");
-  }
+  };
 
   const sendQuestion = () => {
     if (!question || question.length < 1 || question === "") {
@@ -53,7 +58,7 @@ const FAQ = ({ isOpen, onClose }) => {
       setError("");
     }
     setQuestion("");
-  }
+  };
 
   const doClose = () => {
     setFaqs([]);
@@ -89,7 +94,9 @@ const FAQ = ({ isOpen, onClose }) => {
               />
             }
           />
-          <Button className="green-button" onClick={showAll}>Show all FAQ</Button>
+          <Button className="green-button" onClick={showAll}>
+            Show all FAQ
+          </Button>
         </div>
         <div className="faqs">
           {faqs.map((faq, index) => (

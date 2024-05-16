@@ -14,7 +14,9 @@
   background-color: $accent;
   border-radius: $borderRadius;
   padding: 10px;
-  transition: opacity 0.3s, top 0.3s ease-in-out;
+  transition:
+    opacity 0.3s,
+    top 0.3s ease-in-out;
   border: 2px solid $background;
   box-shadow: 2px 2px $background;
   margin-bottom: 1em;
@@ -64,7 +66,6 @@
   box-shadow: $dropShadow;
   display: flex;
   flex-direction: column;
-
 }
 
 .button-container {

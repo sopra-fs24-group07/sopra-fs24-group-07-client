@@ -12,12 +12,12 @@ interface NotificationProps {
 }
 
 const FAQEntity: React.FC<NotificationProps> = ({
-                                                  question,
-                                                  answer,
-                                                  link = "",
-                                                  externalLink = "",
-                                                  onClose,
-                                                }) => {
+  question,
+  answer,
+  link = "",
+  externalLink = "",
+  onClose,
+}) => {
   const navigate = useNavigate();
 
   const handleLinkClick = () => {
@@ -36,7 +36,10 @@ const FAQEntity: React.FC<NotificationProps> = ({
 
   return (
     <div className="faq-entity container">
-      <div><div className="question">{question}</div> <span>&nbsp;</span>{answer}</div>
+      <div>
+        <div className="question">{question}</div> <span>&nbsp;</span>
+        {answer}
+      </div>
       {link && (
         <div className="button-container">
           <span>&nbsp;</span>
@@ -44,8 +47,7 @@ const FAQEntity: React.FC<NotificationProps> = ({
             Go
           </Button>
         </div>
-      )
-      }
+      )}
       {externalLink && (
         <div className="button-container">
           <span>&nbsp;</span>
@@ -53,13 +55,9 @@ const FAQEntity: React.FC<NotificationProps> = ({
             Go
           </Button>
         </div>
-      )
-      }
+      )}
     </div>
-  )
-    ;
+  );
 };
 
 export default FAQEntity;
-
-

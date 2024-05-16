@@ -3,17 +3,17 @@ import "styles/ui/FormField.scss";
 import PropTypes from "prop-types";
 
 const FormField = ({
-                     label,
-                     value,
-                     onChange,
-                     type = "text",
-                     textArea = false,
-                     disabled,
-                     children,
-                     taS = false,
-                     com = false,
-                     rightIcon = null,
-                   }) => (
+  label,
+  value,
+  onChange,
+  type = "text",
+  textArea = false,
+  disabled,
+  children,
+  taS = false,
+  com = false,
+  rightIcon = null,
+}) => (
   <div className="form-field">
     <div className="form-field-header">
       <label

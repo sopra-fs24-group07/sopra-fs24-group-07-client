@@ -7,7 +7,12 @@ import Profile from "../popups/Profile";
 import ProfileSettings from "../popups/ProfileSettings";
 import EasterEggPopup from "../popups/EasterEggPopup";
 import IconButton from "../ui/IconButton";
-import { MdOutlineQuestionAnswer, MdOutlineQuestionMark, MdPerson, MdPersonOutline } from "react-icons/md";
+import {
+  MdOutlineQuestionAnswer,
+  MdOutlineQuestionMark,
+  MdPerson,
+  MdPersonOutline,
+} from "react-icons/md";
 import FAQ from "../popups/FAQ";
 
 const Header = (props) => {
@@ -35,11 +40,11 @@ const Header = (props) => {
 
   const openFAQ = () => {
     setFAQOpen(true);
-  }
+  };
 
   const closeFAQ = () => {
     setFAQOpen(false);
-  }
+  };
 
   const openProfileSettings = () => {
     setProfileSettingsOpen(true);
@@ -122,10 +127,7 @@ const Header = (props) => {
           onClose={closeProfileSettings}
           onProfileOpen={handleProfileOpenAfterSettings}
         />
-        <FAQ
-          isOpen={isFAQOpen}
-          onClose={closeFAQ}
-        />
+        <FAQ isOpen={isFAQOpen} onClose={closeFAQ} />
       </div>
     </div>
   );
@@ -137,4 +139,3 @@ Header.propTypes = {
 };
 
 export default Header;
-
