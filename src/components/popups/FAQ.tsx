@@ -14,6 +14,7 @@ const FAQ = ({ isOpen, onClose }) => {
   const [error, setError] = useState(null);
   const [question, setQuestion] = useState("");
   const [faqs, setFaqs] = useState([]);
+  const navigate = useNavigate();
 
   const findKeyword = (question) => {
     return keywords.filter((keyword) =>
@@ -62,6 +63,10 @@ const FAQ = ({ isOpen, onClose }) => {
     setQuestion("");
   };
 
+  const goTutorial = () => {
+    navigate("/teams?showTutorial=true");
+    doClose();
+  }
   const doClose = () => {
     setFaqs([]);
     setQuestion("");
@@ -98,6 +103,12 @@ const FAQ = ({ isOpen, onClose }) => {
           />
           <Button className="green-button" onClick={showAll}>
             Show all FAQ
+          </Button>
+          <Button
+            className="blue-button"
+            onClick={() => goTutorial()}
+          >
+            Tutorial
           </Button>
         </div>
         <div className="faqs">
