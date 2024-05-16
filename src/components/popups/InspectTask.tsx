@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/popups/InspectTask.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
-import { Button } from "components/ui/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
-
-import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
+import Pusher from "pusher-js";
 import {
   MdModeEditOutline,
   MdOutlineModeEdit,
@@ -19,9 +17,7 @@ import {
   MdEditOff,
 } from "react-icons/md";
 import IconButton from "../ui/IconButton";
-
 import { useNotification } from "./NotificationContext";
-
 import FormField from "../ui/FormField";
 import { PopupHeader } from "../ui/PopupHeader";
 
@@ -39,8 +35,34 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { notify } = useNotification();
+  const [currentTask, setCurrentTask] = useState(task);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setCurrentTask(task);
+  }, [task]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
+      cluster: "eu",
+      forceTLS: true,
+    });
+
+    const channel = pusher.subscribe(`task-${task.taskId}`);
+    channel.bind("task-update", (updatedTask) => {
+      setCurrentTask(updatedTask);
+      // Only close the component if the task was deleted
+      if (updatedTask.status === "DELETED") {
+        onClose();
+      }
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [isOpen, task.taskId, onClose]);
 
   const validateForm = () => {
     let isValid = true;
@@ -78,8 +100,8 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     setEditMode(false);
   };
 
-  const doClose = () => {
-    DeactivateEditMode();
+  const doClose = (e) => {
+    e.stopPropagation();
     onClose();
   };
 
@@ -87,14 +109,14 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     setIsLoading(true);
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
-
+      setIsLoading(false);
       return;
     }
     try {
       task.title = taskTitle;
       task.description = taskDescription;
       const requestBody = JSON.stringify(task);
-      const response = await api.put(
+      await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
         requestBody,
         {
@@ -106,7 +128,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
       DeactivateEditMode();
       notify("success", "Task edited successfully!");
     } catch (error) {
-      //new error handling
       setError("Failed to edit the Task");
       notify("error", "Failed to edit the Task. Please try again.");
       if (error.response.status === 401) {
@@ -124,7 +145,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     try {
       task.status = "DELETED";
       const requestBody = JSON.stringify(task);
-      const response = await api.put(
+      await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
         requestBody,
         {
@@ -153,6 +174,8 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     return fieldErrors;
   };
 
+  if (!isOpen) return null;
+
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
@@ -162,7 +185,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         />
         <FormField
           label={"Task Title"}
-          value={taskTitle}
+          value={editMode ? taskTitle : currentTask.title}
           placeholder="enter title..."
           onChange={(ti: string) => setTaskTitle(ti)}
           disabled={!editMode}
@@ -192,7 +215,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         </FormField>
         <FormField
           label={"Task Description"}
-          value={taskDescription}
+          value={editMode ? taskDescription : currentTask.description}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
           disabled={!editMode}
