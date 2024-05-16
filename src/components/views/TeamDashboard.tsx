@@ -16,6 +16,7 @@ import Pusher from "pusher-js";
 import MemberCard from "components/ui/MemberCard";
 import SessionHistory from "components/popups/SessionHistory";
 import TeamMembers from "../popups/TeamMembers";
+import { useNotification } from "../popups/NotificationContext";
 
 import IconButton from "../ui/IconButton";
 import { MdHistory, MdSettings, MdPeople } from "react-icons/md";
@@ -38,6 +39,7 @@ const TeamDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
   const [isSessionHistoryOpen, setSessionHistoryOpen] = useState(false);
+  const { notify } = useNotification();
 
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
@@ -113,10 +115,7 @@ const TeamDashboard: React.FC = () => {
       setUserData(response.data);
     } catch (error) {
       console.error(`Error fetching team's users: ${handleError(error)}`);
-      if (error.response.status === 401) {
-        //user is not in Team, redirect to Overview
-        navigate("/teams");
-      }
+      navigate("/teams");
     }
   };
 
@@ -132,6 +131,8 @@ const TeamDashboard: React.FC = () => {
       );
       setTeamTasks(response.data);
     } catch (error) {
+      notify("error", "You are not allowed to do this!");
+      navigate("/teams");
       console.error(`Error fetching team's tasks: ${handleError(error)}`);
     }
   };
