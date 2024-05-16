@@ -64,7 +64,6 @@ const TeamsOverview = () => {
     setCreateTeamOpen(false);
   };
 
-
   const goTeam = (teamId) => {
     if (firstTime) {
       navigate(`/teams/${teamId}?showTutorial=true`);
