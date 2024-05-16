@@ -1,20 +1,16 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/ui/KanbanBoard.scss";
 import ColumnContainer from "./ColumnContainer";
 import PropTypes from "prop-types";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { api, handleError } from "helpers/api";
-import { Button } from "./Button";
 import TaskCard from "./TaskCard";
 
 function KanbanBoard(props) {
   const token = localStorage.getItem("token");
   const { teamId } = useParams();
-
-  //define the three columns we have
   const columns = ["TODO", "IN_SESSION", "DONE"];
-  //get teams tasks from the props
   const { teamTasks, sessionStatus } = props;
 
   const [activeTask, setActiveTask] = useState(null);
@@ -36,7 +32,6 @@ function KanbanBoard(props) {
   };
 
   const updateTaskStatus = async (task, newColumn) => {
-    //make api call to update status
     try {
       task.status = newColumn;
       const requestBody = JSON.stringify(task);
@@ -58,7 +53,6 @@ function KanbanBoard(props) {
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="board">
         <div className="cols">
-          {/* map the the Columns and give tasks to ColumnContainer */}
           {columns.map((col) => (
             <ColumnContainer
               key={col}
@@ -83,7 +77,6 @@ function KanbanBoard(props) {
   );
 }
 
-//check teamTasks to be array
 KanbanBoard.propTypes = {
   teamTasks: PropTypes.array,
   sessionStatus: PropTypes.string,

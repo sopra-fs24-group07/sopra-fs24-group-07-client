@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../styles/popups/InspectTask.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
 import Pusher from "pusher-js";
@@ -52,7 +52,6 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     const channel = pusher.subscribe(`task-${task.taskId}`);
     channel.bind("task-update", (updatedTask) => {
       setCurrentTask(updatedTask);
-      // Only close the component if the task was deleted
       if (updatedTask.status === "DELETED") {
         onClose();
       }
