@@ -402,7 +402,10 @@ const TeamDashboard: React.FC = () => {
             )}
           </TeamDashboardBox>
         </div>
-        <TutorialPopup isOpen={showTutorial} onClose={() => setShowTutorial(false)} />
+        <TutorialPopup
+          isOpen={showTutorial}
+          onClose={() => setShowTutorial(false)}
+        />
         <TeamSettings
           isOpen={isTeamSettingsOpen}
           onClose={closeTeamSettings}

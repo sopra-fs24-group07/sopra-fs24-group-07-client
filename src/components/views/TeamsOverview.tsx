@@ -72,7 +72,7 @@ const TeamsOverview = () => {
 
   const clickDev = () => {
     navigate(`/teams?showTutorial=true`);
-  }
+  };
 
   return (
     <BaseContainer>
@@ -101,14 +101,14 @@ const TeamsOverview = () => {
             onClose={closeCreateTeam}
             onCreateTeamClick={goTeam}
           />
-          <Button
-            className="team"
-            onClick={clickDev}
-          >
+          <Button className="team" onClick={clickDev}>
             DEV
-            </Button>
-            <TutorialPopup isOpen={showTutorial} onClose={() => setShowTutorial(false)} />
-            </div>
+          </Button>
+          <TutorialPopup
+            isOpen={showTutorial}
+            onClose={() => setShowTutorial(false)}
+          />
+        </div>
       </div>
     </BaseContainer>
   );
