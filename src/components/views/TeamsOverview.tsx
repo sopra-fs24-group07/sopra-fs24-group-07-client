@@ -70,10 +70,6 @@ const TeamsOverview = () => {
     }
   };
 
-  const clickDev = () => {
-    navigate(`/teams?showTutorial=true`);
-  };
-
   return (
     <BaseContainer>
       <h1 className="teams-overview header">{userName}&#39;s Teams</h1>
@@ -101,9 +97,6 @@ const TeamsOverview = () => {
             onClose={closeCreateTeam}
             onCreateTeamClick={goTeam}
           />
-          <Button className="team" onClick={clickDev}>
-            DEV
-          </Button>
           <TutorialPopup
             isOpen={showTutorial}
             onClose={() => setShowTutorial(false)}
