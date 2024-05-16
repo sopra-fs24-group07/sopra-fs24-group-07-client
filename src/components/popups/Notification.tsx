@@ -33,7 +33,7 @@ const Notification: React.FC<NotificationProps> = ({
   onClose,
 }) => {
   const navigate = useNavigate();
-  const [animateOut, setAnimateOut] = useState(false)
+  const [animateOut, setAnimateOut] = useState(false);
 
   useEffect(() => {
     if (show) {
