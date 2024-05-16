@@ -106,13 +106,6 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
         <Button width="30%" className="red-button bts" onClick={doLogout}>
           Logout
         </Button>
-        <Button
-          className="blue-button bts"
-          width="30%"
-          onClick={() => navigate("/teams?showTutorial=true")}
-        >
-          Tutorial
-        </Button>
         {message && <div className="confirmation-message">{message}</div>}
         <div className="profileMenu-header"></div>
         {error && <div className="error-message">{error}</div>}

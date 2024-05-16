@@ -66,7 +66,7 @@ const FAQ = ({ isOpen, onClose }) => {
   const goTutorial = () => {
     navigate("/teams?showTutorial=true");
     doClose();
-  }
+  };
   const doClose = () => {
     setFaqs([]);
     setQuestion("");
@@ -104,10 +104,7 @@ const FAQ = ({ isOpen, onClose }) => {
           <Button className="green-button" onClick={showAll}>
             Show all FAQ
           </Button>
-          <Button
-            className="blue-button"
-            onClick={() => goTutorial()}
-          >
+          <Button className="blue-button" onClick={() => goTutorial()}>
             Tutorial
           </Button>
         </div>
