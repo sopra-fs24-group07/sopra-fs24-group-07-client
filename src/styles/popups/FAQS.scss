@@ -2,10 +2,11 @@
 
 .faq {
   &.error {
+    max-width: 50em;
     font-size: 10px;
     color: red;
-    margin: 1em 0;
-    padding-left: 18em;
+    padding-left: 13em;
+    margin-top: 1em;
   }
 }
 

@@ -51,6 +51,13 @@ const FAQ = ({ isOpen, onClose }) => {
     }
 
     const matchedKeywords = findKeyword(question);
+    if (matchedKeywords.length < 1) {
+      setError("No matching keywords found. Please try a different question or keywords.");
+      setFaqs([]);
+
+      return;
+    }
+
     const results = findFAQ(matchedKeywords);
 
     if (results.length > 0) {
