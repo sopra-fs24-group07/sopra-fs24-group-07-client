@@ -83,7 +83,7 @@ const TeamsOverview = () => {
               className="team"
               key={team.teamId}
               title={team.description}
-              onClick={() => navigate(`/teams/${team.teamId}`)}
+              onClick={() => goTeam(team.teamId)}
             >
               {team.name}
             </Button>
