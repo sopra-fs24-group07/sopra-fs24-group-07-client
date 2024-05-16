@@ -28,9 +28,12 @@ const TutorialPopup = ({ isOpen, onClose }) => {
             <p>A Kanban board is a visual project management tool that helps to optimize the flow of work among a team. It is divided into different columns, each representing a different stage of the workflow.  
             The board provides a visual representation of the work in progress and helps teams to identify bottlenecks and manage workloads effectively.
             You can drag and drop your tasks into one of the following three columns. 
-            TODO column: List of all the tasks you haven&#39;t started yet
-            NEXT SESSION column: List of all the tasks you want to work on in the next session
-            DONE column: List of all your finished tasks</p>
+            <ul> 
+              <li>TODO column: List of all the tasks you haven&#39;t started yet</li>
+              <li>NEXT SESSION column: List of all the tasks you want to work on in the next session</li>
+              <li>DONE column: List of all your finished tasks</li>
+            </ul> 
+            </p>
             <h3>Session Start</h3>
             <p>You can set a time goal  and start the group session by clicking on the button underneath the time goal. 
             The tasks that has been dragged to Next Session in the Kanban board will be automatically migrated to the session taskboard.</p>
