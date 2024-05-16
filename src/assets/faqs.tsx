@@ -123,4 +123,5 @@ export const keywords = [
   "task",
   "kanban board",
   "tutorial",
+  "join",
 ];
