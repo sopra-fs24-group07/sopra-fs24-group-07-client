@@ -72,7 +72,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
 
   useEffect(() => {
     fetchUserTeam();
-  }, []);
+  }, [editMode]);
 
   const validateForm = () => {
     let isValid = true;
