@@ -133,6 +133,55 @@ more information.
 
 - The checkboxes serve as a reminder what should be done before a pull request
 
+## Main User Flows
+
+### Creating Account and Teams
+
+For the user to use our platform, they first must create an account or
+login. After login they have are redirected to the "Team Overview" page. Here
+they can see all their teams of which they are part of (or none if they are
+not, yet, part of one). Additionally, they have the possiblity to create new
+teams.
+
+The user can click on a team card to visit the "Team Dashboard" of that
+team. This is a separate page dedicated to the team's tasks, sessions, and
+settings. The user might first want to invite new team members, which they can
+do by clicking on the person icon to view all the current members and invite
+new users. This can be done by sending an email to the user that should be
+invited or sending the invitation link manually.
+
+### Collaborating with Other Users
+
+The other user can click on the invitation link which they recieve. Doing that
+they are redirected to the login or register page first, if they are not yet
+logged in or registered.
+
+Once logged in they can see their new team and also visit the Team
+Dashboard. They are now a full team member, meaning they have the same
+permissions and can do the same, as the user that created the team.
+
+Once tasks have been created, users can drag them into the "Next Session"
+column of the Kanban board. These are the tasks marked to be working on in the
+next group session. Sessions can be started by setting a time goal, i.e., how
+many hours and minutes the team wants to work on, and pressing the "Start Group
+Session" button.
+
+During a session, the team members can use a voice chat. In order to talk to
+the other team members, they must be in the saim "breakout room", which is a
+separate voice chat channel. The "main" channel is the voice chat not
+designated to a task in the task list. Users can coordinate there which user
+should do what. Each task has a separate breakout room (separate voice chat
+channel), which the users can use to work concentrated on that task, without
+beeing distracted by the other team member's chatter. When they decide that
+they have finished this task, they can check the checkbox next to the task to
+mark it as done.
+
+When the time of the sesssion is finished, the timebar dissapears, but the team
+members are able to further collaborate in the session. All team members are
+redirected to the Team Dashboard with the Kanban board view. They note that the
+tasks which they have marked as done during the session, are now in the "Done"
+column of the board as well.
+
 ## High-Level Components
 
 **TODO**
