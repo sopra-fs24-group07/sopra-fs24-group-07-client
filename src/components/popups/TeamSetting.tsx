@@ -222,10 +222,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     } catch (error) {
       console.error("Error generating description:", handleError(error));
       notify("error", "Failed to generate description. Please try again.");
-      setErrors((prev) => ({
-        ...prev,
-        general: "Failed to generate AI description. Please try again.",
-      }));
     }
     setIsLoading(false);
   };
