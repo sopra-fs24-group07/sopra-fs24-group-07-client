@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
@@ -16,6 +16,7 @@ import Pusher from "pusher-js";
 import MemberCard from "components/ui/MemberCard";
 import SessionHistory from "components/popups/SessionHistory";
 import TeamMembers from "../popups/TeamMembers";
+import TutorialPopup from "../popups/Tutorial";
 
 import IconButton from "../ui/IconButton";
 import { MdHistory, MdSettings, MdPeople } from "react-icons/md";
@@ -38,7 +39,15 @@ const TeamDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
   const [isSessionHistoryOpen, setSessionHistoryOpen] = useState(false);
+  const location = useLocation();
+  const [showTutorial, setShowTutorial] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showTutorial") === "true") {
+      setShowTutorial(true); // Assuming `setShowTutorial` sets state to show the tutorial popup
+    }
+  }, [location]);
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
       cluster: "eu",
@@ -113,10 +122,7 @@ const TeamDashboard: React.FC = () => {
       setUserData(response.data);
     } catch (error) {
       console.error(`Error fetching team's users: ${handleError(error)}`);
-      if (error.response.status === 401) {
-        //user is not in Team, redirect to Overview
-        navigate("/teams");
-      }
+      navigate("/teams");
     }
   };
 
@@ -132,6 +138,8 @@ const TeamDashboard: React.FC = () => {
       );
       setTeamTasks(response.data);
     } catch (error) {
+      notify("error", "You are not allowed to do this!");
+      navigate("/teams");
       console.error(`Error fetching team's tasks: ${handleError(error)}`);
     }
   };
@@ -392,6 +400,10 @@ const TeamDashboard: React.FC = () => {
             )}
           </TeamDashboardBox>
         </div>
+        <TutorialPopup
+          isOpen={showTutorial}
+          onClose={() => setShowTutorial(false)}
+        />
         <TeamSettings
           isOpen={isTeamSettingsOpen}
           onClose={closeTeamSettings}

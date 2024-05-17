@@ -9,7 +9,7 @@ import InspectTask from "components/popups/InspectTask";
 import { useDraggable } from "@dnd-kit/core";
 
 import IconButton from "../ui/IconButton";
-import { MdOutlineDragIndicator, MdDragIndicator } from "react-icons/md";
+import { IoMdOpen } from "react-icons/io";
 
 function TaskCard(props) {
   const token = localStorage.getItem("token");
@@ -27,25 +27,25 @@ function TaskCard(props) {
     : undefined;
 
   return (
-    <div
-      className="taskContainer"
-      ref={setNodeRef}
-      style={{ ...style, ...dragStyle }}
-    >
-      {/*task title that opens the task details */}
-      <Link onClick={() => openInspectTask(task)} className="taskTitle">
-        {task.title}
-      </Link>
-
-      <IconButton
-        {...listeners}
-        {...attributes}
-        className="dragHandle"
-        hoverIcon={MdDragIndicator}
-        icon={MdOutlineDragIndicator}
-        style={{ scale: "1.0", marginRight: "-4px" }}
-      />
-    </div>
+    <>
+      <div
+        className="taskContainer"
+        ref={setNodeRef}
+        style={{ ...style, ...dragStyle }}
+      >
+        {/*task title that opens the task details */}
+        <div className="taskTitle" {...listeners} {...attributes}>
+          {task.title}
+        </div>
+        <IconButton
+          onClick={() => openInspectTask(task)}
+          classNameButton="inspectButton"
+          className="inspectIcon"
+          hoverIcon={IoMdOpen}
+          icon={IoMdOpen}
+        />
+      </div>
+    </>
   );
 }
 

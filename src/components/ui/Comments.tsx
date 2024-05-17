@@ -123,16 +123,20 @@ const Comments = (props) => {
               onChange={setComment}
               error={error}
               com={true}
-            />
-            <IconButton
-              hoverIcon={BiSolidCommentAdd}
-              icon={BiCommentDetail}
-              onClick={createComment}
-              className="green-icon"
-              style={{
-                scale: "2.2",
-                marginRight: "10px",
-              }}
+              rightIcon={
+                <IconButton
+                  hoverIcon={BiSolidCommentAdd}
+                  icon={BiCommentDetail}
+                  onClick={createComment}
+                  title={"Submit"}
+                  className="green-icon"
+                  style={{
+                    scale: "1.8",
+                    marginLeft: "10px",
+                    marginBottom: "10px",
+                  }}
+                />
+              }
             />
           </div>
         </div>

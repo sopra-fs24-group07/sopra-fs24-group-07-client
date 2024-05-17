@@ -8,7 +8,7 @@ import { NotificationProvider } from "../../popups/NotificationContext";
 
 const GameRouter = ({ base }) => {
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <NotificationProvider>
         <Header height="100" />
         <Routes>

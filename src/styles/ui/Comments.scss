@@ -2,10 +2,9 @@
 
 .input {
   height: 35px;
-  width: 100%;
   padding-left: 15px;
   border: none;
-  border-radius: 0.75em;
+  border-radius: $borderRadius;
   margin-bottom: 10px;
   background: transparentize(white, 0.85);
   color: $background;
@@ -13,7 +12,6 @@
 
 .section {
   max-height: 230px;
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,7 +21,6 @@
 }
 
 .wrapper {
-  width: 100%;
   border-radius: $borderRadius;
   padding: 10px;
   margin-top: -1em;
@@ -31,13 +28,12 @@
 
 .in-line {
   margin-top: -1em;
-  width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .submit {
-  width: 15%;
   margin-bottom: 10px;
 }
 

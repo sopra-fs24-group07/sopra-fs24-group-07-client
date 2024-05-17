@@ -1,0 +1,36 @@
+@import "../theme";
+
+.tutorial {
+  z-index: 950;
+  position: fixed;
+  right: 0;
+  top: 0;
+  margin-top: 5em;
+  height: calc(100vh - 5em);
+
+  &.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 25vh;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &.content {
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: $dropShadow;
+    width: auto;
+    max-width: 30em;
+    text-align: start;
+    overflow-y: auto; // this makes the content scrollable
+  }
+  &.button {
+    margin-top: 30px;
+  }
+}
