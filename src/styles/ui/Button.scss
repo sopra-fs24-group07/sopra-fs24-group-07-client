@@ -224,3 +224,22 @@
   box-shadow: 2px 2px $background;
   margin-left: 1em;
 }
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  &.green {
+    background-color: green;
+  }
+
+  &.red {
+    background-color: red;
+  }
+}
+
