@@ -95,7 +95,7 @@ const Registration = () => {
       if (sessionStorage.getItem("teamUUID")) {
         navigate(`/invitation/${sessionStorage.getItem("teamUUID")}`);
       } else {
-        navigate("/teams");
+        navigate("/teams?showTutorial=true");
       }
     } catch (error) {
       const errorMessage = error.response
