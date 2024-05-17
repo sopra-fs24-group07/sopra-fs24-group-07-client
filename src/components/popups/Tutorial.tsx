@@ -76,7 +76,7 @@ const TutorialPopup = ({ isOpen, onClose }) => {
           </p>
         </div>
       )}
-      <Button onClick={onClose}>Got it!</Button>
+      <Button className="green-button-large" onClick={onClose}>Got it!</Button>
     </div>
   );
 };
