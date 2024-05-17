@@ -16,14 +16,14 @@ const IconButton = (props) => {
       {...rest}
       style={{
         width: props.width,
-        background: "none",
+        //background: "none",
         border: "none",
         padding: 0,
         color: "inherit",
         cursor: "pointer",
         ...props.style,
       }}
-      className={`icon-button ${props.className}`}
+      className={`icon-button ${props.classNameButton || props.className}`}
       onMouseEnter={() => setHover(true || toggled)}
       onMouseLeave={() => setHover(false || toggled)}
     >
@@ -44,6 +44,7 @@ IconButton.propTypes = {
   width: PropTypes.string,
   style: PropTypes.object,
   className: PropTypes.string,
+  classNameButton: PropTypes.string,
   children: PropTypes.node,
 };
 

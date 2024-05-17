@@ -1,6 +1,7 @@
 @import "../theme";
 
 .primary-button {
+  position: relative;
   &:hover {
     transform: translateY(-4px);
   }
