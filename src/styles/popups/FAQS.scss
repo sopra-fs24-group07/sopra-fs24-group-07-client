@@ -23,6 +23,8 @@
   margin-bottom: 1em;
   &.container {
     margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
   }
 }
 
@@ -70,7 +72,7 @@
   flex-direction: column;
 }
 
-.button-container {
+.button-container-faqs {
   display: flex;
   justify-content: flex-end;
 }
