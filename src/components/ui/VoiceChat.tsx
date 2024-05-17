@@ -19,10 +19,6 @@ function VoiceChat() {
   let rtcToken = null;
   let rtmToken = null;
 
-  const [errorUserName, setErrorUserName] = useState("");
-  const [errorGetTasks, setErrorGetTasks] = useState("");
-  const [errorGeneral, setErrorGeneral] = useState("");
-
   //new Notify Component
   const { notify } = useNotification();
 
@@ -257,8 +253,9 @@ function VoiceChat() {
         //set the Tasks and the main Chat
         setTasks([{ title: "main", taskId: "XX" }, ...response.data]);
       } catch (error) {
-        setErrorGetTasks(
-          "Error while creating channels. Please try again later"
+        notify(
+          "error",
+          "Could not create channels. Please restart the session"
         );
         console.error(`Error fetching teams tasks: ${handleError(error)}`);
       }
@@ -285,7 +282,8 @@ function VoiceChat() {
         });
         userName = response.data.username;
       } catch (error) {
-        setErrorUserName(
+        notify(
+          "error",
           "An unexpected error occured. Please try to logout and login again"
         );
         console.error(`Error fetching user info: ${handleError(error)}`);
@@ -324,7 +322,8 @@ function VoiceChat() {
             document.addEventListener(documentId.endSession, leaveRoom);
             document.addEventListener(documentId.leaveTeam, leaveRoom);
           } catch (error) {
-            setErrorGeneral(
+            notify(
+              "error",
               "An unexpected error occured. Please try to logout and login again"
             );
           }
@@ -422,7 +421,7 @@ function VoiceChat() {
     const initChannels = async () => {
       document.getElementById(documentId.channels).innerHTML = "";
       tasks.map((breakoutRoom) => {
-        let newChannel = `<input class="channel" name="roomname" type="submit" value="${breakoutRoom.title}" data-taskid="${breakoutRoom.taskId}" />`;
+        let newChannel = `<input title="Click to join the channel" class="channel" name="roomname" type="submit" value="${breakoutRoom.title}" data-taskid="${breakoutRoom.taskId}" />`;
         document
           .getElementById(documentId.channels)
           .insertAdjacentHTML("beforeend", newChannel);
@@ -446,9 +445,6 @@ function VoiceChat() {
       </div>
       <form id={documentId.form}>
         <div className="rooms" id={documentId.channels}></div>
-        {errorUserName && <div>{errorUserName}</div>}
-        {errorGetTasks && <div>{errorGetTasks}</div>}
-        {errorGeneral && <div>{errorGeneral}</div>}
       </form>
       <div className="members" id={documentId.members}></div>
       <div id={documentId.roomFooter} className="room-footer">
