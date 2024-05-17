@@ -113,7 +113,7 @@ const FAQ = ({ isOpen, onClose }) => {
           <Button className="green-button" onClick={showAll}>
             Show all FAQ
           </Button>
-          <Button className="blue-button" onClick={() => goTutorial()}>
+          <Button className="blue-button-tutorial" onClick={() => goTutorial()}>
             Tutorial
           </Button>
         </div>

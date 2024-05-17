@@ -1,6 +1,15 @@
 @import "../theme";
 
 .header {
+  .FAQICONPOS {
+    z-index: 955;
+    position:absolute;
+    margin-bottom: 2em;
+    margin-left: 2em;
+    bottom: 0;
+    left:0;
+  }
+
   &.container {
     display: flex;
     justify-content: space-between;
