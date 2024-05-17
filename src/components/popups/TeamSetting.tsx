@@ -31,6 +31,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const [teamDescription, setTeamDescription] = useState();
   const [teamUUID, setTeamUUID] = useState();
   const [teamMembers, setTeamMembers] = useState([]);
+  const [team, setTeam] = useState(null);
   const [inviteURL, setInviteURL] = useState();
   const [copied, setCopied] = useState("");
   const { teamId } = useParams();
@@ -58,6 +59,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       const foundTeam = response.data.find(
         (team) => team.teamId === parseInt(teamId)
       );
+      setTeam(foundTeam);
       setTeamName(foundTeam.name);
       setTeamDescription(foundTeam.description);
       setTeamUUID(foundTeam.teamUUID);
@@ -70,7 +72,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
 
   useEffect(() => {
     fetchUserTeam();
-  }, []);
+  }, [editMode]);
 
   const validateForm = () => {
     let isValid = true;
@@ -139,11 +141,15 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
 
   const DeactivateEditMode = () => {
     setErrors({
-      ...errors,
       name: "",
       description: "",
       email: "",
+      form: "",
+      leaveTeam: "",
+      genral: "",
     });
+    setTeamDescription(team.description);
+    setTeamName(team.name);
     setEditMode(false);
   };
 
@@ -216,10 +222,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     } catch (error) {
       console.error("Error generating description:", handleError(error));
       notify("error", "Failed to generate description. Please try again.");
-      setErrors((prev) => ({
-        ...prev,
-        general: "Failed to generate AI description. Please try again.",
-      }));
     }
     setIsLoading(false);
   };
@@ -231,6 +233,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       email: "",
       form: "",
       leaveTeam: "",
+      genral: "",
     });
     setCopied("");
     setEmail("");
