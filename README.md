@@ -227,6 +227,15 @@ column of the board as well.
 
 - Add secure login client components
 
+**Profile Pictures**
+
+- Users should be able to upload profile pictures
+- Other users should see the profile pictures
+
+**File Exchange**
+
+- Add a file exchange that users can share documents
+
 ## Authors & Acknowledgement
 
 - Derboven, Timon ([@Monti934](https://github.com/Monti934))
