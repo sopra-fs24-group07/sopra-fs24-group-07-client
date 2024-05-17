@@ -58,11 +58,12 @@
 
 .faq-content {
   width: 50vw;
-  margin-top: 11vh;
+  margin-top: 5em;
   margin-right: 1vh;
-  height: 88vh;
+  max-height: calc(100vh - 5em);
   background-color: $accentDark;
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 0;
+  padding-bottom: 2em;
   border-radius: $borderRadius;
   box-shadow: $dropShadow;
   display: flex;
@@ -72,5 +73,4 @@
 .button-container {
   display: flex;
   justify-content: flex-end;
-  //gap between buttons
 }
