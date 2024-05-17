@@ -13,10 +13,9 @@ import { IoMdOpen } from "react-icons/io";
 
 function TaskCard(props) {
   const token = localStorage.getItem("token");
-  const { task, col, sessionStatus, dragStyle } = props;
+  const { task, col, sessionStatus, dragStyle, openInspectTask } = props;
   const { teamId } = useParams();
   const taskId = task.taskId;
-  const [isInspectTaskOpen, setInspectTaskOpen] = useState(false);
 
   //dnd
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -26,16 +25,6 @@ function TaskCard(props) {
   const style = transform
     ? { transform: CSS.Translate.toString(transform) }
     : undefined;
-
-  //open the Inspect Task Popup
-  const openInspectTask = () => {
-    setInspectTaskOpen(true);
-  };
-
-  //close the Inspect Task Popup
-  const closeInspectTask = () => {
-    setInspectTaskOpen(false);
-  };
 
   return (
     <>
@@ -49,19 +38,13 @@ function TaskCard(props) {
           {task.title}
         </div>
         <IconButton
-          onClick={openInspectTask}
+          onClick={() => openInspectTask(task)}
           classNameButton="inspectButton"
           className="inspectIcon"
           hoverIcon={IoMdOpen}
           icon={IoMdOpen}
         />
       </div>
-      <InspectTask
-        isOpen={isInspectTaskOpen}
-        onClose={closeInspectTask}
-        task={task}
-        inSession={false}
-      />
     </>
   );
 }
@@ -72,6 +55,7 @@ TaskCard.propTypes = {
   col: PropTypes.string,
   sessionStatus: PropTypes.string,
   dragStyle: PropTypes.object,
+  openInspectTask: PropTypes.function,
 };
 
 export default TaskCard;

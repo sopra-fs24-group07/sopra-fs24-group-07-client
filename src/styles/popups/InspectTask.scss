@@ -64,6 +64,11 @@
     color: $background;
   }
 
+  &.status {
+    margin-top: -30px;
+    margin-bottom: 10px;
+  }
+
   &.headline {
     margin-top: 10px;
     margin-bottom: 0;
