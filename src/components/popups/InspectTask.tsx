@@ -7,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
 
-import { IoMdCloseCircle, IoMdCloseCircleOutline } from "react-icons/io";
 import {
   MdModeEditOutline,
   MdOutlineModeEdit,
