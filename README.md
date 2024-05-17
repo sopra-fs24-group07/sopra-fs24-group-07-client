@@ -184,7 +184,40 @@ column of the board as well.
 
 ## High-Level Components
 
-**TODO**
+### Team Overview
+
+[TeamsOverview.tsx](src/components/views/TeamsOverview.tsx)
+
+- landing page after login/registration
+- User can see all the teams they joined and create a new one
+
+### Team Dashboard
+
+[TeamDashboard.tsx](src/components/views/TeamDashboard.tsx)
+
+- Heart of the Application where basically everything happens
+- From there user can manage the team and tasks. Has a nice dashboard with
+  important information and can start session
+
+### Voice Chat
+
+[VoiceChat.tsx](src/components/ui/VoiceChat.tsx)
+
+- Voice Chat for Session
+- Key feature for collaboration
+- Breakoutrooms for efficiency
+- Speaker indicator and muting
+- Security via Tokens
+
+## KanbanBoard
+
+[KanbanBoard.tsx](src/components/ui/KanbanBoard.tsx)
+
+- Very high level Component that spans whole Task and Comment functionality if
+  not in session
+- Drag and Drop for UX
+- Live Updates for Usability
+- Important for the Session functionality
 
 ## Roadmap
 
