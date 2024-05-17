@@ -100,13 +100,13 @@ const Header = (props) => {
       )}
       <div className="header right">
         <div className="FAQICONPOS">
-        <IconButton
-          hoverIcon={MdOutlineQuestionMark}
-          icon={MdOutlineQuestionMark}
-          title={"FAQ"}
-          onClick={openFAQ}
-          style={{ scale: "3", marginRight: "25px" }}
-        />
+          <IconButton
+            hoverIcon={MdOutlineQuestionMark}
+            icon={MdOutlineQuestionMark}
+            title={"FAQ"}
+            onClick={openFAQ}
+            style={{ scale: "3", marginRight: "25px" }}
+          />
         </div>
         <IconButton
           hoverIcon={MdPerson}
