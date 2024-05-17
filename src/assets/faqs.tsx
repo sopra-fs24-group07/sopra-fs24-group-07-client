@@ -1,7 +1,8 @@
 export const faqList = [
   {
     question: "How do I restart the tutorial?",
-    answer: "Click the tutorial button in the FAQS page, you can find the question mark button on the bottom left.",
+    answer:
+      "Click the tutorial button in the FAQS page, you can find the question mark button on the bottom left.",
   },
   {
     question: "Where can I find my teams?",
