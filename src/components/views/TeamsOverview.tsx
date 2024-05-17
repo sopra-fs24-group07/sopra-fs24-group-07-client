@@ -4,17 +4,16 @@ import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import { Button } from "components/ui/Button";
 import CreateTeam from "../popups/CreateTeam";
-import PropTypes from "prop-types";
 import "styles/views/TeamsOverview.scss";
 import TutorialPopup from "../popups/Tutorial";
 
 const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
   const [userName, setUserName] = useState("");
+  const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
-  const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
   const location = useLocation();
   const [showTutorial, setShowTutorial] = useState(false);
   const [firstTime, setFirstTime] = useState(false);
@@ -33,7 +32,30 @@ const TeamsOverview = () => {
         const response = await api.get(`/api/v1/users/${userId}/teams`, {
           headers: { Authorization: `${token}` },
         });
-        setUserTeams(response.data);
+        const teams = response.data;
+
+        const teamsWithStatus = await Promise.all(
+          teams.map(async (team) => {
+            const sessionResponse = await api.get(
+              `/api/v1/teams/${team.teamId}/sessions`,
+              {
+                headers: { Authorization: `${token}` },
+              }
+            );
+
+            const lastSession = sessionResponse.data.slice(0)[0];
+            console.log("lastSession", lastSession);
+            //if a team has no sessions, isFinished should be true
+            const isFinished = !lastSession || !!lastSession.endDateTime;
+
+            return {
+              ...team,
+              inSession: isFinished ? "notSession" : "inSession",
+            };
+          })
+        );
+        console.log("XXX", teamsWithStatus);
+        setUserTeams(teamsWithStatus);
       } catch (error) {
         console.error("Error fetching user teams:", error);
       }
@@ -42,9 +64,7 @@ const TeamsOverview = () => {
     const fetchUserInfo = async () => {
       try {
         const response = await api.get(`/api/v1/users/${userId}`, {
-          headers: {
-            Authorization: `${token}`,
-          },
+          headers: { Authorization: `${token}` },
         });
         setUserName(response.data.username);
       } catch (error) {
@@ -54,15 +74,10 @@ const TeamsOverview = () => {
 
     fetchUserTeams();
     fetchUserInfo();
-  }, []);
+  }, [userId, token]);
 
-  const openCreateTeam = () => {
-    setCreateTeamOpen(true);
-  };
-
-  const closeCreateTeam = () => {
-    setCreateTeamOpen(false);
-  };
+  const openCreateTeam = () => setCreateTeamOpen(true);
+  const closeCreateTeam = () => setCreateTeamOpen(false);
 
   const goTeam = (teamId) => {
     if (firstTime) {
@@ -83,7 +98,8 @@ const TeamsOverview = () => {
               className="team"
               key={team.teamId}
               title={team.description}
-              onClick={() => navigate(`/teams/${team.teamId}`)}
+              onClick={() => goTeam(team.teamId)}
+              inSession={team.inSession}
             >
               {team.name}
             </Button>
@@ -108,10 +124,6 @@ const TeamsOverview = () => {
       </div>
     </BaseContainer>
   );
-};
-
-TeamsOverview.propTypes = {
-  height: PropTypes.string,
 };
 
 export default TeamsOverview;
