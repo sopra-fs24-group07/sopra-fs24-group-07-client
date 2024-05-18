@@ -49,6 +49,7 @@ function VoiceChat() {
     unMuteButton: "unMute-button",
     channels: "channels",
     leaveTeam: "leave-team",
+    deleteUser: "delete-user",
   };
 
   //the name of the room (a single task in our case)
@@ -321,6 +322,8 @@ function VoiceChat() {
             //leave the Voicechat if the session ends or if the user leaves the Team
             document.addEventListener(documentId.endSession, leaveRoom);
             document.addEventListener(documentId.leaveTeam, leaveRoom);
+            //leave the Voicechat if user is deleted, logs out or starts tutorial
+            document.addEventListener(documentId.deleteUser, leaveRoom);
           } catch (error) {
             notify(
               "error",
@@ -366,6 +369,7 @@ function VoiceChat() {
 
         document.removeEventListener(documentId.endSession, leaveRoom);
         document.removeEventListener(documentId.leaveTeam, leaveRoom);
+        document.removeEventListener(documentId.deleteUser, leaveRoom);
       } catch (error) {
         //need to catch the Error of Loading a new page, in that case we dont change any styling
         window.removeEventListener("beforeunload", leaveRoom);
@@ -373,6 +377,7 @@ function VoiceChat() {
 
         document.removeEventListener(documentId.endSession, leaveRoom);
         document.removeEventListener(documentId.leaveTeam, leaveRoom);
+        document.removeEventListener(documentId.deleteUser, leaveRoom);
       }
     };
 
