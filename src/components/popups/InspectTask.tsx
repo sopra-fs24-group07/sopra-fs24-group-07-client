@@ -169,7 +169,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
           onChange={(ti: string) => setTaskTitle(ti)}
           disabled={!editMode}
         >
-          {!editMode && (
+          {!editMode && !inSession && (
             <IconButton
               hoverIcon={MdModeEditOutline}
               icon={MdOutlineModeEdit}
