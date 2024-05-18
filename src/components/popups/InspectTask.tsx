@@ -203,7 +203,13 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         />
         <div className="inspectTask status">
           Current Status:{" "}
-          <b>{taskStatus === "IN_SESSION" ? "NEXT SESSION" : taskStatus}</b>
+          <b>
+            {taskStatus === "IN_SESSION"
+              ? "NEXT SESSION"
+              : taskStatus === "IN_SESSION_DONE"
+                ? "DONE"
+                : taskStatus}
+          </b>
         </div>
         {getAllErrorMessages().map((error, index) => (
           <div key={index} className="inspectTask error">
