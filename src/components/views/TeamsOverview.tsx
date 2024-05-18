@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { api, handleError } from "helpers/api";
-import User from "models/User";
-import { useNavigate } from "react-router-dom";
-import { Button } from "components/ui/Button";
-import "styles/views/TeamsOverview.scss";
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
+import { Button } from "components/ui/Button";
 import CreateTeam from "../popups/CreateTeam";
+import "styles/views/TeamsOverview.scss";
+import TutorialPopup from "../popups/Tutorial";
 
 const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
   const [userName, setUserName] = useState("");
+  const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
-  const userId = localStorage.getItem("id"); //todo change this depending on the api endpoint where we get the userId from the user token
-  // dont forget to remove id from storage on logout
-  // const [userId, setUserId] = useState(null); // new user Id set function, requires api call
+  const userId = localStorage.getItem("id");
+  const location = useLocation();
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [firstTime, setFirstTime] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showTutorial") === "true") {
+      setShowTutorial(true); // Assuming `setShowTutorial` sets state to show the tutorial popup
+      setFirstTime(true);
+    }
+  }, [location]);
 
   useEffect(() => {
     const fetchUserTeams = async () => {
@@ -24,20 +32,39 @@ const TeamsOverview = () => {
         const response = await api.get(`/api/v1/users/${userId}/teams`, {
           headers: { Authorization: `${token}` },
         });
-        setUserTeams(response.data);
+        const teams = response.data;
+
+        const teamsWithStatus = await Promise.all(
+          teams.map(async (team) => {
+            const sessionResponse = await api.get(
+              `/api/v1/teams/${team.teamId}/sessions`,
+              {
+                headers: { Authorization: `${token}` },
+              }
+            );
+
+            const lastSession = sessionResponse.data.slice(0)[0];
+            console.log("lastSession", lastSession);
+            //if a team has no sessions, isFinished should be true
+            const isFinished = !lastSession || !!lastSession.endDateTime;
+
+            return {
+              ...team,
+              inSession: isFinished ? "notSession" : "inSession",
+            };
+          })
+        );
+        console.log("XXX", teamsWithStatus);
+        setUserTeams(teamsWithStatus);
       } catch (error) {
         console.error("Error fetching user teams:", error);
       }
     };
 
-    fetchUserTeams();
-
     const fetchUserInfo = async () => {
       try {
         const response = await api.get(`/api/v1/users/${userId}`, {
-          headers: {
-            Authorization: `${token}`,
-          },
+          headers: { Authorization: `${token}` },
         });
         setUserName(response.data.username);
       } catch (error) {
@@ -45,19 +72,20 @@ const TeamsOverview = () => {
       }
     };
 
+    fetchUserTeams();
     fetchUserInfo();
-  }, []);
+  }, [userId, token]);
 
-  const openCreateTeam = () => {
-    setCreateTeamOpen(true);
-  };
-
-  const closeCreateTeam = () => {
-    setCreateTeamOpen(false);
-  };
+  const openCreateTeam = () => setCreateTeamOpen(true);
+  const closeCreateTeam = () => setCreateTeamOpen(false);
 
   const goTeam = (teamId) => {
-    navigate(`/teams/${teamId}`); //change routing to point at created team
+    if (firstTime) {
+      navigate(`/teams/${teamId}?showTutorial=true`);
+      setFirstTime(false);
+    } else {
+      navigate(`/teams/${teamId}`);
+    }
   };
 
   return (
@@ -69,12 +97,18 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
-              onClick={() => navigate(`/teams/${team.teamId}`)}
+              title={team.description}
+              onClick={() => goTeam(team.teamId)}
+              inSession={team.inSession}
             >
               {team.name}
             </Button>
           ))}
-          <Button className="team create" onClick={openCreateTeam}>
+          <Button
+            className="team green-button"
+            onClick={openCreateTeam}
+            title="Create a new team!"
+          >
             Create Team
           </Button>
           <CreateTeam
@@ -82,14 +116,14 @@ const TeamsOverview = () => {
             onClose={closeCreateTeam}
             onCreateTeamClick={goTeam}
           />
+          <TutorialPopup
+            isOpen={showTutorial}
+            onClose={() => setShowTutorial(false)}
+          />
         </div>
       </div>
     </BaseContainer>
   );
-};
-
-TeamsOverview.propTypes = {
-  height: PropTypes.string,
 };
 
 export default TeamsOverview;

@@ -1,18 +1,33 @@
 @import "../theme";
 
 .header {
+  .FAQICONPOS {
+    z-index: 955;
+    position: absolute;
+    margin-bottom: 2em;
+    margin-left: 2em;
+    bottom: 0;
+    left: 0;
+  }
+
   &.container {
     display: flex;
-    justify-content: space-between; /* Align buttons to the left and right */
-    align-items: center; /* Center the title vertically */
+    justify-content: space-between;
+    align-items: center;
     height: 5em;
     background-color: $accentDark;
+    padding-left: 2em;
+    padding-right: 2em;
   }
 
   &.title {
+    flex-grow: 1;
+    text-align: center;
     font-weight: bold;
     color: $background;
-    text-align: center; /* Center the title horizontally */
+    user-select: none;
+    padding: 0 1em;
+    white-space: nowrap;
   }
 
   &.titlelarge {
@@ -21,10 +36,17 @@
     color: $background;
   }
 
-  &.button-container {
+  &.left {
     display: flex;
-    justify-content: center;
-    margin-left: 1em;
-    margin-right: 1em;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1;
+  }
+
+  &.right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
   }
 }

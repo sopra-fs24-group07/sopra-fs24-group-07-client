@@ -3,33 +3,33 @@ import PropTypes from "prop-types";
 import "../../styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import { useLocation, useNavigate } from "react-router-dom";
-import ProfileMenu from "../popups/ProfileMenu";
 import Profile from "../popups/Profile";
 import ProfileSettings from "../popups/ProfileSettings";
+import EasterEggPopup from "../popups/EasterEggPopup";
+import IconButton from "../ui/IconButton";
+import {
+  MdPerson,
+  MdPersonOutline,
+  MdOutlineQuestionMark,
+} from "react-icons/md";
+import FAQ from "../popups/FAQ";
 
 const Header = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
   const [isProfileOpen, setProfileOpen] = useState(false);
   const [isProfileSettingsOpen, setProfileSettingsOpen] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
+  const [titleClickCount, setTitleClickCount] = useState(0);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [isFAQOpen, setFAQOpen] = useState(false);
 
   const goTeamsOverview = () => {
     navigate("/teams");
   };
 
-  const openProfileMenu = () => {
-    setProfileMenuOpen(true);
-  };
-
-  const closeProfileMenu = () => {
-    setProfileMenuOpen(false);
-  };
-
   const openProfile = () => {
     setProfileOpen(true);
-    closeProfileMenu();
   };
 
   const closeProfile = () => {
@@ -37,9 +37,16 @@ const Header = (props) => {
     setConfirmationMessage("");
   };
 
+  const openFAQ = () => {
+    setFAQOpen(true);
+  };
+
+  const closeFAQ = () => {
+    setFAQOpen(false);
+  };
+
   const openProfileSettings = () => {
     setProfileSettingsOpen(true);
-    closeProfileMenu();
   };
 
   const closeProfileSettings = () => {
@@ -61,27 +68,52 @@ const Header = (props) => {
     setProfileSettingsOpen(true);
   };
 
+  const onTitleClick = () => {
+    const newCount = titleClickCount + 1;
+    if (newCount >= 5) {
+      setShowEasterEgg(true);
+      setTitleClickCount(0); // Reset count after showing the easter egg
+    } else {
+      setTitleClickCount(newCount);
+    }
+  };
+
   return (
     <div className="header container" style={{ height: props.height }}>
-      <div className="header button-container">
+      <div className="header left">
         {location.pathname === "/teams" ? (
-          <span>Your Teams</span>
+          <h3>Your Teams</h3>
         ) : (
           <Button id="back-button" onClick={() => goTeamsOverview()}>
             {"< Back to Teams"}
           </Button>
         )}
       </div>
-      <h1 className="header title">
+      <h1 className="header title" onClick={onTitleClick}>
         PRODUCTIVI<span className="header titlelarge">T</span>EAM
       </h1>
-      <div className="header button-container">
-        <Button onClick={openProfileMenu}>Profile</Button>
-        <ProfileMenu
-          isOpen={isProfileMenuOpen}
-          onClose={closeProfileMenu}
-          onProfileClick={openProfile}
-          onProfileSettingsClick={openProfileSettings}
+      {showEasterEgg && (
+        <EasterEggPopup
+          isOpen={showEasterEgg}
+          onClose={() => setShowEasterEgg(false)}
+        />
+      )}
+      <div className="header right">
+        <div className="FAQICONPOS">
+          <IconButton
+            hoverIcon={MdOutlineQuestionMark}
+            icon={MdOutlineQuestionMark}
+            title={"FAQ"}
+            onClick={openFAQ}
+            style={{ scale: "3", marginRight: "25px" }}
+          />
+        </div>
+        <IconButton
+          hoverIcon={MdPerson}
+          icon={MdPersonOutline}
+          title={"Menu"}
+          onClick={openProfile}
+          style={{ scale: "3.5", marginRight: "25px" }}
         />
         <Profile
           isOpen={isProfileOpen}
@@ -94,6 +126,7 @@ const Header = (props) => {
           onClose={closeProfileSettings}
           onProfileOpen={handleProfileOpenAfterSettings}
         />
+        <FAQ isOpen={isFAQOpen} onClose={closeFAQ} />
       </div>
     </div>
   );

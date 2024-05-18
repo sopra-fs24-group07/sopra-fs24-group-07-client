@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/ui/Comments.scss";
-import { Button } from "./Button";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { api, handleError } from "helpers/api";
@@ -8,23 +7,13 @@ import CommentCard from "./CommentCard";
 import Pusher from "pusher-js";
 import ConfirmCommentDelete from "components/popups/ConfirmCommentDelete";
 
-const FormField = ({ value, onChange, error }) => {
-  return (
-    <input
-      className="input"
-      type="text"
-      placeholder="enter comment.."
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  );
-};
-
-FormField.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
-};
+import {
+  BiCommentDetail,
+  BiSolidCommentAdd,
+  BiCommentAdd,
+} from "react-icons/bi";
+import IconButton from "../ui/IconButton";
+import FormField from "./FormField";
 
 const Comments = (props) => {
   const { teamId } = useParams();
@@ -40,8 +29,13 @@ const Comments = (props) => {
   const validateForm = () => {
     let isValid = true;
 
-    if (comment.length > 500) {
-      setError("The comment exceeds 500 characters");
+    if (comment.length > 1000) {
+      setError("The comment exceeds 1000 characters");
+      isValid = false;
+    }
+
+    if (comment.length < 1) {
+      setError("Please write a comment first");
       isValid = false;
     }
 
@@ -120,15 +114,31 @@ const Comments = (props) => {
   return (
     <div className="wrapper">
       {!deleteOpen && (
-        <div className="in-line">
-          <FormField value={comment} onChange={setComment} error={error} />
-          <Button
-            disabled={!comment}
-            className={"green-button submit"}
-            onClick={createComment}
-          >
-            Submit
-          </Button>
+        <div>
+          <h3>Comments</h3>
+          <div className="in-line">
+            <FormField
+              label={"Add comment"}
+              value={comment}
+              onChange={setComment}
+              error={error}
+              com={true}
+              rightIcon={
+                <IconButton
+                  hoverIcon={BiSolidCommentAdd}
+                  icon={BiCommentDetail}
+                  onClick={createComment}
+                  title={"Submit"}
+                  className="green-icon"
+                  style={{
+                    scale: "1.8",
+                    marginLeft: "10px",
+                    marginBottom: "10px",
+                  }}
+                />
+              }
+            />
+          </div>
         </div>
       )}
       {error && <div className="error-message">{error}</div>}

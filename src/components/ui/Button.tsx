@@ -8,6 +8,13 @@ export const Button = (props) => (
     style={{ width: props.width, ...props.style }}
     className={`primary-button ${props.className}`}
   >
+    {props.inSession !== undefined && (
+      <div
+        className={`status-indicator ${
+          props.inSession === "inSession" ? "green" : "red"
+        }`}
+      />
+    )}
     {props.children}
   </button>
 );
@@ -18,5 +25,6 @@ Button.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   onClick: PropTypes.func,
-  disabled: PropTypes.string,
+  disabled: PropTypes.bool,
+  inSession: PropTypes.string,
 };

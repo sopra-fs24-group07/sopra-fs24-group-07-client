@@ -1,0 +1,45 @@
+@import "../theme";
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-1px);
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.red-icon {
+  color: $iconRed1;
+}
+
+.grey-icon {
+  color: $iconGrey1;
+}
+
+.green-icon {
+  color: $iconGreen1;
+}
+
+.yellow-icon {
+  color: $iconYellow1;
+}
+
+.blue-icon {
+  color: $iconBlue;
+}
+
+.dash-icon {
+  scale: 150%;
+  color: $background;
+  &:hover {
+    color: $iconBlue;
+  }
+}

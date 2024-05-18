@@ -9,31 +9,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
-
-//NEW FORMFIELD: WITHOUT CODE REPETITION
-const FormField = ({ label, value, onChange, type = "text" }) => (
-  <div className="register field">
-    <label className="register label" htmlFor={label}>
-      {label}
-    </label>
-    <input
-      className="register input"
-      placeholder="enter here.."
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      id={label}
-    />
-  </div>
-);
-
-// SEE NEW TYPE "type"
-FormField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
-};
+import FormField from "../ui/FormField";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -41,6 +17,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // NEW SET ERROR METHOD
   const [isLoading, setIsLoading] = useState(false);
+  const [secret, setSecret] = useState(0);
+
+  const incSecret = () => {
+    setSecret(secret + 1);
+  };
 
   const doLogin = async () => {
     setIsLoading(true);
@@ -68,10 +49,29 @@ const Login = () => {
 
   return (
     <div>
-      <LogRegHeader></LogRegHeader>
+      <LogRegHeader />
       <BaseContainer>
         <div className="login center-align">
-          <img className="login logo" src={logo} alt="Logo" />
+          {secret >= 5 && (
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/DLzxrzFCyOs?autoplay=1&mute=0"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+          )}
+          {secret < 5 && (
+            <img
+              className="login logo"
+              src={logo}
+              alt="Logo"
+              onClick={incSecret}
+            />
+          )}
           <div className="login container">
             {sessionStorage.getItem("teamUUID") && (
               <p>Please Login to join the team</p>
@@ -88,20 +88,26 @@ const Login = () => {
                 type="password"
                 onChange={setPassword}
               />
+              {error && <p className="login error">{error}</p>}
+              {!error && <p className="login error"></p>}
               <div className="login button-container">
                 <Button
                   disabled={!username || !password}
                   width="65%"
                   onClick={doLogin}
+                  className="login-button"
                 >
                   Login
                 </Button>
               </div>
             </div>
-            {error && <p className="login error">{error}</p>}
 
             <label className="login message">Don&#39;t have an acoount?</label>
-            <Button width="60%" onClick={() => navigate("/register")}>
+            <Button
+              className="login-button"
+              width="60%"
+              onClick={() => navigate("/register")}
+            >
               Go to Register
             </Button>
           </div>

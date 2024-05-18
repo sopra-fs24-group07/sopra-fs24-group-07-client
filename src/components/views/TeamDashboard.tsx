@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { api, handleError } from "helpers/api";
 import BaseContainer from "components/ui/BaseContainer";
 import TeamDashboardBox from "components/ui/TeamDashboardBox";
@@ -14,6 +14,12 @@ import VoiceChat from "components/ui/VoiceChat";
 import SessionTaskBoard from "../ui/SessionTaskBoard";
 import Pusher from "pusher-js";
 import MemberCard from "components/ui/MemberCard";
+import SessionHistory from "components/popups/SessionHistory";
+import TeamMembers from "../popups/TeamMembers";
+import TutorialPopup from "../popups/Tutorial";
+
+import IconButton from "../ui/IconButton";
+import { MdHistory, MdSettings, MdPeople } from "react-icons/md";
 
 const TeamDashboard: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -28,10 +34,20 @@ const TeamDashboard: React.FC = () => {
   const token = localStorage.getItem("token") || "";
   const userId = localStorage.getItem("id");
   const [isTeamSettingsOpen, setTeamSettingsOpen] = useState(false);
+  const [isTeamMembersOpen, setTeamMembersOpen] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState(new Set());
   const navigate = useNavigate();
   const [isLeave, setIsLeave] = useState<boolean>(false);
+  const [isSessionHistoryOpen, setSessionHistoryOpen] = useState(false);
+  const location = useLocation();
+  const [showTutorial, setShowTutorial] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showTutorial") === "true") {
+      setShowTutorial(true); // Assuming `setShowTutorial` sets state to show the tutorial popup
+    }
+  }, [location]);
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
       cluster: "eu",
@@ -73,6 +89,23 @@ const TeamDashboard: React.FC = () => {
       setIsLeave(false);
     }
   };
+
+  const openTeamMembers = () => {
+    setTeamMembersOpen(true);
+  };
+
+  const closeTeamMembers = () => {
+    setTeamMembersOpen(false);
+  };
+
+  const openSessionHistory = () => {
+    setSessionHistoryOpen(true);
+  };
+
+  const closeSessionHistory = () => {
+    setSessionHistoryOpen(false);
+  };
+
   const fetchTeamMembers = async () => {
     try {
       const response = await api.get(`/api/v1/teams/${teamId}/users`, {
@@ -89,18 +122,24 @@ const TeamDashboard: React.FC = () => {
       setUserData(response.data);
     } catch (error) {
       console.error(`Error fetching team's users: ${handleError(error)}`);
+      navigate("/teams");
     }
   };
 
   const fetchTeamTasks = async () => {
     try {
-      const response = await api.get(`/api/v1/teams/${teamId}/tasks`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const response = await api.get(
+        `/api/v1/teams/${teamId}/tasks?status=TODO,IN_SESSION,DONE,IN_SESSION_DONE`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
       setTeamTasks(response.data);
     } catch (error) {
+      notify("error", "You are not allowed to do this!");
+      navigate("/teams");
       console.error(`Error fetching team's tasks: ${handleError(error)}`);
     }
   };
@@ -311,12 +350,26 @@ const TeamDashboard: React.FC = () => {
             endColumn={5}
           >
             <div className="team-dashboard settingsBox">
-              <Button
-                className="team-dashboard settingsButton"
-                onClick={openTeamSettings}
-              >
-                Team Settings
-              </Button>
+              <div className="team-dashboard dash-buttons">
+                <IconButton
+                  className="dash-icon"
+                  icon={MdPeople}
+                  title={"Team Members"}
+                  onClick={openTeamMembers}
+                />
+                <IconButton
+                  className="dash-icon"
+                  icon={MdHistory}
+                  title={"Session History"}
+                  onClick={openSessionHistory}
+                />
+                <IconButton
+                  className="dash-icon"
+                  icon={MdSettings}
+                  title={"Team Settings"}
+                  onClick={openTeamSettings}
+                />
+              </div>
               <div className="team-dashboard description">{teamDesc}</div>
             </div>
           </TeamDashboardBox>
@@ -347,12 +400,28 @@ const TeamDashboard: React.FC = () => {
             )}
           </TeamDashboardBox>
         </div>
+        <TutorialPopup
+          isOpen={showTutorial}
+          onClose={() => setShowTutorial(false)}
+        />
         <TeamSettings
           isOpen={isTeamSettingsOpen}
           onClose={closeTeamSettings}
           isLeave={isLeave}
           setIsLeave={setIsLeave}
           onEdit={fetchTeamInfo}
+        />
+        <TeamMembers
+          isOpen={isTeamMembersOpen}
+          onClose={closeTeamMembers}
+          isLeave={isLeave}
+          setIsLeave={setIsLeave}
+          onEdit={fetchTeamInfo}
+        />
+        <SessionHistory
+          isOpen={isSessionHistoryOpen}
+          onClose={closeSessionHistory}
+          sessionStatus={sessionStatus}
         />
       </div>
     </BaseContainer>

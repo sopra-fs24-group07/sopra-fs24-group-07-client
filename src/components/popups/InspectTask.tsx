@@ -1,64 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/popups/InspectTask.scss";
 import { api, handleError } from "helpers/api";
 import PropTypes from "prop-types";
-import { Button } from "components/ui/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Comments from "components/ui/Comments";
 import { Spinner } from "components/ui/Spinner";
 
-const FormField = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <input
-        className="inspectTask input"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={!props.disabled}
-      />
-    </div>
-  );
-};
-
-const FormFieldLong = (props) => {
-  return (
-    <div className="inspectTask field">
-      <label className="inspectTask label">{props.label}</label>
-      <textarea
-        className="inspectTask textarea"
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        disabled={!props.disabled}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-};
-
-FormFieldLong.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-};
+import {
+  MdModeEditOutline,
+  MdOutlineModeEdit,
+  MdSave,
+  MdOutlineSave,
+  MdDeleteOutline,
+  MdDelete,
+  MdOutlineEditOff,
+  MdEditOff,
+} from "react-icons/md";
+import IconButton from "../ui/IconButton";
+import { useNotification } from "./NotificationContext";
+import FormField from "../ui/FormField";
+import { PopupHeader } from "../ui/PopupHeader";
 
 const InspectTask = ({ isOpen, onClose, task, inSession }) => {
   const [editMode, setEditMode] = useState(false);
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDescription, setTaskDescription] = useState(task.description);
+  const [taskStatus, setTaskStatus] = useState(task.status);
   const { teamId } = useParams();
   const token = localStorage.getItem("token");
   const [error, setError] = useState("");
@@ -66,10 +33,14 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     title: "",
     description: "",
   });
-  const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setTaskTitle(task.title);
+    setTaskDescription(task.description);
+    setTaskStatus(task.status);
+  }, [task]);
 
   const validateForm = () => {
     let isValid = true;
@@ -85,8 +56,8 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
       isValid = false;
     }
 
-    if (taskDescription && taskDescription.length > 500) {
-      errors.description = "Description exceeds the 500 character limit";
+    if (taskDescription && taskDescription.length > 1000) {
+      errors.description = "Description exceeds the 1000 character limit";
       isValid = false;
     }
 
@@ -107,19 +78,25 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     setEditMode(false);
   };
 
-  const doClose = () => {
+  const doClose = (e) => {
     DeactivateEditMode();
+    e.stopPropagation();
     onClose();
   };
 
   const EditTask = async () => {
     setIsLoading(true);
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      notify("error", "Some inputs are invalid!");
+      setIsLoading(false);
+
+      return;
+    }
     try {
       task.title = taskTitle;
       task.description = taskDescription;
       const requestBody = JSON.stringify(task);
-      const response = await api.put(
+      await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
         requestBody,
         {
@@ -129,9 +106,10 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
         }
       );
       DeactivateEditMode();
+      notify("success", "Task edited successfully!");
     } catch (error) {
-      //new error handling
       setError("Failed to edit the Task");
+      notify("error", "Failed to edit the Task. Please try again.");
       if (error.response.status === 401) {
         setError("You are not authorized to edit this Task");
       } else if (error.response.status === 404) {
@@ -147,7 +125,7 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
     try {
       task.status = "DELETED";
       const requestBody = JSON.stringify(task);
-      const response = await api.put(
+      await api.put(
         `/api/v1/teams/${teamId}/tasks/${task.taskId}`,
         requestBody,
         {
@@ -171,82 +149,91 @@ const InspectTask = ({ isOpen, onClose, task, inSession }) => {
 
   const getAllErrorMessages = () => {
     const fieldErrors = Object.values(errors).filter((error) => error);
-    if (generalError) fieldErrors.push(generalError);
 
     return fieldErrors;
   };
 
+  if (!isOpen) return null;
+
   return (
     <div className="inspectTask overlay" onClick={doClose}>
       <div className="inspectTask content" onClick={(e) => e.stopPropagation()}>
-        <div className="inspectTask header">
-          {!editMode && (
-            <Button className="red-button bts" onClick={doClose}>
-              Close
-            </Button>
-          )}
-          {editMode && (
-            <Button className="red-button bts" onClick={DeactivateEditMode}>
-              Cancel
-            </Button>
-          )}
-          {!editMode && !inSession && (
-            <Button
-              className="green-button inspectTask edit bts"
-              onClick={ActivateEditMode}
-            >
-              Edit
-            </Button>
-          )}
-        </div>
-        <h3 className="inspectTask headline">Task Title</h3>
+        <PopupHeader
+          onClose={onClose}
+          title={editMode ? "Edit Task" : "Task Details"}
+        />
         <FormField
-          className="inspectTask input"
+          label={"Task Title"}
           value={taskTitle}
           placeholder="enter title..."
           onChange={(ti: string) => setTaskTitle(ti)}
-          disabled={editMode}
-        />
-        <h3 className="inspectTask headline">Task Description</h3>
-        <FormFieldLong
-          className="inspectTask textarea"
+          disabled={!editMode}
+        >
+          {!editMode && (
+            <IconButton
+              hoverIcon={MdModeEditOutline}
+              icon={MdOutlineModeEdit}
+              onClick={ActivateEditMode}
+              className="blue-icon"
+              style={{
+                scale: "2",
+                marginRight: "10px",
+                marginBottom: "5px",
+              }}
+            />
+          )}
+          {editMode && !inSession && (
+            <IconButton
+              hoverIcon={MdEditOff}
+              icon={MdOutlineEditOff}
+              onClick={DeactivateEditMode}
+              className="red-icon"
+              style={{ scale: "2", marginRight: "10px", marginBottom: "5px" }}
+            />
+          )}
+        </FormField>
+        <FormField
+          label={"Task Description"}
           value={taskDescription}
           placeholder="enter description..."
           onChange={(dc: string) => setTaskDescription(dc)}
-          disabled={editMode}
+          disabled={!editMode}
+          textArea={true}
+          taS={true}
         />
-        {!editMode && (
-          <>
-            <h3 className="inspectTask headline">Comments</h3>
-            <Comments taskId={task.taskId} />
-          </>
-        )}
-
-        {error && <p>{error}</p>}
-
-        <div className="inspectTask header">
-          {editMode && (
-            <Button
-              disabled={!taskTitle}
-              className="green-button bts"
-              onClick={EditTask}
-            >
-              Save
-            </Button>
-          )}
-
-          {editMode && (
-            <Button className="red-button bts" onClick={DeleteTask}>
-              Delete
-            </Button>
-          )}
+        <div className="inspectTask status">
+          Current Status:{" "}
+          <b>{taskStatus === "IN_SESSION" ? "NEXT SESSION" : taskStatus}</b>
         </div>
         {getAllErrorMessages().map((error, index) => (
-          <div key={index} className="error-message">
+          <div key={index} className="inspectTask error">
             {error}
           </div>
         ))}
+
+        {error && <p>{error}</p>}
+
+        {editMode && (
+          <div className="inspectTask header">
+            <IconButton
+              hoverIcon={MdSave}
+              icon={MdOutlineSave}
+              onClick={EditTask}
+              className="green-icon"
+              style={{ scale: "2.5", marginLeft: "10px", marginTop: "10px" }}
+            />
+            <IconButton
+              hoverIcon={MdDelete}
+              icon={MdDeleteOutline}
+              onClick={DeleteTask}
+              className="red-icon"
+              style={{ scale: "2.5", marginTop: "10px", marginRight: "10px" }}
+            />
+          </div>
+        )}
+        {!editMode && <Comments taskId={task.taskId} />}
       </div>
+
       {isLoading ? <Spinner /> : ""}
     </div>
   );
