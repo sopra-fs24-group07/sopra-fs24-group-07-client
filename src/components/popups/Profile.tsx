@@ -28,6 +28,7 @@ const Profile = ({ isOpen, onClose, message, onSettingsOpen }) => {
   const navigate = useNavigate();
 
   const doLogout = () => {
+    document.dispatchEvent(new CustomEvent("logout"));
     localStorage.removeItem("token");
     localStorage.removeItem("id");
     navigate("/start");
