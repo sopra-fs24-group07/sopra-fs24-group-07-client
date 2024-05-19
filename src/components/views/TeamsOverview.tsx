@@ -44,7 +44,6 @@ const TeamsOverview = () => {
             );
 
             const lastSession = sessionResponse.data.slice(0)[0];
-            console.log("lastSession", lastSession);
             //if a team has no sessions, isFinished should be true
             const isFinished = !lastSession || !!lastSession.endDateTime;
 
