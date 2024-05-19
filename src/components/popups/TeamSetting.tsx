@@ -223,7 +223,7 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
       setIsButtonDisabled(true);
       setTimeout(() => {
         setIsButtonDisabled(false);
-      }, 10000);
+      }, 3000);
     } catch (error) {
       console.error("Error generating description:", handleError(error));
       notify("error", "Failed to generate description. Please try again.");
