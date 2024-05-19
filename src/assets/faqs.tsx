@@ -36,7 +36,8 @@ export const faqList = [
   {
     question: "How can I contact an administrator?",
     answer:
-      "Talk to them at university or email productiviteam.soprafs24@gmail.com.",  externalLink: "mailto:productiviteam.soprafs24@gmail.com",
+      "Talk to them at university or email productiviteam.soprafs24@gmail.com.",
+    externalLink: "mailto:productiviteam.soprafs24@gmail.com",
   },
   {
     question: "I accidentally deleted a task.",
@@ -97,7 +98,8 @@ export const faqList = [
   {
     question: "How do I report a bug or issue?",
     answer:
-      "Report bugs or issues by contacting the admins directly: productiviteam.soprafs24@gmail.com.", externalLink: "mailto:productiviteam.soprafs24@gmail.com",
+      "Report bugs or issues by contacting the admins directly: productiviteam.soprafs24@gmail.com.",
+    externalLink: "mailto:productiviteam.soprafs24@gmail.com",
   },
   {
     question: "Where can I create a task?",
@@ -112,15 +114,18 @@ export const faqList = [
   },
   {
     question: "Can tasks be edited during a session?",
-    answer: "No, in order to prevent confusion and maintain focus during a session tasks can not be edited.",
+    answer:
+      "No, in order to prevent confusion and maintain focus during a session tasks can not be edited.",
   },
   {
     question: "I have a problem with the voice chat.",
-    answer: "Refreshing the page usually solves most problems. Otherwise check your browsers microphone settings.",
+    answer:
+      "Refreshing the page usually solves most problems. Otherwise check your browsers microphone settings.",
   },
   {
     question: "I did not receive an invitation email.",
-    answer: "Check if you email address was spelled correctly and check your spam folder, if it's not there contact an administrator.",
+    answer:
+      "Check if you email address was spelled correctly and check your spam folder, if it's not there contact an administrator.",
   },
 ];
 
@@ -163,5 +168,4 @@ export const keywords = [
   "progress",
   "invitation",
   "link",
-
 ];
