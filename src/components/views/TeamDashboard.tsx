@@ -17,6 +17,7 @@ import MemberCard from "components/ui/MemberCard";
 import SessionHistory from "components/popups/SessionHistory";
 import TeamMembers from "../popups/TeamMembers";
 import TutorialPopup from "../popups/Tutorial";
+import { useNotification } from "../popups/NotificationContext";
 
 import IconButton from "../ui/IconButton";
 import { MdHistory, MdSettings, MdPeople } from "react-icons/md";
@@ -41,6 +42,7 @@ const TeamDashboard: React.FC = () => {
   const [isSessionHistoryOpen, setSessionHistoryOpen] = useState(false);
   const location = useLocation();
   const [showTutorial, setShowTutorial] = useState(false);
+  const { notify } = useNotification();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

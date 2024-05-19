@@ -23,11 +23,15 @@ const FAQ = ({ isOpen, onClose }) => {
   };
 
   const findFAQ = (matchedKeywords) => {
-    return faqList.filter((faq) =>
-      matchedKeywords.some((keyword) =>
-        faq.question.toLowerCase().includes(keyword)
-      )
-    );
+    return faqList
+      .map((faq) => {
+        const matchCount = matchedKeywords.filter((keyword) =>
+          faq.question.toLowerCase().includes(keyword)
+        ).length;
+
+        return { ...faq, matchCount };
+      })
+      .filter((faq) => faq.matchCount > 0);
   };
 
   const showAll = () => {
@@ -53,16 +57,17 @@ const FAQ = ({ isOpen, onClose }) => {
     const matchedKeywords = findKeyword(question);
     if (matchedKeywords.length < 1) {
       setError(
-        "No matching keywords found. Please try a different question or keywords."
+        "No matching keywords found. Please try a different question or keywords or try manually searching the FAQ."
       );
       setFaqs([]);
 
       return;
     }
 
-    const results = findFAQ(matchedKeywords);
+    let results = findFAQ(matchedKeywords);
 
     if (results.length > 0) {
+      results = results.sort((a, b) => b.matchCount - a.matchCount);
       setFaqs(results);
       setError("");
     } else {
@@ -73,9 +78,11 @@ const FAQ = ({ isOpen, onClose }) => {
   };
 
   const goTutorial = () => {
+    document.dispatchEvent(new CustomEvent("tutorial-start"));
     navigate("/teams?showTutorial=true");
     doClose();
   };
+
   const doClose = () => {
     setFaqs([]);
     setQuestion("");

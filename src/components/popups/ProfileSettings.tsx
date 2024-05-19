@@ -180,6 +180,7 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
           Authorization: `${token}`,
         },
       });
+      document.dispatchEvent(new CustomEvent("delete-user"));
       localStorage.clear();
       navigate("/start");
     } catch (error) {

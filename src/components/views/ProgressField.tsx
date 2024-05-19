@@ -103,7 +103,7 @@ const ProgressField: React.FC<ProgressFieldProps> = ({
           <div>
             <h2>Session Complete</h2>
             <p>
-              Your time goal has been reached. Feel free to continue with you
+              Your time goal has been reached. Feel free to continue with your
               work!
             </p>
           </div>

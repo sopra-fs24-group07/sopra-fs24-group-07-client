@@ -54,7 +54,6 @@ const TeamsOverview = () => {
             };
           })
         );
-        console.log("XXX", teamsWithStatus);
         setUserTeams(teamsWithStatus);
       } catch (error) {
         console.error("Error fetching user teams:", error);
