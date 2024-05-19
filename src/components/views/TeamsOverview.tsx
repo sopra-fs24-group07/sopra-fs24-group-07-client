@@ -11,7 +11,11 @@ const TeamsOverview = () => {
   const [userTeams, setUserTeams] = useState([]);
   const [userName, setUserName] = useState("");
   const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
-  const [tooltip, setTooltip] = useState({ visible: false, content: "", position: { top: 0, left: 0 } });
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    content: "",
+    position: { top: 0, left: 0 },
+  });
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
@@ -104,7 +108,12 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
-              onMouseEnter={(e) => showTooltip(team.description, { top: e.clientY, left: e.clientX })}
+              onMouseEnter={(e) =>
+                showTooltip(team.description, {
+                  top: e.clientY,
+                  left: e.clientX,
+                })
+              }
               onMouseLeave={hideTooltip}
               onClick={() => goTeam(team.teamId)}
               inSession={team.inSession}
@@ -115,7 +124,12 @@ const TeamsOverview = () => {
           <Button
             className="team green-button"
             onClick={openCreateTeam}
-            onMouseEnter={(e) => showTooltip("Create a new team!", { top: e.clientY, left: e.clientX })}
+            onMouseEnter={(e) =>
+              showTooltip("Create a new team!", {
+                top: e.clientY,
+                left: e.clientX,
+              })
+            }
             onMouseLeave={hideTooltip}
           >
             Create Team
