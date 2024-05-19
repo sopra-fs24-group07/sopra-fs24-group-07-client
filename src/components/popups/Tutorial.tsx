@@ -62,7 +62,9 @@ const TutorialPopup = ({ isOpen, onClose }) => {
             You can join a VoiceChat by clicking on one of the channels during a
             session. You will always have a main channel, and all the other
             channels are the breakout rooms for the active tasks. You can mute
-            yourself by clicking on the microphone button.
+            yourself by clicking on the microphone button. By clicking on the
+            red phone button, you will leave the voice chat, and by clicking on
+            a new task, you will enter a new voice chat.
           </p>
           <h3>Sessions History</h3>
           <p>
