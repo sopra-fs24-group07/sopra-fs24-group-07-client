@@ -11,7 +11,7 @@ export const Button = (props) => (
     {props.inSession !== undefined && (
       <div
         className={`status-indicator ${
-          props.inSession === "inSession" ? "green" : "red"
+          props.inSession === "inSession" ? "red" : ""
         }`}
       />
     )}
