@@ -26,6 +26,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { notify } = useNotification();
   const [generalError, setGeneralError] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
   const validateForm = () => {
     let isValid = true;
@@ -120,6 +121,10 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
         }
       );
       setTeamDescription(response.data.answer);
+      setIsButtonDisabled(true);
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 3000);
     } catch (error) {
       console.error("Error generating description:", handleError(error));
       notify("error", "Failed to generate description. Please try again.");
@@ -175,6 +180,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
               margin: "1em",
               alignSelf: "flex-end",
             }}
+            disabled={isButtonDisabled}
           />
         </FormField>
         {getAllErrorMessages().map((error, index) => (
