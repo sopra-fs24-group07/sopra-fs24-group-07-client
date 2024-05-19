@@ -23,7 +23,8 @@ const Login = () => {
     setSecret(secret + 1);
   };
 
-  const doLogin = async () => {
+  const doLogin = async (event) => {
+    event.preventDefault();
     setIsLoading(true);
     try {
       const requestBody = JSON.stringify({ username, password });
@@ -77,29 +78,31 @@ const Login = () => {
               <p>Please Login to join the team</p>
             )}
             <div className="login form">
-              <FormField
-                label="Username"
-                value={username}
-                onChange={setUsername}
-              />{" "}
-              <FormField
-                label="Password"
-                value={password}
-                type="password"
-                onChange={setPassword}
-              />
-              {error && <p className="login error">{error}</p>}
-              {!error && <p className="login error"></p>}
-              <div className="login button-container">
-                <Button
-                  disabled={!username || !password}
-                  width="65%"
-                  onClick={doLogin}
-                  className="login-button"
-                >
-                  Login
-                </Button>
-              </div>
+              <form onSubmit={doLogin}>
+                <FormField
+                  label="Username"
+                  value={username}
+                  onChange={setUsername}
+                />{" "}
+                <FormField
+                  label="Password"
+                  value={password}
+                  type="password"
+                  onChange={setPassword}
+                />
+                {error && <p className="login error">{error}</p>}
+                {!error && <p className="login error"></p>}
+                <div className="login button-container">
+                  <Button
+                    disabled={!username || !password}
+                    width="65%"
+                    type="submit"
+                    className="login-button"
+                  >
+                    Login
+                  </Button>
+                </div>
+              </form>
             </div>
 
             <label className="login message">Don&#39;t have an acoount?</label>

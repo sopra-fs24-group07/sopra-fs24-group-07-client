@@ -39,7 +39,8 @@ const FAQ = ({ isOpen, onClose }) => {
     setError("");
   };
 
-  const sendQuestion = () => {
+  const sendQuestion = (event) => {
+    event.preventDefault();
     if (!question || question.length < 1 || question === "") {
       setError("Please enter your question or keyword.");
       setFaqs([]);
@@ -97,26 +98,28 @@ const FAQ = ({ isOpen, onClose }) => {
       <div className="faq-content" onClick={(e) => e.stopPropagation()}>
         <PopupHeader onClose={doClose} title="FAQ" />
         <div>
-          <FormField
-            label="Ask a question:"
-            type="text"
-            value={question}
-            onChange={setQuestion}
-            rightIcon={
-              <IconButton
-                hoverIcon={BiSolidCommentAdd}
-                icon={BiCommentDetail}
-                onClick={sendQuestion}
-                title={"Submit"}
-                className="green-icon"
-                style={{
-                  scale: "1.8",
-                  marginRight: "10px",
-                  marginBottom: "10px",
-                }}
-              />
-            }
-          />
+          <form onSubmit={sendQuestion}>
+            <FormField
+              label="Ask a question:"
+              type="text"
+              value={question}
+              onChange={setQuestion}
+              rightIcon={
+                <IconButton
+                  hoverIcon={BiSolidCommentAdd}
+                  icon={BiCommentDetail}
+                  type="submit"
+                  title={"Submit"}
+                  className="green-icon"
+                  style={{
+                    scale: "1.8",
+                    marginRight: "10px",
+                    marginBottom: "10px",
+                  }}
+                />
+              }
+            />
+          </form>
           <Button className="green-button" onClick={showAll}>
             Show all FAQ
           </Button>

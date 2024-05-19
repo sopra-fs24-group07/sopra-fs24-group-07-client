@@ -103,7 +103,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
   const editTeam = async () => {
     if (!validateForm()) {
       notify("error", "Some inputs are invalid!");
-      console.log(errors.form);
 
       return;
     }
@@ -197,7 +196,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     setIsLoading(true);
     if (!teamName) {
       let newErrors = { name: "" };
-      console.log("No teamname was given", teamName);
       newErrors.name = "Team name is required";
       setErrors(newErrors);
       setIsLoading(false);

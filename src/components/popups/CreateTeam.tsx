@@ -98,7 +98,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
     setIsLoading(true);
     if (!teamName) {
       let newErrors = { name: "" };
-      console.log("No teamname was given", teamName);
+      console.error("No teamname was given", teamName);
       newErrors.name = "Team name is required";
       setErrors(newErrors);
       setIsLoading(false);

@@ -25,7 +25,7 @@ export const handleError = (error) => {
       info += `\nerror message:\n${response.data}`;
     }
 
-    console.log(
+    console.error(
       "The request was made and answered but was unsuccessful.",
       error.response
     );
@@ -36,7 +36,7 @@ export const handleError = (error) => {
       alert("The server cannot be reached.\nDid you start it?");
     }
 
-    console.log("Something else happened.", error);
+    console.error("Something else happened.", error);
 
     return error.message;
   }

@@ -69,7 +69,6 @@ const TeamDashboard: React.FC = () => {
     });
 
     channel.bind("team-update", () => {
-      console.log("TEAM UPDATED!");
       fetchTeamMembers();
       fetchTeamInfo();
     });
@@ -225,7 +224,7 @@ const TeamDashboard: React.FC = () => {
         );
       }
     } catch (error) {
-      console.log(
+      console.error(
         `Error fetching initial session status: ${
           error.response?.data?.message || error.message
         }`
@@ -264,7 +263,6 @@ const TeamDashboard: React.FC = () => {
           });
 
           await Promise.all(updates);
-          console.log("Tasks statuses updated to DONE");
 
           // Update the local state to reflect these changes
           setTeamTasks((prevTasks) =>

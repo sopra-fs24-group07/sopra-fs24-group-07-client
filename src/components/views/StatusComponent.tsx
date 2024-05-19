@@ -144,7 +144,6 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
         }
       );
 
-      console.log(`Status updated successfully to: ${status}`);
       setSessionStatus(status);
       const startTime = response.data.startDateTime;
       setStartDateTime(startTime);
