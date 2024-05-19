@@ -4,8 +4,9 @@
   &.container {
     margin-top: 2em;
     min-height: 300px;
-    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
-    @include center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
     width: 100%;
   }
@@ -67,13 +68,12 @@
         box-shadow: 2px 2px $background;
       }
       &:hover::after {
-        content: attr(title);
+        content: attr(data-tooltip);
+        z-index: 1000;
         position: absolute;
         top: 120%;
         left: 50%;
         transform: translateX(-50%);
-        white-space: nowrap;
-        z-index: 1;
         padding: 8px;
         border-radius: 4px;
         background-color: $background;

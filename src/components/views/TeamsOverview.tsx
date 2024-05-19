@@ -54,7 +54,6 @@ const TeamsOverview = () => {
             };
           })
         );
-        console.log("XXX", teamsWithStatus);
         setUserTeams(teamsWithStatus);
       } catch (error) {
         console.error("Error fetching user teams:", error);
@@ -97,7 +96,7 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
-              title={team.description}
+              data-tooltip={team.description}
               onClick={() => goTeam(team.teamId)}
               inSession={team.inSession}
             >
@@ -107,7 +106,7 @@ const TeamsOverview = () => {
           <Button
             className="team green-button"
             onClick={openCreateTeam}
-            title="Create a new team!"
+            data-tooltip="Create a new team!"
           >
             Create Team
           </Button>
