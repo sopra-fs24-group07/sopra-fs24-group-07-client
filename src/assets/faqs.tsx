@@ -36,7 +36,7 @@ export const faqList = [
   {
     question: "How can I contact an administrator?",
     answer:
-      "Talk to them at university or email productiviteam.soprafs24@gmail.com.",
+      "Talk to them at university or email productiviteam.soprafs24@gmail.com.",  externalLink: "mailto:productiviteam.soprafs24@gmail.com",
   },
   {
     question: "I accidentally deleted a task.",
@@ -97,7 +97,7 @@ export const faqList = [
   {
     question: "How do I report a bug or issue?",
     answer:
-      "Report bugs or issues by contacting the admins directly: productiviteam.soprafs24@gmail.com.",
+      "Report bugs or issues by contacting the admins directly: productiviteam.soprafs24@gmail.com.", externalLink: "mailto:productiviteam.soprafs24@gmail.com",
   },
   {
     question: "Where can I create a task?",
@@ -110,6 +110,18 @@ export const faqList = [
       "A Kanban board is a tool to manage tasks, for further information see:",
     externalLink: "https://en.wikipedia.org/wiki/Kanban_board",
   },
+  {
+    question: "Can tasks be edited during a session?",
+    answer: "No, in order to prevent confusion and maintain focus during a session tasks can not be edited.",
+  },
+  {
+    question: "I have a problem with the voice chat.",
+    answer: "Refreshing the page usually solves most problems. Otherwise check your browsers microphone settings.",
+  },
+  {
+    question: "I did not receive an invitation email.",
+    answer: "Check if you email address was spelled correctly and check your spam folder, if it's not there contact an administrator.",
+  },
 ];
 
 export const keywords = [
@@ -117,12 +129,39 @@ export const keywords = [
   "contact",
   "name",
   "administrator",
+  "admin",
   "change",
-  "progress",
   "bug",
   "password",
   "task",
-  "kanban board",
+  "tasks",
+  "kanban",
+  "board",
   "tutorial",
   "join",
+  "create",
+  "restart",
+  "session",
+  "history",
+  "delete",
+  "leave",
+  "left",
+  "member",
+  "members",
+  "forget",
+  "forgot",
+  "report",
+  "issue",
+  "edit",
+  "edited",
+  "email",
+  "voicechat",
+  "voice",
+  "chat",
+  "find",
+  "track",
+  "progress",
+  "invitation",
+  "link",
+
 ];
