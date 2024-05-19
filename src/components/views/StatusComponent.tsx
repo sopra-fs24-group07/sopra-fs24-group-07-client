@@ -159,7 +159,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
       setIsButtonDisabled(true);
       setTimeout(() => {
         setIsButtonDisabled(false);
-      }, 3000);
+      }, 100);
     } catch (error) {
       setError(
         `Error updating status: ${
