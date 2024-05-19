@@ -67,38 +67,6 @@
         border: 2px solid $background;
         box-shadow: 2px 2px $background;
       }
-      &:hover::after {
-        content: attr(data-tooltip);
-        z-index: 1000;
-        position: absolute;
-        top: 120%;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 8px;
-        border-radius: 4px;
-        background-color: $background;
-        color: white;
-        font-size: 14px;
-        display: block;
-        max-width: 300px;
-        min-width: 10em;
-        white-space: normal;
-        word-wrap: anywhere;
-        overflow-wrap: break-word;
-      }
-
-      &:hover::before {
-        position: absolute;
-        content: "";
-        height: 8px;
-        width: 8px;
-        background: $background;
-        bottom: -1.45em;
-        scale: 150%;
-        left: 50%;
-        transform: translate(-50%) rotate(45deg);
-        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      }
     }
 
     .create {
@@ -111,5 +79,21 @@
       color: $background;
       background-color: $paletteGreen;
     }
+  }
+
+
+  .tooltip {
+    position: absolute;
+    background-color: $background;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 300px;
+    transform: translateY(10px);
   }
 }
