@@ -73,9 +73,11 @@ const FAQ = ({ isOpen, onClose }) => {
   };
 
   const goTutorial = () => {
+    document.dispatchEvent(new CustomEvent("tutorial-start"));
     navigate("/teams?showTutorial=true");
     doClose();
   };
+
   const doClose = () => {
     setFaqs([]);
     setQuestion("");

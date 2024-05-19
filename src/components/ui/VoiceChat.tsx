@@ -49,6 +49,9 @@ function VoiceChat() {
     unMuteButton: "unMute-button",
     channels: "channels",
     leaveTeam: "leave-team",
+    deleteUser: "delete-user",
+    logout: "logout",
+    tutorialStart: "tutorial-start",
   };
 
   //the name of the room (a single task in our case)
@@ -321,6 +324,10 @@ function VoiceChat() {
             //leave the Voicechat if the session ends or if the user leaves the Team
             document.addEventListener(documentId.endSession, leaveRoom);
             document.addEventListener(documentId.leaveTeam, leaveRoom);
+            //leave the Voicechat if user is deleted, logs out or starts tutorial
+            document.addEventListener(documentId.deleteUser, leaveRoom);
+            document.addEventListener(documentId.logout, leaveRoom);
+            document.addEventListener(documentId.tutorialStart, leaveRoom);
           } catch (error) {
             notify(
               "error",
@@ -366,13 +373,19 @@ function VoiceChat() {
 
         document.removeEventListener(documentId.endSession, leaveRoom);
         document.removeEventListener(documentId.leaveTeam, leaveRoom);
+        document.removeEventListener(documentId.deleteUser, leaveRoom);
+        document.removeEventListener(documentId.logout, leaveRoom);
+        document.removeEventListener(documentId.tutorialStart, leaveRoom);
       } catch (error) {
-        //need to catch the Error of Loading a new page, in that case we dont change any styling
+        //need to catch the Error of Loading a new page, in that case we dont change any styling but still remove EventListeners
         window.removeEventListener("beforeunload", leaveRoom);
         window.removeEventListener("popstate", leaveRoom);
 
         document.removeEventListener(documentId.endSession, leaveRoom);
         document.removeEventListener(documentId.leaveTeam, leaveRoom);
+        document.removeEventListener(documentId.deleteUser, leaveRoom);
+        document.removeEventListener(documentId.logout, leaveRoom);
+        document.removeEventListener(documentId.tutorialStart, leaveRoom);
       }
     };
 
