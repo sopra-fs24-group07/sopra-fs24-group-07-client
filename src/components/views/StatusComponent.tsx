@@ -37,19 +37,20 @@ function minutesToTime(minutes) {
 }
 
 const StatusComponent: React.FC<StatusComponentProps> = ({
-  sessionStatus,
-  setSessionStatus,
-  goalMinutes,
-  setGoalMinutes,
-  startDateTime,
-  setStartDateTime,
-  totalTime,
-  setTotalTime,
-  teamName,
-}) => {
+                                                           sessionStatus,
+                                                           setSessionStatus,
+                                                           goalMinutes,
+                                                           setGoalMinutes,
+                                                           startDateTime,
+                                                           setStartDateTime,
+                                                           totalTime,
+                                                           setTotalTime,
+                                                           teamName,
+                                                         }) => {
   const [error, setError] = useState<string>("");
   const { teamId } = useParams<{ teamId: string }>();
   const { notify } = useNotification();
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -99,7 +100,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
           setGoalMinutes(formattedTime);
           setStartDateTime(
             mostRecentSession.startDateTime ||
-              new Date().toISOString().substring(11, 16)
+            new Date().toISOString().substring(11, 16)
           );
         }
       } catch (error) {
@@ -155,6 +156,10 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
         notify("success", "You have successfully stopped the session!");
       }
       setError("");
+      setIsButtonDisabled(true);
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 10000);
     } catch (error) {
       setError(
         `Error updating status: ${
@@ -198,6 +203,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
         <Button
           className="green-button StatComp btn"
           onClick={() => updateStatus("on")}
+          disabled={isButtonDisabled}
         >
           Start Group Session
         </Button>
@@ -205,6 +211,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
         <Button
           className="red-button StatComp btn"
           onClick={() => updateStatus("off")}
+          disabled={isButtonDisabled}
         >
           Stop Group Session
         </Button>
