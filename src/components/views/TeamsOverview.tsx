@@ -96,7 +96,7 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
-              data-tooltip={team.description}
+              title={team.description}
               onClick={() => goTeam(team.teamId)}
               inSession={team.inSession}
             >
@@ -106,7 +106,7 @@ const TeamsOverview = () => {
           <Button
             className="team green-button"
             onClick={openCreateTeam}
-            data-tooltip="Create a new team!"
+            title="Create a new team!"
           >
             Create Team
           </Button>
