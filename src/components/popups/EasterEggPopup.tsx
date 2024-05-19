@@ -30,7 +30,7 @@ const nameLinks = {
   Alihan: "https://youtube.com",
   Basil: "https://instagram.com/basilfurrer",
   Sven: "https://github.com",
-  Timon: "https://formula1.com",
+  Timon: "https://findtheinvisiblecow.com/",
 };
 
 const EasterEggPopup = ({ isOpen, onClose }) => {
