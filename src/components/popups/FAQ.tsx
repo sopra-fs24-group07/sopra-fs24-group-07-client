@@ -28,6 +28,7 @@ const FAQ = ({ isOpen, onClose }) => {
         const matchCount = matchedKeywords.filter((keyword) =>
           faq.question.toLowerCase().includes(keyword)
         ).length;
+
         return { ...faq, matchCount };
       })
       .filter((faq) => faq.matchCount > 0);
