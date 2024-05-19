@@ -314,7 +314,6 @@ const TeamSettings = ({ isOpen, onClose, onEdit, setIsLeave }) => {
                   marginBottom: "10px",
                 }}
                 disabled={isButtonDisabled}
-
               />
             )}
           </FormField>

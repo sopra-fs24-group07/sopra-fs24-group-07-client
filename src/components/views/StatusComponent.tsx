@@ -37,16 +37,16 @@ function minutesToTime(minutes) {
 }
 
 const StatusComponent: React.FC<StatusComponentProps> = ({
-                                                           sessionStatus,
-                                                           setSessionStatus,
-                                                           goalMinutes,
-                                                           setGoalMinutes,
-                                                           startDateTime,
-                                                           setStartDateTime,
-                                                           totalTime,
-                                                           setTotalTime,
-                                                           teamName,
-                                                         }) => {
+  sessionStatus,
+  setSessionStatus,
+  goalMinutes,
+  setGoalMinutes,
+  startDateTime,
+  setStartDateTime,
+  totalTime,
+  setTotalTime,
+  teamName,
+}) => {
   const [error, setError] = useState<string>("");
   const { teamId } = useParams<{ teamId: string }>();
   const { notify } = useNotification();
@@ -100,7 +100,7 @@ const StatusComponent: React.FC<StatusComponentProps> = ({
           setGoalMinutes(formattedTime);
           setStartDateTime(
             mostRecentSession.startDateTime ||
-            new Date().toISOString().substring(11, 16)
+              new Date().toISOString().substring(11, 16)
           );
         }
       } catch (error) {
