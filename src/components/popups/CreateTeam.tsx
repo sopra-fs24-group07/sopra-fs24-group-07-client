@@ -181,6 +181,7 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
               alignSelf: "flex-end",
             }}
             disabled={isButtonDisabled}
+            title={"Generate description with a poetic AI"}
           />
         </FormField>
         {getAllErrorMessages().map((error, index) => (
