@@ -43,21 +43,49 @@
       font-size: 100%;
       overflow-wrap: break-word;
       word-wrap: break-word;
+      /* my custom tooltip */
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 
-      &::after {
-        content: attr(title);
-        position: absolute;
-        bottom: 100%; /* Position the tooltip above the button */
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #333;
+      /* Tooltip text */
+      .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
         color: #fff;
-        padding: 5px;
-        border-radius: 3px;
-        white-space: nowrap;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+
+        /* Position the tooltip text */
+        position: absolute;
+        top: 110%; //change to bottom: 110% to switch to top tooltip position (1)
+        left: 50%;
+        margin-left: -60px;
+        z-index: 10000;
+
+        /* Fade in tooltip */
         opacity: 0;
-        pointer-events: none;
-        transition: opacity 0s;
+        transition: opacity 0.3s;
+      }
+
+      /* Tooltip arrow */
+      .tooltiptext::before {
+        content: "";
+        position: absolute;
+        bottom: 100%; // change to top: 100%; to switch to top arrow position (2)
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #555 transparent; // change to border-color: #555 transparent transparent transparent; to switch to top arrow color (3)
+      }
+
+      /* Show the tooltip text when you mouse over the tooltip container */
+      &:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
       }
 
       &.green-button {
