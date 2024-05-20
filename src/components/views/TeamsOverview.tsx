@@ -95,7 +95,6 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
-              title={team.description}
               onClick={() => goTeam(team.teamId)}
               inSession={team.inSession}
             >

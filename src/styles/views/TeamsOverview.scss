@@ -1,5 +1,4 @@
 @import "../theme";
-
 .teams-overview {
   &.container {
     margin-top: 2em;
@@ -28,6 +27,7 @@
     text-align: center;
     margin-bottom: -0.75em;
   }
+
   &.grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -46,40 +46,43 @@
       /* my custom tooltip */
       position: relative;
       display: inline-block;
-      border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 
       /* Tooltip text */
       .tooltiptext {
         visibility: hidden;
-        width: 100%;
+        max-height: 300px; // 3 times button height
+        max-width: 300px;  // 2 times button width
+        overflow: hidden;
+        text-overflow: ellipsis;
         background-color: $background;
         color: $accent;
         text-align: center;
-        padding: 5px 0;
+        padding: 5px 10px;
         border-radius: $borderRadius;
 
         /* Position the tooltip text */
         position: absolute;
-        top: 110%; //change to bottom: 110% to switch to top tooltip position (1)
+        bottom: 110%; // Adjusted for vertical centering
         left: 50%;
-        margin-left: -75px;
+        transform: translateX(-50%);
         z-index: 10000;
 
         /* Fade in tooltip */
         opacity: 0;
         transition: opacity 0.3s;
-      }
 
-      /* Tooltip arrow */
-      .tooltiptext::before {
-        content: "";
-        position: absolute;
-        bottom: 100%; // change to top: 100%; to switch to top tooltip position (2)
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: transparent transparent #555 transparent; // change to border-color: #555 transparent transparent transparent; to switch to top tooltip position (3)
+        /* Tooltip arrow */
+        &::after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: $background transparent transparent transparent;
+        }
       }
 
       /* Show the tooltip text when you mouse over the tooltip container */
