@@ -74,12 +74,12 @@
       .tooltiptext::before {
         content: "";
         position: absolute;
-        bottom: 100%; // change to top: 100%; to switch to top arrow position (2)
+        bottom: 100%; // change to top: 100%; to switch to top tooltip position (2)
         left: 50%;
         margin-left: -5px;
         border-width: 5px;
         border-style: solid;
-        border-color: transparent transparent #555 transparent; // change to border-color: #555 transparent transparent transparent; to switch to top arrow color (3)
+        border-color: transparent transparent #555 transparent; // change to border-color: #555 transparent transparent transparent; to switch to top tooltip position (3)
       }
 
       /* Show the tooltip text when you mouse over the tooltip container */
