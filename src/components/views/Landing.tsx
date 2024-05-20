@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "styles/views/Landing.scss";
 import logo from "../../assets/logo.png";
 import { Spinner } from "components/ui/Spinner";
+import { api, handleError } from "helpers/api";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -10,19 +11,22 @@ const Landing = () => {
 
   const warmup = async () => {
     try {
-      const response = await fetch("/_ah/warmup");
-      if (!response) {
-        throw new Error("Server did not respond to warmup request.");
+      const response = await api.get("/_ah/warmup");
+      console.log("Response:", response);
+      if (response.status === 200) {
+        console.log("Server is ready.");
+        navigate("/login");
+      } else {
+        console.log("Could not reach server. Try again!");
       }
-      console.log("Server is ready.", isLoading);
     } catch (error) {
       console.log("Could not reach server:", error);
     }
   }
 
   const handleLogoClick = () => {
-    warmup();
-    navigate("/login");
+    setIsLoading(true);
+    warmup().finally(() => setIsLoading(false));
   };
 
   return (
