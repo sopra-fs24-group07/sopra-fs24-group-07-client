@@ -7,6 +7,19 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
+    const warmup = async () => {
+      try {
+        const response = await fetch("/_ah/warmup");
+        if (!response) {
+          throw new Error("Server did not respond to warmup request.");
+        }
+      console.log("Server is ready.");
+      } catch (error) {
+        console.log("Could not reach server:", error);
+      }
+    }
+
+    warmup();
     navigate("/login");
   };
 
