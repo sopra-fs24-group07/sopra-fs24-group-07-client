@@ -51,12 +51,13 @@
       /* Tooltip text */
       .tooltiptext {
         visibility: hidden;
-        width: 120px;
-        background-color: #555;
-        color: #fff;
+        min-width: 100%;
+        max-width: 200%;
+        background-color: $background;
+        color: $accent;
         text-align: center;
         padding: 5px 0;
-        border-radius: 6px;
+        border-radius: $borderRadius;
 
         /* Position the tooltip text */
         position: absolute;
