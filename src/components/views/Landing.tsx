@@ -22,7 +22,7 @@ const Landing = () => {
     } catch (error) {
       console.log("Could not reach server:", error);
     }
-  }
+  };
 
   const handleLogoClick = () => {
     setIsLoading(true);
