@@ -50,13 +50,12 @@
       /* Tooltip text */
       .tooltiptext {
         visibility: hidden;
-        max-width: 300%;
-        min-width: 100%;
-        height: auto;
-        //max-height: 200%; //uncomment to limit height
+        max-width: 300px;
+        min-width: 50px;
         background-color: $background;
         color: $accent;
         text-align: center;
+        font-size: small;
         padding: 5px 10px;
         border-radius: $borderRadius;
         position: absolute;
@@ -70,30 +69,13 @@
         /* Enable overflow handling */
         overflow: hidden;
         text-overflow: ellipsis;
-
-        /* Tooltip arrow */
-        &::after {
-          content: "";
-          position: absolute;
-          top: 100%;
-          left: 50%;
-          transform: translateX(-50%);
-          border-width: 5px;
-          border-style: solid;
-          border-color: $background transparent transparent transparent;
-        }
+        white-space: nowrap;
       }
 
       /* Show the tooltip text when you mouse over the tooltip container */
       &:hover .tooltiptext {
         visibility: visible;
         opacity: 1;
-        max-width: 300%;
-        min-width: 100%;
-        height: auto;
-        overflow: hidden;
-        word-wrap: break-word;
-        white-space: normal;
       }
 
       &.green-button {
