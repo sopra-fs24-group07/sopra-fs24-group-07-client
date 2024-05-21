@@ -34,7 +34,6 @@ function ColumnContainer(props) {
 
   //close the Inspect Task Popup
   const closeInspectTask = () => {
-    console.log("I WAS IN THERE");
     setInspectTaskOpen(false);
   };
 

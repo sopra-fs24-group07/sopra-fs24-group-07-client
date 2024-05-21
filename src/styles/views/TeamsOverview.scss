@@ -1,5 +1,4 @@
 @import "../theme";
-
 .teams-overview {
   &.container {
     margin-top: 2em;
@@ -28,12 +27,14 @@
     text-align: center;
     margin-bottom: -0.75em;
   }
+
   &.grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     grid-gap: 2em;
     justify-items: stretch;
     width: 100%;
+    height: 100%;
 
     .team {
       min-height: 100px;
@@ -43,21 +44,38 @@
       font-size: 100%;
       overflow-wrap: break-word;
       word-wrap: break-word;
+      position: relative;
+      display: inline-block;
 
-      &::after {
-        content: attr(title);
+      /* Tooltip text */
+      .tooltiptext {
+        visibility: hidden;
+        max-width: 300px;
+        min-width: 50px;
+        background-color: $background;
+        color: $accent;
+        text-align: center;
+        font-size: small;
+        padding: 5px 10px;
+        border-radius: $borderRadius;
         position: absolute;
-        bottom: 100%; /* Position the tooltip above the button */
+        bottom: 110%;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #333;
-        color: #fff;
-        padding: 5px;
-        border-radius: 3px;
-        white-space: nowrap;
+        z-index: 10000;
         opacity: 0;
-        pointer-events: none;
-        transition: opacity 0s;
+        transition: opacity 0.3s;
+
+        /* Enable overflow handling */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* Show the tooltip text when you mouse over the tooltip container */
+      &:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
       }
 
       &.green-button {

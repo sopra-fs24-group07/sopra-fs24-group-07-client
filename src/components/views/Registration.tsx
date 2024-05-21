@@ -79,6 +79,7 @@ const Registration = () => {
   };
 
   const doRegister = async () => {
+    event.preventDefault();
     setIsLoading(true);
     if (!validateForm()) return;
 
@@ -143,39 +144,41 @@ const Registration = () => {
               <p>Please Register to join the team</p>
             )}
             <div className="register form">
-              <FormField
-                label="Username"
-                value={username}
-                onChange={setUsername}
-              />
-              <FormField label="Name" value={name} onChange={setName} />
-              <FormField
-                label="Password"
-                value={password}
-                type="password"
-                onChange={setPassword}
-              />
-              <FormField
-                label="Repeat Password"
-                value={repPassword}
-                type="password"
-                onChange={setRepPassword}
-              />
-              {getAllErrorMessages().map((error, index) => (
-                <div key={index} className="register error">
-                  {error}
+              <form onSubmit={doRegister}>
+                <FormField
+                  label="Username"
+                  value={username}
+                  onChange={setUsername}
+                />
+                <FormField label="Name" value={name} onChange={setName} />
+                <FormField
+                  label="Password"
+                  value={password}
+                  type="password"
+                  onChange={setPassword}
+                />
+                <FormField
+                  label="Repeat Password"
+                  value={repPassword}
+                  type="password"
+                  onChange={setRepPassword}
+                />
+                {getAllErrorMessages().map((error, index) => (
+                  <div key={index} className="register error">
+                    {error}
+                  </div>
+                ))}
+                <div className="register button-container">
+                  <Button
+                    className="login-button"
+                    disabled={!username || !name || !password || !repPassword}
+                    width="50%"
+                    type="submit"
+                  >
+                    Register
+                  </Button>
                 </div>
-              ))}
-              <div className="register button-container">
-                <Button
-                  className="login-button"
-                  disabled={!username || !name || !password || !repPassword}
-                  width="50%"
-                  onClick={doRegister}
-                >
-                  Register
-                </Button>
-              </div>
+              </form>
             </div>
             <label className="register message">
               Already haven an account?

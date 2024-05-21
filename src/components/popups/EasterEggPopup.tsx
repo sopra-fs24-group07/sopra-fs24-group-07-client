@@ -27,10 +27,10 @@ const generateAsciiGrid = (names) => {
 };
 
 const nameLinks = {
-  Alihan: "https://youtube.com",
+  Alihan: "https://youtu.be/RVMJnS1ye1g?si=kMzKMDuMdu-LYkP-",
   Basil: "https://instagram.com/basilfurrer",
-  Sven: "https://github.com",
-  Timon: "https://formula1.com",
+  Sven: "https://www.youtube.com/watch?v=qTHm7ixOe84",
+  Timon: "https://findtheinvisiblecow.com/",
 };
 
 const EasterEggPopup = ({ isOpen, onClose }) => {

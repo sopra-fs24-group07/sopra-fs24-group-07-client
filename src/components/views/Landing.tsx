@@ -2,11 +2,27 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "styles/views/Landing.scss";
 import logo from "../../assets/logo.png";
+import { api } from "helpers/api";
 
 const Landing = () => {
   const navigate = useNavigate();
 
+  const warmup = async () => {
+    try {
+      const response = await api.get("api/v1/cron/end-expired-sessions");
+      console.log("Response:", response);
+      if (response.status === 200) {
+        console.log("Server is ready.");
+      } else {
+        console.log("Could not reach server. Try again!");
+      }
+    } catch (error) {
+      console.log("Could not reach server:", error);
+    }
+  };
+
   const handleLogoClick = () => {
+    warmup();
     navigate("/login");
   };
 

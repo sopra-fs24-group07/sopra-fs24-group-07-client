@@ -21,7 +21,7 @@ const TeamsOverview = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("showTutorial") === "true") {
-      setShowTutorial(true); // Assuming `setShowTutorial` sets state to show the tutorial popup
+      setShowTutorial(true);
       setFirstTime(true);
     }
   }, [location]);
@@ -44,7 +44,6 @@ const TeamsOverview = () => {
             );
 
             const lastSession = sessionResponse.data.slice(0)[0];
-            console.log("lastSession", lastSession);
             //if a team has no sessions, isFinished should be true
             const isFinished = !lastSession || !!lastSession.endDateTime;
 
@@ -96,11 +95,11 @@ const TeamsOverview = () => {
             <Button
               className="team"
               key={team.teamId}
-              title={team.description}
               onClick={() => goTeam(team.teamId)}
               inSession={team.inSession}
             >
               {team.name}
+              {<span className="tooltiptext">{team.description}</span>}
             </Button>
           ))}
           <Button

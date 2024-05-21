@@ -69,7 +69,8 @@ const Comments = (props) => {
     };
   }, [teamId]);
 
-  const createComment = async () => {
+  const createComment = async (event) => {
+    event.preventDefault();
     if (!validateForm()) return;
     try {
       const requestBody = JSON.stringify({ text: comment, userId: userId });
@@ -117,27 +118,29 @@ const Comments = (props) => {
         <div>
           <h3>Comments</h3>
           <div className="in-line">
-            <FormField
-              label={"Add comment"}
-              value={comment}
-              onChange={setComment}
-              error={error}
-              com={true}
-              rightIcon={
-                <IconButton
-                  hoverIcon={BiSolidCommentAdd}
-                  icon={BiCommentDetail}
-                  onClick={createComment}
-                  title={"Submit"}
-                  className="green-icon"
-                  style={{
-                    scale: "1.8",
-                    marginLeft: "10px",
-                    marginBottom: "10px",
-                  }}
-                />
-              }
-            />
+            <form onSubmit={createComment}>
+              <FormField
+                label={"Add comment"}
+                value={comment}
+                onChange={setComment}
+                error={error}
+                com={true}
+                rightIcon={
+                  <IconButton
+                    hoverIcon={BiSolidCommentAdd}
+                    icon={BiCommentDetail}
+                    type="submit"
+                    title={"Submit"}
+                    className="green-icon"
+                    style={{
+                      scale: "1.8",
+                      marginLeft: "10px",
+                      marginBottom: "10px",
+                    }}
+                  />
+                }
+              />
+            </form>
           </div>
         </div>
       )}

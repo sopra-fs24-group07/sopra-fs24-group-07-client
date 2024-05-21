@@ -59,7 +59,6 @@ const TeamMembers = ({ isOpen, onClose, onEdit, setIsLeave }) => {
     const channel = pusher.subscribe(`team-${teamId}`);
 
     channel.bind("team-update", () => {
-      console.log("TEAM UPDATED!");
       fetchTeamMembers();
     });
 
