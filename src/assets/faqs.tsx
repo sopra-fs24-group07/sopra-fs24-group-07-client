@@ -47,7 +47,7 @@ export const faqList = [
     question: "What stocks should I invest next?",
     answer: "For investment advice you can consult our trusted advisor:",
     externalLink:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/A_curious_Welsh_Mountain_sheep_%28Ovis_aries%29.jpg/2880px-A_curious_Welsh_Mountain_sheep_%28Ovis_aries%29.jpg",
+      "https://www.youtube.com/watch?v=AwDbx-nuQ5o",
   },
   {
     question: "How do I create a new team?",
