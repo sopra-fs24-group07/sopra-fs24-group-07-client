@@ -83,6 +83,7 @@ const Registration = () => {
     setIsLoading(true);
     if (!validateForm()) {
       setIsLoading(false);
+
       return;
     }
 
