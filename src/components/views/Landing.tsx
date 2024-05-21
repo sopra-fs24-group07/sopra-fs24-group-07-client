@@ -15,7 +15,6 @@ const Landing = () => {
       console.log("Response:", response);
       if (response.status === 200) {
         console.log("Server is ready.");
-        navigate("/login");
       } else {
         console.log("Could not reach server. Try again!");
       }
@@ -26,7 +25,8 @@ const Landing = () => {
 
   const handleLogoClick = () => {
     setIsLoading(true);
-    warmup().finally(() => setIsLoading(false));
+    warmup();
+    navigate("/login");
   };
 
   return (
