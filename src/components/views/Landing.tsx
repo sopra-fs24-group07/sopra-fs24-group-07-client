@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "styles/views/Landing.scss";
 import logo from "../../assets/logo.png";
-import { Spinner } from "components/ui/Spinner";
 import { api } from "helpers/api";
 
 const Landing = () => {
