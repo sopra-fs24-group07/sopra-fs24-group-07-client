@@ -34,6 +34,7 @@
     grid-gap: 2em;
     justify-items: stretch;
     width: 100%;
+    height: 100%;
 
     .team {
       min-height: 100px;
@@ -43,33 +44,32 @@
       font-size: 100%;
       overflow-wrap: break-word;
       word-wrap: break-word;
-      /* my custom tooltip */
       position: relative;
       display: inline-block;
 
       /* Tooltip text */
       .tooltiptext {
         visibility: hidden;
-        max-height: 300px; // 3 times button height
-        max-width: 300px; // 2 times button width
-        overflow: hidden;
-        text-overflow: ellipsis;
+        max-width: 300%;
+        min-width: 100%;
+        height: auto;
+        //max-height: 200%; //uncomment to limit height
         background-color: $background;
         color: $accent;
         text-align: center;
         padding: 5px 10px;
         border-radius: $borderRadius;
-
-        /* Position the tooltip text */
         position: absolute;
-        bottom: 110%; // Adjusted for vertical centering
+        bottom: 110%;
         left: 50%;
         transform: translateX(-50%);
         z-index: 10000;
-
-        /* Fade in tooltip */
         opacity: 0;
         transition: opacity 0.3s;
+
+        /* Enable overflow handling */
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         /* Tooltip arrow */
         &::after {
@@ -78,7 +78,6 @@
           top: 100%;
           left: 50%;
           transform: translateX(-50%);
-          margin-left: -5px;
           border-width: 5px;
           border-style: solid;
           border-color: $background transparent transparent transparent;
@@ -89,6 +88,12 @@
       &:hover .tooltiptext {
         visibility: visible;
         opacity: 1;
+        max-width: 300%;
+        min-width: 100%;
+        height: auto;
+        overflow: hidden;
+        word-wrap: break-word;
+        white-space: normal;
       }
 
       &.green-button {
