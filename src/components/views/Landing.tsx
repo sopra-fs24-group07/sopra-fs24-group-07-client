@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "styles/views/Landing.scss";
 import logo from "../../assets/logo.png";
 import { Spinner } from "components/ui/Spinner";
-import { api, handleError } from "helpers/api";
+import { api } from "helpers/api";
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
 
   const warmup = async () => {
     try {
@@ -24,7 +23,6 @@ const Landing = () => {
   };
 
   const handleLogoClick = () => {
-    setIsLoading(true);
     warmup();
     navigate("/login");
   };
@@ -38,7 +36,6 @@ const Landing = () => {
         {" "}
         {"<<Click the logo to continue!>>"}{" "}
       </p>
-      {isLoading ? <Spinner /> : ""}
     </div>
   );
 };
