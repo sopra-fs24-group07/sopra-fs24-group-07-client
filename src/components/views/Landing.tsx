@@ -11,7 +11,7 @@ const Landing = () => {
 
   const warmup = async () => {
     try {
-      const response = await api.get("/_ah/warmup");
+      const response = await api.get("api/v1/cron/end-expired-sessions");
       console.log("Response:", response);
       if (response.status === 200) {
         console.log("Server is ready.");
