@@ -102,9 +102,10 @@ const Registration = () => {
         navigate("/teams?showTutorial=true");
       }
     } catch (error) {
-      const errorMessage = error.response && error.response.data.message
-        ? error.response.data.message
-        : `An unknown error occurred! Contact an administrator: ${error}`;
+      const errorMessage =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : `An unknown error occurred! Contact an administrator: ${error}`;
       setGeneralError(errorMessage);
       setIsLoading(false);
       console.error("Something went wrong during the registration:", error);
