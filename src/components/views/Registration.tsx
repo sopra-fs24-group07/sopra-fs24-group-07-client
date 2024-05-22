@@ -104,6 +104,7 @@ const Registration = () => {
       }
     } catch (error) {
       let errorMessage = "";
+      if (error.response) {
       if (error.response.status === 400) {
         errorMessage = "Invalid Input. Please try again";
       } else if (error.response.status === 409) {
@@ -111,6 +112,9 @@ const Registration = () => {
           "Username already taken. Please choose a different username";
       } else {
         errorMessage = "Unexpected error. Please try again or contact an admin";
+      }
+    } else {
+        errorMessage = "Server not available. Please try again or contact an admin";
       }
       setGeneralError(errorMessage);
       setIsLoading(false);
