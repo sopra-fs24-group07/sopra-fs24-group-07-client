@@ -9,12 +9,11 @@ import { NotificationProvider } from "../../popups/NotificationContext";
 const GameRouter = ({ base }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-
-        <Header height="100" />
-        <Routes>
-          <Route path="" element={<TeamsOverview />} />
-          <Route path=":teamId" element={<TeamDashboard />} />
-        </Routes>
+      <Header height="100" />
+      <Routes>
+        <Route path="" element={<TeamsOverview />} />
+        <Route path=":teamId" element={<TeamDashboard />} />
+      </Routes>
     </div>
   );
 };

@@ -107,14 +107,16 @@ const Registration = () => {
     } catch (error) {
       if (error.response && error.response.data.message) {
         if (error.response.status === "BAD_REQUEST") {
-          notify("error", `An error occurred! Please try again or contact and administrator: ${error.response.data.message} (${error.response.status})`);
-
+          notify(
+            "error",
+            `An error occurred! Please try again or contact and administrator: ${error.response.data.message} (${error.response.status})`
+          );
         } else {
           setGeneralError(error.response.data.message);
         }
       } else {
         const errorMessage = `An unknown error occurred! Contact an administrator: ${error} (${error.code})`;
-        notify("error",errorMessage);
+        notify("error", errorMessage);
       }
 
       setIsLoading(false);

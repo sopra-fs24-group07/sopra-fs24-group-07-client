@@ -22,30 +22,30 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <NotificationProvider>
-      <Routes>
-        <Route path="/teams/*" element={<GameGuard />}>
-          <Route path="*" element={<GameRouter base="/teams" />} />
-        </Route>
+        <Routes>
+          <Route path="/teams/*" element={<GameGuard />}>
+            <Route path="*" element={<GameRouter base="/teams" />} />
+          </Route>
 
-        <Route path="/register" element={<LoginGuard />}>
-          <Route path="/register" element={<Registration />} />
-        </Route>
+          <Route path="/register" element={<LoginGuard />}>
+            <Route path="/register" element={<Registration />} />
+          </Route>
 
-        <Route path="/login" element={<LoginGuard />}>
-          <Route path="/login" element={<Login />} />
-        </Route>
+          <Route path="/login" element={<LoginGuard />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
 
-        <Route path="/start" element={<LoginGuard />}>
-          <Route path="/start" element={<Landing />} />
-        </Route>
+          <Route path="/start" element={<LoginGuard />}>
+            <Route path="/start" element={<Landing />} />
+          </Route>
 
-        <Route path="/invitation">
-          <Route path=":teamUUID" element={<InviteLanding />} />
-        </Route>
+          <Route path="/invitation">
+            <Route path=":teamUUID" element={<InviteLanding />} />
+          </Route>
 
-        <Route path="/" element={<Navigate to="/teams" replace />} />
-      </Routes>
-        </NotificationProvider>
+          <Route path="/" element={<Navigate to="/teams" replace />} />
+        </Routes>
+      </NotificationProvider>
     </BrowserRouter>
   );
 };
