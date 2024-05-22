@@ -113,6 +113,7 @@ const Registration = () => {
         errorMessage = "Unexpected error. Please try again or contact an admin";
       }
       setGeneralError(errorMessage);
+      setIsLoading(false);
       console.error("Something went wrong during the registration:", error);
     }
   };
