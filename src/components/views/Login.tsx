@@ -44,10 +44,12 @@ const Login = () => {
           errorMessage =
             "Your credentials are invalid. Please try again or contact an admin";
         } else {
-          errorMessage = "Unexpected error. Please try again or contact an admin";
+          errorMessage =
+            "Unexpected error. Please try again or contact an admin";
         }
       } else {
-        errorMessage = "Server not available. Please try again or contact an admin";
+        errorMessage =
+          "Server not available. Please try again or contact an admin";
       }
       setError(errorMessage);
       setIsLoading(false);
