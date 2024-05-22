@@ -140,8 +140,6 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
             Authorization: `${token}`,
           },
         });
-
-        notify("success", "The changes have been saved!");
         setUser(updatedUser);
         setUsername(updatedUser.username);
         setName(updatedUser.name);
@@ -154,7 +152,6 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
       }
     }
     setIsLoading(false);
-    onClose();
   };
 
   const handleDeleteAccount = () => {
