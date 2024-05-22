@@ -78,10 +78,14 @@ const Registration = () => {
     return isValid;
   };
 
-  const doRegister = async () => {
+  const doRegister = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      setIsLoading(false);
+
+      return;
+    }
 
     try {
       const requestBody = JSON.stringify({ username, name, password });
