@@ -99,9 +99,15 @@ const Registration = () => {
         navigate("/teams?showTutorial=true");
       }
     } catch (error) {
-      const errorMessage = error.response
-        ? error.response.data.message
-        : `An unknown error occurred! Contact an administrator: ${error}`;
+      let errorMessage = "";
+      if (error.response.status === 400) {
+        errorMessage = "Invalid Input. Please try again";
+      } else if (error.response.status === 409) {
+        errorMessage =
+          "Username already taken. Please choose a different username";
+      } else {
+        errorMessage = "Unexpected error. Please try again or contact an admin";
+      }
       setGeneralError(errorMessage);
       console.error("Something went wrong during the registration:", error);
     }
