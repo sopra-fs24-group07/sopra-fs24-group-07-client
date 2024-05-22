@@ -147,8 +147,22 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
         setRepPassword("");
         onProfileOpen(true);
       } catch (error) {
+        let errorMessage = "";
+        if (error.response.status === 400) {
+          errorMessage = "Invalid Input. Please try again";
+        } else if (error.response.status === 401) {
+          errorMessage = "You are not authorized to edit this user";
+        } else if (error.response.status === 404) {
+          errorMessage = "The requested user was not found";
+        } else if (error.response.status === 409) {
+          errorMessage =
+            "Username already taken. Please choose a different username";
+        } else {
+          errorMessage =
+            "Unexpected error. Please try again or contact an admin";
+        }
+        setError(errorMessage);
         console.error("Failed to save changes:", error);
-        setError("Failed to save changes");
       }
     }
     setIsLoading(false);
@@ -226,9 +240,9 @@ const ProfileSettings = ({ isOpen, onClose, onProfileOpen }) => {
               value={repPassword}
               onChange={setRepPassword}
             />
-            {error && <div className="error-message">{error}</div>}
+            {error && <div className="register error">{error}</div>}
             {getAllErrorMessages().map((error, index) => (
-              <div key={index} className="error-message">
+              <div key={index} className="register error">
                 {error}
               </div>
             ))}
