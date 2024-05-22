@@ -7,6 +7,7 @@ import Login from "../../views/Login";
 import Registration from "../../views/Registration";
 import Landing from "../../views/Landing";
 import InviteLanding from "../../views/InviteLanding";
+import { NotificationProvider } from "../../popups/NotificationContext";
 
 /**
  * Main router of your application.
@@ -20,6 +21,7 @@ import InviteLanding from "../../views/InviteLanding";
 const AppRouter = () => {
   return (
     <BrowserRouter>
+      <NotificationProvider>
       <Routes>
         <Route path="/teams/*" element={<GameGuard />}>
           <Route path="*" element={<GameRouter base="/teams" />} />
@@ -43,6 +45,7 @@ const AppRouter = () => {
 
         <Route path="/" element={<Navigate to="/teams" replace />} />
       </Routes>
+        </NotificationProvider>
     </BrowserRouter>
   );
 };

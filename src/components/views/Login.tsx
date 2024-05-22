@@ -10,6 +10,7 @@ import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
 import FormField from "../ui/FormField";
+import { useNotification } from "../popups/NotificationContext";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Login = () => {
   const [error, setError] = useState(""); // NEW SET ERROR METHOD
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState(0);
+  const { notify } = useNotification();
 
   const incSecret = () => {
     setSecret(secret + 1);
@@ -38,10 +40,17 @@ const Login = () => {
         navigate("/teams");
       }
     } catch (error) {
-      // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
-      setError("Failed to login. Please check your username and password.");
-      // ALSO CONSOLE ERROR FOR THE ERROR: WOULD SHOW IN CONSOLE IF ERROR IS NOT JUST INVALID CREDENTIALS
-      console.error("Something went wrong during the login:", error);
+      if (error.response && error.response.data.message) {
+        if (error.response.status === "BAD_REQUEST") {
+          notify("error", `An error occurred! Please try again or contact and administrator: ${error.response.data.message} (${error.response.status})`);
+
+        } else {
+          setError(`Invalid credentials! Please try again. (${error.response.data.message})`);
+        }
+      } else {
+        const errorMessage = `An unknown error occurred! Contact an administrator: ${error} (${error.code})`;
+        notify("error",errorMessage);
+      }
     }
     setTimeout(() => {
       setIsLoading(false); // Set loading to false after the delay and navigation

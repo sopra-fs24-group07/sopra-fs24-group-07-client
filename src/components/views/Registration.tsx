@@ -10,6 +10,7 @@ import { Spinner } from "components/ui/Spinner";
 import logo from "../../assets/logo.png";
 import LogRegHeader from "./LogRegHeader";
 import FormField from "../ui/FormField";
+import { useNotification } from "../popups/NotificationContext";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Registration = () => {
   });
   const [generalError, setGeneralError] = useState("");
   const [secret, setSecret] = useState(0);
+  const { notify } = useNotification();
 
   const incSecret = () => {
     setSecret(secret + 1);
@@ -103,11 +105,18 @@ const Registration = () => {
         navigate("/teams?showTutorial=true");
       }
     } catch (error) {
-      const errorMessage =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : `An unknown error occurred! Contact an administrator: ${error}`;
-      setGeneralError(errorMessage);
+      if (error.response && error.response.data.message) {
+        if (error.response.status === "BAD_REQUEST") {
+          notify("error", `An error occurred! Please try again or contact and administrator: ${error.response.data.message} (${error.response.status})`);
+
+        } else {
+          setGeneralError(error.response.data.message);
+        }
+      } else {
+        const errorMessage = `An unknown error occurred! Contact an administrator: ${error} (${error.code})`;
+        notify("error",errorMessage);
+      }
+
       setIsLoading(false);
       console.error("Something went wrong during the registration:", error);
     }

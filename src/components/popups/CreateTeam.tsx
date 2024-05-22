@@ -85,11 +85,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       //navigate(`/teams/${response.data.teamId}`);
     } catch (error) {
       console.error("Error creating team:", handleError(error));
-      notify("error", "Failed to create team. Please try again.");
-      setErrors((prev) => ({
-        ...prev,
-        general: "Failed to create team. Please try again.",
-      }));
+      const errorMessage =
+        error.response && error.response.data.message
+          ? `An error occurred! Please try again or contact and administrator: ${error.response.data.message} (${error.response.status})`
+          : `An unknown error occurred! Contact an administrator: ${error} (${error.code})`;
+      notify("error", errorMessage);
     }
     setIsLoading(false);
   };
@@ -127,11 +127,11 @@ const CreateTeam = ({ isOpen, onClose, onCreateTeamClick }) => {
       }, 3000);
     } catch (error) {
       console.error("Error generating description:", handleError(error));
-      notify("error", "Failed to generate description. Please try again.");
-      setErrors((prev) => ({
-        ...prev,
-        general: "Failed to generate AI description. Please try again.",
-      }));
+      const errorMessage =
+        error.response && error.response.data.message
+          ? `An error occurred! Please try again or contact and administrator: ${error.response.data.message} (${error.response.status})`
+          : `An unknown error occurred! Contact an administrator: ${error} (${error.code})`;
+      notify("error", errorMessage);
     }
     setIsLoading(false);
   };
