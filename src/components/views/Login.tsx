@@ -38,9 +38,21 @@ const Login = () => {
         navigate("/teams");
       }
     } catch (error) {
-      // ERROR HANDLING; IF THE BACKEND DOESNT RESPOND PROPERLY TELL THE USER PW OR UN ARE WRONG
-      setError("Failed to login. Please check your username and password.");
-      // ALSO CONSOLE ERROR FOR THE ERROR: WOULD SHOW IN CONSOLE IF ERROR IS NOT JUST INVALID CREDENTIALS
+      let errorMessage = "";
+      if (error.response) {
+        if (error.response.status === 401) {
+          errorMessage =
+            "Your credentials are invalid. Please try again or contact an admin";
+        } else {
+          errorMessage =
+            "Unexpected error. Please try again or contact an admin";
+        }
+      } else {
+        errorMessage =
+          "Server not available. Please try again or contact an admin";
+      }
+      setError(errorMessage);
+      setIsLoading(false);
       console.error("Something went wrong during the login:", error);
     }
     setTimeout(() => {

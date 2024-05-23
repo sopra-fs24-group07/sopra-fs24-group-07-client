@@ -127,11 +127,6 @@ export const faqList = [
     answer:
       "Check if you email address was spelled correctly and check your spam folder, if it's not there contact an administrator.",
   },
-  {
-    question: "How can I change my teams' description?.",
-    answer:
-      "Open the team settings on the teams' dashboard and enter the edit mode. You can also let the AI choose one for you!",
-  },
 ];
 
 export const keywords = [
@@ -173,5 +168,4 @@ export const keywords = [
   "progress",
   "invitation",
   "link",
-  "description",
 ];
