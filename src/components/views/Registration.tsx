@@ -78,10 +78,14 @@ const Registration = () => {
     return isValid;
   };
 
-  const doRegister = async () => {
+  const doRegister = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      setIsLoading(false);
+
+      return;
+    }
 
     try {
       const requestBody = JSON.stringify({ username, name, password });
@@ -99,10 +103,23 @@ const Registration = () => {
         navigate("/teams?showTutorial=true");
       }
     } catch (error) {
-      const errorMessage = error.response
-        ? error.response.data.message
-        : `An unknown error occurred! Contact an administrator: ${error}`;
+      let errorMessage = "";
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage = "Invalid Input. Please try again";
+        } else if (error.response.status === 409) {
+          errorMessage =
+            "Username already taken. Please choose a different username";
+        } else {
+          errorMessage =
+            "Unexpected error. Please try again or contact an admin";
+        }
+      } else {
+        errorMessage =
+          "Server not available. Please try again or contact an admin";
+      }
       setGeneralError(errorMessage);
+      setIsLoading(false);
       console.error("Something went wrong during the registration:", error);
     }
   };
